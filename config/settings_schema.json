@@ -8,6 +8,21 @@
     "theme_support_url": "https://github.com/kondasoft/ks-origin/issues"
   },
   {
+    "name": "Colors",
+    "settings": [
+      {
+        "type": "color_palette",
+        "id": "colors",
+        "default": {
+          "background": "#FFFFFF",
+          "text": "#0A0A0A",
+          "surface": "#EBEBEC",
+          "brand": "#9E0812"
+        }
+      }
+    ]
+  },
+  {
     "name": "Favicon",
     "settings": [
       {
@@ -19,4 +34,3 @@
     ]
   }
 ]
- 
