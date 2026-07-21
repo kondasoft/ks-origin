@@ -8,7 +8,9 @@ The project intentionally focuses on the essentials: reliable commerce features,
 
 ## Demo
 
-[View the Shopify demo store](https://ks-origin-demo.kondasoft.com)
+Shopify demo store: [https://ks-origin-demo.kondasoft.com](https://ks-origin-demo.kondasoft.com)
+
+Storefront password: `ks`
 
 ## Project goals
 
