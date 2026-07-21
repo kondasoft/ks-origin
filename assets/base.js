@@ -1,8 +1,8 @@
 /*
   Section styles loading on demand
 */
-function loadSectionStyles(root = document) {
-  root.querySelectorAll("[data-section-css]").forEach((element) => {
+function loadSectionStyles() {
+  document.querySelectorAll("[data-section-css]").forEach((element) => {
     const hrefs = element.dataset.sectionCss.split(",");
 
     hrefs.forEach((href) => {
@@ -18,12 +18,14 @@ function loadSectionStyles(root = document) {
     });
   });
 }
+loadSectionStyles();
+
 
 /*
   Section scripts loading on demand
 */
-function loadSectionScripts(root = document) {
-  root.querySelectorAll("[data-section-js]").forEach((element) => {
+function loadSectionScripts() {
+  document.querySelectorAll("[data-section-js]").forEach((element) => {
     const srcs = element.dataset.sectionJs.split(",");
 
     srcs.forEach((src) => {
@@ -40,10 +42,4 @@ function loadSectionScripts(root = document) {
   });
 }
 
-loadSectionStyles();
 loadSectionScripts();
-
-document.addEventListener("shopify:section:load", (event) => {
-  loadSectionStyles(event.target);
-  loadSectionScripts(event.target);
-});
