@@ -2,13 +2,31 @@
   Announcement bar
 */
 .announcement-bar {
-  padding-top: var(--padding-top);
-  padding-bottom: var(--padding-bottom);
-  color: var(--text-color);
+  color: rgb(var(--text-color));
+  font-size: var(--fs-mobile);
   text-align: center;
-  background-color: var(--background-color);
+  background-color: rgb(var(--background-color));
 }
 
 .announcement-bar-text {
   margin: 0;
+}
+
+.announcement-bar-link {
+  display: block;
+  color: rgb(var(--text-color));
+}
+
+.announcement-bar-link:hover {
+  color: rgb(var(--text-color) / 0.8);
+}
+
+.announcement-bar-link:active {
+  color: rgb(var(--text-color) / 0.6);
+}
+
+@media (min-width: 600px) {
+  .announcement-bar {
+    font-size: var(--fs-desktop);
+  }
 }

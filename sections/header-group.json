@@ -1,15 +1,35 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "type": "header",
   "name": "Header group",
   "sections": {
     "announcement_bar": {
       "type": "announcement-bar",
-      "settings": {}
+      "settings": {
+        "text": "Announce something important here",
+        "background_color": "{{ settings.colors.surface }}",
+        "text_color": "{{ settings.colors.text }}",
+        "font_size_mobile": "fs-sm",
+        "font_size_desktop": "fs-md",
+        "pt": 12,
+        "pb": 12
+      }
     },
     "header": {
       "type": "header",
       "settings": {}
     }
   },
-  "order": ["announcement_bar", "header"]
+  "order": [
+    "announcement_bar",
+    "header"
+  ]
 }

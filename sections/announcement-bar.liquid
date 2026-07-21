@@ -5,27 +5,86 @@
 <div
   class="announcement-bar"
   style="
-    --background-color: {{ section.settings.background_color }};
-    --text-color: {{ section.settings.text_color }};
-    --padding-top: {{ section.settings.padding_top }}px;
-    --padding-bottom: {{ section.settings.padding_bottom }}px;
+    --background-color: {{ section.settings.background_color.red }} {{ section.settings.background_color.green }} {{ section.settings.background_color.blue }};
+    --text-color: {{ section.settings.text_color.red }} {{ section.settings.text_color.green }} {{ section.settings.text_color.blue }};
+    --fs-mobile: var(--{{ section.settings.font_size_mobile }});
+    --fs-desktop: var(--{{ section.settings.font_size_desktop }});
+    --pt: {{ section.settings.pt | append: 'px' }};
+    --pb: {{ section.settings.pb | append: 'px' }};
   "
   data-section-css="{{ 'announcement-bar.css' | asset_url }}"
 >
-  <p class="announcement-bar-text">
-    {{ section.settings.text }}
-  </p>
+  <div class="container">
+    {% if section.settings.link != blank %}
+      <a
+        class="announcement-bar-link section-spacing"
+        href="{{ section.settings.link }}"
+      >
+        <p class="announcement-bar-text rte">
+          {{ section.settings.text }}
+        </p>
+      </a>
+    {% else %}
+      <div class="section-spacing">
+        <p class="announcement-bar-text rte">
+          {{ section.settings.text }}
+        </p>
+      </div>
+    {% endif %}
+  </div>
 </div>
 
 {% schema %}
 {
   "name": "Announcement bar",
+  "tag": "section",
   "settings": [
     {
       "type": "inline_richtext",
       "id": "text",
       "label": "Text",
       "default": "Announce something important here"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "Link"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "select",
+      "id": "font_size_mobile",
+      "label": "Font size mobile",
+      "options": [
+        { "value": "fs-xs", "label": "Extra small" },
+        { "value": "fs-sm", "label": "Small" },
+        { "value": "fs-md", "label": "Medium" },
+        { "value": "fs-lg", "label": "Large" },
+        { "value": "fs-xl", "label": "Extra large" },
+        { "value": "fs-2xl", "label": "2X large" }
+      ],
+      "default": "fs-sm"
+    },
+    {
+      "type": "select",
+      "id": "font_size_desktop",
+      "label": "Font size desktop",
+      "options": [
+        { "value": "fs-xs", "label": "Extra small" },
+        { "value": "fs-sm", "label": "Small" },
+        { "value": "fs-md", "label": "Medium" },
+        { "value": "fs-lg", "label": "Large" },
+        { "value": "fs-xl", "label": "Extra large" },
+        { "value": "fs-2xl", "label": "2X large" }
+      ],
+      "default": "fs-md"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
     },
     {
       "type": "color",
@@ -40,24 +99,28 @@
       "default": "{{ settings.colors.background }}"
     },
     {
-      "type": "range",
-      "id": "padding_top",
-      "label": "Top padding",
-      "min": 0,
-      "max": 40,
-      "step": 4,
-      "unit": "px",
-      "default": 12
+      "type": "header",
+      "content": "Spacing"
     },
     {
       "type": "range",
-      "id": "padding_bottom",
-      "label": "Bottom padding",
+      "id": "pt",
+      "label": "Top",
       "min": 0,
       "max": 40,
-      "step": 4,
+      "step": 2,
       "unit": "px",
-      "default": 12
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "pb",
+      "label": "Bottom",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 10
     }
   ],
   "blocks": [],

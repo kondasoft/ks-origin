@@ -74,6 +74,23 @@
     ]
   },
   {
+    "name": "Layout",
+    "settings": [
+      {
+        "type": "select",
+        "id": "container_width",
+        "label": "Container width",
+        "options": [
+          { "value": "1440", "label": "Narrow" },
+          { "value": "1920", "label": "Normal" },
+          { "value": "2400", "label": "Wide" }
+        ],
+        "default": "1440",
+        "info": "Narrow: 1440px, Normal: 1920px, Wide: 2400px"
+      }
+    ]
+  },
+  {
     "name": "Favicon",
     "settings": [
       {

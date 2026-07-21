@@ -7,23 +7,34 @@
   {{ settings.type_body_font | font_modify: 'weight', 'bold' | font_face: font_display: 'swap' }}
 
   :root {
+    /* Colors */
+    --color-background: {{ settings.color_background.red }} {{ settings.color_background.green }} {{ settings.color_background.blue }};
+    --color-text: {{ settings.color_text.red }} {{ settings.color_text.green }} {{ settings.color_text.blue }};
+    --color-surface: {{ settings.color_surface.red }} {{ settings.color_surface.green }} {{ settings.color_surface.blue }};
+    --color-brand: {{ settings.color_brand.red }} {{ settings.color_brand.green }} {{ settings.color_brand.blue }};
+
+    /* Layout */
+    --container-width: {{ settings.container_width }}px;
+
+    /* Fonts */
     --font-heading-family: {{ settings.type_heading_font.family }}, {{ settings.type_heading_font.fallback_families }};
     --font-heading-style: {{ settings.type_heading_font.style }};
     --font-heading-weight: {{ settings.type_heading_font.weight }};
     --font-body-family: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
     --font-body-style: {{ settings.type_body_font.style }};
     --font-body-weight: {{ settings.type_body_font.weight }};
-  }
 
-
-  /*
-    Colors
-  */
-  :root {
-    --color-background: {{ settings.color_background.red }} {{ settings.color_background.green }} {{ settings.color_background.blue }};
-    --color-text: {{ settings.color_text.red }} {{ settings.color_text.green }} {{ settings.color_text.blue }};
-    --color-surface: {{ settings.color_surface.red }} {{ settings.color_surface.green }} {{ settings.color_surface.blue }};
-    --color-brand: {{ settings.color_brand.red }} {{ settings.color_brand.green }} {{ settings.color_brand.blue }};
+    /* Font sizes */
+    --fs-xs: 0.75em;
+    --fs-sm: 0.875em;
+    --fs-md: 1em;
+    --fs-lg: 1.125em;
+    --fs-xl: 1.25em;
+    --fs-2xl: 1.5em;
+    --fs-3xl: 2em;
+    --fs-4xl: 2.5em;
+    --fs-5xl: 3em;
+    --fs-6xl: 3.75em;
   }
 {% endstyle %}
 
