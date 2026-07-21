@@ -31,9 +31,25 @@ body {
   margin-left: auto;
 }
 
+.container-narrow {
+  --container-width: 1440px;
+}
+
+.container-normal {
+  --container-width: 1920px;
+}
+
+.container-wide {
+  --container-width: 2400px;
+}
+
+.container-content {
+  --container-width: 720px;
+}
+
 @media (min-width: 1200px) {
   .container {
-    max-width: var(--container-width);
+    max-width: var(--container-width, 1440px);
     padding-right: 2rem;
     padding-left: 2rem;
   }

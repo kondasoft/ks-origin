@@ -9,7 +9,7 @@
  */
 {
   "current": {
-    "container_width": "1440",
+    "container_width": "container-narrow",
     "content_for_index": [],
     "colors": {
       "background": "#ffffff",
