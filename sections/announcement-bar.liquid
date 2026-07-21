@@ -1,21 +1,17 @@
-{% style %}
-  /*
-    Announcement bar
-  */
-  #shopify-section-{{ section.id }} .announcement-bar {
-    padding-block-start: {{ section.settings.padding_top }}px;
-    padding-block-end: {{ section.settings.padding_bottom }}px;
-    color: {{ section.settings.text_color }};
-    text-align: center;
-    background-color: {{ section.settings.background_color }};
-  }
+{% if section.index <= 3 or request.design_mode %}
+  <link href="{{ 'announcement-bar.css' | asset_url }}" rel="stylesheet" fetchpriority="high">
+{% endif %}
 
-  #shopify-section-{{ section.id }} .announcement-bar-text {
-    margin: 0;
-  }
-{% endstyle %}
-
-<div class="announcement-bar">
+<div
+  class="announcement-bar"
+  style="
+    --background-color: {{ section.settings.background_color }};
+    --text-color: {{ section.settings.text_color }};
+    --padding-top: {{ section.settings.padding_top }}px;
+    --padding-bottom: {{ section.settings.padding_bottom }}px;
+  "
+  data-section-css="{{ 'announcement-bar.css' | asset_url }}"
+>
   <p class="announcement-bar-text">
     {{ section.settings.text }}
   </p>
@@ -26,7 +22,7 @@
   "name": "Announcement bar",
   "settings": [
     {
-      "type": "text",
+      "type": "inline_richtext",
       "id": "text",
       "label": "Text",
       "default": "Announce something important here"

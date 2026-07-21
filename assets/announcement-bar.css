@@ -1,0 +1,14 @@
+/*
+  Announcement bar
+*/
+.announcement-bar {
+  padding-top: var(--padding-top);
+  padding-bottom: var(--padding-bottom);
+  color: var(--text-color);
+  text-align: center;
+  background-color: var(--background-color);
+}
+
+.announcement-bar-text {
+  margin: 0;
+}
