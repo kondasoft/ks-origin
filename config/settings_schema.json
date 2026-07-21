@@ -27,7 +27,8 @@
       },
       {
         "type": "header",
-        "content": "Theme colors"
+        "content": "Theme colors",
+        "info": "Set the global colors used by theme elements. Sections with their own color settings are configured separately."
       },
       {
         "type": "color",
