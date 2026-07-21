@@ -1,0 +1,19 @@
+{
+  "name": "ks-origin",
+  "private": true,
+  "scripts": {
+    "dev": "shopify theme dev --store ks-origin-knqiyszi.myshopify.com --theme 165161435386 --allow-live",
+    "lint": "eslint \"**/*.{js,liquid}\"",
+    "push": "shopify theme push --store ks-origin-knqiyszi.myshopify.com --theme 165161435386 --allow-live",
+    "pull": "shopify theme pull --store ks-origin-knqiyszi.myshopify.com --theme 165161435386"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.5.0",
+    "eslint-config-prettier": "^10.1.1",
+    "eslint-plugin-html": "^8.1.2",
+    "eslint-plugin-prettier": "^5.2.3",
+    "globals": "^16.0.0",
+    "prettier": "^3.5.3"
+  }
+}
