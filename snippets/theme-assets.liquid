@@ -14,6 +14,17 @@
     --font-body-style: {{ settings.type_body_font.style }};
     --font-body-weight: {{ settings.type_body_font.weight }};
   }
+
+
+  /*
+    Colors
+  */
+  :root {
+    --color-background: {{ settings.color_background.red }} {{ settings.color_background.green }} {{ settings.color_background.blue }};
+    --color-text: {{ settings.color_text.red }} {{ settings.color_text.green }} {{ settings.color_text.blue }};
+    --color-surface: {{ settings.color_surface.red }} {{ settings.color_surface.green }} {{ settings.color_surface.blue }};
+    --color-brand: {{ settings.color_brand.red }} {{ settings.color_brand.green }} {{ settings.color_brand.blue }};
+  }
 {% endstyle %}
 
 {{ 'base.css' | asset_url | stylesheet_tag: preload: true }}
