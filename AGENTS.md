@@ -28,6 +28,7 @@
 
 - Use consistent naming patterns for comparable theme settings.
 - When creating settings for a section, keep this order: `settings`, `blocks`, `disabled_on` or `enabled_on`, then `presets`.
+- Give every section preset a merchant-facing `category` property.
 - Use locale translation keys for storefront-visible text rendered by Liquid or JavaScript.
 - Write merchant-facing section names, setting labels, headers, info text, and editable defaults directly in the schema.
 - Do not create or extend `*.schema.json` locale files unless the user explicitly requests schema translations or the existing theme already uses them.
