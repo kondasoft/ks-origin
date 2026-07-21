@@ -17,8 +17,7 @@
     {% endif %}
 
     {{ content_for_header }}
-    {% render 'theme-typography' %}
-    {{ 'base.css' | asset_url | stylesheet_tag: preload: true }}
+    {% render 'theme-assets' %}
 
     {% style %}
       /*
