@@ -6,6 +6,10 @@ KS Origin is a lightweight, fully functional Shopify theme by [KondaSoft](https:
 
 The project intentionally focuses on the essentials: reliable commerce features, accessible and performant storefront patterns, clear architecture, and code that is easy to understand and extend. Developers—and AI coding tools—should be able to add sections, components, and store-specific functionality without first untangling an oversized theme.
 
+## Demo
+
+[View the Shopify demo store](https://ks-origin-demo.kondasoft.com)
+
 ## Project goals
 
 - Provide a usable Shopify theme with the essential storefront experience.
