@@ -57,6 +57,23 @@
     ]
   },
   {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "font_picker",
+        "id": "type_heading_font",
+        "label": "Headings",
+        "default": "assistant_n7"
+      },
+      {
+        "type": "font_picker",
+        "id": "type_body_font",
+        "label": "Body",
+        "default": "assistant_n4"
+      }
+    ]
+  },
+  {
     "name": "Favicon",
     "settings": [
       {
