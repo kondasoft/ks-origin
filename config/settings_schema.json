@@ -14,8 +14,9 @@
         "type": "image_picker",
         "id": "favicon",
         "label": "Favicon image",
-        "info": "32 × 32 px PNG recommended."
+        "info": "32 x 32 px PNG recommended."
       }
     ]
   }
 ]
+ 
