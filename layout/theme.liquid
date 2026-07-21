@@ -1,16 +1,96 @@
 <!doctype html>
-<html lang="{{ request.locale.iso_code }}">
+<html
+  lang="{{ request.locale.iso_code }}"
+  data-theme="light"
+  data-design-mode="{{ request.design_mode }}"
+  data-page-type="{{ request.page_type }}"
+  data-template-name="{{ template.name }}"
+  data-template-suffix="{{ template.suffix }}">
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ page_title | escape }}</title>
+    <script>
+      /* global window, document */
 
+      /*
+        Desktop push drawer restoration
+
+        Restore the cart drawer carried over from the previous page on wide
+        screens, and load its deferred styles before showing the drawer.
+      */
+      (() => {
+        if (!window.matchMedia('(min-width: 1401px)').matches) return
+
+        try {
+          const drawerId = window.localStorage.getItem('theme:open-push-drawer')
+
+          if (drawerId !== 'cart-dialog') {
+            window.localStorage.removeItem('theme:open-push-drawer')
+            return
+          }
+
+          document.documentElement.dataset.pushDrawerOpen = drawerId
+
+          const restoreDrawer = () => {
+            const lazyStylesheet = document.getElementById('lazy-styles')
+
+            if (lazyStylesheet) {
+              lazyStylesheet.setAttribute('blocking', 'render')
+              lazyStylesheet.media = 'all'
+            }
+
+            const drawer = document.getElementById(drawerId)
+
+            if (!drawer?.matches('dialog.drawer-right')) return
+
+            drawer.dataset.restored = 'true'
+            document.body.dataset.pushDrawerRestored = 'true'
+            drawer.setAttribute('open', '')
+            document.body.classList.add('push-drawer-open')
+            observer.disconnect()
+
+          window.requestAnimationFrame(() => {
+            window.requestAnimationFrame(() => {
+              delete document.body.dataset.pushDrawerRestored
+            })
+          })
+          }
+
+          const observer = new window.MutationObserver(restoreDrawer)
+          observer.observe(document.documentElement, { childList: true, subtree: true })
+          restoreDrawer()
+        } catch {
+          // Storage can be unavailable in privacy-restricted browsing contexts.
+        }
+      })()
+    </script>
+
+    {% render 'theme-head' %}
     {{ content_for_header }}
+    {% render 'theme-assets' %}
   </head>
 
   <body>
-    <main id="MainContent" role="main">
-      {{ content_for_layout }}
-    </main>
+    <a class="skip-link" href="#main">
+      {{ 'accessibility.skip_to_content' | t }}
+    </a>
+
+    <div
+      id="page-container"
+      class="container">
+      <div id="header-group">
+        {% sections 'header-group' %}
+      </div>
+
+      <main id="main">
+        {{ content_for_layout }}
+      </main>
+
+      <div id="footer-group">
+        {% sections 'footer-group' %}
+      </div>
+    </div>
+
+    {% render 'ai-tools-dialog' %}
+    {% render 'search-dialog' %}
+    {% render 'cart-dialog' %}
   </body>
 </html>
