@@ -6,33 +6,40 @@
   data-template-name="{{ template.name }}"
   data-template-suffix="{{ template.suffix }}">
   <head>
-    {% render 'theme-head' %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="canonical" href="{{ canonical_url }}">
+
+    <title>
+      {{ page_title }}
+      {%- unless page_title contains shop.name %} – {{ shop.name }}{% endunless -%}
+    </title>
+
+    {% if page_description %}
+      <meta name="description" content="{{ page_description | escape }}">
+    {% endif %}
+
     {{ content_for_header }}
     {% render 'theme-assets' %}
   </head>
 
   <body>
     <a class="skip-link" href="#main">
-      {{ 'accessibility.skip_to_content2' | t }}
+      {{ 'accessibility.skip_to_content' | t }}
     </a>
 
-    <div
-      id="page-container"
-      class="container">
-      <div id="header-group">
-        {% sections 'header-group' %}
-      </div>
-
-      <main id="main">
-        {{ content_for_layout }}
-      </main>
-
-      <div id="footer-group">
-        {% sections 'footer-group' %}
-      </div>
+    <div id="header-group">
+      {% sections 'header-group' %}
     </div>
 
-    {% render 'ai-tools-dialog' %}
+    <main id="main">
+      {{ content_for_layout }}
+    </main>
+
+    <div id="footer-group">
+      {% sections 'footer-group' %}
+    </div>
+
     {% render 'search-dialog' %}
     {% render 'cart-dialog' %}
   </body>
