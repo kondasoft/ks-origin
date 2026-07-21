@@ -1,5 +1,17 @@
 {
   "accessibility": {
     "skip_to_content": "Skip to content"
+  },
+  "gift_cards": {
+    "issued": {
+      "title": "{{ value }} gift card for {{ shop }}",
+      "subtext": "Gift card",
+      "how_to_use_gift_card": "Use this gift card code at checkout.",
+      "code": "Gift card code",
+      "shop_link": "Visit online store",
+      "add_to_apple_wallet": "Add to Apple Wallet",
+      "expiration_date": "Expires {{ expires_on }}",
+      "expired": "This gift card has expired"
+    }
   }
 }
