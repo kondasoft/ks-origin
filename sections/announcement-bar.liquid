@@ -1,7 +1,69 @@
+{% style %}
+  /*
+    Announcement bar
+  */
+  #shopify-section-{{ section.id }} .announcement-bar {
+    padding-block-start: {{ section.settings.padding_top }}px;
+    padding-block-end: {{ section.settings.padding_bottom }}px;
+    color: {{ section.settings.text_color }};
+    text-align: center;
+    background-color: {{ section.settings.background_color }};
+  }
+
+  #shopify-section-{{ section.id }} .announcement-bar-text {
+    margin: 0;
+  }
+{% endstyle %}
+
+<div class="announcement-bar">
+  <p class="announcement-bar-text">
+    {{ section.settings.text }}
+  </p>
+</div>
+
 {% schema %}
 {
   "name": "Announcement bar",
-  "settings": [],
+  "settings": [
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text",
+      "default": "Announce something important here"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "{{ settings.colors.brand }}"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "{{ settings.colors.background }}"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 40,
+      "step": 4,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 40,
+      "step": 4,
+      "unit": "px",
+      "default": 12
+    }
+  ],
   "blocks": [],
   "enabled_on": {
     "groups": ["header"]
