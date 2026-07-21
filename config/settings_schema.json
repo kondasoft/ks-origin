@@ -19,6 +19,30 @@
           "surface": "#EBEBEC",
           "brand": "#9E0812"
         }
+      },
+      {
+        "type": "color",
+        "id": "color_background",
+        "label": "Background",
+        "default": "{{ settings.colors.background }}"
+      },
+      {
+        "type": "color",
+        "id": "color_text",
+        "label": "Text",
+        "default": "{{ settings.colors.text }}"
+      },
+      {
+        "type": "color",
+        "id": "color_surface",
+        "label": "Surface",
+        "default": "{{ settings.colors.surface }}"
+      },
+      {
+        "type": "color",
+        "id": "color_brand",
+        "label": "Brand",
+        "default": "{{ settings.colors.brand }}"
       }
     ]
   },
