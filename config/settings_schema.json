@@ -8,8 +8,12 @@
     "theme_support_url": "https://github.com/kondasoft/ks-origin/issues"
   },
   {
-    "name": "Colors",
+    "name": "Color palette",
     "settings": [
+      {
+        "type": "paragraph",
+        "content": "Create reusable colors for sections, then use the labeled settings below to define the theme's global colors."
+      },
       {
         "type": "color_palette",
         "id": "colors",
@@ -19,10 +23,6 @@
           "surface": "#EBEBEC",
           "brand": "#9E0812"
         }
-      },
-      {
-        "type": "header",
-        "content": "Global colors"
       },
       {
         "type": "color",
