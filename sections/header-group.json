@@ -15,12 +15,14 @@
       "type": "announcement-bar",
       "settings": {
         "text": "Announce something important here",
-        "background_color": "{{ settings.colors.surface }}",
-        "text_color": "{{ settings.colors.text }}",
+        "link": "",
         "font_size_mobile": "fs-sm",
         "font_size_desktop": "fs-md",
-        "pt": 12,
-        "pb": 12
+        "letter_spacing": "ls-loose",
+        "background_color": "{{ settings.colors.text }}",
+        "text_color": "{{ settings.colors.background }}",
+        "pt": 10,
+        "pb": 10
       }
     },
     "header": {
