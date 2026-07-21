@@ -1,14 +1,23 @@
 /*
- * Base
- */
+  Base stylesheet
+
+  This file contains global foundational styles and reusable utilities.
+  Keep component-specific styles in their respective component stylesheets.
+*/
+
+
+/*
+  Body
+*/
 body {
   margin: 0;
   min-height: 100svh;
 }
 
+
 /*
- * Visually hidden
- */
+  Visually hidden
+*/
 .visually-hidden {
   position: absolute;
   width: 1px;
@@ -22,9 +31,10 @@ body {
   clip-path: inset(50%);
 }
 
+
 /*
- * Skip link
- */
+  Skip link
+*/
 .skip-link {
   position: fixed;
   top: 0;
