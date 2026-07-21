@@ -6,5 +6,16 @@
     "theme_author": "KondaSoft",
     "theme_documentation_url": "https://github.com/kondasoft/ks-origin",
     "theme_support_url": "https://github.com/kondasoft/ks-origin/issues"
+  },
+  {
+    "name": "Favicon",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon image",
+        "info": "32 × 32 px PNG recommended."
+      }
+    ]
   }
 ]

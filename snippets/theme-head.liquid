@@ -1,6 +1,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
+{% if settings.favicon != blank %}
+  <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+{% endif %}
+
 {%- liquid
   assign social_title = page_title | default: shop.name
   assign social_url = canonical_url | default: request.origin
