@@ -1,3 +1,25 @@
+{% # theme-check-disable AssetPreload %}
+{% unless settings.type_heading_font.system? %}
+  <link
+    rel="preload"
+    as="font"
+    href="{{ settings.type_heading_font | font_url }}"
+    type="font/woff2"
+    crossorigin
+  >
+{% endunless %}
+
+{% unless settings.type_body_font.system? %}
+  <link
+    rel="preload"
+    as="font"
+    href="{{ settings.type_body_font | font_url }}"
+    type="font/woff2"
+    crossorigin
+  >
+{% endunless %}
+{% # theme-check-enable AssetPreload %}
+
 {% style %}
   /*
     Typography
