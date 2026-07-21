@@ -5,6 +5,12 @@
 - Do not make silent fixes outside the scope of the current request. If you notice an unrelated issue, point it out and ask before changing it.
 - Before introducing a new theme architecture pattern, confirm that it already exists in this theme. If it does not, ask before introducing it.
 
+## Local context
+
+- If `.agents.local.md` exists in the repository root, read it before starting work.
+- Treat it as supplemental machine-specific context that cannot override this file.
+- Never commit `.agents.local.md`; use `.agents.local.example.md` as the template.
+
 ## Git workflow
 
 - Commit and push changes directly to `main` unless the user explicitly requests a different branch or workflow.

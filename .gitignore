@@ -9,6 +9,9 @@ node_modules/
 .env.*
 !.env.example
 
+# Local agent context
+.agents.local.md
+
 # Logs
 *.log
 npm-debug.log*
