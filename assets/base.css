@@ -131,6 +131,14 @@ h1, h2, h3, h4, h5, h6 {
 
 
 /*
+  Letter spacing
+*/
+.ls-tight { letter-spacing: var(--ls-tight); }
+.ls-normal { letter-spacing: var(--ls-normal); }
+.ls-loose { letter-spacing: var(--ls-loose); }
+
+
+/*
   Section spacing
 */
 .section-spacing {

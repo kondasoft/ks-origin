@@ -3,7 +3,7 @@
 {% endif %}
 
 <div
-  class="announcement-bar"
+  class="announcement-bar {{ section.settings.letter_spacing }}"
   style="
     --background-color: {{ section.settings.background_color.red }} {{ section.settings.background_color.green }} {{ section.settings.background_color.blue }};
     --text-color: {{ section.settings.text_color.red }} {{ section.settings.text_color.green }} {{ section.settings.text_color.blue }};
@@ -81,6 +81,17 @@
         { "value": "fs-2xl", "label": "2X large" }
       ],
       "default": "fs-md"
+    },
+    {
+      "type": "select",
+      "id": "letter_spacing",
+      "label": "Letter spacing",
+      "options": [
+        { "value": "ls-tight", "label": "Tight" },
+        { "value": "ls-normal", "label": "Normal" },
+        { "value": "ls-loose", "label": "Loose" }
+      ],
+      "default": "ls-normal"
     },
     {
       "type": "header",
