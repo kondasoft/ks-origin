@@ -43,3 +43,39 @@ function loadSectionScripts() {
 }
 
 loadSectionScripts();
+
+
+/*
+  Reveal header on scroll
+*/
+let previousScrollY = window.scrollY;
+let headerScrollFrame;
+
+function updateRevealHeaders() {
+  const currentScrollY = window.scrollY;
+  const isScrollingDown = currentScrollY > previousScrollY;
+
+  document
+    .querySelectorAll('[data-header-behavior="reveal"]')
+    .forEach((header) => {
+      const shouldHide =
+        isScrollingDown &&
+        currentScrollY > header.offsetHeight &&
+        !header.contains(document.activeElement);
+
+      header.classList.toggle("header-hidden", shouldHide);
+    });
+
+  previousScrollY = currentScrollY;
+  headerScrollFrame = null;
+}
+
+window.addEventListener(
+  "scroll",
+  () => {
+    if (headerScrollFrame) return;
+
+    headerScrollFrame = window.requestAnimationFrame(updateRevealHeaders);
+  },
+  { passive: true },
+);
