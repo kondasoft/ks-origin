@@ -27,7 +27,10 @@
     },
     "header": {
       "type": "header",
-      "settings": {}
+      "settings": {
+        "logo": "",
+        "menu": "main-menu"
+      }
     }
   },
   "order": [

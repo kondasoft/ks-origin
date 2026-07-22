@@ -1,7 +1,182 @@
+{% if section.index <= 3 or request.design_mode %}
+  <link href="{{ 'header.css' | asset_url }}" rel="stylesheet" fetchpriority="high">
+{% endif %}
+
+<span class="header-sticky-sentinel" data-header-sticky-sentinel aria-hidden="true"></span>
+
+<header
+  class="header"
+  data-sticky-header
+  data-section-css="{{ 'header.css' | asset_url }}"
+  data-section-js="{{ 'header.js' | asset_url }}"
+  {% unless request.design_mode %}
+    data-viewport-entered="false"
+    data-animate-on-scroll="true"
+  {% endunless %}
+>
+  <div class="header-inner header-inner-mobile">
+    <div class="header-icons header-icons-left">
+      <button
+        class="header-icon-link header-menu-button"
+        type="button"
+        data-toggle="mobile-menu-dialog"
+        aria-label="{{ 'accessibility.menu' | t }}"
+        style="--header-animation-index: 0;"
+      >
+        {% render 'header-icons', icon: 'menu' %}
+      </button>
+
+      <a
+        class="header-icon-link"
+        href="{{ routes.search_url }}"
+        data-toggle="search-dialog"
+        aria-label="{{ 'accessibility.search' | t }}"
+        style="--header-animation-index: 1;"
+      >
+        {% render 'header-icons', icon: 'search' %}
+      </a>
+    </div>
+
+    <a class="header-logo" href="{{ routes.root_url }}" aria-label="{{ shop.name | escape }}">
+      {% if section.settings.logo != blank %}
+        {{ section.settings.logo
+          | image_url: width: 352
+          | image_tag:
+            class: 'header-logo-image',
+            widths: '176, 352',
+            width: 176,
+            height: 32,
+            loading: 'eager',
+            fetchpriority: 'high',
+            alt: shop.name
+        }}
+      {% else %}
+        <span class="header-logo-text">{{ shop.name }}</span>
+      {% endif %}
+    </a>
+
+    <div class="header-icons header-icons-right">
+      <a
+        class="header-icon-link"
+        href="{{ routes.account_url }}"
+        aria-label="{{ 'accessibility.account' | t }}"
+        style="--header-animation-index: 2;"
+      >
+        {% render 'header-icons', icon: 'account' %}
+      </a>
+
+      <a
+        class="header-icon-link header-cart-link"
+        href="{{ routes.cart_url }}"
+        data-toggle="cart-dialog"
+        aria-label="{{ 'accessibility.cart' | t }}"
+        style="--header-animation-index: 3;"
+      >
+        {% render 'header-icons', icon: 'bag' %}
+        <span class="cart-count-badge" data-cart-badge data-item-count="{{ cart.item_count }}">
+          {{ cart.item_count }}
+        </span>
+      </a>
+    </div>
+  </div>
+
+  <div class="header-inner header-inner-desktop">
+    <a class="header-logo" href="{{ routes.root_url }}" aria-label="{{ shop.name | escape }}">
+      {% if section.settings.logo != blank %}
+        {{ section.settings.logo
+          | image_url: width: 352
+          | image_tag:
+            class: 'header-logo-image',
+            widths: '176, 352',
+            width: 176,
+            height: 32,
+            loading: 'eager',
+            fetchpriority: 'high',
+            alt: shop.name
+        }}
+      {% else %}
+        <span class="header-logo-text">{{ shop.name }}</span>
+      {% endif %}
+    </a>
+
+    {% if section.settings.menu.links.size > 0 %}
+      <nav class="header-nav" aria-label="{{ 'accessibility.navigation' | t }}">
+        {% for link in section.settings.menu.links %}
+          <a
+            class="header-nav-link{% if link.active %} active{% endif %}"
+            href="{{ link.url }}"
+            style="--header-animation-index: {{ forloop.index0 }};"
+            {% if link.current %}aria-current="page"{% endif %}
+          >
+            {{ link.title }}
+          </a>
+        {% endfor %}
+      </nav>
+    {% endif %}
+
+    <div class="header-icons">
+      <button
+        class="header-icon-link"
+        type="button"
+        data-toggle="ai-tools-dialog"
+        aria-label="{{ 'accessibility.ai_tools' | t }}"
+        style="--header-animation-index: 0;"
+      >
+        {% render 'header-icons', icon: 'sparkles' %}
+      </button>
+
+      <a
+        class="header-icon-link"
+        href="{{ routes.search_url }}"
+        data-toggle="search-dialog"
+        aria-label="{{ 'accessibility.search' | t }}"
+        style="--header-animation-index: 1;"
+      >
+        {% render 'header-icons', icon: 'search' %}
+      </a>
+
+      <a
+        class="header-icon-link"
+        href="{{ routes.account_url }}"
+        aria-label="{{ 'accessibility.account' | t }}"
+        style="--header-animation-index: 2;"
+      >
+        {% render 'header-icons', icon: 'account' %}
+      </a>
+
+      <a
+        class="header-icon-link header-cart-link"
+        href="{{ routes.cart_url }}"
+        data-toggle="cart-dialog"
+        aria-label="{{ 'accessibility.cart' | t }}"
+        style="--header-animation-index: 3;"
+      >
+        {% render 'header-icons', icon: 'bag' %}
+        <span class="cart-count-badge" data-cart-badge data-item-count="{{ cart.item_count }}">
+          {{ cart.item_count }}
+        </span>
+      </a>
+    </div>
+  </div>
+</header>
+
 {% schema %}
 {
   "name": "Header",
-  "settings": [],
+  "class": "header-section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu",
+      "default": "main-menu"
+    }
+  ],
   "blocks": [],
   "enabled_on": {
     "groups": ["header"]
