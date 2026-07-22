@@ -5,6 +5,9 @@
         class="header-icon-link header-menu-button"
         type="button"
         data-toggle="mobile-menu-dialog"
+        aria-controls="mobile-menu-dialog"
+        aria-expanded="false"
+        aria-haspopup="dialog"
         aria-label="{{ 'accessibility.menu' | t }}"
       >
         {% render 'svg-icons', icon: 'menu' %}
@@ -14,6 +17,9 @@
         class="header-icon-link"
         href="{{ routes.search_url }}"
         data-toggle="search-dialog"
+        aria-controls="search-dialog"
+        aria-expanded="false"
+        aria-haspopup="dialog"
         aria-label="{{ 'accessibility.search' | t }}"
       >
         {% render 'svg-icons', icon: 'search' %}
@@ -51,6 +57,9 @@
         class="header-icon-link header-cart-link"
         href="{{ routes.cart_url }}"
         data-toggle="cart-dialog"
+        aria-controls="cart-dialog"
+        aria-expanded="false"
+        aria-haspopup="dialog"
         aria-label="{{ 'accessibility.cart' | t }}"
       >
         {% render 'svg-icons', icon: 'bag' %}
@@ -99,6 +108,9 @@
         class="header-icon-link"
         href="{{ routes.search_url }}"
         data-toggle="search-dialog"
+        aria-controls="search-dialog"
+        aria-expanded="false"
+        aria-haspopup="dialog"
         aria-label="{{ 'accessibility.search' | t }}"
       >
         {% render 'svg-icons', icon: 'search' %}
@@ -116,6 +128,9 @@
         class="header-icon-link header-cart-link"
         href="{{ routes.cart_url }}"
         data-toggle="cart-dialog"
+        aria-controls="cart-dialog"
+        aria-expanded="false"
+        aria-haspopup="dialog"
         aria-label="{{ 'accessibility.cart' | t }}"
       >
         {% render 'svg-icons', icon: 'bag' %}
