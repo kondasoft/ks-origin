@@ -107,6 +107,7 @@ a {
   outline: 2px solid transparent;
   outline-offset: 2px;
   transition: color 200ms ease-out;
+  border-radius: var(--border-radius);
 }
 
 a:hover {
