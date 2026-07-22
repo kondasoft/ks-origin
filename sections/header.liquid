@@ -2,11 +2,9 @@
   <link href="{{ 'header.css' | asset_url }}" rel="stylesheet" fetchpriority="high">
 {% endif %}
 
-<span class="header-sticky-sentinel" data-header-sticky-sentinel aria-hidden="true"></span>
-
 <header
   class="header"
-  data-sticky-header
+  data-header
   data-section-css="{{ 'header.css' | asset_url }}"
   data-section-js="{{ 'header.js' | asset_url }}"
   {% unless request.design_mode %}
@@ -163,6 +161,7 @@
 {% schema %}
 {
   "name": "Header",
+  "tag": "section",
   "class": "header-section",
   "settings": [
     {
