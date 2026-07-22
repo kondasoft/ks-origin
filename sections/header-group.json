@@ -17,19 +17,30 @@
         "text": "Announce something important here",
         "link": "",
         "font_size_mobile": "fs-sm",
-        "font_size_desktop": "fs-md",
+        "font_size_desktop": "fs-sm",
         "letter_spacing": "ls-loose",
         "background_color": "{{ settings.colors.text }}",
         "text_color": "{{ settings.colors.background }}",
-        "pt": 10,
-        "pb": 10
+        "pt": 8,
+        "pb": 8
       }
     },
     "header": {
       "type": "header",
       "settings": {
-        "logo": "",
-        "menu": "main-menu"
+        "mobile_logo": "shopify://shop_images/logo.png",
+        "mobile_logo_height": 30,
+        "mobile_menu": "main-menu",
+        "desktop_logo": "shopify://shop_images/logo.png",
+        "desktop_logo_height": 32,
+        "desktop_menu": "main-menu",
+        "background_color": "{{ settings.colors.background }}",
+        "text_color": "{{ settings.colors.text }}",
+        "accent_color": "{{ settings.colors.accent }}",
+        "header_behavior": "reveal",
+        "bottom_decoration": "box-shadow",
+        "pt": 8,
+        "pb": 8
       }
     }
   },

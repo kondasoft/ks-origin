@@ -165,6 +165,54 @@
   "name": "Header",
   "tag": "header",
   "settings": [
+     {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "{{ settings.colors.background }}"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "{{ settings.colors.text }}"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent color",
+      "default": "{{ settings.colors.accent }}"
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "select",
+      "id": "header_behavior",
+      "label": "Header behavior",
+      "options": [
+        { "value": "normal", "label": "Normal" },
+        { "value": "sticky", "label": "Sticky" },
+        { "value": "reveal", "label": "Reveal" }
+      ],
+      "default": "sticky"
+    },
+    {
+      "type": "select",
+      "id": "bottom_decoration",
+      "label": "Bottom decoration",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "border-bottom", "label": "Border bottom" },
+        { "value": "box-shadow", "label": "Box shadow" }
+      ],
+      "default": "none"
+    },
     {
       "type": "header",
       "content": "Mobile"
@@ -214,54 +262,6 @@
       "id": "desktop_menu",
       "label": "Menu",
       "default": "main-menu"
-    },
-    {
-      "type": "header",
-      "content": "Colors"
-    },
-    {
-      "type": "color",
-      "id": "background_color",
-      "label": "Background color",
-      "default": "{{ settings.color_background }}"
-    },
-    {
-      "type": "color",
-      "id": "text_color",
-      "label": "Text color",
-      "default": "{{ settings.color_text }}"
-    },
-    {
-      "type": "color",
-      "id": "accent_color",
-      "label": "Accent color",
-      "default": "{{ settings.color_accent }}"
-    },
-    {
-      "type": "header",
-      "content": "Style"
-    },
-    {
-      "type": "select",
-      "id": "header_behavior",
-      "label": "Header behavior",
-      "options": [
-        { "value": "normal", "label": "Normal" },
-        { "value": "sticky", "label": "Sticky" },
-        { "value": "reveal", "label": "Reveal" }
-      ],
-      "default": "sticky"
-    },
-    {
-      "type": "select",
-      "id": "bottom_decoration",
-      "label": "Bottom decoration",
-      "options": [
-        { "value": "none", "label": "None" },
-        { "value": "border-bottom", "label": "Border bottom" },
-        { "value": "box-shadow", "label": "Box shadow" }
-      ],
-      "default": "none"
     },
     {
       "type": "header",
