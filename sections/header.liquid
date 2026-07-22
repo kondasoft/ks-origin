@@ -1,8 +1,10 @@
 <div
-  class="header header-decoration-{{ section.settings.bottom_decoration }}"
+  class="header header-decoration-{{ section.settings.bottom_decoration }} section-spacing"
   style="
     --background-color: {{ section.settings.background_color.red }} {{ section.settings.background_color.green }} {{ section.settings.background_color.blue }};
     --text-color: {{ section.settings.text_color.red }} {{ section.settings.text_color.green }} {{ section.settings.text_color.blue }};
+    --pt: {{ section.settings.pt | append: 'px' }};
+    --pb: {{ section.settings.pb | append: 'px' }};
   "
 >
   <div class="container {{ settings.container_width }}">
@@ -200,6 +202,30 @@
         { "value": "box-shadow", "label": "Box shadow" }
       ],
       "default": "none"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pt",
+      "label": "Top",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "pb",
+      "label": "Bottom",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 0
     }
   ],
   "blocks": [],

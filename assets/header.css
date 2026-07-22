@@ -23,7 +23,7 @@
 }
 
 .header-decoration-box-shadow {
-  box-shadow: 0 0.5rem 1rem rgb(var(--text-color) / 0.14);
+  box-shadow: 0 0.25rem 0.5rem rgb(var(--text-color) / 0.1);
 }
 
 .header-inner {
@@ -134,8 +134,6 @@
 
 @media (min-width: 600px) {
   .header {
-    padding-top: 0.25rem;
-    padding-bottom: 0.25rem;
     margin-bottom: 2rem;
   }
 }
