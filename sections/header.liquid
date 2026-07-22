@@ -1,7 +1,7 @@
 {% liquid
-  assign mobile_logo = section.settings.mobile_logo | default: section.settings.logo
+  assign mobile_logo = section.settings.mobile_logo | default: section.settings.desktop_logo
   assign mobile_logo_image_height = section.settings.mobile_logo_height | times: 2
-  assign desktop_logo_image_height = section.settings.logo_height | times: 2
+  assign desktop_logo_image_height = section.settings.desktop_logo_height | times: 2
 %}
 
 <div
@@ -12,7 +12,7 @@
     --text-color: {{ section.settings.text_color.red }} {{ section.settings.text_color.green }} {{ section.settings.text_color.blue }};
     --accent-color: {{ section.settings.accent_color.red }} {{ section.settings.accent_color.green }} {{ section.settings.accent_color.blue }};
     --mobile-logo-height: {{ section.settings.mobile_logo_height | append: 'px' }};
-    --desktop-logo-height: {{ section.settings.logo_height | append: 'px' }};
+    --desktop-logo-height: {{ section.settings.desktop_logo_height | append: 'px' }};
     --pt: {{ section.settings.pt | append: 'px' }};
     --pb: {{ section.settings.pb | append: 'px' }};
   "
@@ -92,8 +92,8 @@
 
   <div class="header-inner header-inner-desktop">
     <a class="header-logo" href="{{ routes.root_url }}" aria-label="{{ shop.name | escape }}">
-      {% if section.settings.logo != blank %}
-        {{ section.settings.logo
+      {% if section.settings.desktop_logo != blank %}
+        {{ section.settings.desktop_logo
           | image_url: height: desktop_logo_image_height
           | image_tag:
             class: 'header-logo-image',
@@ -106,9 +106,9 @@
       {% endif %}
     </a>
 
-    {% if section.settings.menu.links.size > 0 %}
+    {% if section.settings.desktop_menu.links.size > 0 %}
       <nav class="header-nav" aria-label="{{ 'accessibility.navigation' | t }}">
-        {% for link in section.settings.menu.links %}
+        {% for link in section.settings.desktop_menu.links %}
           <a
             class="header-nav-link{% if link.active %} active{% endif %}"
             href="{{ link.url }}"
@@ -196,12 +196,12 @@
     },
     {
       "type": "image_picker",
-      "id": "logo",
+      "id": "desktop_logo",
       "label": "Logo"
     },
     {
       "type": "range",
-      "id": "logo_height",
+      "id": "desktop_logo_height",
       "label": "Logo height",
       "min": 16,
       "max": 80,
@@ -211,7 +211,7 @@
     },
     {
       "type": "link_list",
-      "id": "menu",
+      "id": "desktop_menu",
       "label": "Menu",
       "default": "main-menu"
     },
