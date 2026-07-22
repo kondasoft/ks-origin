@@ -1,11 +1,5 @@
 <div
   class="header"
-  data-header
-  data-section-js="{{ 'header.js' | asset_url }}"
-  {% unless request.design_mode %}
-    data-viewport-entered="false"
-    data-animate-on-scroll="true"
-  {% endunless %}
 >
   <div class="header-inner header-inner-mobile">
     <div class="header-icons header-icons-left">
@@ -14,7 +8,6 @@
         type="button"
         data-toggle="mobile-menu-dialog"
         aria-label="{{ 'accessibility.menu' | t }}"
-        style="--header-animation-index: 0;"
       >
         {% render 'header-icons', icon: 'menu' %}
       </button>
@@ -24,7 +17,6 @@
         href="{{ routes.search_url }}"
         data-toggle="search-dialog"
         aria-label="{{ 'accessibility.search' | t }}"
-        style="--header-animation-index: 1;"
       >
         {% render 'header-icons', icon: 'search' %}
       </a>
@@ -53,7 +45,6 @@
         class="header-icon-link"
         href="{{ routes.account_url }}"
         aria-label="{{ 'accessibility.account' | t }}"
-        style="--header-animation-index: 2;"
       >
         {% render 'header-icons', icon: 'account' %}
       </a>
@@ -63,7 +54,6 @@
         href="{{ routes.cart_url }}"
         data-toggle="cart-dialog"
         aria-label="{{ 'accessibility.cart' | t }}"
-        style="--header-animation-index: 3;"
       >
         {% render 'header-icons', icon: 'bag' %}
         <span class="cart-count-badge" data-cart-badge data-item-count="{{ cart.item_count }}">
@@ -98,7 +88,6 @@
           <a
             class="header-nav-link{% if link.active %} active{% endif %}"
             href="{{ link.url }}"
-            style="--header-animation-index: {{ forloop.index0 }};"
             {% if link.current %}aria-current="page"{% endif %}
           >
             {{ link.title }}
@@ -113,7 +102,6 @@
         type="button"
         data-toggle="ai-tools-dialog"
         aria-label="{{ 'accessibility.ai_tools' | t }}"
-        style="--header-animation-index: 0;"
       >
         {% render 'header-icons', icon: 'sparkles' %}
       </button>
@@ -123,7 +111,6 @@
         href="{{ routes.search_url }}"
         data-toggle="search-dialog"
         aria-label="{{ 'accessibility.search' | t }}"
-        style="--header-animation-index: 1;"
       >
         {% render 'header-icons', icon: 'search' %}
       </a>
@@ -132,7 +119,6 @@
         class="header-icon-link"
         href="{{ routes.account_url }}"
         aria-label="{{ 'accessibility.account' | t }}"
-        style="--header-animation-index: 2;"
       >
         {% render 'header-icons', icon: 'account' %}
       </a>
@@ -142,7 +128,6 @@
         href="{{ routes.cart_url }}"
         data-toggle="cart-dialog"
         aria-label="{{ 'accessibility.cart' | t }}"
-        style="--header-animation-index: 3;"
       >
         {% render 'header-icons', icon: 'bag' %}
         <span class="cart-count-badge" data-cart-badge data-item-count="{{ cart.item_count }}">
