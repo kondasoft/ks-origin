@@ -1,5 +1,5 @@
 <div
-  class="header"
+  class="header header-decoration-{{ section.settings.bottom_decoration }}"
   style="
     --background-color: {{ section.settings.background_color.red }} {{ section.settings.background_color.green }} {{ section.settings.background_color.blue }};
     --text-color: {{ section.settings.text_color.red }} {{ section.settings.text_color.green }} {{ section.settings.text_color.blue }};
@@ -185,6 +185,21 @@
       "id": "text_color",
       "label": "Text color",
       "default": "{{ settings.colors.text }}"
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "select",
+      "id": "bottom_decoration",
+      "label": "Bottom decoration",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "border-bottom", "label": "Border bottom" },
+        { "value": "box-shadow", "label": "Box shadow" }
+      ],
+      "default": "none"
     }
   ],
   "blocks": [],

@@ -18,6 +18,14 @@
   background-color: rgb(var(--background-color));
 }
 
+.header-decoration-border-bottom {
+  border-bottom: 1px solid rgb(var(--text-color) / 0.2);
+}
+
+.header-decoration-box-shadow {
+  box-shadow: 0 0.5rem 1rem rgb(var(--text-color) / 0.14);
+}
+
 .header-inner {
   display: grid;
   align-items: center;
