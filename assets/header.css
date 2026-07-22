@@ -1,4 +1,30 @@
 /*
+  Header behavior
+*/
+#header-group[data-header-behavior="sticky"],
+#header-group[data-header-behavior="reveal"] {
+  display: block;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+#header-group[data-header-behavior="reveal"] {
+  transition: transform 300ms ease-out;
+}
+
+#header-group[data-header-behavior="reveal"].header-hidden {
+  transform: translateY(-100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #header-group[data-header-behavior="reveal"] {
+    transition: none;
+  }
+}
+
+
+/*
   Header shell
 */
 #header-group {
@@ -109,8 +135,7 @@
     grid-template-columns: 1fr auto 1fr;
   }
 
-  .header-inner-desktop,
-  .header-nav {
+  .header-inner-desktop {
     display: none;
   }
 

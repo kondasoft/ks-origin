@@ -96,31 +96,6 @@ body {
 
 
 /*
-  Header behavior
-*/
-[data-header-behavior="sticky"],
-[data-header-behavior="reveal"] {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-}
-
-[data-header-behavior="reveal"] {
-  transition: transform 200ms ease-out;
-}
-
-[data-header-behavior="reveal"].header-hidden {
-  transform: translateY(-100%);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  [data-header-behavior="reveal"] {
-    transition: none;
-  }
-}
-
-
-/*
   Links
 */
 a {

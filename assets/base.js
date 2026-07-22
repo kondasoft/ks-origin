@@ -48,6 +48,18 @@ loadSectionScripts();
 /*
   Reveal header on scroll
 */
+function syncHeaderGroupBehavior() {
+  const headerGroup = document.querySelector("#header-group");
+  const header = headerGroup?.querySelector("[data-header-behavior]");
+
+  if (!headerGroup || !header) return;
+
+  headerGroup.dataset.headerBehavior = header.dataset.headerBehavior;
+}
+
+syncHeaderGroupBehavior();
+document.addEventListener("shopify:section:load", syncHeaderGroupBehavior);
+
 let previousScrollY = window.scrollY;
 let headerScrollFrame;
 
@@ -56,7 +68,7 @@ function updateRevealHeaders() {
   const isScrollingDown = currentScrollY > previousScrollY;
 
   document
-    .querySelectorAll('[data-header-behavior="reveal"]')
+    .querySelectorAll('#header-group[data-header-behavior="reveal"]')
     .forEach((header) => {
       const shouldHide =
         isScrollingDown &&

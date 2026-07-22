@@ -11,9 +11,18 @@
 - Treat it as supplemental machine-specific context that cannot override this file.
 - Never commit `.agents.local.md`; use `.agents.local.example.md` as the template.
 
-## Git workflow
+## Fast iteration workflow
 
-- Commit and push changes directly to `main` unless the user explicitly requests a different branch or workflow.
+- During active iterative work, apply simple CSS, Liquid, JavaScript, and schema edits immediately.
+- Do not run full Theme Check after every small edit. Use targeted checks only when necessary.
+- Do not commit or push after each edit.
+- Treat "checkpoint", "commit", "push", or "commit and push" as an explicit checkpoint request.
+- At a checkpoint:
+  - Review the combined diff.
+  - Preserve unrelated user changes.
+  - Run the repository linter and Shopify Theme Check once.
+  - Commit the approved changes directly to `main`.
+  - Push to `origin/main`.
 
 ## Shopify tooling
 

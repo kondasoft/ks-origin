@@ -46,5 +46,11 @@
 
 {{ 'base.css' | asset_url | stylesheet_tag: preload: true }}
 {{ 'header.css' | asset_url | stylesheet_tag: preload: true }}
+<link 
+  id="lazy-styles" 
+  rel="stylesheet"
+  href="{{ 'lazy-styles.css' | asset_url }}" 
+  media="print" 
+  onload="this.media='all'">
 
 <script src="{{ 'base.js' | asset_url }}" type="module"></script>
