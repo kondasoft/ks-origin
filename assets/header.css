@@ -48,7 +48,7 @@
 
 .header-logo-image {
   width: auto;
-  height: 24px;
+  height: var(--mobile-logo-height);
   object-fit: contain;
 }
 
@@ -101,7 +101,7 @@
 }
 
 .header-icon-link:hover {
-  color: rgb(var(--color-accent));
+  color: rgb(var(--accent-color));
 }
 
 .svg-icon {
@@ -121,7 +121,7 @@
   color: rgb(var(--color-background));
   font-size: var(--fs-xs);
   line-height: 1;
-  background-color: rgb(var(--color-accent));
+  background-color: rgb(var(--accent-color));
   border-radius: 999px;
 }
 
@@ -146,7 +146,7 @@
   }
 
   .header-logo-image {
-    height: 30px;
+    height: var(--desktop-logo-height);
   }
 
   .header-nav {
@@ -170,6 +170,6 @@
   }
 
   .header-nav-link.active {
-    color: rgb(var(--color-accent));
+    color: rgb(var(--accent-color));
   }
 }

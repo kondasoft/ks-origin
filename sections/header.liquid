@@ -1,9 +1,16 @@
+{% liquid
+  assign mobile_logo = section.settings.mobile_logo | default: section.settings.logo
+%}
+
 <div
   class="header header-decoration-{{ section.settings.bottom_decoration }} section-spacing"
   data-header-behavior="{{ section.settings.header_behavior }}"
   style="
     --background-color: {{ section.settings.background_color.red }} {{ section.settings.background_color.green }} {{ section.settings.background_color.blue }};
     --text-color: {{ section.settings.text_color.red }} {{ section.settings.text_color.green }} {{ section.settings.text_color.blue }};
+    --accent-color: {{ section.settings.accent_color.red }} {{ section.settings.accent_color.green }} {{ section.settings.accent_color.blue }};
+    --mobile-logo-height: {{ section.settings.mobile_logo_height | append: 'px' }};
+    --desktop-logo-height: {{ section.settings.logo_height | append: 'px' }};
     --pt: {{ section.settings.pt | append: 'px' }};
     --pb: {{ section.settings.pb | append: 'px' }};
   "
@@ -41,8 +48,8 @@
       href="{{ routes.root_url }}"
       aria-label="{{ shop.name | escape }}"
     >
-      {% if section.settings.logo != blank %}
-        {{ section.settings.logo
+      {% if mobile_logo != blank %}
+        {{ mobile_logo
           | image_url: width: 352
           | image_tag:
             class: 'header-logo-image',
@@ -163,9 +170,48 @@
   "tag": "header",
   "settings": [
     {
+      "type": "header",
+      "content": "Mobile"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_logo",
+      "label": "Logo"
+    },
+    {
+      "type": "range",
+      "id": "mobile_logo_height",
+      "label": "Logo height",
+      "min": 16,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "link_list",
+      "id": "mobile_menu",
+      "label": "Menu",
+      "default": "main-menu"
+    },
+    {
+      "type": "header",
+      "content": "Desktop"
+    },
+    {
       "type": "image_picker",
       "id": "logo",
       "label": "Logo"
+    },
+    {
+      "type": "range",
+      "id": "logo_height",
+      "label": "Logo height",
+      "min": 16,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 30
     },
     {
       "type": "link_list",
@@ -188,6 +234,12 @@
       "id": "text_color",
       "label": "Text color",
       "default": "{{ settings.colors.text }}"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent color",
+      "default": "{{ settings.colors.accent }}"
     },
     {
       "type": "header",
