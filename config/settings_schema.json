@@ -67,6 +67,16 @@
         "step": 5,
         "unit": "%",
         "default": 20
+      },
+      {
+        "type": "range",
+        "id": "border_radius",
+        "label": "Border radius",
+        "min": 0,
+        "max": 40,
+        "step": 2,
+        "unit": "px",
+        "default": 0
       }
     ]
   },
