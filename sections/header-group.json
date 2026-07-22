@@ -29,7 +29,9 @@
       "type": "header",
       "settings": {
         "logo": "",
-        "menu": "main-menu"
+        "menu": "main-menu",
+        "background_color": "{{ settings.colors.background }}",
+        "text_color": "{{ settings.colors.text }}"
       }
     }
   },

@@ -1,4 +1,11 @@
-<div class="header">
+<div
+  class="header"
+  style="
+    --background-color: {{ section.settings.background_color.red }} {{ section.settings.background_color.green }} {{ section.settings.background_color.blue }};
+    --text-color: {{ section.settings.text_color.red }} {{ section.settings.text_color.green }} {{ section.settings.text_color.blue }};
+  "
+>
+  <div class="container {{ settings.container_width }}">
   <div class="header-inner header-inner-mobile">
     <div class="header-icons header-icons-left">
       <button
@@ -26,7 +33,11 @@
       </a>
     </div>
 
-    <a class="header-logo" href="{{ routes.root_url }}" aria-label="{{ shop.name | escape }}">
+    <a
+      class="header-logo"
+      href="{{ routes.root_url }}"
+      aria-label="{{ shop.name | escape }}"
+    >
       {% if section.settings.logo != blank %}
         {{ section.settings.logo
           | image_url: width: 352
@@ -140,6 +151,7 @@
       </a>
     </div>
   </div>
+  </div>
 </div>
 
 {% schema %}
@@ -157,6 +169,22 @@
       "id": "menu",
       "label": "Menu",
       "default": "main-menu"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "{{ settings.colors.background }}"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "{{ settings.colors.text }}"
     }
   ],
   "blocks": [],
