@@ -53,6 +53,20 @@
         "id": "color_accent",
         "label": "Accent",
         "default": "{{ settings.colors.accent }}"
+      },
+      {
+        "type": "header",
+        "content": "Borders"
+      },
+      {
+        "type": "range",
+        "id": "border_opacity",
+        "label": "Border opacity",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "%",
+        "default": 20
       }
     ]
   },

@@ -19,7 +19,7 @@
 }
 
 .header-decoration-border-bottom {
-  border-bottom: 1px solid rgb(var(--text-color) / 0.2);
+  border-bottom: 1px solid rgb(var(--text-color) / var(--border-opacity));
 }
 
 .header-decoration-box-shadow {
