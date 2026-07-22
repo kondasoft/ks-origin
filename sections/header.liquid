@@ -1,11 +1,6 @@
-{% if section.index <= 3 or request.design_mode %}
-  <link href="{{ 'header.css' | asset_url }}" rel="stylesheet" fetchpriority="high">
-{% endif %}
-
 <header
   class="header"
   data-header
-  data-section-css="{{ 'header.css' | asset_url }}"
   data-section-js="{{ 'header.js' | asset_url }}"
   {% unless request.design_mode %}
     data-viewport-entered="false"
@@ -162,7 +157,6 @@
 {
   "name": "Header",
   "tag": "section",
-  "class": "header-section",
   "settings": [
     {
       "type": "image_picker",

@@ -41,5 +41,6 @@
 {% endstyle %}
 
 {{ 'base.css' | asset_url | stylesheet_tag: preload: true }}
+{{ 'header.css' | asset_url | stylesheet_tag: preload: true }}
 
 <script src="{{ 'base.js' | asset_url }}" type="module"></script>
