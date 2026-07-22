@@ -1,3 +1,15 @@
+{% liquid
+  assign heading_size_scale = settings.heading_size_scale | divided_by: 100.0
+
+  if settings.heading_size_scale >= 125
+    assign heading_line_height = 1.05
+  elsif settings.heading_size_scale >= 100
+    assign heading_line_height = 1.15
+  else
+    assign heading_line_height = 1.25
+  endif
+%}
+
 {% style %}
   /*
     Typography
@@ -21,6 +33,8 @@
     --font-heading-family: {{ settings.type_heading_font.family }}, {{ settings.type_heading_font.fallback_families }};
     --font-heading-style: {{ settings.type_heading_font.style }};
     --font-heading-weight: {{ settings.type_heading_font.weight }};
+    --heading-size-scale: {{ heading_size_scale }};
+    --heading-line-height: {{ heading_line_height }};
     --font-body-family: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
     --font-body-style: {{ settings.type_body_font.style }};
     --font-body-weight: {{ settings.type_body_font.weight }};

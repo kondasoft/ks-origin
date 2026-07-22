@@ -90,6 +90,16 @@
         "default": "assistant_n7"
       },
       {
+        "type": "range",
+        "id": "heading_size_scale",
+        "label": "Base heading size",
+        "min": 80,
+        "max": 150,
+        "step": 5,
+        "unit": "%",
+        "default": 100
+      },
+      {
         "type": "font_picker",
         "id": "type_body_font",
         "label": "Body",

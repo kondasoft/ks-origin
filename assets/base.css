@@ -12,6 +12,8 @@
 body {
   margin: 0;
   min-height: 100svh;
+  color: rgb(var(--color-text));
+  background-color: rgb(var(--color-background));
   font-family: var(--font-body-family);
   font-style: var(--font-body-style);
   font-weight: var(--font-body-weight);
@@ -122,12 +124,233 @@ a:focus-visible {
 
 
 /*
+  Buttons
+*/
+button {
+  font: inherit;
+}
+
+.btn-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  min-width: 70%;
+  padding: 0.75rem 1.25rem;
+  border: 1px solid var(--button-border-color);
+  border-radius: var(--border-radius);
+  color: var(--button-color);
+  background-color: var(--button-background);
+  font-weight: 500;
+  line-height: 1;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  transition: background-color 200ms ease-out;
+}
+
+.btn:hover:not(:disabled):not([aria-disabled='true']) {
+  color: var(--button-color);
+  background-color: var(--button-hover-background);
+}
+
+.btn:active:not(:disabled):not([aria-disabled='true']) {
+  color: var(--button-color);
+  background-color: var(--button-active-background);
+}
+
+.btn:focus-visible {
+  outline-color: var(--button-focus-color);
+}
+
+.btn-accent-solid {
+  --button-color: rgb(var(--color-background));
+  --button-background: rgb(var(--color-accent));
+  --button-hover-background: rgb(var(--color-accent) / 0.85);
+  --button-active-background: rgb(var(--color-accent) / 0.7);
+  --button-border-color: rgb(var(--color-accent));
+  --button-focus-color: rgb(var(--color-accent));
+}
+
+.btn-accent-outline {
+  --button-color: rgb(var(--color-accent));
+  --button-background: transparent;
+  --button-hover-background: rgb(var(--color-accent) / 0.08);
+  --button-active-background: rgb(var(--color-accent) / 0.15);
+  --button-border-color: rgb(var(--color-accent));
+  --button-focus-color: rgb(var(--color-accent));
+}
+
+.btn-text-solid {
+  --button-color: rgb(var(--color-background));
+  --button-background: rgb(var(--color-text));
+  --button-hover-background: rgb(var(--color-text) / 0.85);
+  --button-active-background: rgb(var(--color-text) / 0.7);
+  --button-border-color: rgb(var(--color-text));
+  --button-focus-color: rgb(var(--color-text));
+}
+
+.btn-text-outline {
+  --button-color: rgb(var(--color-text));
+  --button-background: transparent;
+  --button-hover-background: rgb(var(--color-text) / 0.08);
+  --button-active-background: rgb(var(--color-text) / 0.15);
+  --button-border-color: rgb(var(--color-text));
+  --button-focus-color: rgb(var(--color-text));
+}
+
+.btn:disabled,
+.btn[aria-disabled='true'] {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+@media (min-width: 600px) {
+  .btn {
+    min-width: 180px;
+  }
+}
+
+
+/*
   Headings
 */
-h1, h2, h3, h4, h5, h6 {
+h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
   font-family: var(--font-heading-family);
   font-style: var(--font-heading-style);
   font-weight: var(--font-heading-weight);
+  line-height: var(--heading-line-height);
+  margin: 0;
+}
+
+h1, .h1 {
+  --heading-responsive-scale: 0.7;
+  font-size: calc(3em * var(--heading-size-scale) * var(--heading-responsive-scale));
+  margin-bottom: 0.2em;
+}
+
+h2, .h2 {
+  --heading-responsive-scale: 0.8;
+  font-size: calc(2.5em * var(--heading-size-scale) * var(--heading-responsive-scale));
+  margin-bottom: 0.3em;
+}
+
+h3, .h3 {
+  --heading-responsive-scale: 0.9;
+  font-size: calc(2em * var(--heading-size-scale) * var(--heading-responsive-scale));
+  margin-bottom: 0.35em;
+}
+
+h4, .h4 {
+  font-size: calc(1.5em * var(--heading-size-scale));
+  margin-bottom: 0.4em;
+}
+
+h5, .h5 {
+  font-size: calc(1.25em * var(--heading-size-scale));
+  margin-bottom: 0.5em;
+}
+
+h6, .h6 {
+  font-size: calc(1em * var(--heading-size-scale));
+  margin-bottom: 0.6em;
+}
+
+@media (min-width: 600px) {
+  h1, .h1, h2, .h2, h3, .h3 {
+    --heading-responsive-scale: 1;
+  }
+}
+
+
+/*
+  Paragraphs
+*/
+p {
+  margin: 0;
+  margin-bottom: 1.25rem;
+  line-height: 1.6;
+}
+
+
+/*
+  Lists
+*/
+ul,
+ol {
+  padding-left: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+ul > li,
+ol > li {
+  line-height: 1.6;
+}
+
+ul > li + li,
+ol > li + li {
+  margin-top: 0.4rem;
+}
+
+
+/*
+  Blockquotes
+*/
+blockquote {
+  padding: 1rem 1.25rem;
+  margin: 1.5rem 0;
+  border-left: 3px solid rgb(var(--color-accent));
+  border-radius: var(--border-radius);
+  background-color: rgb(var(--color-surface));
+}
+
+blockquote p:last-of-type {
+  margin-bottom: 0.5rem;
+}
+
+cite {
+  display: block;
+  font-size: var(--fs-sm);
+  font-style: normal;
+  opacity: 0.75;
+}
+
+
+/*
+  Tables
+*/
+table {
+  width: 100%;
+  margin: 1.5rem 0;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+caption {
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+  text-align: left;
+}
+
+th,
+td {
+  padding: 0.75rem;
+  border-bottom: 1px solid rgb(var(--color-text) / var(--border-opacity));
+}
+
+th {
+  background-color: rgb(var(--color-surface));
+  font-weight: 600;
 }
 
 
