@@ -1,5 +1,7 @@
 {% liquid
   assign mobile_logo = section.settings.mobile_logo | default: section.settings.logo
+  assign mobile_logo_image_height = section.settings.mobile_logo_height | times: 2
+  assign desktop_logo_image_height = section.settings.logo_height | times: 2
 %}
 
 <div
@@ -50,12 +52,9 @@
     >
       {% if mobile_logo != blank %}
         {{ mobile_logo
-          | image_url: width: 352
+          | image_url: height: mobile_logo_image_height
           | image_tag:
             class: 'header-logo-image',
-            widths: '176, 352',
-            width: 176,
-            height: 32,
             loading: 'eager',
             fetchpriority: 'high',
             alt: shop.name
@@ -95,12 +94,9 @@
     <a class="header-logo" href="{{ routes.root_url }}" aria-label="{{ shop.name | escape }}">
       {% if section.settings.logo != blank %}
         {{ section.settings.logo
-          | image_url: width: 352
+          | image_url: height: desktop_logo_image_height
           | image_tag:
             class: 'header-logo-image',
-            widths: '176, 352',
-            width: 176,
-            height: 32,
             loading: 'eager',
             fetchpriority: 'high',
             alt: shop.name
