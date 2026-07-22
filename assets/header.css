@@ -96,7 +96,7 @@
 }
 
 .header-icon-link:hover {
-  color: rgb(var(--color-brand));
+  color: rgb(var(--color-accent));
 }
 
 .svg-icon {
@@ -116,7 +116,7 @@
   color: rgb(var(--color-background));
   font-size: var(--fs-xs);
   line-height: 1;
-  background-color: rgb(var(--color-brand));
+  background-color: rgb(var(--color-accent));
   border-radius: 999px;
 }
 
@@ -167,6 +167,6 @@
   }
 
   .header-nav-link.active {
-    color: rgb(var(--color-brand));
+    color: rgb(var(--color-accent));
   }
 }

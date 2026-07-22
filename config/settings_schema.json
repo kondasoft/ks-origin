@@ -22,7 +22,7 @@
           "background": "#FFFFFF",
           "text": "#0A0A0A",
           "surface": "#EBEBEC",
-          "brand": "#9E0812"
+          "accent": "#9E0812"
         }
       },
       {
@@ -50,9 +50,9 @@
       },
       {
         "type": "color",
-        "id": "color_brand",
-        "label": "Brand",
-        "default": "{{ settings.colors.brand }}"
+        "id": "color_accent",
+        "label": "Accent",
+        "default": "{{ settings.colors.accent }}"
       }
     ]
   },
