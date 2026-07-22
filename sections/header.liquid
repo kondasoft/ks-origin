@@ -1,6 +1,4 @@
-<div
-  class="header"
->
+<div class="header">
   <div class="header-inner header-inner-mobile">
     <div class="header-icons header-icons-left">
       <button
@@ -9,7 +7,7 @@
         data-toggle="mobile-menu-dialog"
         aria-label="{{ 'accessibility.menu' | t }}"
       >
-        {% render 'header-icons', icon: 'menu' %}
+        {% render 'svg-icons', icon: 'menu' %}
       </button>
 
       <a
@@ -18,7 +16,7 @@
         data-toggle="search-dialog"
         aria-label="{{ 'accessibility.search' | t }}"
       >
-        {% render 'header-icons', icon: 'search' %}
+        {% render 'svg-icons', icon: 'search' %}
       </a>
     </div>
 
@@ -46,7 +44,7 @@
         href="{{ routes.account_url }}"
         aria-label="{{ 'accessibility.account' | t }}"
       >
-        {% render 'header-icons', icon: 'account' %}
+        {% render 'svg-icons', icon: 'account' %}
       </a>
 
       <a
@@ -55,7 +53,7 @@
         data-toggle="cart-dialog"
         aria-label="{{ 'accessibility.cart' | t }}"
       >
-        {% render 'header-icons', icon: 'bag' %}
+        {% render 'svg-icons', icon: 'bag' %}
         <span class="cart-count-badge" data-cart-badge data-item-count="{{ cart.item_count }}">
           {{ cart.item_count }}
         </span>
@@ -97,22 +95,13 @@
     {% endif %}
 
     <div class="header-icons">
-      <button
-        class="header-icon-link"
-        type="button"
-        data-toggle="ai-tools-dialog"
-        aria-label="{{ 'accessibility.ai_tools' | t }}"
-      >
-        {% render 'header-icons', icon: 'sparkles' %}
-      </button>
-
       <a
         class="header-icon-link"
         href="{{ routes.search_url }}"
         data-toggle="search-dialog"
         aria-label="{{ 'accessibility.search' | t }}"
       >
-        {% render 'header-icons', icon: 'search' %}
+        {% render 'svg-icons', icon: 'search' %}
       </a>
 
       <a
@@ -120,7 +109,7 @@
         href="{{ routes.account_url }}"
         aria-label="{{ 'accessibility.account' | t }}"
       >
-        {% render 'header-icons', icon: 'account' %}
+        {% render 'svg-icons', icon: 'account' %}
       </a>
 
       <a
@@ -129,7 +118,7 @@
         data-toggle="cart-dialog"
         aria-label="{{ 'accessibility.cart' | t }}"
       >
-        {% render 'header-icons', icon: 'bag' %}
+        {% render 'svg-icons', icon: 'bag' %}
         <span class="cart-count-badge" data-cart-badge data-item-count="{{ cart.item_count }}">
           {{ cart.item_count }}
         </span>
