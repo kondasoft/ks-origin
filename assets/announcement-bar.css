@@ -15,7 +15,6 @@
 .announcement-bar-link {
   display: block;
   color: rgb(var(--text-color));
-  background-image: none;
 }
 
 .announcement-bar-link:hover {

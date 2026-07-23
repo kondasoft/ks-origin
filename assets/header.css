@@ -36,6 +36,8 @@
 }
 
 .header {
+  --color-text: var(--text-color);
+  --link-active-color: var(--accent-color);
   position: relative;
   margin-bottom: 1.5em;
   color: rgb(var(--text-color));
@@ -62,7 +64,6 @@
   display: flex;
   color: rgb(var(--text-color));
   text-decoration: none;
-  background-image: none;
   border-radius: var(--border-radius);
 }
 
@@ -99,23 +100,10 @@
   color: rgb(var(--text-color));
   text-decoration: none;
   background: transparent;
-  background-image: none;
   border: 0;
   cursor: pointer;
   border-radius: var(--border-radius);
   transition: color 200ms ease-out;
-}
-
-.header-icon-link:hover {
-  color: rgb(var(--text-color) / 0.8);
-}
-
-.header-icon-link:active {
-  color: rgb(var(--text-color) / 0.6);
-}
-
-.header-icon-link.active {
-  color: rgb(var(--accent-color));
 }
 
 .svg-icon {
@@ -224,7 +212,6 @@
   .header-nav-trigger {
     display: inline-flex;
     align-items: center;
-    color: rgb(var(--text-color));
   }
 
   .header-nav-link {
@@ -243,7 +230,6 @@
 
   .header-nav-trigger .header-nav-link {
     padding-right: 0.3em;
-    color: inherit;
   }
 
   .header-nav-toggle {
@@ -269,8 +255,8 @@
     text-decoration: none;
   }
 
-  .header-nav-link.active {
-    color: rgb(var(--accent-color));
+  span.header-nav-link.active {
+    color: rgb(var(--link-active-color));
   }
 
   .header-nav-toggle .svg-icon {
@@ -302,10 +288,6 @@
     text-decoration: none;
     border-radius: var(--border-radius);
     font-size: .925em;
-  }
-
-  .header-dropdown-link.active {
-    color: rgb(var(--accent-color));
   }
 
   .header-megamenu {
@@ -380,43 +362,6 @@
     font-weight: var(--font-heading-weight);
     font-style: var(--font-heading-style);
     text-decoration: none;
-  }
-
-  .header-menu-underline-text {
-    position: relative;
-    display: inline-block;
-  }
-
-  .header-menu-underline {
-    background-image: none;
-  }
-
-  .header-megamenu-image-link > .header-menu-underline-text {
-    width: fit-content;
-    justify-self: start;
-  }
-
-  .header-menu-underline-text::after {
-    position: absolute;
-    right: auto;
-    bottom: -0.12em;
-    left: 0;
-    width: 0;
-    height: 1px;
-    content: "";
-    background-color: currentcolor;
-    transition: width 200ms ease-out;
-  }
-
-  .header-menu-underline:hover > .header-menu-underline-text::after,
-  .header-nav-item.menu-open > .header-nav-trigger .header-menu-underline-text::after {
-    width: 100%;
-  }
-
-  .header-megamenu-heading.active,
-  .header-megamenu-link.active,
-  .header-megamenu-image-link.active {
-    color: rgb(var(--accent-color));
   }
 
   .header-megamenu-image {

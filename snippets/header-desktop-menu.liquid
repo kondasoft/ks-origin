@@ -6,27 +6,27 @@
       >
         {% if link.levels == 0 %}
           <a
-            class="header-nav-link header-menu-underline{% if link.active %} active{% endif %}"
+            class="header-nav-link{% if link.active %} active{% endif %}"
             href="{{ link.url }}"
             {% if link.current %}aria-current="page"{% endif %}
           >
-            <span class="header-menu-underline-text">{{ link.title }}</span>
+            <span>{{ link.title }}</span>
           </a>
         {% else %}
           <div class="header-nav-trigger">
             {% if link.url == blank or link.url == '#' %}
               <span
-                class="header-nav-link header-menu-underline{% if link.active or link.child_active %} active{% endif %}"
+                class="header-nav-link{% if link.active or link.child_active %} active{% endif %}"
               >
-                <span class="header-menu-underline-text">{{ link.title }}</span>
+                <span>{{ link.title }}</span>
               </span>
             {% else %}
               <a
-                class="header-nav-link header-menu-underline{% if link.active or link.child_active %} active{% endif %}"
+                class="header-nav-link{% if link.active or link.child_active %} active{% endif %}"
                 href="{{ link.url }}"
                 {% if link.current %}aria-current="page"{% endif %}
               >
-                <span class="header-menu-underline-text">{{ link.title }}</span>
+                <span>{{ link.title }}</span>
               </a>
             {% endif %}
 
@@ -52,11 +52,11 @@
               {% for childlink in link.links %}
                 <li>
                   <a
-                    class="header-dropdown-link header-menu-underline{% if childlink.active %} active{% endif %}"
+                    class="header-dropdown-link{% if childlink.active %} active{% endif %}"
                     href="{{ childlink.url }}"
                     {% if childlink.current %}aria-current="page"{% endif %}
                   >
-                    <span class="header-menu-underline-text">{{ childlink.title }}</span>
+                    <span>{{ childlink.title }}</span>
                   </a>
                 </li>
               {% endfor %}
@@ -90,7 +90,7 @@
                     <li class="header-megamenu-column">
                       {% if childlink.levels == 0 and childlink_image_url != blank %}
                         <a
-                          class="header-megamenu-image-link header-menu-underline{% if childlink.active %} active{% endif %}"
+                          class="header-megamenu-image-link{% if childlink.active %} active{% endif %}"
                           href="{{ childlink.url }}"
                           {% if childlink.current %}aria-current="page"{% endif %}
                         >
@@ -103,18 +103,18 @@
                               loading="lazy"
                             >
                           </span>
-                          <span class="header-menu-underline-text">{{ childlink_title }}</span>
+                          <span>{{ childlink_title }}</span>
                         </a>
                       {% else %}
                         {% if childlink.url == blank or childlink.url == '#' %}
                           <span class="header-megamenu-heading">{{ childlink_title }}</span>
                         {% else %}
                           <a
-                            class="header-megamenu-heading header-menu-underline{% if childlink.active %} active{% endif %}"
+                            class="header-megamenu-heading{% if childlink.active %} active{% endif %}"
                             href="{{ childlink.url }}"
                             {% if childlink.current %}aria-current="page"{% endif %}
                           >
-                            <span class="header-menu-underline-text">{{ childlink_title }}</span>
+                            <span>{{ childlink_title }}</span>
                           </a>
                         {% endif %}
 
@@ -123,11 +123,11 @@
                             {% for grandchildlink in childlink.links %}
                               <li>
                                 <a
-                                  class="header-megamenu-link header-menu-underline{% if grandchildlink.active %} active{% endif %}"
+                                  class="header-megamenu-link{% if grandchildlink.active %} active{% endif %}"
                                   href="{{ grandchildlink.url }}"
                                   {% if grandchildlink.current %}aria-current="page"{% endif %}
                                 >
-                                  <span class="header-menu-underline-text">{{ grandchildlink.title }}</span>
+                                  <span>{{ grandchildlink.title }}</span>
                                 </a>
                               </li>
                             {% endfor %}

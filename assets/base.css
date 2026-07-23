@@ -103,25 +103,29 @@ body {
 */
 a {
   color: rgb(var(--color-text));
-  text-decoration: none;
-  background-image: linear-gradient(currentcolor, currentcolor);
-  background-repeat: no-repeat;
-  background-position: left bottom;
-  background-size: 0 1px;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
   outline: 2px solid transparent;
   outline-offset: 2px;
+  transition: color 200ms ease-out;
   border-radius: var(--border-radius);
-  transition: background-size 200ms ease-out;
 }
 
-a:hover,
+a:hover {
+  color: rgb(var(--color-text) / 0.8);
+}
+
 a:active {
-  background-size: 100% 1px;
+  color: rgb(var(--color-text) / 0.6);
+}
+
+a.active {
+  color: rgb(var(--link-active-color, var(--color-accent)));
 }
 
 a:focus-visible {
   outline-color: currentcolor;
-  background-size: 0 1px;
+  text-decoration: none;
 }
 
 
@@ -151,7 +155,6 @@ button {
   border-radius: var(--border-radius);
   color: var(--button-color);
   background-color: var(--button-background);
-  background-image: none;
   font-weight: 500;
   line-height: 1;
   text-align: center;
