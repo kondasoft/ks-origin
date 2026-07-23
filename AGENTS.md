@@ -54,7 +54,9 @@
   ```
 - Leave two blank lines before each CSS group comment, except when the comment is the first content in the file.
 - Let headings and body copy inherit the theme's global typography. Add component-specific font sizes, line heights, or text spacing only when explicitly requested or clearly required by the design.
-- Use `px` for explicit width and height values. Keep `rem` for spacing and text sizing unless a fixed dimension is clearer.
+- Use `px` for explicit width and height values.
+- Use `em` for section and component spacing that should scale with the surrounding typography, including section top and bottom spacing, component padding, and gaps. Use `rem` for layout spacing that should remain independent of the local font size.
+- Keep merchant-facing spacing settings in `px`. When the storefront spacing should scale proportionally, divide the setting by `16.0` in Liquid and emit the resulting CSS custom property in `em`.
 
 ## Responsive CSS
 

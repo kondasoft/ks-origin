@@ -1,10 +1,10 @@
 <!doctype html>
 <html
   lang="{{ request.locale.iso_code }}"
-  data-design-mode="{{ request.design_mode }}"
   data-page-type="{{ request.page_type }}"
   data-template-name="{{ template.name }}"
-  data-template-suffix="{{ template.suffix }}">
+  data-template-suffix="{{ template.suffix }}"
+  data-design-mode="{{ request.design_mode }}">
   <head>
     {% render 'theme-head' %}
     {{ content_for_header }}
@@ -20,94 +20,7 @@
       {% sections 'header-group' %}
     </div> 
 
-    <main id="main" style="height: 10000px;">
-      <div class="typography-preview container container-narrow">
-        <h1>This is Heading 1. This is a longer heading to preview the typography styles.</h1>
-        <p>
-          This is a paragraph with <strong>bold text</strong>, <em>italic text</em>, and
-          <a href="{{ routes.root_url }}">a text link</a>.
-        </p>
-        <h2>This is Heading 2. This is a longer heading to preview the typography styles.</h2>
-        <p>
-          This is a paragraph with <strong>bold text</strong>, <em>italic text</em>, and
-          <a href="{{ routes.root_url }}">a text link</a>.
-        </p>
-        <h3>This is Heading 3. This is a longer heading to preview the typography styles.</h3>
-        <p>
-          This is a paragraph with <strong>bold text</strong>, <em>italic text</em>, and
-          <a href="{{ routes.root_url }}">a text link</a>.
-        </p>
-        <h4>This is Heading 4. This is a longer heading to preview the typography styles.</h4>
-        <p>
-          This is a paragraph with <strong>bold text</strong>, <em>italic text</em>, and
-          <a href="{{ routes.root_url }}">a text link</a>.
-        </p>
-        <h5>This is Heading 5. This is a longer heading to preview the typography styles.</h5>
-        <p>
-          This is a paragraph with <strong>bold text</strong>, <em>italic text</em>, and
-          <a href="{{ routes.root_url }}">a text link</a>.
-        </p>
-        <h6>This is Heading 6. This is a longer heading to preview the typography styles.</h6>
-        <p>
-          This is a paragraph with <strong>bold text</strong>, <em>italic text</em>, and
-          <a href="{{ routes.root_url }}">a text link</a>.
-        </p>
-
-        <p>
-          This is a paragraph with <strong>bold text</strong>, <em>italic text</em>, and
-          <a href="{{ routes.root_url }}">a text link</a>.
-        </p>
-
-        <div class="btn-group">
-          <button class="btn btn-accent-solid" type="button">Accent solid</button>
-          <button class="btn btn-accent-outline" type="button">Accent outline</button>
-          <button class="btn btn-text-solid" type="button">Text solid</button>
-          <button class="btn btn-text-outline" type="button">Text outline</button>
-        </div>
-
-        <ul>
-          <li>Unordered list item</li>
-          <li>Unordered list item</li>
-          <li>Unordered list item</li>
-        </ul>
-
-        <ol>
-          <li>Ordered list item</li>
-          <li>Ordered list item</li>
-          <li>Ordered list item</li>
-        </ol>
-
-        <blockquote>
-          <p>This is a blockquote used to preview longer quoted content.</p>
-          <cite>Quote source</cite>
-        </blockquote>
-
-        <table>
-          <caption>
-            Table caption
-          </caption>
-          <thead>
-            <tr>
-              <th scope="col">Product</th>
-              <th scope="col">Quantity</th>
-              <th scope="col">Price</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Example product</td>
-              <td>1</td>
-              <td>$10.00</td>
-            </tr>
-            <tr>
-              <td>Another product</td>
-              <td>2</td>
-              <td>$20.00</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
+    <main id="main">
       {{ content_for_layout }}
     </main>
 

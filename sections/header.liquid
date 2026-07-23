@@ -7,14 +7,15 @@
 <div
   class="header header-decoration-{{ section.settings.bottom_decoration }} section-spacing"
   data-header-behavior="{{ section.settings.header_behavior }}"
+  data-megamenu-image-ratio="{{ section.settings.megamenu_image_ratio }}"
   style="
     --background-color: {{ section.settings.background_color.red }} {{ section.settings.background_color.green }} {{ section.settings.background_color.blue }};
     --text-color: {{ section.settings.text_color.red }} {{ section.settings.text_color.green }} {{ section.settings.text_color.blue }};
     --accent-color: {{ section.settings.accent_color.red }} {{ section.settings.accent_color.green }} {{ section.settings.accent_color.blue }};
     --mobile-logo-height: {{ section.settings.mobile_logo_height | append: 'px' }};
     --desktop-logo-height: {{ section.settings.desktop_logo_height | append: 'px' }};
-    --pt: {{ section.settings.pt | append: 'px' }};
-    --pb: {{ section.settings.pb | append: 'px' }};
+    --pt: {{ section.settings.pt | divided_by: 16.0 | append: 'em' }};
+    --pb: {{ section.settings.pb | divided_by: 16.0 | append: 'em' }};
   "
 >
   <div class="container {{ settings.container_width }}">
@@ -107,17 +108,9 @@
     </a>
 
     {% if section.settings.desktop_menu.links.size > 0 %}
-      <nav class="header-nav" aria-label="{{ 'accessibility.navigation' | t }}">
-        {% for link in section.settings.desktop_menu.links %}
-          <a
-            class="header-nav-link{% if link.active %} active{% endif %}"
-            href="{{ link.url }}"
-            {% if link.current %}aria-current="page"{% endif %}
-          >
-            {{ link.title }}
-          </a>
-        {% endfor %}
-      </nav>
+      <div class="header-nav" data-desktop-menu>
+        {% render 'header-desktop-menu', menu: section.settings.desktop_menu %}
+      </div>
     {% endif %}
 
     <div class="header-icons">
@@ -262,6 +255,18 @@
       "id": "desktop_menu",
       "label": "Menu",
       "default": "main-menu"
+    },
+    {
+      "type": "select",
+      "id": "megamenu_image_ratio",
+      "label": "Mega menu image aspect ratio",
+      "options": [
+        { "value": "adapt", "label": "Adapt to image" },
+        { "value": "square", "label": "Square" },
+        { "value": "landscape", "label": "Landscape" },
+        { "value": "portrait", "label": "Portrait" }
+      ],
+      "default": "adapt"
     },
     {
       "type": "header",

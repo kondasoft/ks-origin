@@ -91,3 +91,194 @@ window.addEventListener(
   },
   { passive: true },
 );
+
+
+/*
+  Desktop header menu
+*/
+let headerDesktopMenuCleanup;
+
+function initHeaderDesktopMenu() {
+  if (headerDesktopMenuCleanup) {
+    headerDesktopMenuCleanup();
+  }
+
+  const header = document.querySelector("#header-group .header");
+  const desktopMenu = header?.querySelector("[data-desktop-menu]");
+
+  if (!header || !desktopMenu) {
+    headerDesktopMenuCleanup = undefined;
+    return;
+  }
+
+  const controller = new AbortController();
+  const { signal } = controller;
+  const closeTimers = new Map();
+
+  function updateBackdrop() {
+    const hasOpenMenu = Boolean(
+      desktopMenu.querySelector(
+        '[data-menu-toggle][aria-expanded="true"]',
+      ),
+    );
+
+    if (hasOpenMenu) {
+      document.body.style.setProperty(
+        "--header-menu-backdrop-top",
+        `${Math.max(header.getBoundingClientRect().bottom, 0)}px`,
+      );
+      document.body.setAttribute("data-header-menu-open", "true");
+    } else {
+      document.body.style.removeProperty("--header-menu-backdrop-top");
+      document.body.removeAttribute("data-header-menu-open");
+    }
+  }
+
+  function setMenuState(toggle, expanded) {
+    const panel = document.getElementById(
+      toggle.getAttribute("aria-controls"),
+    );
+
+    toggle.setAttribute("aria-expanded", String(expanded));
+
+    if (panel) {
+      panel.hidden = !expanded;
+    }
+
+    updateBackdrop();
+  }
+
+  function closeMenus(exceptToggle) {
+    desktopMenu.querySelectorAll("[data-menu-toggle]").forEach((toggle) => {
+      if (toggle === exceptToggle) return;
+
+      clearTimeout(closeTimers.get(toggle));
+      closeTimers.delete(toggle);
+      setMenuState(toggle, false);
+    });
+  }
+
+  desktopMenu.querySelectorAll("[data-menu-toggle]").forEach((toggle) => {
+    const item = toggle.closest(".header-nav-item");
+
+    function openMenu() {
+      clearTimeout(closeTimers.get(toggle));
+      closeTimers.delete(toggle);
+      setMenuState(toggle, true);
+      closeMenus(toggle);
+    }
+
+    function scheduleClose() {
+      clearTimeout(closeTimers.get(toggle));
+      closeTimers.set(
+        toggle,
+        window.setTimeout(() => {
+          setMenuState(toggle, false);
+          closeTimers.delete(toggle);
+        }, 120),
+      );
+    }
+
+    item.addEventListener("mouseenter", openMenu, { signal });
+    item.addEventListener("mouseleave", scheduleClose, { signal });
+    item.addEventListener("focusin", openMenu, { signal });
+    item.addEventListener(
+      "focusout",
+      (event) => {
+        if (!item.contains(event.relatedTarget)) {
+          scheduleClose();
+        }
+      },
+      { signal },
+    );
+
+    if (toggle.tagName === "BUTTON") {
+      toggle.addEventListener(
+        "click",
+        () => {
+          const expanded = toggle.getAttribute("aria-expanded") === "true";
+          setMenuState(toggle, !expanded);
+        },
+        { signal },
+      );
+    }
+
+    toggle.addEventListener(
+      "keydown",
+      (event) => {
+        if (event.key === "ArrowDown") {
+          event.preventDefault();
+          openMenu();
+          document
+            .getElementById(toggle.getAttribute("aria-controls"))
+            ?.querySelector("a, button")
+            ?.focus();
+        }
+
+        if (event.key === "Escape") {
+          event.preventDefault();
+          setMenuState(toggle, false);
+        }
+      },
+      { signal },
+    );
+  });
+
+  desktopMenu.addEventListener(
+    "keydown",
+    (event) => {
+      if (event.key !== "Escape") return;
+
+      const panel = event.target.closest("[data-menu-panel]");
+      const toggle = panel?.previousElementSibling;
+
+      if (toggle?.matches("[data-menu-toggle]")) {
+        setMenuState(toggle, false);
+        toggle.focus();
+      }
+    },
+    { signal },
+  );
+
+  document.addEventListener(
+    "click",
+    (event) => {
+      if (!desktopMenu.contains(event.target)) {
+        closeMenus();
+      }
+    },
+    { signal },
+  );
+
+  window.addEventListener(
+    "resize",
+    () => {
+      if (document.body.getAttribute("data-header-menu-open") === "true") {
+        updateBackdrop();
+      }
+    },
+    { signal },
+  );
+
+  window.addEventListener(
+    "scroll",
+    () => {
+      if (document.body.getAttribute("data-header-menu-open") === "true") {
+        updateBackdrop();
+      }
+    },
+    { passive: true, signal },
+  );
+
+  headerDesktopMenuCleanup = () => {
+    controller.abort();
+    closeTimers.forEach((timer) => clearTimeout(timer));
+    closeTimers.clear();
+    document.body.style.removeProperty("--header-menu-backdrop-top");
+    document.body.removeAttribute("data-header-menu-open");
+    headerDesktopMenuCleanup = undefined;
+  };
+}
+
+initHeaderDesktopMenu();
+document.addEventListener("shopify:section:load", initHeaderDesktopMenu);

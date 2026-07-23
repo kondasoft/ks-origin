@@ -104,6 +104,16 @@
         "id": "type_body_font",
         "label": "Body",
         "default": "assistant_n4"
+      },
+      {
+        "type": "range",
+        "id": "body_size_scale",
+        "label": "Base body size",
+        "min": 90,
+        "max": 110,
+        "step": 1,
+        "unit": "%",
+        "default": 100
       }
     ]
   },

@@ -1,5 +1,6 @@
 {% liquid
   assign heading_size_scale = settings.heading_size_scale | divided_by: 100.0
+  assign body_size_scale = settings.body_size_scale | divided_by: 100.0
 
   if settings.heading_size_scale >= 125
     assign heading_line_height = 1.05
@@ -38,6 +39,7 @@
     --font-body-family: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
     --font-body-style: {{ settings.type_body_font.style }};
     --font-body-weight: {{ settings.type_body_font.weight }};
+    --body-size-scale: {{ body_size_scale }};
 
     /* Font sizes */
     --fs-xs: 0.75em;

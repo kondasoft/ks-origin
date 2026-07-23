@@ -1,0 +1,143 @@
+<nav class="header-desktop-menu" aria-label="{{ 'accessibility.navigation' | t }}">
+  <ul class="header-menu-list">
+    {% for link in menu.links %}
+      <li
+        class="header-nav-item{% if link.levels > 1 %} header-nav-item-mega{% endif %}"
+      >
+        {% if link.levels == 0 %}
+          <a
+            class="header-nav-link{% if link.active %} active{% endif %}"
+            href="{{ link.url }}"
+            {% if link.current %}aria-current="page"{% endif %}
+          >
+            {{ link.title }}
+          </a>
+        {% else %}
+          {% if link.url == blank or link.url == '#' %}
+            <button
+              class="header-nav-link"
+              type="button"
+              aria-expanded="false"
+              aria-controls="header-menu-{{ section.id }}-{{ forloop.index }}"
+              data-menu-toggle
+            >
+              <span>{{ link.title }}</span>
+              {% render 'svg-icons', icon: 'chevron-down', icon_size: 14 %}
+            </button>
+          {% else %}
+            <a
+              class="header-nav-link{% if link.active or link.child_active %} active{% endif %}"
+              href="{{ link.url }}"
+              {% if link.current %}aria-current="page"{% endif %}
+              aria-expanded="false"
+              aria-controls="header-menu-{{ section.id }}-{{ forloop.index }}"
+              data-menu-toggle
+            >
+              <span>{{ link.title }}</span>
+              {% render 'svg-icons', icon: 'chevron-down', icon_size: 14 %}
+            </a>
+          {% endif %}
+
+          {% if link.levels == 1 %}
+            <ul
+              id="header-menu-{{ section.id }}-{{ forloop.index }}"
+              class="header-dropdown-menu"
+              data-menu-panel
+              hidden
+            >
+              {% for childlink in link.links %}
+                <li>
+                  <a
+                    class="header-dropdown-link{% if childlink.active %} active{% endif %}"
+                    href="{{ childlink.url }}"
+                    {% if childlink.current %}aria-current="page"{% endif %}
+                  >
+                    <span>{{ childlink.title }}</span>
+                  </a>
+                </li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            <div
+              id="header-menu-{{ section.id }}-{{ forloop.index }}"
+              class="header-megamenu"
+              data-menu-panel
+              hidden
+            >
+              <div class="container {{ settings.container_width }}">
+                <ul class="header-megamenu-grid">
+                  {% for childlink in link.links %}
+                    {% liquid
+                      assign childlink_title_parts = childlink.title | split: '|'
+                      assign childlink_title = childlink_title_parts | first | strip
+                      assign childlink_image_filename = childlink_title_parts[1] | strip
+                      assign childlink_image_url = blank
+
+                      if childlink_image_filename != blank
+                        assign childlink_image_url = childlink_image_filename | file_url
+                      elsif childlink.type == 'collection_link' and childlink.object.featured_image != blank
+                        assign childlink_image_url = childlink.object.featured_image | image_url: width: 720
+                      endif
+                    %}
+                    {% if childlink_title == blank %}
+                      {% continue %}
+                    {% endif %}
+
+                    <li class="header-megamenu-column">
+                      {% if childlink.levels == 0 and childlink_image_url != blank %}
+                        <a
+                          class="header-megamenu-image-link{% if childlink.active %} active{% endif %}"
+                          href="{{ childlink.url }}"
+                          {% if childlink.current %}aria-current="page"{% endif %}
+                        >
+                          <span class="header-megamenu-image">
+                            <img
+                              src="{{ childlink_image_url }}"
+                              alt="{{ childlink_title | escape }}"
+                              width="720"
+                              height="540"
+                              loading="lazy"
+                            >
+                          </span>
+                          <span>{{ childlink_title }}</span>
+                        </a>
+                      {% else %}
+                        {% if childlink.url == blank or childlink.url == '#' %}
+                          <span class="header-megamenu-heading">{{ childlink_title }}</span>
+                        {% else %}
+                          <a
+                            class="header-megamenu-heading{% if childlink.active %} active{% endif %}"
+                            href="{{ childlink.url }}"
+                            {% if childlink.current %}aria-current="page"{% endif %}
+                          >
+                            <span>{{ childlink_title }}</span>
+                          </a>
+                        {% endif %}
+
+                        {% if childlink.links.size > 0 %}
+                          <ul class="header-megamenu-links">
+                            {% for grandchildlink in childlink.links %}
+                              <li>
+                                <a
+                                  class="header-megamenu-link{% if grandchildlink.active %} active{% endif %}"
+                                  href="{{ grandchildlink.url }}"
+                                  {% if grandchildlink.current %}aria-current="page"{% endif %}
+                                >
+                                  <span>{{ grandchildlink.title }}</span>
+                                </a>
+                              </li>
+                            {% endfor %}
+                          </ul>
+                        {% endif %}
+                      {% endif %}
+                    </li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </div>
+          {% endif %}
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+</nav>

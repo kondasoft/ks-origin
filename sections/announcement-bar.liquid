@@ -9,8 +9,8 @@
     --text-color: {{ section.settings.text_color.red }} {{ section.settings.text_color.green }} {{ section.settings.text_color.blue }};
     --fs-mobile: var(--{{ section.settings.font_size_mobile }});
     --fs-desktop: var(--{{ section.settings.font_size_desktop }});
-    --pt: {{ section.settings.pt | append: 'px' }};
-    --pb: {{ section.settings.pb | append: 'px' }};
+    --pt: {{ section.settings.pt | divided_by: 16.0 | append: 'em' }};
+    --pb: {{ section.settings.pb | divided_by: 16.0 | append: 'em' }};
   "
   data-section-css="{{ 'announcement-bar.css' | asset_url }}"
 >
