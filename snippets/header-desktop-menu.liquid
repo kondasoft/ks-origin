@@ -6,37 +6,41 @@
       >
         {% if link.levels == 0 %}
           <a
-            class="header-nav-link{% if link.active %} active{% endif %}"
+            class="header-nav-link header-menu-underline{% if link.active %} active{% endif %}"
             href="{{ link.url }}"
             {% if link.current %}aria-current="page"{% endif %}
           >
-            {{ link.title }}
+            <span class="header-menu-underline-text">{{ link.title }}</span>
           </a>
         {% else %}
-          {% if link.url == blank or link.url == '#' %}
+          <div class="header-nav-trigger">
+            {% if link.url == blank or link.url == '#' %}
+              <span
+                class="header-nav-link header-menu-underline{% if link.active or link.child_active %} active{% endif %}"
+              >
+                <span class="header-menu-underline-text">{{ link.title }}</span>
+              </span>
+            {% else %}
+              <a
+                class="header-nav-link header-menu-underline{% if link.active or link.child_active %} active{% endif %}"
+                href="{{ link.url }}"
+                {% if link.current %}aria-current="page"{% endif %}
+              >
+                <span class="header-menu-underline-text">{{ link.title }}</span>
+              </a>
+            {% endif %}
+
             <button
-              class="header-nav-link"
+              class="header-nav-toggle"
               type="button"
               aria-expanded="false"
               aria-controls="header-menu-{{ section.id }}-{{ forloop.index }}"
+              aria-label="{{ 'accessibility.toggle_submenu' | t: title: link.title | escape }}"
               data-menu-toggle
             >
-              <span>{{ link.title }}</span>
               {% render 'svg-icons', icon: 'chevron-down', icon_size: 14 %}
             </button>
-          {% else %}
-            <a
-              class="header-nav-link{% if link.active or link.child_active %} active{% endif %}"
-              href="{{ link.url }}"
-              {% if link.current %}aria-current="page"{% endif %}
-              aria-expanded="false"
-              aria-controls="header-menu-{{ section.id }}-{{ forloop.index }}"
-              data-menu-toggle
-            >
-              <span>{{ link.title }}</span>
-              {% render 'svg-icons', icon: 'chevron-down', icon_size: 14 %}
-            </a>
-          {% endif %}
+          </div>
 
           {% if link.levels == 1 %}
             <ul
@@ -48,11 +52,11 @@
               {% for childlink in link.links %}
                 <li>
                   <a
-                    class="header-dropdown-link{% if childlink.active %} active{% endif %}"
+                    class="header-dropdown-link header-menu-underline{% if childlink.active %} active{% endif %}"
                     href="{{ childlink.url }}"
                     {% if childlink.current %}aria-current="page"{% endif %}
                   >
-                    <span>{{ childlink.title }}</span>
+                    <span class="header-menu-underline-text">{{ childlink.title }}</span>
                   </a>
                 </li>
               {% endfor %}
@@ -86,7 +90,7 @@
                     <li class="header-megamenu-column">
                       {% if childlink.levels == 0 and childlink_image_url != blank %}
                         <a
-                          class="header-megamenu-image-link{% if childlink.active %} active{% endif %}"
+                          class="header-megamenu-image-link header-menu-underline{% if childlink.active %} active{% endif %}"
                           href="{{ childlink.url }}"
                           {% if childlink.current %}aria-current="page"{% endif %}
                         >
@@ -99,18 +103,18 @@
                               loading="lazy"
                             >
                           </span>
-                          <span>{{ childlink_title }}</span>
+                          <span class="header-menu-underline-text">{{ childlink_title }}</span>
                         </a>
                       {% else %}
                         {% if childlink.url == blank or childlink.url == '#' %}
                           <span class="header-megamenu-heading">{{ childlink_title }}</span>
                         {% else %}
                           <a
-                            class="header-megamenu-heading{% if childlink.active %} active{% endif %}"
+                            class="header-megamenu-heading header-menu-underline{% if childlink.active %} active{% endif %}"
                             href="{{ childlink.url }}"
                             {% if childlink.current %}aria-current="page"{% endif %}
                           >
-                            <span>{{ childlink_title }}</span>
+                            <span class="header-menu-underline-text">{{ childlink_title }}</span>
                           </a>
                         {% endif %}
 
@@ -119,11 +123,11 @@
                             {% for grandchildlink in childlink.links %}
                               <li>
                                 <a
-                                  class="header-megamenu-link{% if grandchildlink.active %} active{% endif %}"
+                                  class="header-megamenu-link header-menu-underline{% if grandchildlink.active %} active{% endif %}"
                                   href="{{ grandchildlink.url }}"
                                   {% if grandchildlink.current %}aria-current="page"{% endif %}
                                 >
-                                  <span>{{ grandchildlink.title }}</span>
+                                  <span class="header-menu-underline-text">{{ grandchildlink.title }}</span>
                                 </a>
                               </li>
                             {% endfor %}

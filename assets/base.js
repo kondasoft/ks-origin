@@ -114,6 +114,7 @@ function initHeaderDesktopMenu() {
   const controller = new AbortController();
   const { signal } = controller;
   const closeTimers = new Map();
+  const hoverQuery = window.matchMedia("(hover: hover) and (pointer: fine)");
 
   function updateBackdrop() {
     const hasOpenMenu = Boolean(
@@ -140,6 +141,7 @@ function initHeaderDesktopMenu() {
     );
 
     toggle.setAttribute("aria-expanded", String(expanded));
+    toggle.closest(".header-nav-item")?.classList.toggle("menu-open", expanded);
 
     if (panel) {
       panel.hidden = !expanded;
@@ -179,9 +181,24 @@ function initHeaderDesktopMenu() {
       );
     }
 
-    item.addEventListener("mouseenter", openMenu, { signal });
-    item.addEventListener("mouseleave", scheduleClose, { signal });
-    item.addEventListener("focusin", openMenu, { signal });
+    item.addEventListener(
+      "mouseenter",
+      () => {
+        if (hoverQuery.matches) {
+          openMenu();
+        }
+      },
+      { signal },
+    );
+    item.addEventListener(
+      "mouseleave",
+      () => {
+        if (hoverQuery.matches) {
+          scheduleClose();
+        }
+      },
+      { signal },
+    );
     item.addEventListener(
       "focusout",
       (event) => {
@@ -192,16 +209,15 @@ function initHeaderDesktopMenu() {
       { signal },
     );
 
-    if (toggle.tagName === "BUTTON") {
-      toggle.addEventListener(
-        "click",
-        () => {
-          const expanded = toggle.getAttribute("aria-expanded") === "true";
-          setMenuState(toggle, !expanded);
-        },
-        { signal },
-      );
-    }
+    toggle.addEventListener(
+      "click",
+      () => {
+        const expanded = toggle.getAttribute("aria-expanded") === "true";
+        setMenuState(toggle, !expanded);
+        closeMenus(toggle);
+      },
+      { signal },
+    );
 
     toggle.addEventListener(
       "keydown",
@@ -230,7 +246,9 @@ function initHeaderDesktopMenu() {
       if (event.key !== "Escape") return;
 
       const panel = event.target.closest("[data-menu-panel]");
-      const toggle = panel?.previousElementSibling;
+      const toggle = panel
+        ?.closest(".header-nav-item")
+        ?.querySelector("[data-menu-toggle]");
 
       if (toggle?.matches("[data-menu-toggle]")) {
         setMenuState(toggle, false);
