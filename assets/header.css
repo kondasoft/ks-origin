@@ -1,4 +1,12 @@
 /*
+  Header stylesheet
+
+  This file contains header layout, navigation, and responsive presentation styles.
+  Keep styles for dialogs and other shared components in their respective stylesheets.
+*/
+
+
+/*
   Header behavior
 */
 #header-group[data-header-behavior="sticky"],
@@ -88,22 +96,8 @@
 }
 
 .header-icon-link {
+  --icon-button-color: var(--text-color);
   position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  box-sizing: border-box;
-  width: 44px;
-  min-width: 44px;
-  height: 44px;
-  padding: 0;
-  color: rgb(var(--text-color));
-  text-decoration: none;
-  background: transparent;
-  border: 0;
-  cursor: pointer;
-  border-radius: var(--border-radius);
-  transition: color 200ms ease-out;
 }
 
 .svg-icon {
@@ -132,6 +126,11 @@
 }
 
 @media (max-width: 1199px) {
+  .header > .container {
+    padding-right: 0.75rem;
+    padding-left: 0.75rem;
+  }
+
   .header-inner-mobile {
     grid-template-columns: 1fr auto 1fr;
   }

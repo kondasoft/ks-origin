@@ -22,6 +22,9 @@
 
     <main id="main">
       {{ content_for_layout }}
+
+      <div class="container {{ settings.container_width }}">
+      </div>
     </main>
 
     <div id="footer-group">
@@ -30,5 +33,6 @@
 
     {% render 'search-dialog' %}
     {% render 'cart-dialog' %}
+    {% render 'modal-test-dialog' %}
   </body>
 </html>

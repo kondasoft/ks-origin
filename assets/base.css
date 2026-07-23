@@ -130,6 +130,43 @@ a:focus-visible {
 
 
 /*
+  Icon buttons
+*/
+.icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 44px;
+  min-width: 44px;
+  height: 44px;
+  padding: 0;
+  color: rgb(var(--icon-button-color, var(--color-text)));
+  text-decoration: none;
+  background: transparent;
+  border: 0;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  outline: 2px solid transparent;
+  outline-offset: -2px;
+  transition: color 200ms ease-out;
+}
+
+.icon-button:hover {
+  color: rgb(var(--icon-button-color, var(--color-text)) / 0.8);
+}
+
+.icon-button:active {
+  color: rgb(var(--icon-button-color, var(--color-text)) / 0.6);
+}
+
+.icon-button:focus-visible {
+  color: rgb(var(--icon-button-color, var(--color-text)));
+  outline-color: currentcolor;
+}
+
+
+/*
   Buttons
 */
 button {

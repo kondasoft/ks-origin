@@ -1,3 +1,173 @@
 /*
-  Lazy-loaded components
+  Lazy-loaded components stylesheet
+
+  This file contains non-critical styles for reusable components loaded after base styles.
+  Keep foundational utilities and section-specific styles in their respective stylesheets.
 */
+
+
+/*
+  Dialogs
+*/
+.dialog {
+  --dialog-transition-duration: 200ms;
+  --dialog-transition-easing: ease-out;
+  --dialog-width: 420px;
+  --drawer-width: 420px;
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: min(calc(100vw - 2rem), var(--dialog-width));
+  max-width: 100%;
+  padding: 0;
+  color: rgb(var(--color-text));
+  background-color: rgb(var(--color-background));
+  border: none;
+  box-shadow: 0 0 0.75rem rgb(var(--color-text) / 0.15);
+  transition:
+    transform var(--dialog-transition-duration) var(--dialog-transition-easing),
+    opacity var(--dialog-transition-duration) var(--dialog-transition-easing);
+  will-change: transform;
+}
+
+.dialog.is-closing {
+  --dialog-transition-easing: ease-in;
+}
+
+.dialog:not([open]) {
+  display: none !important;
+}
+
+.dialog::backdrop {
+  background: rgb(var(--color-text) / 0.5);
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='18' y1='6' x2='6' y2='18'%3E%3C/line%3E%3Cline x1='6' y1='6' x2='18' y2='18'%3E%3C/line%3E%3C/svg%3E") 24 24, pointer;
+  opacity: 0;
+  transition: opacity var(--dialog-transition-duration) var(--dialog-transition-easing);
+}
+
+.dialog[open]::backdrop {
+  opacity: 1;
+}
+
+.dialog[open].is-closing::backdrop {
+  opacity: 0;
+}
+
+@starting-style {
+  .dialog[open]::backdrop {
+    opacity: 0;
+  }
+}
+
+.dialog-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.25rem 1rem;
+  border-bottom: 1px solid rgb(var(--color-text) / var(--border-opacity));
+}
+
+.dialog-title {
+  font-size: var(--fs-xl);
+  margin: 0;
+}
+
+.dialog-close {
+  flex: 0 0 auto;
+  margin-right: -0.5rem;
+}
+
+.dialog-body {
+  flex: 1;
+  min-height: 0;
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+.modal {
+  opacity: 1;
+  transform: none;
+  border-radius: var(--border-radius);
+}
+
+@starting-style {
+  .modal[open] {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}
+
+.modal[open].is-closing {
+  opacity: 0;
+  transform: scale(0.95);
+}
+
+.drawer {
+  --dialog-width: var(--drawer-width);
+  width: min(100vw, var(--drawer-width));
+  height: 100dvh;
+  max-height: none;
+  overflow: visible;
+}
+
+.drawer-right {
+  margin: 0 0 0 auto;
+  transform: translateX(100%);
+}
+
+.drawer-left {
+  margin: 0 auto 0 0;
+  transform: translateX(-100%);
+}
+
+.drawer-bottom {
+  top: auto;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: auto;
+  max-height: 70dvh;
+  margin: 0 auto;
+  transform: translateY(100%);
+}
+
+.drawer-right[open],
+.drawer-left[open],
+.drawer-bottom[open] {
+  transform: none;
+}
+
+@starting-style {
+  .drawer-right[open] {
+    transform: translateX(100%);
+  }
+
+  .drawer-left[open] {
+    transform: translateX(-100%);
+  }
+
+  .drawer-bottom[open] {
+    transform: translateY(100%);
+  }
+}
+
+.drawer-right[open].is-closing {
+  transform: translateX(100%);
+}
+
+.drawer-left[open].is-closing {
+  transform: translateX(-100%);
+}
+
+.drawer-bottom[open].is-closing {
+  transform: translateY(100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dialog,
+  .dialog::backdrop {
+    transition: none;
+  }
+}

@@ -44,6 +44,15 @@
 
 ## HTML and CSS
 
+- Begin every CSS and JavaScript file with a multiline comment that explains the file's purpose and ownership boundaries. Tailor the title and description to the file instead of using generic boilerplate:
+  ```css
+  /*
+    Base stylesheet
+
+    This file contains global foundational styles and reusable utilities.
+    Keep component-specific styles in their respective component stylesheets.
+  */
+  ```
 - Use kebab-case CSS class and ID names such as `some-css-class`, not `some__css__class` or `someCssClass`.
 - Do not group unrelated CSS selectors only because they share declarations. Keep component selectors and styles separate.
 - Organize CSS into clearly labeled logical groups using multiline comments in this format:
