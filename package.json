@@ -2,13 +2,16 @@
   "name": "ks-origin",
   "private": true,
   "scripts": {
-    "dev": "shopify theme dev --store ks-origin-knqiyszi.myshopify.com --theme 165161435386 --allow-live",
+    "dev": "dotenv -e .env -- shopify theme dev",
+    "dev:live": "dotenv -e .env -- shopify theme dev --allow-live",
     "lint": "eslint \"**/*.{js,liquid}\"",
-    "push": "shopify theme push --store ks-origin-knqiyszi.myshopify.com --theme 165161435386 --allow-live",
-    "pull": "shopify theme pull --store ks-origin-knqiyszi.myshopify.com --theme 165161435386"
+    "push": "dotenv -e .env -- shopify theme push",
+    "push:live": "dotenv -e .env -- shopify theme push --allow-live",
+    "pull": "dotenv -e .env -- shopify theme pull"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "dotenv-cli": "^11.0.0",
     "eslint": "^10.5.0",
     "eslint-config-prettier": "^10.1.1",
     "eslint-plugin-html": "^8.1.2",

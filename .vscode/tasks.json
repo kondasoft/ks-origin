@@ -1,0 +1,30 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "shopify theme pull",
+      "type": "shell",
+      "command": "npm run pull",
+      "presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "group": "1"
+      }
+    },
+    {
+      "label": "shopify theme dev:live",
+      "type": "shell",
+      "command": "npm run dev:live",
+      "dependsOn": "shopify theme pull",
+      "dependsOrder": "sequence",
+      "presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "group": "1"
+      },
+      "runOptions": {
+        "runOn": "folderOpen"
+      }
+    }
+  ]
+}
