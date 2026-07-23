@@ -212,12 +212,13 @@
   .header-nav-trigger {
     display: inline-flex;
     align-items: center;
+    padding-right: 0.25em;
   }
 
   .header-nav-link {
     display: inline-flex;
     align-items: center;
-    padding: 0.3em 0.9em;
+    padding: 0.3em 0.8em;
     color: rgb(var(--text-color));
     /* font-size: 0.95rem; */
     font-weight: 500;
@@ -229,7 +230,7 @@
   }
 
   .header-nav-trigger .header-nav-link {
-    padding-right: 0.3em;
+    padding-right: 0.2em;
   }
 
   .header-nav-toggle {
@@ -237,6 +238,7 @@
     flex-shrink: 0;
     width: 1em;
     height: 1em;
+    margin-bottom: -0.15em;
     padding: 0;
     color: inherit;
     place-items: center;
