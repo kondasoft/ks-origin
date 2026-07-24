@@ -31,7 +31,6 @@ class ThemeDialog extends HTMLElement {
     this.onDialogClose = this.onDialogClose.bind(this);
     this.onDialogCancel = this.onDialogCancel.bind(this);
     this.onDialogClick = this.onDialogClick.bind(this);
-    this.onDialogKeydown = this.onDialogKeydown.bind(this);
     this.onInternalClick = this.onInternalClick.bind(this);
 
     this.triggers.forEach((trigger) => {
@@ -52,9 +51,6 @@ class ThemeDialog extends HTMLElement {
       signal: this.listenerController.signal,
     });
     this.dialog.addEventListener("click", this.onDialogClick, {
-      signal: this.listenerController.signal,
-    });
-    this.dialog.addEventListener("keydown", this.onDialogKeydown, {
       signal: this.listenerController.signal,
     });
     this.addEventListener("click", this.onInternalClick, {
@@ -125,12 +121,6 @@ class ThemeDialog extends HTMLElement {
       event.clientY > rect.bottom;
 
     if (clickedOutside) this.requestClose();
-  }
-
-  onDialogKeydown(event) {
-    if (event.key === "Tab") {
-      this.dialog.dataset.openedBy = "keyboard";
-    }
   }
 
   onInternalClick(event) {
@@ -204,7 +194,6 @@ class ThemeDialog extends HTMLElement {
 
   lockPageScroll() {
     if (document.body.dataset.scrollLocked === "true") return;
-    if (document.body.dataset.mobileMenuScrollLocked === "true") return;
 
     const scrollY = window.scrollY;
 
@@ -240,7 +229,6 @@ if (!customElements.get("theme-dialog")) {
 
 class MobileMenuDialog extends HTMLElement {
   static closeDurationMs = 180;
-  static submenuBackDelayMs = 200;
 
   connectedCallback() {
     if (this.isInitialized) return;
@@ -298,7 +286,6 @@ class MobileMenuDialog extends HTMLElement {
     this.closeMenu(false, true);
     this.listenerController?.abort();
     window.clearTimeout(this.closeTimer);
-    window.clearTimeout(this.submenuCloseTimer);
     this.isInitialized = false;
   }
 
@@ -333,8 +320,6 @@ class MobileMenuDialog extends HTMLElement {
   closeMenu(returnFocus = false, immediate = false) {
     if (!this.isOpen && this.panel?.hidden) return;
 
-    window.clearTimeout(this.submenuCloseTimer);
-    this.submenuCloseTimer = null;
     delete this.dataset.open;
     this.trigger?.setAttribute("aria-expanded", "false");
     this.resetSubmenus();
@@ -378,7 +363,6 @@ class MobileMenuDialog extends HTMLElement {
 
   onDocumentClick(event) {
     if (!this.isOpen) return;
-    if (event.target.closest("dialog[open]")) return;
     if (this.panel.contains(event.target) || this.trigger.contains(event.target))
       return;
 
@@ -424,39 +408,6 @@ class MobileMenuDialog extends HTMLElement {
 
     if (main) main.inert = !isInteractive;
     if (footer) footer.inert = !isInteractive;
-    this.setBackgroundControlsInteractive(isInteractive);
-  }
-
-  setBackgroundControlsInteractive(isInteractive) {
-    if (!isInteractive) {
-      const controls = document.querySelectorAll(
-        "#header-group a, #header-group button, #header-group input, " +
-          "#header-group select, #header-group textarea, " +
-          "#header-group [tabindex], body > .skip-link",
-      );
-
-      this.backgroundControlStates = Array.from(controls)
-        .filter(
-          (control) =>
-            control !== this.trigger && !this.panel.contains(control),
-        )
-        .map((control) => ({
-          control,
-          wasInert: control.inert,
-        }));
-
-      this.backgroundControlStates.forEach(({ control }) => {
-        control.inert = true;
-      });
-      return;
-    }
-
-    this.backgroundControlStates?.forEach(({ control, wasInert }) => {
-      if (control.isConnected) {
-        control.inert = wasInert;
-      }
-    });
-    this.backgroundControlStates = [];
   }
 
   lockPageScroll() {
@@ -509,10 +460,7 @@ class MobileMenuDialog extends HTMLElement {
     const backButton = event.target.closest("[data-submenu-back]");
 
     if (backButton && this.panel.contains(backButton)) {
-      this.closeSubmenu(
-        backButton.closest(".mobile-menu-submenu"),
-        MobileMenuDialog.submenuBackDelayMs,
-      );
+      this.closeSubmenu(backButton.closest(".mobile-menu-submenu"));
     }
   }
 
@@ -538,20 +486,8 @@ class MobileMenuDialog extends HTMLElement {
     }
   }
 
-  closeSubmenu(submenu, delayMs = 0) {
+  closeSubmenu(submenu) {
     if (!submenu) return;
-
-    if (delayMs > 0) {
-      window.clearTimeout(this.submenuCloseTimer);
-      this.submenuCloseTimer = window.setTimeout(() => {
-        this.submenuCloseTimer = null;
-
-        if (this.isOpen && !submenu.hidden) {
-          this.closeSubmenu(submenu);
-        }
-      }, delayMs);
-      return;
-    }
 
     const toggle = submenu.previousElementSibling;
 
@@ -615,81 +551,4 @@ class MobileMenuDialog extends HTMLElement {
 
 if (!customElements.get("mobile-menu-dialog")) {
   customElements.define("mobile-menu-dialog", MobileMenuDialog);
-}
-
-
-class LocalizationCountryFilter extends HTMLElement {
-  connectedCallback() {
-    if (this.isInitialized) return;
-
-    this.input = this.querySelector(
-      "[data-localization-country-filter-input]",
-    );
-    this.items = Array.from(
-      this.querySelectorAll("[data-localization-country-item]"),
-    );
-    this.emptyMessage = this.querySelector(".localization-filter-empty");
-    this.status = this.querySelector(
-      "[data-localization-country-filter-status]",
-    );
-
-    if (!this.input) return;
-
-    this.listenerController = new AbortController();
-    this.input.addEventListener("input", this.onInput.bind(this), {
-      signal: this.listenerController.signal,
-    });
-    this.updateStatus(this.items.length);
-    this.isInitialized = true;
-  }
-
-  disconnectedCallback() {
-    this.listenerController?.abort();
-    this.isInitialized = false;
-  }
-
-  onInput() {
-    const query = this.input.value.trim().toLowerCase();
-    let visibleCount = 0;
-
-    this.items.forEach((item) => {
-      const text = item.dataset.filterText?.toLowerCase() || "";
-      const isVisible = !query || text.includes(query);
-
-      item.hidden = !isVisible;
-
-      if (isVisible) {
-        visibleCount += 1;
-      }
-    });
-
-    if (this.emptyMessage) {
-      this.emptyMessage.hidden = visibleCount > 0;
-    }
-
-    this.updateStatus(visibleCount);
-  }
-
-  updateStatus(visibleCount) {
-    if (!this.status) return;
-
-    if (visibleCount === 0) {
-      this.status.textContent = this.status.dataset.textNoResults;
-      return;
-    }
-
-    const text =
-      visibleCount === 1
-        ? this.status.dataset.textResultsOne
-        : this.status.dataset.textResultsOther;
-
-    this.status.textContent = text?.replace("[count]", visibleCount) || "";
-  }
-}
-
-if (!customElements.get("localization-country-filter")) {
-  customElements.define(
-    "localization-country-filter",
-    LocalizationCountryFilter,
-  );
 }

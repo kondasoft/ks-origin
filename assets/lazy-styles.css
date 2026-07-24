@@ -1,8 +1,8 @@
 /*
   Lazy-loaded components stylesheet
 
-  This file loads after base.css and critical.css and contains non-critical components and interactions.
-  Keep global foundations in base.css and immediately visible component layout in critical.css.
+  This file contains non-critical component and interaction styles loaded after base styles.
+  Keep foundational layout and immediately visible section styles in their critical stylesheets.
 */
 
 
@@ -10,12 +10,15 @@
   Dialogs
 */
 .dialog {
-  --dialog-transition-duration: 200ms;
-  --dialog-transition-easing: ease-out;
+  --dialog-transition-duration: 300ms;
+  --dialog-transition-easing: cubic-bezier(0.22, 1, 0.36, 1);
+  --dialog-width: 420px;
+  --drawer-width: 420px;
   position: fixed;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
+  width: min(calc(100vw - 2rem), var(--dialog-width));
   max-width: 100%;
   padding: 0;
   color: rgb(var(--color-text));
@@ -77,20 +80,14 @@
   margin-right: -0.5rem;
 }
 
-.dialog[data-opened-by="pointer"] .dialog-close:focus-visible {
-  outline-color: transparent;
-}
-
 .dialog-body {
-  flex: 1 1 auto;
+  flex: 1;
   min-height: 0;
   padding: 1rem;
   overflow-y: auto;
 }
 
 .modal {
-  --modal-width: 480px;
-  width: min(calc(100vw - 2rem), var(--modal-width));
   opacity: 1;
   transform: none;
   border-radius: var(--border-radius);
@@ -109,7 +106,7 @@
 }
 
 .drawer {
-  --drawer-width: 400px;
+  --dialog-width: var(--drawer-width);
   width: min(100vw, var(--drawer-width));
   height: 100dvh;
   max-height: none;
@@ -167,172 +164,6 @@
 
 .drawer-bottom[open].is-closing {
   transform: translateY(100%);
-}
-
-@media (max-width: 599px) {
-  .drawer {
-    width: 85vw;
-  }
-}
-
-
-/*
-  Localization dialogs
-*/
-.localization-dialog {
-  max-height: calc(100vh - 2rem);
-  max-height: calc(100dvh - 2rem);
-  overflow: hidden;
-  transform: none;
-}
-
-@starting-style {
-  .localization-dialog[open] {
-    opacity: 0;
-    transform: translateY(0.5rem);
-  }
-}
-
-.localization-dialog[open].is-closing {
-  opacity: 0;
-  transform: translateY(0.5rem);
-}
-
-.localization-dialog .dialog-body {
-  overscroll-behavior-y: contain;
-  -webkit-overflow-scrolling: touch;
-}
-
-.localization-filter {
-  position: sticky;
-  top: 0;
-  z-index: 1;
-  margin-bottom: 1rem;
-  background-color: rgb(var(--color-background));
-}
-
-.localization-filter-input {
-  box-sizing: border-box;
-  width: 100%;
-  padding: 0.75em 1em;
-  color: rgb(var(--color-text));
-  font: inherit;
-  background-color: rgb(var(--color-background));
-  border: 1px solid rgb(var(--color-text) / var(--border-opacity));
-  border-radius: var(--border-radius);
-  outline: 2px solid transparent;
-  outline-offset: 2px;
-}
-
-.localization-filter-input:focus-visible {
-  outline-color: currentcolor;
-}
-
-.localization-list {
-  padding: 0;
-  margin: 0;
-  list-style: none;
-}
-
-.localization-list li {
-  border-bottom: 1px dotted rgb(var(--color-text) / 0.2);
-}
-
-.localization-option {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  box-sizing: border-box;
-  width: 100%;
-  padding: 0.75em 0;
-  color: rgb(var(--color-text));
-  text-decoration: none;
-}
-
-.localization-option:hover {
-  color: rgb(var(--color-text) / 0.7);
-}
-
-.localization-option.active {
-  color: rgb(var(--color-accent));
-}
-
-.localization-option:focus-visible {
-  padding-right: 0.5em;
-  padding-left: 0.5em;
-}
-
-.localization-option-image {
-  flex: 0 0 auto;
-}
-
-.localization-option-image img {
-  display: block;
-}
-
-.localization-option-text {
-  display: flex;
-  flex: 1;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1em;
-}
-
-.localization-option-text small {
-  opacity: 0.65;
-  text-align: right;
-}
-
-.localization-filter-empty {
-  margin: 1rem 0 0;
-  opacity: 0.7;
-  text-align: center;
-}
-
-@media (min-width: 1200px) {
-  .localization-option {
-    min-width: 300px;
-  }
-}
-
-
-/*
-  Social icons
-*/
-.social-icons {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.25rem;
-  padding: 0;
-  margin: 0;
-  list-style: none;
-}
-
-.social-icons a {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 44px;
-  height: 44px;
-  color: inherit;
-  text-decoration: none;
-  border-radius: var(--border-radius);
-  outline: 2px solid transparent;
-  outline-offset: -2px;
-  transition: opacity 200ms ease-out;
-}
-
-.social-icons a:hover {
-  opacity: 0.7;
-}
-
-.social-icons a:focus-visible {
-  outline-color: currentcolor;
-}
-
-.social-icons svg {
-  display: block;
 }
 
 
@@ -400,23 +231,9 @@ mobile-menu-dialog[data-open="true"] .mobile-menu-backdrop {
   position: relative;
   flex: 1;
   min-height: 0;
-  padding: 0.75rem 1rem 1rem;
+  padding: 0.75rem;
   overflow-x: hidden;
   overflow-y: auto;
-}
-
-.mobile-menu-footer {
-  flex: 0 0 auto;
-  padding: 0.375rem 1rem max(0.375rem, env(safe-area-inset-bottom));
-  background-color: rgb(var(--color-surface));
-}
-
-.mobile-menu-footer .social-icons {
-  justify-content: center;
-}
-
-.mobile-menu-panel:has(.mobile-menu-submenu:not([hidden])) .mobile-menu-footer {
-  display: none;
 }
 
 .mobile-menu-list,
@@ -435,7 +252,7 @@ mobile-menu-dialog[data-open="true"] .mobile-menu-backdrop {
   gap: 0.5em;
   box-sizing: border-box;
   width: 100%;
-  padding: 1em 0;
+  padding: 0.85em 0;
   color: rgb(var(--text-color));
   text-align: left;
   text-decoration: none;
@@ -458,8 +275,6 @@ mobile-menu-dialog[data-open="true"] .mobile-menu-backdrop {
 
 .mobile-menu-link:focus-visible {
   outline-color: currentcolor;
-  padding-left: 0.5em;
-  padding-right: 0.5em;
 }
 
 .mobile-menu-submenu {
@@ -500,55 +315,11 @@ mobile-menu-dialog[data-open="true"] .mobile-menu-backdrop {
 }
 
 .mobile-menu-secondary-list {
-  margin-top: 1.25rem;
+  margin-top: 1rem;
 }
 
 .mobile-menu-secondary-link {
   justify-content: flex-start;
-  gap: 0.75em;
-  border: none;
-  padding: 0.6em 0;
-  font-size: 0.925em;
-  color: rgb(var(--color-text) / 0.7);
-}
-
-.mobile-menu-secondary-text small {
-  opacity: 0.65;
-}
-
-.mobile-menu-localization-image {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex: 0 0 auto;
-  width: 18px;
-  height: 18px;
-}
-
-.mobile-menu-localization-image img {
-  display: block;
-}
-
-@media (max-width: 1199px) {
-  .header-menu-button .svg-icon-menu line {
-    opacity: 1;
-    transform: rotate(0) translateY(0) translateX(0);
-    transition:
-      transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
-      opacity 140ms ease-out;
-  }
-
-  .header-menu-button[aria-expanded="true"] .svg-icon-menu line:nth-child(1) {
-    transform: rotate(45deg) translate(6px, -12px);
-  }
-
-  .header-menu-button[aria-expanded="true"] .svg-icon-menu line:nth-child(2) {
-    opacity: 0;
-  }
-
-  .header-menu-button[aria-expanded="true"] .svg-icon-menu line:nth-child(3) {
-    transform: rotate(-45deg) translate(-12px, 0);
-  }
 }
 
 
@@ -721,8 +492,7 @@ mobile-menu-dialog[data-open="true"] .mobile-menu-backdrop {
   .dialog,
   .dialog::backdrop,
   .mobile-menu-panel,
-  .mobile-menu-backdrop,
-  .header-menu-button .svg-icon-menu line {
+  .mobile-menu-backdrop {
     transition: none;
   }
 

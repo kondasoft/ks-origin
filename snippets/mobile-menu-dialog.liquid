@@ -118,65 +118,16 @@
         </ul>
       {% endif %}
 
-      {% if localization.available_languages.size > 1 or localization.available_countries.size > 1 %}
-        <ul
-          id="header-mobile-secondary-menu"
-          class="mobile-menu-secondary-list"
-          aria-label="{{ 'accessibility.secondary_menu' | t }}"
-        >
-          {% if localization.available_languages.size > 1 %}
-            <li>
-              <button
-                class="mobile-menu-link mobile-menu-secondary-link"
-                type="button"
-                data-toggle="languages-dialog"
-                aria-controls="languages-dialog"
-                aria-haspopup="dialog"
-              >
-                {% render 'svg-icons', icon: 'translate', icon_size: 18 %}
-                <span class="visually-hidden">
-                  {{ 'general.localization.language' | t }}
-                </span>
-                <span class="mobile-menu-secondary-text">
-                  {{ localization.language.endonym_name | capitalize }}
-                  <small>({{ localization.language.iso_code }})</small>
-                </span>
-              </button>
-            </li>
-          {% endif %}
-
-          {% if localization.available_countries.size > 1 %}
-            <li>
-              <button
-                class="mobile-menu-link mobile-menu-secondary-link"
-                type="button"
-                data-toggle="countries-dialog"
-                aria-controls="countries-dialog"
-                aria-haspopup="dialog"
-              >
-                <span class="mobile-menu-localization-image" aria-hidden="true">
-                  {{ localization.country | image_url: width: 18, height: 18 | image_tag: loading: 'lazy' }}
-                </span>
-                <span class="visually-hidden">
-                  {{ 'general.localization.country' | t }}
-                </span>
-                <span class="mobile-menu-secondary-text">
-                  {{ localization.country.name }}
-                  <small>
-                    ({{ localization.country.currency.iso_code }}
-                    {{ localization.country.currency.symbol }})
-                  </small>
-                </span>
-              </button>
-            </li>
-          {% endif %}
+      {% if shop.customer_accounts_enabled %}
+        <ul class="mobile-menu-secondary-list">
+          <li>
+            <a class="mobile-menu-link mobile-menu-secondary-link" href="{{ routes.account_url }}">
+              {% render 'svg-icons', icon: 'account', icon_size: 18 %}
+              <span>{{ 'general.account' | t }}</span>
+            </a>
+          </li>
         </ul>
       {% endif %}
     </div>
-
-    {% render 'social-icons',
-      icon_size: 18,
-      wrapper_class: 'mobile-menu-footer'
-    %}
   </nav>
 </mobile-menu-dialog>

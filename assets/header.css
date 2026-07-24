@@ -1,8 +1,8 @@
 /*
-  Critical stylesheet
+  Header stylesheet
 
-  This file contains critical page-shell and immediately visible component styles.
-  Keep global foundations in base.css and deferred interactions in lazy-styles.css.
+  This file contains critical header layout and immediately visible navigation styles.
+  Keep deferred menu presentation and shared component styles in lazy-styles.css.
 */
 
 
@@ -100,18 +100,6 @@
   position: relative;
 }
 
-.header-localization-image {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 22px;
-  height: 22px;
-}
-
-.header-localization-image img {
-  display: block;
-}
-
 .svg-icon {
   display: block;
   flex-shrink: 0;
@@ -138,6 +126,26 @@
 }
 
 @media (max-width: 1199px) {
+  .header-menu-button .svg-icon-menu line {
+    opacity: 1;
+    transform: rotate(0) translateY(0) translateX(0);
+    transition:
+      transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 140ms ease-out;
+  }
+
+  .header-menu-button[aria-expanded="true"] .svg-icon-menu line:nth-child(1) {
+    transform: rotate(45deg) translate(6px, -12px);
+  }
+
+  .header-menu-button[aria-expanded="true"] .svg-icon-menu line:nth-child(2) {
+    opacity: 0;
+  }
+
+  .header-menu-button[aria-expanded="true"] .svg-icon-menu line:nth-child(3) {
+    transform: rotate(-45deg) translate(-12px, 0);
+  }
+
   .header > .container {
     padding-right: 0.75rem;
     padding-left: 0.75rem;
@@ -169,6 +177,12 @@
 
   .header-icons-right {
     justify-self: end;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .header-menu-button .svg-icon-menu line {
+    transition: none;
   }
 }
 
