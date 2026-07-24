@@ -1,0 +1,52 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin language editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "accessibility": {
+    "skip_to_content": "Aller au contenu",
+    "close": "Fermer",
+    "menu": "Ouvrir le menu",
+    "navigation": "Navigation principale",
+    "secondary_menu": "Menu secondaire",
+    "back_to_menu": "Retour à {{ title }}",
+    "toggle_submenu": "Basculer le sous-menu {{ title }}",
+    "search": "Rechercher",
+    "account": "Compte",
+    "cart": "Panier"
+  },
+  "general": {
+    "account": "Compte",
+    "menu": "Menu",
+    "localization": {
+      "country": "Pays",
+      "countries": "Pays",
+      "filter_countries": "Filtrer les pays",
+      "country_results": {
+        "one": "{{ count }} pays trouvé",
+        "other": "{{ count }} pays trouvés"
+      },
+      "language": "Langue",
+      "languages": "Langues",
+      "no_results": "Aucun résultat trouvé"
+    },
+    "test_modal": "Fenêtre modale de test"
+  },
+  "gift_cards": {
+    "issued": {
+      "title": "Carte-cadeau de {{ value }} pour {{ shop }}",
+      "subtext": "Carte cadeau",
+      "how_to_use_gift_card": "Utilisez ce code de carte cadeau au moment de payer.",
+      "code": "Code de la carte-cadeau",
+      "shop_link": "Visiter la boutique en ligne",
+      "add_to_apple_wallet": "Ajouter à Cartes",
+      "expiration_date": "Expire le {{ expires_on }}",
+      "expired": "Cette carte-cadeau a expiré"
+    }
+  }
+}

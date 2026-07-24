@@ -24,6 +24,12 @@
   - Commit the approved changes directly to `main`.
   - Push to `origin/main`.
 
+## Browser and preview verification
+
+- Do not start a Shopify theme development server or use Chrome/browser automation for routine verification unless the user explicitly requests it.
+- Default to targeted static checks for CSS, Liquid, and JavaScript changes.
+- If visual or interactive browser verification is materially necessary and the user has not requested it, explain why and ask for permission before using browser automation or starting a preview server.
+
 ## Shopify tooling
 
 - Prefer the Shopify plugin for supported Shopify Admin operations. Use browser automation only when the required operation is unavailable through the plugin or Shopify CLI.

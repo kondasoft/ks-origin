@@ -151,6 +151,11 @@
     </div>
   </div>
   </div>
+
+  {% render 'mobile-menu-dialog',
+    menu: section.settings.mobile_menu,
+    section_id: section.id
+  %}
 </div>
 
 {% schema %}

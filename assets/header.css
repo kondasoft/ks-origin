@@ -1,8 +1,8 @@
 /*
   Header stylesheet
 
-  This file contains header layout, navigation, and responsive presentation styles.
-  Keep styles for dialogs and other shared components in their respective stylesheets.
+  This file contains critical header layout and immediately visible navigation styles.
+  Keep deferred menu presentation and shared component styles in lazy-styles.css.
 */
 
 
@@ -188,10 +188,7 @@
     justify-content: center;
   }
 
-  .header-menu-list,
-  .header-dropdown-menu,
-  .header-megamenu-grid,
-  .header-megamenu-links {
+  .header-menu-list {
     margin: 0;
     padding: 0;
     list-style: none;
@@ -268,158 +265,6 @@
     transform: rotate(180deg);
   }
 
-  .header-dropdown-menu {
-    position: absolute;
-    top: calc(100% + 0.25em);
-    left: 0;
-    z-index: 3;
-    min-width: 200px;
-    padding: 0.5em;
-    color: rgb(var(--text-color));
-    background-color: rgb(var(--background-color));
-    border: 1px solid rgb(var(--text-color) / var(--border-opacity));
-    border-radius: var(--border-radius);
-    box-shadow: 0 0.25rem 0.5rem rgb(var(--text-color) / 0.1);
-  }
-
-  .header-dropdown-link {
-    display: block;
-    padding: 0.5em 0.75em;
-    color: rgb(var(--text-color));
-    text-decoration: none;
-    border-radius: var(--border-radius);
-    font-size: .925em;
-  }
-
-  .header-megamenu {
-    position: absolute;
-    top: calc(100% - 1px);
-    right: 0;
-    left: 0;
-    z-index: 2;
-    padding: 2.25em 0;
-    color: rgb(var(--text-color));
-    background-color: rgb(var(--background-color));
-    /* border-top: 1px solid rgb(var(--text-color) / var(--border-opacity)); */
-    border-bottom: 1px solid rgb(var(--text-color) / var(--border-opacity));
-    box-shadow: 0 0.5rem 0.5rem -0.5rem rgb(var(--text-color) / 0.1);
-  }
-
-  .header-dropdown-menu:not([hidden]),
-  .header-megamenu:not([hidden]) {
-    animation: header-menu-enter 180ms ease-out both;
-  }
-
-  @keyframes header-menu-enter {
-    from {
-      opacity: 0;
-      transform: translateY(-6px);
-    }
-  }
-
-  .header-megamenu-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-    gap: 1.5em;
-  }
-
-  .header-megamenu-heading {
-    display: block;
-    margin-bottom: 0.5em;
-    color: rgb(var(--text-color));
-    font-family: var(--font-heading-family);
-    font-weight: var(--font-heading-weight);
-    font-style: var(--font-heading-style);
-    text-decoration: none;
-  }
-
-  .header-megamenu-heading:focus-visible {
-    padding-left: 0.375em;
-    padding-right: 0.375em;
-  }
-
-  .header-megamenu-links {
-    display: grid;
-    gap: 0.125em;
-  }
-
-  .header-megamenu-link {
-    display: block;
-    padding: 0.5em 0;
-    text-decoration: none;
-    font-size: 0.925em;
-  }
-
-  .header-megamenu-link:focus-visible {
-    padding-left: 0.375em;
-    padding-right: 0.375em;
-  }
-
-  .header-megamenu-image-link {
-    display: grid;
-    gap: 0.75em;
-    color: rgb(var(--text-color));
-    font-family: var(--font-heading-family);
-    font-weight: var(--font-heading-weight);
-    font-style: var(--font-heading-style);
-    text-decoration: none;
-  }
-
-  .header-megamenu-image {
-    display: block;
-    overflow: hidden;
-    background-color: rgb(var(--text-color) / 0.05);
-    border-radius: var(--border-radius);
-  }
-
-  .header-megamenu-image img {
-    display: block;
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-    transition: transform 250ms ease;
-  }
-
-  .header[data-megamenu-image-ratio="square"] .header-megamenu-image {
-    aspect-ratio: 1 / 1;
-  }
-
-  .header[data-megamenu-image-ratio="landscape"] .header-megamenu-image {
-    aspect-ratio: 4 / 3;
-  }
-
-  .header[data-megamenu-image-ratio="portrait"] .header-megamenu-image {
-    aspect-ratio: 3 / 4;
-  }
-
-  .header[data-megamenu-image-ratio="square"] .header-megamenu-image img,
-  .header[data-megamenu-image-ratio="landscape"] .header-megamenu-image img,
-  .header[data-megamenu-image-ratio="portrait"] .header-megamenu-image img {
-    height: 100%;
-  }
-
-  .header-megamenu-image-link:hover img {
-    transform: scale(1.04);
-  }
-
-  body[data-header-menu-open="true"]::after {
-    content: "";
-    position: fixed;
-    top: var(--header-menu-backdrop-top, 0);
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 99;
-    background-color: rgb(var(--color-text) / 0.5);
-    cursor: pointer;
-    animation: header-menu-backdrop-enter 200ms ease-out both;
-  }
-
-  @keyframes header-menu-backdrop-enter {
-    from {
-      opacity: 0;
-    }
-  }
 }
 
 @media (min-width: 1200px) and (any-pointer: coarse) {

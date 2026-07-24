@@ -1,0 +1,84 @@
+{% if localization.available_countries.size > 1 %}
+  <theme-dialog>
+    <dialog
+      id="countries-dialog"
+      class="dialog modal localization-dialog"
+      aria-labelledby="countries-dialog-title"
+    >
+      <div class="dialog-header">
+        <h2 id="countries-dialog-title" class="dialog-title">
+          {{ 'general.localization.countries' | t }}
+        </h2>
+
+        <button
+          class="icon-button dialog-close"
+          type="button"
+          data-dialog-close
+          aria-label="{{ 'accessibility.close' | t }}"
+        >
+          {% render 'svg-icons', icon: 'close' %}
+        </button>
+      </div>
+
+      <div class="dialog-body">
+        <localization-country-filter>
+          <div class="localization-filter">
+            <input
+              class="localization-filter-input"
+              type="search"
+              placeholder="{{ 'general.localization.filter_countries' | t }}"
+              aria-label="{{ 'general.localization.filter_countries' | t }}"
+              aria-controls="localization-countries-list"
+              autocomplete="off"
+              data-localization-country-filter-input
+            >
+          </div>
+
+          <p
+            class="visually-hidden"
+            role="status"
+            aria-live="polite"
+            data-localization-country-filter-status
+            data-text-results-one="{{ 'general.localization.country_results.one' | t: count: '[count]' | escape }}"
+            data-text-results-other="{{ 'general.localization.country_results.other' | t: count: '[count]' | escape }}"
+            data-text-no-results="{{ 'general.localization.no_results' | t | escape }}"
+          ></p>
+
+          <ul
+            id="localization-countries-list"
+            class="localization-list"
+            aria-label="{{ 'general.localization.countries' | t }}"
+          >
+            {% for country in localization.available_countries %}
+              <li
+                data-localization-country-item
+                data-filter-text="{{ country.name | append: ' ' | append: country.iso_code | append: ' ' | append: country.currency.iso_code | escape }}"
+              >
+                <a
+                  class="localization-option{% if country.iso_code == localization.country.iso_code %} active{% endif %}"
+                  href="{{ routes.root_url }}?country={{ country.iso_code | downcase }}"
+                  {% if country.iso_code == localization.country.iso_code %}aria-current="true"{% endif %}
+                >
+                  <span class="localization-option-image" aria-hidden="true">
+                    {{ country | image_url: width: 20, height: 20 | image_tag: loading: 'lazy' }}
+                  </span>
+                  <span class="localization-option-text">
+                    <span>{{ country.name }}</span>
+                    <small>
+                      {{ country.currency.iso_code }}
+                      ({{ country.currency.symbol }})
+                    </small>
+                  </span>
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+
+          <p class="localization-filter-empty" hidden>
+            {{ 'general.localization.no_results' | t }}
+          </p>
+        </localization-country-filter>
+      </div>
+    </dialog>
+  </theme-dialog>
+{% endif %}
