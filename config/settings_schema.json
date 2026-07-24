@@ -135,6 +135,69 @@
     ]
   },
   {
+    "name": "Social media",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Enter the full URL for each social media profile below (for example, https://www.facebook.com/shopify)."
+      },
+      {
+        "type": "text",
+        "id": "social_facebook",
+        "label": "Facebook",
+        "default": "https://www.facebook.com/shopify"
+      },
+      {
+        "type": "text",
+        "id": "social_instagram",
+        "label": "Instagram",
+        "default": "https://www.instagram.com/shopify"
+      },
+      {
+        "type": "text",
+        "id": "social_threads",
+        "label": "Threads",
+        "default": "https://www.threads.com/@shopify"
+      },
+      {
+        "type": "text",
+        "id": "social_x",
+        "label": "X",
+        "default": "https://x.com/shopify"
+      },
+      {
+        "type": "text",
+        "id": "social_tiktok",
+        "label": "TikTok",
+        "default": "https://www.tiktok.com/@shopify"
+      },
+      {
+        "type": "text",
+        "id": "social_pinterest",
+        "label": "Pinterest",
+        "default": "https://www.pinterest.com/shopify"
+      },
+      {
+        "type": "text",
+        "id": "social_snapchat",
+        "label": "Snapchat",
+        "default": "https://www.snapchat.com/add/shopify"
+      },
+      {
+        "type": "text",
+        "id": "social_youtube",
+        "label": "YouTube",
+        "default": "https://www.youtube.com/@shopify"
+      },
+      {
+        "type": "text",
+        "id": "social_linkedin",
+        "label": "LinkedIn",
+        "default": "https://www.linkedin.com/company/shopify"
+      }
+    ]
+  },
+  {
     "name": "Favicon",
     "settings": [
       {

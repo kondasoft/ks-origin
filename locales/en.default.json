@@ -5,6 +5,7 @@
     "menu": "Open menu",
     "navigation": "Main navigation",
     "secondary_menu": "Secondary menu",
+    "social_icons": "Social media links",
     "back_to_menu": "Back to {{ title }}",
     "toggle_submenu": "Toggle {{ title }} submenu",
     "search": "Search",

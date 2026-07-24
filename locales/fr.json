@@ -14,6 +14,7 @@
     "menu": "Ouvrir le menu",
     "navigation": "Navigation principale",
     "secondary_menu": "Menu secondaire",
+    "social_icons": "Liens vers les réseaux sociaux",
     "back_to_menu": "Retour à {{ title }}",
     "toggle_submenu": "Basculer le sous-menu {{ title }}",
     "search": "Rechercher",
