@@ -1,8 +1,8 @@
 /*
   Lazy-loaded components stylesheet
 
-  This file contains non-critical component and interaction styles loaded after base styles.
-  Keep foundational layout and immediately visible section styles in their critical stylesheets.
+  This file loads after base.css and critical.css and contains non-critical components and interactions.
+  Keep global foundations in base.css and immediately visible component layout in critical.css.
 */
 
 
@@ -10,15 +10,12 @@
   Dialogs
 */
 .dialog {
-  --dialog-transition-duration: 300ms;
-  --dialog-transition-easing: cubic-bezier(0.22, 1, 0.36, 1);
-  --dialog-width: 400px;
-  --drawer-width: 400px;
+  --dialog-transition-duration: 200ms;
+  --dialog-transition-easing: ease-out;
   position: fixed;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  width: min(calc(100vw - 2rem), var(--dialog-width));
   max-width: 100%;
   padding: 0;
   color: rgb(var(--color-text));
@@ -92,6 +89,8 @@
 }
 
 .modal {
+  --modal-width: 480px;
+  width: min(calc(100vw - 2rem), var(--modal-width));
   opacity: 1;
   transform: none;
   border-radius: var(--border-radius);
@@ -110,7 +109,7 @@
 }
 
 .drawer {
-  --dialog-width: var(--drawer-width);
+  --drawer-width: 400px;
   width: min(100vw, var(--drawer-width));
   height: 100dvh;
   max-height: none;
@@ -168,6 +167,12 @@
 
 .drawer-bottom[open].is-closing {
   transform: translateY(100%);
+}
+
+@media (max-width: 599px) {
+  .drawer {
+    width: 85vw;
+  }
 }
 
 

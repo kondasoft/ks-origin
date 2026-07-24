@@ -1,8 +1,8 @@
 /*
   Base stylesheet
 
-  This file contains global foundational styles and reusable utilities.
-  Keep component-specific styles in their respective component stylesheets.
+  This file loads first and contains global foundations, element defaults, shared controls, and utilities.
+  Keep above-the-fold component layout in critical.css and deferred presentation in lazy-styles.css.
 */
 
 

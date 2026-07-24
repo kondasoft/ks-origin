@@ -1,8 +1,8 @@
 /*
-  Header stylesheet
+  Critical stylesheet
 
-  This file contains critical header layout and immediately visible navigation styles.
-  Keep deferred menu presentation and shared component styles in lazy-styles.css.
+  This file contains critical page-shell and immediately visible component styles.
+  Keep global foundations in base.css and deferred interactions in lazy-styles.css.
 */
 
 
@@ -98,6 +98,18 @@
 .header-icon-link {
   --icon-button-color: var(--text-color);
   position: relative;
+}
+
+.header-localization-image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+}
+
+.header-localization-image img {
+  display: block;
 }
 
 .svg-icon {

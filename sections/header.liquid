@@ -114,6 +114,34 @@
     {% endif %}
 
     <div class="header-icons">
+      {% if localization.available_languages.size > 1 %}
+        <button
+          class="icon-button header-icon-link"
+          type="button"
+          data-toggle="languages-dialog"
+          aria-controls="languages-dialog"
+          aria-haspopup="dialog"
+          aria-label="{{ 'general.localization.language' | t }}: {{ localization.language.endonym_name | capitalize | escape }}"
+        >
+          {% render 'svg-icons', icon: 'translate' %}
+        </button>
+      {% endif %}
+
+      {% if localization.available_countries.size > 1 %}
+        <button
+          class="icon-button header-icon-link"
+          type="button"
+          data-toggle="countries-dialog"
+          aria-controls="countries-dialog"
+          aria-haspopup="dialog"
+          aria-label="{{ 'general.localization.country' | t }}: {{ localization.country.name | escape }}"
+        >
+          <span class="header-localization-image" aria-hidden="true">
+            {{ localization.country | image_url: width: 20, height: 20 | image_tag: loading: 'eager' }}
+          </span>
+        </button>
+      {% endif %}
+
       <a
         class="icon-button header-icon-link"
         href="{{ routes.search_url }}"
