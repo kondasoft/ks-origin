@@ -19,7 +19,8 @@
 - Treat "checkpoint", "commit", "push", or "commit and push" as an explicit checkpoint request.
 - At a checkpoint:
   - Review the complete combined diff, including `git diff --stat` and `git diff --summary`.
-  - Treat unexpected file deletions, renames, large code removals, and reversions of recently committed features as potential accidental destructive changes. Trace their origin and stop for user confirmation unless the removal was explicitly requested.
+  - Limit destructive-change review to unexpected file deletions, renames, large code removals, and substantial feature reversions. Trace their origin and stop for user confirmation unless the removal was explicitly requested.
+  - Preserve small concurrent user edits, including removed options, reordered settings, value changes, and styling adjustments. Do not restore or rewrite them merely because they differ from the agent's earlier changes.
   - Preserve unrelated user changes.
   - Run the repository linter and Shopify Theme Check once.
   - Commit the approved changes directly to `main`.
