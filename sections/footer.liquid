@@ -1,15 +1,268 @@
+{% if section.blocks.size > 0 %}
+  <div class="footer">
+    <div class="container {{ settings.container_width }}">
+      <div class="footer-blocks">
+        {% for block in section.blocks %}
+          <div
+            class="footer-block footer-block-{{ block.type }}"
+            {{ block.shopify_attributes }}
+          >
+            <theme-collapse
+              class="theme-collapse footer-block-collapse"
+              data-collapse-mobile
+            >
+              <details class="theme-collapse-details footer-block-details" open>
+                <summary class="theme-collapse-summary footer-block-summary">
+                  <span class="footer-block-title">{{ block.settings.heading }}</span>
+                  <span class="theme-collapse-icon footer-block-icon" aria-hidden="true">
+                    {% render 'svg-icons', icon: 'chevron-down', icon_size: 18 %}
+                  </span>
+                </summary>
+
+                <div class="theme-collapse-content footer-block-content">
+                  {% if block.settings.heading != blank %}
+                    <h2 class="footer-block-heading">{{ block.settings.heading }}</h2>
+                  {% endif %}
+
+                  {% case block.type %}
+                    {% when 'menu' %}
+                      <ul class="footer-menu-list" role="list">
+                        {% for index in (1..10) %}
+                          {% liquid
+                            assign label_key = 'link_' | append: index | append: '_label'
+                            assign url_key = 'link_' | append: index | append: '_url'
+                            assign link_label = block.settings[label_key]
+                            assign link_url = block.settings[url_key] | default: routes.root_url
+                          %}
+
+                          {% if link_label != blank %}
+                            <li>
+                              <a href="{{ link_url }}">{{ link_label | escape }}</a>
+                            </li>
+                          {% endif %}
+                        {% endfor %}
+                      </ul>
+
+                    {% when 'text' %}
+                      {% if block.settings.text != blank %}
+                        <div class="footer-text rte">
+                          {{ block.settings.text }}
+                        </div>
+                      {% endif %}
+                  {% endcase %}
+                </div>
+              </details>
+            </theme-collapse>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+{% endif %}
+
 {% schema %}
 {
   "name": "Footer",
+  "tag": "footer",
+  "limit": 1,
   "settings": [],
-  "blocks": [],
+  "blocks": [
+    {
+      "type": "menu",
+      "name": "Menu",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Menu"
+        },
+        {
+          "type": "header",
+          "content": "Menu item 1"
+        },
+        {
+          "type": "text",
+          "id": "link_1_label",
+          "label": "Menu item"
+        },
+        {
+          "type": "url",
+          "id": "link_1_url",
+          "label": "Link",
+          "visible_if": "{{ block.settings.link_1_label != blank }}"
+        },
+        {
+          "type": "header",
+          "content": "Menu item 2"
+        },
+        {
+          "type": "text",
+          "id": "link_2_label",
+          "label": "Menu item"
+        },
+        {
+          "type": "url",
+          "id": "link_2_url",
+          "label": "Link",
+          "visible_if": "{{ block.settings.link_2_label != blank }}"
+        },
+        {
+          "type": "header",
+          "content": "Menu item 3"
+        },
+        {
+          "type": "text",
+          "id": "link_3_label",
+          "label": "Menu item"
+        },
+        {
+          "type": "url",
+          "id": "link_3_url",
+          "label": "Link",
+          "visible_if": "{{ block.settings.link_3_label != blank }}"
+        },
+        {
+          "type": "header",
+          "content": "Menu item 4"
+        },
+        {
+          "type": "text",
+          "id": "link_4_label",
+          "label": "Menu item"
+        },
+        {
+          "type": "url",
+          "id": "link_4_url",
+          "label": "Link",
+          "visible_if": "{{ block.settings.link_4_label != blank }}"
+        },
+        {
+          "type": "header",
+          "content": "Menu item 5"
+        },
+        {
+          "type": "text",
+          "id": "link_5_label",
+          "label": "Menu item"
+        },
+        {
+          "type": "url",
+          "id": "link_5_url",
+          "label": "Link",
+          "visible_if": "{{ block.settings.link_5_label != blank }}"
+        },
+        {
+          "type": "header",
+          "content": "Menu item 6"
+        },
+        {
+          "type": "text",
+          "id": "link_6_label",
+          "label": "Menu item"
+        },
+        {
+          "type": "url",
+          "id": "link_6_url",
+          "label": "Link",
+          "visible_if": "{{ block.settings.link_6_label != blank }}"
+        },
+        {
+          "type": "header",
+          "content": "Menu item 7"
+        },
+        {
+          "type": "text",
+          "id": "link_7_label",
+          "label": "Menu item"
+        },
+        {
+          "type": "url",
+          "id": "link_7_url",
+          "label": "Link",
+          "visible_if": "{{ block.settings.link_7_label != blank }}"
+        },
+        {
+          "type": "header",
+          "content": "Menu item 8"
+        },
+        {
+          "type": "text",
+          "id": "link_8_label",
+          "label": "Menu item"
+        },
+        {
+          "type": "url",
+          "id": "link_8_url",
+          "label": "Link",
+          "visible_if": "{{ block.settings.link_8_label != blank }}"
+        },
+        {
+          "type": "header",
+          "content": "Menu item 9"
+        },
+        {
+          "type": "text",
+          "id": "link_9_label",
+          "label": "Menu item"
+        },
+        {
+          "type": "url",
+          "id": "link_9_url",
+          "label": "Link",
+          "visible_if": "{{ block.settings.link_9_label != blank }}"
+        },
+        {
+          "type": "header",
+          "content": "Menu item 10"
+        },
+        {
+          "type": "text",
+          "id": "link_10_label",
+          "label": "Menu item"
+        },
+        {
+          "type": "url",
+          "id": "link_10_url",
+          "label": "Link",
+          "visible_if": "{{ block.settings.link_10_label != blank }}"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Text",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "About"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Share information about your brand with your customers.</p>"
+        }
+      ]
+    }
+  ],
   "enabled_on": {
     "groups": ["footer"]
   },
   "presets": [
     {
       "name": "Footer",
-      "category": "Footer"
+      "category": "Footer",
+      "blocks": [
+        {
+          "type": "menu"
+        },
+        {
+          "type": "text"
+        }
+      ]
     }
   ]
 }

@@ -18,7 +18,8 @@
 - Do not commit or push after each edit.
 - Treat "checkpoint", "commit", "push", or "commit and push" as an explicit checkpoint request.
 - At a checkpoint:
-  - Review the combined diff.
+  - Review the complete combined diff, including `git diff --stat` and `git diff --summary`.
+  - Treat unexpected file deletions, renames, large code removals, and reversions of recently committed features as potential accidental destructive changes. Trace their origin and stop for user confirmation unless the removal was explicitly requested.
   - Preserve unrelated user changes.
   - Run the repository linter and Shopify Theme Check once.
   - Commit the approved changes directly to `main`.
@@ -33,6 +34,8 @@
 ## Shopify tooling
 
 - Prefer the Shopify plugin for supported Shopify Admin operations. Use browser automation only when the required operation is unavailable through the plugin or Shopify CLI.
+- Before running `shopify theme pull`, identify the target theme ID and inspect the working tree. Do not pull code from a theme that has not been explicitly confirmed as synchronized with the repository when local changes could be overwritten.
+- Treat code changes introduced by a theme pull as untrusted synchronization changes. JSON template and section-group updates may be expected, but do not commit pulled Liquid, CSS, JavaScript, configuration, locale, snippet, or asset deletions and reversions without comparing them against recent Git history and confirming that they are intentional.
 
 ## JSON templates
 

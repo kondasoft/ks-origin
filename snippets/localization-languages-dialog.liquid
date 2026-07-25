@@ -1,0 +1,43 @@
+{% if localization.available_languages.size > 1 %}
+  <theme-dialog>
+    <dialog
+      id="languages-dialog"
+      class="dialog modal localization-dialog"
+      aria-labelledby="languages-dialog-title"
+    >
+      <div class="dialog-header">
+        <h2 id="languages-dialog-title" class="dialog-title">
+          {{ 'general.localization.languages' | t }}
+        </h2>
+
+        <button
+          class="icon-button dialog-close"
+          type="button"
+          data-dialog-close
+          aria-label="{{ 'accessibility.close' | t }}"
+        >
+          {% render 'svg-icons', icon: 'close' %}
+        </button>
+      </div>
+
+      <div class="dialog-body">
+        <ul class="localization-list" aria-label="{{ 'general.localization.languages' | t }}">
+          {% for language in localization.available_languages %}
+            <li>
+              <a
+                class="localization-option{% if language.iso_code == localization.language.iso_code %} active{% endif %}"
+                href="{{ language.root_url }}"
+                {% if language.iso_code == localization.language.iso_code %}aria-current="true"{% endif %}
+              >
+                <span class="localization-option-text">
+                  <span>{{ language.endonym_name | capitalize }}</span>
+                  <small>{{ language.name }} ({{ language.iso_code }})</small>
+                </span>
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </dialog>
+  </theme-dialog>
+{% endif %}

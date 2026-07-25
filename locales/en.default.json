@@ -13,6 +13,8 @@
     "close": "Close",
     "menu": "Open menu",
     "navigation": "Main navigation",
+    "secondary_menu": "Secondary menu",
+    "social_icons": "Social media links",
     "back_to_menu": "Back to {{ title }}",
     "toggle_submenu": "Toggle {{ title }} submenu",
     "search": "Search",
@@ -22,6 +24,18 @@
   "general": {
     "account": "Account",
     "menu": "Menu",
+    "localization": {
+      "country": "Country",
+      "countries": "Countries",
+      "filter_countries": "Filter countries",
+      "country_results": {
+        "one": "{{ count }} country found",
+        "other": "{{ count }} countries found"
+      },
+      "language": "Language",
+      "languages": "Languages",
+      "no_results": "No results found"
+    },
     "test_modal": "Test modal"
   },
   "gift_cards": {

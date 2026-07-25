@@ -20,7 +20,7 @@
       {% sections 'header-group' %}
     </div> 
 
-    <main id="main">
+    <main id="main" style="height: 300px;">
       {{ content_for_layout }}
     </main>
 
@@ -30,6 +30,8 @@
 
     {% render 'search-dialog' %}
     {% render 'cart-dialog' %}
+    {% render 'localization-countries-dialog' %}
+    {% render 'localization-languages-dialog' %}
     {% render 'modal-test-dialog' %}
   </body>
 </html>

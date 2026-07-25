@@ -1,0 +1,90 @@
+<div
+  class="group-block"
+  style="
+    --mobile-content-direction: {{ block.settings.mobile_content_direction }};
+    --mobile-gap: {{ block.settings.mobile_gap | divided_by: 16.0 | append: 'rem' }};
+    --desktop-content-direction: {{ block.settings.desktop_content_direction }};
+    --desktop-gap: {{ block.settings.desktop_gap | divided_by: 16.0 | append: 'rem' }};
+  "
+  {{ block.shopify_attributes }}
+>
+  {% content_for 'blocks' %}
+</div>
+
+{% stylesheet %}
+  .group-block {
+    display: flex;
+    flex-direction: var(--mobile-content-direction);
+    gap: var(--mobile-gap);
+  }
+
+  @media (min-width: 1200px) {
+    .group-block {
+      flex-direction: var(--desktop-content-direction);
+      gap: var(--desktop-gap);
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Group",
+  "tag": null,
+  "settings": [
+    {
+      "type": "select",
+      "id": "mobile_content_direction",
+      "label": "Mobile direction",
+      "options": [
+        { "value": "column", "label": "Vertical" },
+        { "value": "row", "label": "Horizontal" }
+      ],
+      "default": "column"
+    },
+    {
+      "type": "range",
+      "id": "mobile_gap",
+      "label": "Mobile gap",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "select",
+      "id": "desktop_content_direction",
+      "label": "Desktop direction",
+      "options": [
+        { "value": "column", "label": "Vertical" },
+        { "value": "row", "label": "Horizontal" }
+      ],
+      "default": "column"
+    },
+    {
+      "type": "range",
+      "id": "desktop_gap",
+      "label": "Desktop gap",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 12
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@theme"
+    },
+    {
+      "type": "@app"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Group",
+      "category": "Layout"
+    }
+  ]
+}
+{% endschema %}

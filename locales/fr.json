@@ -13,6 +13,8 @@
     "close": "Fermer",
     "menu": "Ouvrir le menu",
     "navigation": "Navigation principale",
+    "secondary_menu": "Menu secondaire",
+    "social_icons": "Liens vers les réseaux sociaux",
     "back_to_menu": "Retour à {{ title }}",
     "toggle_submenu": "Basculer le sous-menu {{ title }}",
     "search": "Rechercher",
@@ -22,6 +24,18 @@
   "general": {
     "account": "Compte",
     "menu": "Menu",
+    "localization": {
+      "country": "Pays",
+      "countries": "Pays",
+      "filter_countries": "Filtrer les pays",
+      "country_results": {
+        "one": "{{ count }} pays trouvé",
+        "other": "{{ count }} pays trouvés"
+      },
+      "language": "Langue",
+      "languages": "Langues",
+      "no_results": "Aucun résultat trouvé"
+    },
     "test_modal": "Fenêtre modale de test"
   },
   "gift_cards": {

@@ -1,8 +1,8 @@
 /*
-  Header stylesheet
+  Critical stylesheet
 
-  This file contains critical header layout and immediately visible navigation styles.
-  Keep deferred menu presentation and shared component styles in lazy-styles.css.
+  This file contains critical page-shell and immediately visible component styles.
+  Keep global foundations in base.css and deferred interactions in lazy-styles.css.
 */
 
 
@@ -100,6 +100,18 @@
   position: relative;
 }
 
+.header-localization-image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+}
+
+.header-localization-image img {
+  display: block;
+}
+
 .svg-icon {
   display: block;
   flex-shrink: 0;
@@ -107,13 +119,13 @@
 
 .cart-count-badge {
   position: absolute;
-  top: 2px;
-  right: 0;
+  top: 6px;
+  right: 4px;
   display: grid;
   place-items: center;
-  min-width: 17px;
-  height: 17px;
-  padding: 0 0.2em;
+  width: 1.5em;
+  height: 1.5em;
+  padding: 0;
   color: rgb(var(--color-background));
   font-size: var(--fs-xs);
   line-height: 1;
@@ -177,12 +189,6 @@
 
   .header-icons-right {
     justify-self: end;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .header-menu-button .svg-icon-menu line {
-    transition: none;
   }
 }
 
@@ -297,5 +303,11 @@
   .header-nav-toggle {
     width: 2.5em;
     height: 2.5em;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .header-menu-button .svg-icon-menu line {
+    transition: none;
   }
 }

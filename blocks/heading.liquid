@@ -1,0 +1,46 @@
+{% liquid
+  assign heading_tag = block.settings.heading_tag | default: 'h2'
+%}
+
+{% if block.settings.heading != blank %}
+  <{{ heading_tag }}
+    class="heading-block"
+    {{ block.shopify_attributes }}
+  >
+    {{ block.settings.heading }}
+  </{{ heading_tag }}>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Heading",
+  "tag": null,
+  "settings": [
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "A thoughtful heading"
+    },
+    {
+      "type": "select",
+      "id": "heading_tag",
+      "label": "Heading level",
+      "options": [
+        { "value": "h2", "label": "Heading 2" },
+        { "value": "h3", "label": "Heading 3" },
+        { "value": "h4", "label": "Heading 4" },
+        { "value": "h5", "label": "Heading 5" },
+        { "value": "h6", "label": "Heading 6" }
+      ],
+      "default": "h2"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Heading",
+      "category": "Text"
+    }
+  ]
+}
+{% endschema %}

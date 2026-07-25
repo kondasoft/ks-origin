@@ -1,0 +1,48 @@
+{% if block.settings.label != blank %}
+  <a
+    class="button-block btn {{ block.settings.style }}"
+    href="{{ block.settings.link | default: routes.root_url }}"
+    {{ block.shopify_attributes }}
+  >
+    {{ block.settings.label | escape }}
+  </a>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Button",
+  "tag": null,
+  "settings": [
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Label",
+      "default": "Button"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "Link",
+      "visible_if": "{{ block.settings.label != blank }}"
+    },
+    {
+      "type": "select",
+      "id": "style",
+      "label": "Style",
+      "options": [
+        { "value": "btn-accent-solid", "label": "Accent solid" },
+        { "value": "btn-accent-outline", "label": "Accent outline" },
+        { "value": "btn-text-solid", "label": "Text solid" },
+        { "value": "btn-text-outline", "label": "Text outline" }
+      ],
+      "default": "btn-accent-solid"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Button",
+      "category": "Buttons"
+    }
+  ]
+}
+{% endschema %}

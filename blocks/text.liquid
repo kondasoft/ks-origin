@@ -1,0 +1,29 @@
+{% if block.settings.text != blank %}
+  <div
+    class="text-block rte"
+    {{ block.shopify_attributes }}
+  >
+    {{ block.settings.text }}
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Text",
+  "tag": null,
+  "settings": [
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text",
+      "default": "<p>Share information about your brand with your customers.</p>"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Text",
+      "category": "Text"
+    }
+  ]
+}
+{% endschema %}
