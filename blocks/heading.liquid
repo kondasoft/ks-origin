@@ -1,15 +1,20 @@
 {% liquid
-  assign heading_tag = block.settings.heading_tag | default: 'h2'
+  assign heading_tag = block.settings.heading_tag | remove: 'h'
+  assign heading_size = block.settings.heading_size
 %}
 
-{% if block.settings.heading != blank %}
-  <{{ heading_tag }}
-    class="heading-block"
-    {{ block.shopify_attributes }}
-  >
+<div
+  class="heading-block block-spacing"
+  style="
+    --pt: {{ block.settings.pt | divided_by: 16.0 | append: 'em' }};
+    --pb: {{ block.settings.pb | divided_by: 16.0 | append: 'em' }};
+  "
+  {{ block.shopify_attributes }}
+>
+  <h{{ heading_tag }} class="{{ heading_size }}">
     {{ block.settings.heading }}
-  </{{ heading_tag }}>
-{% endif %}
+  </h{{ heading_tag }}>
+</div>
 
 {% schema %}
 {
@@ -25,15 +30,55 @@
     {
       "type": "select",
       "id": "heading_tag",
-      "label": "Heading level",
+      "label": "HTML tag",
       "options": [
-        { "value": "h2", "label": "Heading 2" },
-        { "value": "h3", "label": "Heading 3" },
-        { "value": "h4", "label": "Heading 4" },
-        { "value": "h5", "label": "Heading 5" },
-        { "value": "h6", "label": "Heading 6" }
+        { "value": "1", "label": "H1" },
+        { "value": "2", "label": "H2" },
+        { "value": "3", "label": "H3" },
+        { "value": "4", "label": "H4" },
+        { "value": "5", "label": "H5" },
+        { "value": "6", "label": "H6" }
+      ],
+      "default": "2",
+      "info": "Sets the heading level for page structure and accessibility. Use Heading size to control its appearance."
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "options": [
+        { "value": "h1", "label": "H1" },
+        { "value": "h2", "label": "H2" },
+        { "value": "h3", "label": "H3" },
+        { "value": "h4", "label": "H4" },
+        { "value": "h5", "label": "H5" },
+        { "value": "h6", "label": "H6" }
       ],
       "default": "h2"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pt",
+      "label": "Top",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "pb",
+      "label": "Bottom",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 0
     }
   ],
   "presets": [

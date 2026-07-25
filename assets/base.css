@@ -216,6 +216,22 @@ button {
   outline-color: var(--button-focus-color);
 }
 
+.btn-sm {
+  min-width: 60%;
+  padding: 0.625em 1em;
+  font-size: var(--fs-sm);
+}
+
+.btn-md {
+  font-size: var(--fs-md);
+}
+
+.btn-lg {
+  min-width: 80%;
+  padding: 0.875em 1.5em;
+  font-size: var(--fs-lg);
+}
+
 .btn-accent-solid {
   --button-color: rgb(var(--color-background));
   --button-background: rgb(var(--color-accent));
@@ -261,6 +277,14 @@ button {
 @media (min-width: 600px) {
   .btn {
     min-width: 180px;
+  }
+
+  .btn-sm {
+    min-width: 140px;
+  }
+
+  .btn-lg {
+    min-width: 220px;
   }
 }
 
@@ -411,6 +435,17 @@ th {
 .fs-5xl { font-size: var(--fs-5xl); }
 .fs-6xl { font-size: var(--fs-6xl); }
 
+.fs-3xl,
+.fs-4xl,
+.fs-5xl,
+.fs-6xl,
+.fs-3xl p,
+.fs-4xl p,
+.fs-5xl p,
+.fs-6xl p {
+  line-height: var(--heading-line-height);
+}
+
 
 /*
   Letter spacing
@@ -434,6 +469,25 @@ th {
 
 @media (min-width: 600px) {
   .section-spacing {
+    --spacing-scale: 1;
+  }
+}
+
+
+/*
+  Block spacing
+*/
+.block-spacing {
+  --spacing-scale: 0.75;
+  box-sizing: border-box;
+  padding-top: calc(var(--pt) * var(--spacing-scale));
+  padding-bottom: calc(var(--pb) * var(--spacing-scale));
+  margin-top: calc(var(--mt) * var(--spacing-scale));
+  margin-bottom: calc(var(--mb) * var(--spacing-scale));
+}
+
+@media (min-width: 600px) {
+  .block-spacing {
     --spacing-scale: 1;
   }
 }

@@ -1,6 +1,6 @@
 {% if block.settings.label != blank %}
   <a
-    class="button-block btn {{ block.settings.style }}"
+    class="button-block btn {{ block.settings.size }} {{ block.settings.style }}"
     href="{{ block.settings.link | default: routes.root_url }}"
     {{ block.shopify_attributes }}
   >
@@ -36,6 +36,17 @@
         { "value": "btn-text-outline", "label": "Text outline" }
       ],
       "default": "btn-accent-solid"
+    },
+    {
+      "type": "select",
+      "id": "size",
+      "label": "Size",
+      "options": [
+        { "value": "btn-sm", "label": "Small" },
+        { "value": "btn-md", "label": "Medium" },
+        { "value": "btn-lg", "label": "Large" }
+      ],
+      "default": "btn-md"
     }
   ],
   "presets": [

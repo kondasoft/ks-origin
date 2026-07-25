@@ -1,11 +1,15 @@
-{% if block.settings.text != blank %}
-  <div
-    class="text-block rte"
-    {{ block.shopify_attributes }}
-  >
+<div
+  class="text-block block-spacing"
+  style="
+    --pt: {{ block.settings.pt | divided_by: 16.0 | append: 'em' }};
+    --pb: {{ block.settings.pb | divided_by: 16.0 | append: 'em' }};
+  "
+  {{ block.shopify_attributes }}
+>
+  <div class="rte {{ block.settings.text_size }}">
     {{ block.settings.text }}
   </div>
-{% endif %}
+</div>
 
 {% schema %}
 {
@@ -17,6 +21,48 @@
       "id": "text",
       "label": "Text",
       "default": "<p>Share information about your brand with your customers.</p>"
+    },
+    {
+      "type": "select",
+      "id": "text_size",
+      "label": "Text size",
+      "options": [
+        { "value": "fs-xs", "label": "Extra small" },
+        { "value": "fs-sm", "label": "Small" },
+        { "value": "fs-md", "label": "Medium" },
+        { "value": "fs-lg", "label": "Large" },
+        { "value": "fs-xl", "label": "Extra large" },
+        { "value": "fs-2xl", "label": "2XL" },
+        { "value": "fs-3xl", "label": "3XL" },
+        { "value": "fs-4xl", "label": "4XL" },
+        { "value": "fs-5xl", "label": "5XL" },
+        { "value": "fs-6xl", "label": "6XL" }
+      ],
+      "default": "fs-md"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pt",
+      "label": "Top",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "pb",
+      "label": "Bottom",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 0
     }
   ],
   "presets": [
