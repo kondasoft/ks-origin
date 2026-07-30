@@ -19,7 +19,8 @@
     "toggle_submenu": "Toggle {{ title }} submenu",
     "search": "Search",
     "account": "Account",
-    "cart": "Cart"
+    "cart": "Cart",
+    "play_video": "Play video"
   },
   "general": {
     "account": "Account",

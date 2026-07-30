@@ -14,6 +14,9 @@
     "heading_size_scale": 100,
     "body_size_scale": 100,
     "container_width": "container-narrow",
+    "social_threads": "",
+    "social_pinterest": "",
+    "social_snapchat": "",
     "content_for_index": [],
     "colors": {
       "background": "#ffffff",

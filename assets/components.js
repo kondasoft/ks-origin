@@ -6,6 +6,164 @@
 */
 
 
+/*
+  Intersection observer
+*/
+const intersectionObservers = new Map();
+const elementObservers = new WeakMap();
+
+function getIntersectionObserver(rootMargin, threshold) {
+  const observerKey = `${rootMargin}:${threshold}`;
+
+  if (intersectionObservers.has(observerKey)) {
+    return intersectionObservers.get(observerKey);
+  }
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        const element = entry.target;
+        const observeOnce = element.dataset.intersectionOnce !== "false";
+
+        element.dataset.intersectionState = entry.isIntersecting
+          ? "entered"
+          : "exited";
+        element.dispatchEvent(
+          new CustomEvent("theme:intersection", {
+            detail: entry,
+          }),
+        );
+
+        if (entry.isIntersecting && observeOnce) {
+          observer.unobserve(element);
+          elementObservers.delete(element);
+        }
+      });
+    },
+    { rootMargin, threshold },
+  );
+
+  intersectionObservers.set(observerKey, observer);
+  return observer;
+}
+
+function initIntersectionObservers(root = document) {
+  const elements = root.querySelectorAll(
+    "[data-intersection-observer]:not([data-intersection-initialized])",
+  );
+
+  elements.forEach((element) => {
+    if (!("IntersectionObserver" in window)) {
+      element.dataset.intersectionState = "entered";
+      element.dispatchEvent(
+        new CustomEvent("theme:intersection", {
+          detail: { isIntersecting: true, target: element },
+        }),
+      );
+      return;
+    }
+
+    const rootMargin = element.dataset.intersectionRootMargin || "0px";
+    const parsedThreshold = Number.parseFloat(
+      element.dataset.intersectionThreshold || "0",
+    );
+    const threshold = Number.isFinite(parsedThreshold) ? parsedThreshold : 0;
+    const observer = getIntersectionObserver(rootMargin, threshold);
+
+    element.dataset.intersectionInitialized = "true";
+    elementObservers.set(element, observer);
+    observer.observe(element);
+  });
+}
+
+function cleanupIntersectionObservers(root) {
+  root.querySelectorAll("[data-intersection-initialized]").forEach((element) => {
+    elementObservers.get(element)?.unobserve(element);
+    elementObservers.delete(element);
+  });
+}
+
+initIntersectionObservers();
+document.addEventListener("shopify:section:load", (event) => {
+  initIntersectionObservers(event.target);
+});
+document.addEventListener("shopify:section:unload", (event) => {
+  cleanupIntersectionObservers(event.target);
+});
+
+
+/*
+  Deferred video
+*/
+class DeferredVideo extends HTMLElement {
+  connectedCallback() {
+    if (this.isInitialized) return;
+
+    this.posterButton = this.querySelector("[data-deferred-video-button]");
+    this.videoTemplate = this.querySelector("template");
+
+    if (!this.posterButton || !this.videoTemplate) return;
+
+    this.listenerController = new AbortController();
+    this.posterButton.addEventListener(
+      "click",
+      this.showVideo.bind(this),
+      { signal: this.listenerController.signal },
+    );
+
+    if (this.hasAttribute("autoplay")) {
+      this.addEventListener(
+        "theme:intersection",
+        this.onIntersection.bind(this),
+        { signal: this.listenerController.signal },
+      );
+
+      if (this.dataset.intersectionState === "entered") {
+        this.showVideo();
+      }
+    }
+
+    this.isInitialized = true;
+  }
+
+  disconnectedCallback() {
+    this.listenerController?.abort();
+    this.isInitialized = false;
+  }
+
+  onIntersection(event) {
+    if (event.detail.isIntersecting) {
+      this.showVideo();
+    }
+  }
+
+  showVideo() {
+    if (this.dataset.mediaLoaded === "true") return;
+
+    const content = this.videoTemplate.content.cloneNode(true);
+    const media = content.querySelector("video, iframe");
+
+    this.videoTemplate.before(content);
+    this.posterButton.disabled = true;
+    this.posterButton.setAttribute("aria-hidden", "true");
+    this.dataset.mediaLoaded = "true";
+
+    if (media instanceof HTMLVideoElement) {
+      media.play().catch(() => {});
+    }
+
+    media?.focus({ preventScroll: true });
+  }
+}
+
+if (!customElements.get("deferred-video")) {
+  customElements.define("deferred-video", DeferredVideo);
+}
+
+
+/*
+  Dialogs
+*/
 class ThemeDialog extends HTMLElement {
   static instanceCount = 0;
   static closeDurationMs = 300;

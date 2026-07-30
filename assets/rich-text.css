@@ -1,0 +1,31 @@
+/*
+  Rich text stylesheet
+
+  This file contains styles for the rich text section.
+  Keep rich-text-specific layout and presentation styles in this file.
+*/
+
+
+/*
+  Rich text
+*/
+.rich-text {
+  color: rgb(var(--color-text));
+  text-align: var(--text-alignment);
+  background-color: rgb(var(--color-background));
+}
+
+.rich-text[data-text-alignment="left"] .group-block {
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.rich-text[data-text-alignment="center"] .group-block {
+  align-items: center;
+  justify-content: center;
+}
+
+.rich-text[data-text-alignment="right"] .group-block {
+  align-items: flex-end;
+  justify-content: flex-end;
+}

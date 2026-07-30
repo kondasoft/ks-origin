@@ -1,9 +1,150 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "hero": {
       "type": "hero",
       "settings": {}
+    },
+    "wrapper_Y7qMjg": {
+      "type": "wrapper",
+      "name": "Wrapper",
+      "settings": {
+        "pt": 40,
+        "pb": 40
+      }
+    },
+    "rich_text_mqwtYC": {
+      "type": "rich-text",
+      "blocks": {
+        "video_Di7dPz": {
+          "type": "video",
+          "name": "Video",
+          "settings": {
+            "source": "url",
+            "video": "shopify://files/videos/sample-15s.mp4",
+            "external_video": "https://www.youtube.com/watch?v=UvDgL8ShgXs",
+            "cover_image": "shopify://shop_images/Main.jpg",
+            "external_video_alt": "",
+            "autoplay": false,
+            "muted": false,
+            "loop": false,
+            "show_controls": false,
+            "video_width": 1200,
+            "pt": 0,
+            "pb": 20
+          },
+          "blocks": {}
+        },
+        "image_Wt8gNU": {
+          "type": "image",
+          "name": "Image",
+          "disabled": true,
+          "settings": {
+            "image_ratio": "adapt",
+            "image_width": 600,
+            "pt": 0,
+            "pb": 20
+          },
+          "blocks": {}
+        },
+        "subheading_Xfhfmh": {
+          "type": "subheading",
+          "name": "Subheading",
+          "settings": {
+            "subheading": "A thoughtful subheading",
+            "subheading_size": "fs-sm",
+            "pt": 0,
+            "pb": 0
+          },
+          "blocks": {}
+        },
+        "heading_xynpbb": {
+          "type": "heading",
+          "settings": {
+            "heading": "A thoughtful heading",
+            "heading_tag": "h3",
+            "heading_size": "h2",
+            "pt": 0,
+            "pb": 0
+          },
+          "blocks": {}
+        },
+        "text_4xdf6A": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Share information about your brand with your customers. Share information about your brand with your customers. Share information about your brand with your customers.</p>",
+            "text_size": "fs-md",
+            "pt": 0,
+            "pb": 0
+          },
+          "blocks": {}
+        },
+        "group_b43Tke": {
+          "type": "group",
+          "settings": {
+            "mobile_content_direction": "column",
+            "mobile_gap": 10,
+            "desktop_content_direction": "row",
+            "desktop_gap": 10
+          },
+          "blocks": {
+            "button_cmXJDb": {
+              "type": "button",
+              "settings": {
+                "label": "Primary action",
+                "link": "",
+                "style": "btn-accent-solid",
+                "size": "btn-md"
+              },
+              "blocks": {}
+            },
+            "button_TeWH7e": {
+              "type": "button",
+              "settings": {
+                "label": "Secondary action",
+                "link": "",
+                "style": "btn-text-solid",
+                "size": "btn-md"
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "button_cmXJDb",
+            "button_TeWH7e"
+          ]
+        }
+      },
+      "block_order": [
+        "video_Di7dPz",
+        "image_Wt8gNU",
+        "subheading_Xfhfmh",
+        "heading_xynpbb",
+        "text_4xdf6A",
+        "group_b43Tke"
+      ],
+      "name": "Rich text",
+      "settings": {
+        "background_color": "{{ settings.colors.background }}",
+        "text_color": "{{ settings.colors.text }}",
+        "accent_color": "{{ settings.colors.accent }}",
+        "text_alignment": "center",
+        "pt": 40,
+        "pb": 36
+      }
     }
   },
-  "order": ["hero"]
+  "order": [
+    "hero",
+    "wrapper_Y7qMjg",
+    "rich_text_mqwtYC"
+  ]
 }

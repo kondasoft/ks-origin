@@ -63,8 +63,6 @@ theme-collapse {
     transition: none;
   }
 }
-
-
 /*
   Dialogs
 */
@@ -875,29 +873,4 @@ mobile-menu-dialog[data-open="true"] .mobile-menu-backdrop {
     margin: 0 0 1em;
     font-size: var(--fs-lg);
   }
-}
-
-
-/*
-  Rich text
-*/
-.rich-text {
-  color: rgb(var(--color-text));
-  text-align: var(--text-alignment);
-  background-color: rgb(var(--color-background));
-}
-
-.rich-text[data-text-alignment="left"] .group-block {
-  align-items: flex-start;
-  justify-content: flex-start;
-}
-
-.rich-text[data-text-alignment="center"] .group-block {
-  align-items: center;
-  justify-content: center;
-}
-
-.rich-text[data-text-alignment="right"] .group-block {
-  align-items: flex-end;
-  justify-content: flex-end;
 }

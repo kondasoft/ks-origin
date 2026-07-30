@@ -1,31 +1,31 @@
 <div
-  class="text-block block-spacing"
+  class="subheading-block block-spacing"
   style="
     --pt: {{ block.settings.pt | divided_by: 16.0 | append: 'em' }};
     --pb: {{ block.settings.pb | divided_by: 16.0 | append: 'em' }};
   "
   {{ block.shopify_attributes }}
 >
-  <div class="rte {{ block.settings.text_size }}">
-    {{ block.settings.text }}
-  </div>
+  <p class="subheading {{ block.settings.subheading_size }}">
+    {{ block.settings.subheading }}
+  </p>
 </div>
 
 {% schema %}
 {
-  "name": "Text",
+  "name": "Subheading",
   "tag": null,
   "settings": [
     {
-      "type": "richtext",
-      "id": "text",
-      "label": "Text",
-      "default": "<p>Share information about your brand with your customers.</p>"
+      "type": "inline_richtext",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "A thoughtful subheading"
     },
     {
       "type": "select",
-      "id": "text_size",
-      "label": "Text size",
+      "id": "subheading_size",
+      "label": "Size",
       "options": [
         { "value": "fs-xs", "label": "Extra small" },
         { "value": "fs-sm", "label": "Small" },
@@ -33,7 +33,7 @@
         { "value": "fs-lg", "label": "Large" },
         { "value": "fs-xl", "label": "Extra large" }
       ],
-      "default": "fs-md"
+      "default": "fs-sm"
     },
     {
       "type": "header",
@@ -62,7 +62,7 @@
   ],
   "presets": [
     {
-      "name": "Text",
+      "name": "Subheading",
       "category": "Text"
     }
   ]

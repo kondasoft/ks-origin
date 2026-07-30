@@ -19,7 +19,8 @@
     "toggle_submenu": "Basculer le sous-menu {{ title }}",
     "search": "Rechercher",
     "account": "Compte",
-    "cart": "Panier"
+    "cart": "Panier",
+    "play_video": "Lire la vidéo"
   },
   "general": {
     "account": "Compte",

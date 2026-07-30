@@ -1,0 +1,122 @@
+{% liquid
+  assign image_loading = 'lazy'
+  assign image_class = 'image-block-image'
+
+  unless block.settings.image_ratio == 'adapt'
+    assign image_class = image_class | append: ' aspect-ratio aspect-ratio-' | append: block.settings.image_ratio
+  endunless
+
+  assign placeholder_class = image_class | append: ' placeholder-svg'
+  assign image_render_width = block.settings.image_width | times: 2
+  assign image_sizes = '(min-width: 600px) ' | append: block.settings.image_width | append: 'px, 100vw'
+
+  if section.index == 1
+    assign image_loading = 'eager'
+  endif
+%}
+
+<div
+  class="image-block block-spacing"
+  style="
+    --image-width: {{ block.settings.image_width | append: 'px' }};
+    --pt: {{ block.settings.pt | divided_by: 16.0 | append: 'em' }};
+    --pb: {{ block.settings.pb | divided_by: 16.0 | append: 'em' }};
+  "
+  {{ block.shopify_attributes }}
+>
+  <div class="image-block-media">
+    {% if block.settings.image != blank %}
+      {{ block.settings.image
+        | image_url: width: image_render_width
+        | image_tag:
+          class: image_class,
+          widths: '320, 640, 960, 1280, 1920, 2560, 3200',
+          sizes: image_sizes,
+          loading: image_loading
+      }}
+    {% else %}
+      {{ 'detailed-apparel-1' | placeholder_svg_tag: placeholder_class }}
+    {% endif %}
+  </div>
+</div>
+
+{% stylesheet %}
+  .image-block-media {
+    display: inline-block;
+    width: min(100%, var(--image-width));
+    vertical-align: middle;
+  }
+
+  .image-block-image {
+    border-radius: var(--border-radius);
+  }
+
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Image",
+  "tag": null,
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "Aspect ratio",
+      "options": [
+        { "value": "adapt", "label": "Adapt to image" },
+        { "value": "square", "label": "Square (1:1)" },
+        { "value": "landscape", "label": "Landscape (4:3)" },
+        { "value": "widescreen", "label": "Widescreen (16:9)" },
+        { "value": "portrait", "label": "Portrait (3:4)" },
+        { "value": "vertical", "label": "Vertical (9:16)" }
+      ],
+      "default": "adapt"
+    },
+    {
+      "type": "range",
+      "id": "image_width",
+      "label": "Width",
+      "min": 100,
+      "max": 2400,
+      "step": 50,
+      "unit": "px",
+      "default": 800
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pt",
+      "label": "Top",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "pb",
+      "label": "Bottom",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    }
+  ],
+  "presets": [
+    {
+      "name": "Image",
+      "category": "Media"
+    }
+  ]
+}
+{% endschema %}

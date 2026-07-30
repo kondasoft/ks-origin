@@ -76,6 +76,7 @@
 - Use `px` for explicit width and height values.
 - Use `em` for section and component spacing that should scale with the surrounding typography, including section top and bottom spacing, component padding, and gaps. Use `rem` for layout spacing that should remain independent of the local font size.
 - Keep merchant-facing spacing settings in `px`. When the storefront spacing should scale proportionally, divide the setting by `16.0` in Liquid and emit the resulting CSS custom property in `em`.
+- Use a `0–80px` range with a `2px` step for block spacing settings, and a `0–160px` range with a `2px` step for section spacing settings.
 
 ## Responsive CSS
 

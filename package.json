@@ -2,11 +2,9 @@
   "name": "ks-origin",
   "private": true,
   "scripts": {
-    "dev": "dotenv -e .env -- shopify theme dev",
-    "dev:live": "dotenv -e .env -- shopify theme dev --allow-live",
+    "dev": "dotenv -e .env -- shopify theme dev --theme-editor-sync",
     "lint": "eslint \"**/*.{js,liquid}\"",
     "push": "dotenv -e .env -- shopify theme push",
-    "push:live": "dotenv -e .env -- shopify theme push --allow-live",
     "pull": "dotenv -e .env -- shopify theme pull"
   },
   "devDependencies": {
