@@ -399,14 +399,19 @@ video {
 }
 
 button:hover .video-play-button,
-button:focus-visible .video-play-button,
-.video-play-button:hover {
+button:focus-visible .video-play-button {
   transform: translate(-50%, -50%) scale(1.1);
 }
 
 .video-play-button svg {
   width: 60%;
   height: 60%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .video-play-button {
+    transition: none;
+  }
 }
 
 

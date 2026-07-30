@@ -11,6 +11,29 @@
 */
 const intersectionObservers = new Map();
 const elementObservers = new WeakMap();
+const intersectionObserverSelector = "[data-intersection-observer]";
+const initializedIntersectionObserverSelector =
+  "[data-intersection-initialized]";
+
+function getMatchingElements(root, selector) {
+  const elements = Array.from(root.querySelectorAll(selector));
+
+  if (root instanceof Element && root.matches(selector)) {
+    elements.unshift(root);
+  }
+
+  return elements;
+}
+
+function enterWithoutIntersectionObserver(element) {
+  element.dataset.intersectionInitialized = "true";
+  element.dataset.intersectionState = "entered";
+  element.dispatchEvent(
+    new CustomEvent("theme:intersection", {
+      detail: { isIntersecting: true, target: element },
+    }),
+  );
+}
 
 function getIntersectionObserver(rootMargin, threshold) {
   const observerKey = `${rootMargin}:${threshold}`;
@@ -48,18 +71,14 @@ function getIntersectionObserver(rootMargin, threshold) {
 }
 
 function initIntersectionObservers(root = document) {
-  const elements = root.querySelectorAll(
-    "[data-intersection-observer]:not([data-intersection-initialized])",
+  const elements = getMatchingElements(
+    root,
+    `${intersectionObserverSelector}:not([data-intersection-initialized])`,
   );
 
   elements.forEach((element) => {
     if (!("IntersectionObserver" in window)) {
-      element.dataset.intersectionState = "entered";
-      element.dispatchEvent(
-        new CustomEvent("theme:intersection", {
-          detail: { isIntersecting: true, target: element },
-        }),
-      );
+      enterWithoutIntersectionObserver(element);
       return;
     }
 
@@ -67,20 +86,39 @@ function initIntersectionObservers(root = document) {
     const parsedThreshold = Number.parseFloat(
       element.dataset.intersectionThreshold || "0",
     );
-    const threshold = Number.isFinite(parsedThreshold) ? parsedThreshold : 0;
-    const observer = getIntersectionObserver(rootMargin, threshold);
+    const threshold = Math.min(
+      1,
+      Math.max(0, Number.isFinite(parsedThreshold) ? parsedThreshold : 0),
+    );
+    let observer;
 
-    element.dataset.intersectionInitialized = "true";
+    try {
+      observer = getIntersectionObserver(rootMargin, threshold);
+      observer.observe(element);
+    } catch {
+      try {
+        observer = getIntersectionObserver("0px", threshold);
+        observer.observe(element);
+      } catch {
+        enterWithoutIntersectionObserver(element);
+        return;
+      }
+    }
+
     elementObservers.set(element, observer);
-    observer.observe(element);
+    element.dataset.intersectionInitialized = "true";
   });
 }
 
 function cleanupIntersectionObservers(root) {
-  root.querySelectorAll("[data-intersection-initialized]").forEach((element) => {
-    elementObservers.get(element)?.unobserve(element);
-    elementObservers.delete(element);
-  });
+  getMatchingElements(root, initializedIntersectionObserverSelector).forEach(
+    (element) => {
+      elementObservers.get(element)?.unobserve(element);
+      elementObservers.delete(element);
+      delete element.dataset.intersectionInitialized;
+      delete element.dataset.intersectionState;
+    },
+  );
 }
 
 initIntersectionObservers();
@@ -107,7 +145,7 @@ class DeferredVideo extends HTMLElement {
     this.listenerController = new AbortController();
     this.posterButton.addEventListener(
       "click",
-      this.showVideo.bind(this),
+      this.onPosterClick.bind(this),
       { signal: this.listenerController.signal },
     );
 
@@ -128,7 +166,22 @@ class DeferredVideo extends HTMLElement {
 
   disconnectedCallback() {
     this.listenerController?.abort();
+    this.mediaController?.abort();
+
+    if (this.dataset.mediaLoading === "true") {
+      this.activeMedia?.remove();
+      delete this.dataset.mediaLoading;
+      this.posterButton?.removeAttribute("aria-busy");
+    }
+
+    this.activeMedia = undefined;
+    this.shouldMoveMediaFocus = false;
     this.isInitialized = false;
+  }
+
+  onPosterClick() {
+    this.shouldMoveMediaFocus = true;
+    this.showVideo();
   }
 
   onIntersection(event) {
@@ -138,21 +191,93 @@ class DeferredVideo extends HTMLElement {
   }
 
   showVideo() {
-    if (this.dataset.mediaLoaded === "true") return;
+    if (
+      this.dataset.mediaLoading === "true" ||
+      this.dataset.mediaLoaded === "true"
+    ) {
+      return;
+    }
 
     const content = this.videoTemplate.content.cloneNode(true);
     const media = content.querySelector("video, iframe");
 
+    if (!media) return;
+
+    this.dataset.mediaLoading = "true";
+    this.posterButton.setAttribute("aria-busy", "true");
+    this.mediaController?.abort();
+    this.mediaController = new AbortController();
+    this.activeMedia = media;
+
+    const readyEvent =
+      media instanceof HTMLVideoElement ? "playing" : "load";
+    const listenerOptions = {
+      once: true,
+      signal: this.mediaController.signal,
+    };
+
+    media.addEventListener(
+      readyEvent,
+      () => this.onMediaReady(media),
+      listenerOptions,
+    );
+    media.addEventListener(
+      "error",
+      () => this.onMediaError(media),
+      listenerOptions,
+    );
     this.videoTemplate.before(content);
-    this.posterButton.disabled = true;
-    this.posterButton.setAttribute("aria-hidden", "true");
-    this.dataset.mediaLoaded = "true";
 
     if (media instanceof HTMLVideoElement) {
-      media.play().catch(() => {});
+      media.play().catch(() => this.onMediaError(media));
+    }
+  }
+
+  onMediaReady(media) {
+    if (
+      this.activeMedia !== media ||
+      this.dataset.mediaLoading !== "true"
+    ) {
+      return;
     }
 
-    media?.focus({ preventScroll: true });
+    const shouldMoveMediaFocus =
+      this.shouldMoveMediaFocus && document.activeElement === this.posterButton;
+
+    this.mediaController?.abort();
+    delete this.dataset.mediaLoading;
+    this.dataset.mediaLoaded = "true";
+    this.posterButton.removeAttribute("aria-busy");
+    this.posterButton.disabled = true;
+    this.posterButton.setAttribute("aria-hidden", "true");
+    this.activeMedia = undefined;
+    this.shouldMoveMediaFocus = false;
+
+    if (!shouldMoveMediaFocus) return;
+
+    if (media instanceof HTMLVideoElement && !media.controls) {
+      media.tabIndex = -1;
+    }
+
+    media.focus({ preventScroll: true });
+  }
+
+  onMediaError(media) {
+    if (
+      this.activeMedia !== media ||
+      this.dataset.mediaLoading !== "true"
+    ) {
+      return;
+    }
+
+    this.mediaController?.abort();
+    media.remove();
+    delete this.dataset.mediaLoading;
+    this.posterButton.removeAttribute("aria-busy");
+    this.posterButton.disabled = false;
+    this.posterButton.removeAttribute("aria-hidden");
+    this.activeMedia = undefined;
+    this.shouldMoveMediaFocus = false;
   }
 }
 

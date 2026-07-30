@@ -8,10 +8,12 @@
 
   assign placeholder_class = image_class | append: ' placeholder-svg'
   assign image_render_width = block.settings.image_width | times: 2
-  assign image_sizes = '(min-width: 600px) ' | append: block.settings.image_width | append: 'px, 100vw'
+  assign image_sizes = 'min(' | append: block.settings.image_width | append: 'px, 100vw)'
 
   if section.index == 1
     assign image_loading = 'eager'
+  else
+    assign image_sizes = 'auto, ' | append: image_sizes
   endif
 %}
 
@@ -41,6 +43,11 @@
 </div>
 
 {% stylesheet %}
+  .image-block {
+    min-width: 0;
+    max-width: 100%;
+  }
+
   .image-block-media {
     display: inline-block;
     width: min(100%, var(--image-width));
@@ -109,7 +116,7 @@
       "max": 80,
       "step": 2,
       "unit": "px",
-      "default": 20
+      "default": 24
     }
   ],
   "presets": [

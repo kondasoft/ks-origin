@@ -6,7 +6,7 @@
   assign video_loading = 'lazy'
   assign video_preview_width = block.settings.video_width | times: 2
   assign video_preview_size = video_preview_width | append: 'x'
-  assign video_sizes = '(min-width: 600px) ' | append: block.settings.video_width | append: 'px, 100vw'
+  assign video_sizes = 'min(' | append: block.settings.video_width | append: 'px, 100vw)'
   assign video_intrinsic_width = block.settings.video_width
   assign video_intrinsic_height = video_intrinsic_width | times: 9 | divided_by: 16
   assign has_video = false
@@ -14,12 +14,10 @@
   assign observe_video = false
   assign video_poster_class = 'video-block-poster-image'
 
-  if block.settings.source == 'url'
-    assign video_poster_class = video_poster_class | append: ' aspect-ratio aspect-ratio-widescreen'
-  endif
-
   if section.index == 1
     assign video_loading = 'eager'
+  else
+    assign video_sizes = 'auto, ' | append: video_sizes
   endif
 
   if block.settings.autoplay
@@ -44,19 +42,15 @@
   elsif block.settings.source == 'url' and block.settings.external_video != blank
     assign has_video = true
     assign video_preview_image = block.settings.cover_image
-
-    if block.settings.external_video.aspect_ratio
-      assign video_intrinsic_height = video_intrinsic_width | divided_by: block.settings.external_video.aspect_ratio | round
-    endif
   endif
 
-  if video_preview_image != blank
-    if block.settings.autoplay == false
-      assign defer_video = true
-    elsif section.index > 1
+  if block.settings.autoplay
+    if section.index > 1
       assign defer_video = true
       assign observe_video = true
     endif
+  elsif video_preview_image != blank
+    assign defer_video = true
   endif
 
   assign video_tag_autoplay = block.settings.autoplay
@@ -126,6 +120,7 @@
   class="video-block block-spacing"
   style="
     --video-width: {{ block.settings.video_width | append: 'px' }};
+    --video-aspect-ratio: {{ video_intrinsic_width }} / {{ video_intrinsic_height }};
     --pt: {{ block.settings.pt | divided_by: 16.0 | append: 'em' }};
     --pb: {{ block.settings.pb | divided_by: 16.0 | append: 'em' }};
   "
@@ -147,14 +142,18 @@
           aria-label="{{ 'accessibility.play_video' | t }}"
           data-deferred-video-button
         >
-          {{ video_preview_image
-            | image_url: width: video_preview_width
-            | image_tag:
-              class: video_poster_class,
-              widths: '320, 640, 960, 1280, 1920, 2560, 3200, 3840',
-              sizes: video_sizes,
-              loading: video_loading
-          }}
+          {% if video_preview_image != blank %}
+            {{ video_preview_image
+              | image_url: width: video_preview_width
+              | image_tag:
+                class: video_poster_class,
+                widths: '320, 640, 960, 1280, 1920, 2560, 3200, 3840',
+                sizes: video_sizes,
+                loading: video_loading
+            }}
+          {% else %}
+            {{ 'detailed-apparel-1' | placeholder_svg_tag: 'video-block-poster-image placeholder-svg' }}
+          {% endif %}
           <span class="video-play-button" aria-hidden="true">
             {% render 'svg-icons', icon: 'play', icon_size: 28 %}
           </span>
@@ -177,6 +176,11 @@
 </div>
 
 {% stylesheet %}
+  .video-block {
+    min-width: 0;
+    max-width: 100%;
+  }
+
   .video-block-media {
     display: inline-block;
     width: min(100%, var(--video-width));
@@ -194,6 +198,7 @@
   .video-block-deferred {
     position: relative;
     display: block;
+    aspect-ratio: var(--video-aspect-ratio);
   }
 
   .video-block-deferred > .video-block-video {
@@ -209,8 +214,10 @@
 
   .video-block-poster {
     position: relative;
+    z-index: 1;
     display: block;
     width: 100%;
+    height: 100%;
     padding: 0;
     color: inherit;
     background: rgb(var(--color-surface));
@@ -225,9 +232,10 @@
     outline-color: currentcolor;
   }
 
-  .video-block-poster-image {
+  .video-block-poster .video-block-poster-image {
     width: 100%;
-    height: auto;
+    height: 100%;
+    object-fit: cover;
     border-radius: var(--border-radius);
   }
 
@@ -270,7 +278,8 @@
       "type": "image_picker",
       "id": "cover_image",
       "label": "Cover image",
-      "visible_if": "{{ block.settings.source == 'url' and block.settings.autoplay == false }}"
+      "info": "Used as the poster for deferred external video.",
+      "visible_if": "{{ block.settings.source == 'url' }}"
     },
     {
       "type": "text",
@@ -292,7 +301,7 @@
       "label": "Muted",
       "info": "Autoplay videos are always muted.",
       "default": false,
-      "visible_if": "{{ block.settings.source == 'uploaded' }}"
+      "visible_if": "{{ block.settings.source == 'uploaded' and block.settings.autoplay == false }}"
     },
     {
       "type": "checkbox",
@@ -339,7 +348,7 @@
       "max": 80,
       "step": 2,
       "unit": "px",
-      "default": 20
+      "default": 24
     }
   ],
   "presets": [

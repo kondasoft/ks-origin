@@ -33,13 +33,13 @@
             "external_video": "https://www.youtube.com/watch?v=UvDgL8ShgXs",
             "cover_image": "shopify://shop_images/Main.jpg",
             "external_video_alt": "",
-            "autoplay": false,
+            "autoplay": true,
             "muted": false,
-            "loop": false,
+            "loop": true,
             "show_controls": false,
-            "video_width": 1200,
+            "video_width": 650,
             "pt": 0,
-            "pb": 20
+            "pb": 24
           },
           "blocks": {}
         },
@@ -140,11 +140,374 @@
         "pt": 40,
         "pb": 36
       }
+    },
+    "rich_text_AUDw6W": {
+      "type": "rich-text",
+      "blocks": {
+        "video_BHiDDF": {
+          "type": "video",
+          "name": "Video",
+          "settings": {
+            "source": "url",
+            "video": "shopify://files/videos/sample-15s.mp4",
+            "external_video": "https://www.youtube.com/watch?v=UvDgL8ShgXs",
+            "cover_image": "shopify://shop_images/Main.jpg",
+            "external_video_alt": "",
+            "autoplay": true,
+            "muted": false,
+            "loop": true,
+            "show_controls": false,
+            "video_width": 650,
+            "pt": 0,
+            "pb": 24
+          },
+          "blocks": {}
+        },
+        "image_DwGpgn": {
+          "type": "image",
+          "name": "Image",
+          "disabled": true,
+          "settings": {
+            "image_ratio": "adapt",
+            "image_width": 600,
+            "pt": 0,
+            "pb": 20
+          },
+          "blocks": {}
+        },
+        "subheading_jPUP4C": {
+          "type": "subheading",
+          "name": "Subheading",
+          "settings": {
+            "subheading": "A thoughtful subheading",
+            "subheading_size": "fs-sm",
+            "pt": 0,
+            "pb": 0
+          },
+          "blocks": {}
+        },
+        "heading_MyxqaJ": {
+          "type": "heading",
+          "settings": {
+            "heading": "A thoughtful heading",
+            "heading_tag": "h3",
+            "heading_size": "h2",
+            "pt": 0,
+            "pb": 0
+          },
+          "blocks": {}
+        },
+        "text_zFwKDa": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Share information about your brand with your customers. Share information about your brand with your customers. Share information about your brand with your customers.</p>",
+            "text_size": "fs-md",
+            "pt": 0,
+            "pb": 0
+          },
+          "blocks": {}
+        },
+        "group_kLTy38": {
+          "type": "group",
+          "settings": {
+            "mobile_content_direction": "column",
+            "mobile_gap": 10,
+            "desktop_content_direction": "row",
+            "desktop_gap": 10
+          },
+          "blocks": {
+            "button_he3PtK": {
+              "type": "button",
+              "settings": {
+                "label": "Primary action",
+                "link": "",
+                "style": "btn-accent-solid",
+                "size": "btn-md"
+              },
+              "blocks": {}
+            },
+            "button_twipPB": {
+              "type": "button",
+              "settings": {
+                "label": "Secondary action",
+                "link": "",
+                "style": "btn-text-solid",
+                "size": "btn-md"
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "button_he3PtK",
+            "button_twipPB"
+          ]
+        }
+      },
+      "block_order": [
+        "video_BHiDDF",
+        "image_DwGpgn",
+        "subheading_jPUP4C",
+        "heading_MyxqaJ",
+        "text_zFwKDa",
+        "group_kLTy38"
+      ],
+      "name": "Rich text",
+      "settings": {
+        "background_color": "{{ settings.colors.background }}",
+        "text_color": "{{ settings.colors.text }}",
+        "accent_color": "{{ settings.colors.accent }}",
+        "text_alignment": "center",
+        "pt": 40,
+        "pb": 36
+      }
+    },
+    "rich_text_ExrV3c": {
+      "type": "rich-text",
+      "blocks": {
+        "video_3CjX7k": {
+          "type": "video",
+          "name": "Video",
+          "settings": {
+            "source": "url",
+            "video": "shopify://files/videos/sample-15s.mp4",
+            "external_video": "https://www.youtube.com/watch?v=UvDgL8ShgXs",
+            "cover_image": "shopify://shop_images/Main.jpg",
+            "external_video_alt": "",
+            "autoplay": true,
+            "muted": false,
+            "loop": true,
+            "show_controls": false,
+            "video_width": 650,
+            "pt": 0,
+            "pb": 24
+          },
+          "blocks": {}
+        },
+        "image_Dnhg9b": {
+          "type": "image",
+          "name": "Image",
+          "disabled": true,
+          "settings": {
+            "image_ratio": "adapt",
+            "image_width": 600,
+            "pt": 0,
+            "pb": 20
+          },
+          "blocks": {}
+        },
+        "subheading_7gRWbh": {
+          "type": "subheading",
+          "name": "Subheading",
+          "settings": {
+            "subheading": "A thoughtful subheading",
+            "subheading_size": "fs-sm",
+            "pt": 0,
+            "pb": 0
+          },
+          "blocks": {}
+        },
+        "heading_mwL6WE": {
+          "type": "heading",
+          "settings": {
+            "heading": "A thoughtful heading",
+            "heading_tag": "h3",
+            "heading_size": "h2",
+            "pt": 0,
+            "pb": 0
+          },
+          "blocks": {}
+        },
+        "text_Pn97Nz": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Share information about your brand with your customers. Share information about your brand with your customers. Share information about your brand with your customers.</p>",
+            "text_size": "fs-md",
+            "pt": 0,
+            "pb": 0
+          },
+          "blocks": {}
+        },
+        "group_fDwTzq": {
+          "type": "group",
+          "settings": {
+            "mobile_content_direction": "column",
+            "mobile_gap": 10,
+            "desktop_content_direction": "row",
+            "desktop_gap": 10
+          },
+          "blocks": {
+            "button_aaEaUe": {
+              "type": "button",
+              "settings": {
+                "label": "Primary action",
+                "link": "",
+                "style": "btn-accent-solid",
+                "size": "btn-md"
+              },
+              "blocks": {}
+            },
+            "button_bk4YpV": {
+              "type": "button",
+              "settings": {
+                "label": "Secondary action",
+                "link": "",
+                "style": "btn-text-solid",
+                "size": "btn-md"
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "button_aaEaUe",
+            "button_bk4YpV"
+          ]
+        }
+      },
+      "block_order": [
+        "video_3CjX7k",
+        "image_Dnhg9b",
+        "subheading_7gRWbh",
+        "heading_mwL6WE",
+        "text_Pn97Nz",
+        "group_fDwTzq"
+      ],
+      "name": "Rich text",
+      "settings": {
+        "background_color": "{{ settings.colors.background }}",
+        "text_color": "{{ settings.colors.text }}",
+        "accent_color": "{{ settings.colors.accent }}",
+        "text_alignment": "center",
+        "pt": 40,
+        "pb": 36
+      }
+    },
+    "rich_text_KzYYTH": {
+      "type": "rich-text",
+      "blocks": {
+        "video_GkyL9A": {
+          "type": "video",
+          "name": "Video",
+          "settings": {
+            "source": "uploaded",
+            "video": "shopify://files/videos/sample-15s.mp4",
+            "external_video": "https://www.youtube.com/watch?v=UvDgL8ShgXs",
+            "cover_image": "shopify://shop_images/Main.jpg",
+            "external_video_alt": "",
+            "autoplay": true,
+            "muted": false,
+            "loop": true,
+            "show_controls": false,
+            "video_width": 650,
+            "pt": 0,
+            "pb": 24
+          },
+          "blocks": {}
+        },
+        "image_NcNFw6": {
+          "type": "image",
+          "name": "Image",
+          "disabled": true,
+          "settings": {
+            "image_ratio": "adapt",
+            "image_width": 600,
+            "pt": 0,
+            "pb": 20
+          },
+          "blocks": {}
+        },
+        "subheading_kJ97g6": {
+          "type": "subheading",
+          "name": "Subheading",
+          "settings": {
+            "subheading": "A thoughtful subheading",
+            "subheading_size": "fs-sm",
+            "pt": 0,
+            "pb": 0
+          },
+          "blocks": {}
+        },
+        "heading_BB7YKa": {
+          "type": "heading",
+          "settings": {
+            "heading": "A thoughtful heading",
+            "heading_tag": "h3",
+            "heading_size": "h2",
+            "pt": 0,
+            "pb": 0
+          },
+          "blocks": {}
+        },
+        "text_kzcApp": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Share information about your brand with your customers. Share information about your brand with your customers. Share information about your brand with your customers.</p>",
+            "text_size": "fs-md",
+            "pt": 0,
+            "pb": 0
+          },
+          "blocks": {}
+        },
+        "group_9E8azy": {
+          "type": "group",
+          "settings": {
+            "mobile_content_direction": "column",
+            "mobile_gap": 10,
+            "desktop_content_direction": "row",
+            "desktop_gap": 10
+          },
+          "blocks": {
+            "button_F7wfDW": {
+              "type": "button",
+              "settings": {
+                "label": "Primary action",
+                "link": "",
+                "style": "btn-accent-solid",
+                "size": "btn-md"
+              },
+              "blocks": {}
+            },
+            "button_M694Pm": {
+              "type": "button",
+              "settings": {
+                "label": "Secondary action",
+                "link": "",
+                "style": "btn-text-solid",
+                "size": "btn-md"
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "button_F7wfDW",
+            "button_M694Pm"
+          ]
+        }
+      },
+      "block_order": [
+        "video_GkyL9A",
+        "image_NcNFw6",
+        "subheading_kJ97g6",
+        "heading_BB7YKa",
+        "text_kzcApp",
+        "group_9E8azy"
+      ],
+      "name": "Rich text",
+      "settings": {
+        "background_color": "{{ settings.colors.background }}",
+        "text_color": "{{ settings.colors.text }}",
+        "accent_color": "{{ settings.colors.accent }}",
+        "text_alignment": "center",
+        "pt": 40,
+        "pb": 36
+      }
     }
   },
   "order": [
     "hero",
     "wrapper_Y7qMjg",
-    "rich_text_mqwtYC"
+    "rich_text_mqwtYC",
+    "rich_text_AUDw6W",
+    "rich_text_ExrV3c",
+    "rich_text_KzYYTH"
   ]
 }
