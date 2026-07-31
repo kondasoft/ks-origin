@@ -349,11 +349,30 @@
     {
       "name": "Hero",
       "category": "Banners",
+      "settings": {
+        "source": "image",
+        "background_color": "#0a0a0a",
+        "text_color": "#ffffff",
+        "accent_color": "#eab2b5",
+        "overlay_color": "#000000",
+        "overlay_opacity": 40,
+        "mobile_content_position": "center",
+        "mobile_text_alignment": "center",
+        "mobile_height": "medium",
+        "desktop_content_position": "center",
+        "desktop_text_alignment": "center",
+        "desktop_height": "medium",
+        "pt": 0,
+        "pb": 0
+      },
       "blocks": [
         {
           "type": "subheading",
           "settings": {
-            "subheading": "New collection"
+            "subheading": "New collection",
+            "subheading_size": "fs-md",
+            "pt": 0,
+            "pb": 0
           }
         },
         {
@@ -361,13 +380,18 @@
           "settings": {
             "heading": "A hero built around your story",
             "heading_tag": "1",
-            "heading_size": "h1"
+            "heading_size": "h1",
+            "pt": 0,
+            "pb": 0
           }
         },
         {
           "type": "text",
           "settings": {
-            "text": "<p>Introduce a collection, campaign, or key message with immersive full-width media.</p>"
+            "text": "<p>Introduce a collection, campaign, or key message with immersive full-width media.</p>",
+            "text_size": "fs-lg",
+            "pt": 0,
+            "pb": 0
           }
         },
         {
@@ -376,7 +400,9 @@
             "mobile_content_direction": "column",
             "mobile_gap": 10,
             "desktop_content_direction": "row",
-            "desktop_gap": 10
+            "desktop_gap": 10,
+            "pt": 10,
+            "pb": 0
           },
           "blocks": [
             {
@@ -384,14 +410,17 @@
               "settings": {
                 "label": "Shop now",
                 "link": "shopify://collections/all",
-                "style": "btn-accent-solid"
+                "style": "btn-accent-solid",
+                "size": "btn-md"
               }
             },
             {
               "type": "button",
               "settings": {
                 "label": "Learn more",
-                "style": "btn-text-outline"
+                "link": "",
+                "style": "btn-text-solid",
+                "size": "btn-md"
               }
             }
           ]
