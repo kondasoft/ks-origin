@@ -20,10 +20,40 @@
     gap: var(--mobile-gap);
   }
 
+  [data-mobile-text-alignment="left"] .group-block {
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+
+  [data-mobile-text-alignment="center"] .group-block {
+    align-items: center;
+    justify-content: center;
+  }
+
+  [data-mobile-text-alignment="right"] .group-block {
+    align-items: flex-end;
+    justify-content: flex-end;
+  }
+
   @media (min-width: 1200px) {
     .group-block {
       flex-direction: var(--desktop-content-direction);
       gap: var(--desktop-gap);
+    }
+
+    [data-desktop-text-alignment="left"] .group-block {
+      align-items: flex-start;
+      justify-content: flex-start;
+    }
+
+    [data-desktop-text-alignment="center"] .group-block {
+      align-items: center;
+      justify-content: center;
+    }
+
+    [data-desktop-text-alignment="right"] .group-block {
+      align-items: flex-end;
+      justify-content: flex-end;
     }
   }
 {% endstylesheet %}

@@ -1,5 +1,5 @@
 {% liquid
-  assign container_class = 'separator-content'
+  assign container_class = 'divider-content'
   assign line_opacity = 'var(--border-opacity)'
 
   if section.settings.container_width == 'site'
@@ -14,7 +14,7 @@
 %}
 
 <div
-  class="separator section-spacing"
+  class="divider section-spacing"
   style="
     --color-background: {{ section.settings.background_color.red }} {{ section.settings.background_color.green }} {{ section.settings.background_color.blue }};
     --color-line: {{ section.settings.line_color.red }} {{ section.settings.line_color.green }} {{ section.settings.line_color.blue }};
@@ -26,14 +26,14 @@
 >
   <div class="{{ container_class }}">
     <hr
-      class="separator-line"
+      class="divider-line"
       style="border-top-color: rgb(var(--color-line) / var(--line-opacity));">
   </div>
 </div>
 
 {% schema %}
 {
-  "name": "Separator",
+  "name": "Divider",
   "tag": "section",
   "settings": [
     {
@@ -56,7 +56,7 @@
       "type": "checkbox",
       "id": "custom_line_opacity",
       "label": "Custom line opacity",
-      "info": "Enable to override the theme's global border opacity for this separator.",
+      "info": "Enable to override the theme's global border opacity for this divider.",
       "default": false
     },
     {
@@ -97,7 +97,7 @@
       "max": 160,
       "step": 2,
       "unit": "px",
-      "default": 40
+      "default": 60
     },
     {
       "type": "range",
@@ -107,7 +107,7 @@
       "max": 160,
       "step": 2,
       "unit": "px",
-      "default": 40
+      "default": 60
     }
   ],
   "disabled_on": {
@@ -115,7 +115,7 @@
   },
   "presets": [
     {
-      "name": "Separator",
+      "name": "Divider",
       "category": "Layout"
     }
   ]

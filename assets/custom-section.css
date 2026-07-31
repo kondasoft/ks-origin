@@ -15,38 +15,8 @@
   background-color: rgb(var(--color-background));
 }
 
-.custom-section[data-mobile-text-alignment="left"] .group-block {
-  align-items: flex-start;
-  justify-content: flex-start;
-}
-
-.custom-section[data-mobile-text-alignment="center"] .group-block {
-  align-items: center;
-  justify-content: center;
-}
-
-.custom-section[data-mobile-text-alignment="right"] .group-block {
-  align-items: flex-end;
-  justify-content: flex-end;
-}
-
 @media (min-width: 1200px) {
   .custom-section {
     text-align: var(--desktop-text-alignment);
-  }
-
-  .custom-section[data-desktop-text-alignment="left"] .group-block {
-    align-items: flex-start;
-    justify-content: flex-start;
-  }
-
-  .custom-section[data-desktop-text-alignment="center"] .group-block {
-    align-items: center;
-    justify-content: center;
-  }
-
-  .custom-section[data-desktop-text-alignment="right"] .group-block {
-    align-items: flex-end;
-    justify-content: flex-end;
   }
 }

@@ -628,6 +628,20 @@ th {
 
 
 /*
+  Responsive text alignment
+*/
+.responsive-text-alignment {
+  text-align: var(--mobile-text-alignment);
+}
+
+@media (min-width: 1200px) {
+  .responsive-text-alignment {
+    text-align: var(--desktop-text-alignment);
+  }
+}
+
+
+/*
   Section spacing
 */
 .section-spacing {

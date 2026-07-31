@@ -1,9 +1,5 @@
-{% if section.index <= 3 or request.design_mode %}
-  <link href="{{ 'rich-text.css' | asset_url }}" rel="stylesheet" fetchpriority="high">
-{% endif %}
-
 <div
-  class="rich-text section-spacing"
+  class="video-section responsive-text-alignment section-spacing"
   data-mobile-text-alignment="{{ section.settings.mobile_text_alignment }}"
   data-desktop-text-alignment="{{ section.settings.desktop_text_alignment }}"
   style="
@@ -14,17 +10,18 @@
     --desktop-text-alignment: {{ section.settings.desktop_text_alignment }};
     --pt: {{ section.settings.pt | divided_by: 16.0 | append: 'em' }};
     --pb: {{ section.settings.pb | divided_by: 16.0 | append: 'em' }};
+    color: rgb(var(--color-text));
+    background-color: rgb(var(--color-background));
   "
-  data-section-css="{{ 'rich-text.css' | asset_url }}"
 >
-  <div class="container container-content">
+  <div class="container {{ settings.container_width }}">
     {% content_for 'blocks' %}
   </div>
 </div>
 
 {% schema %}
 {
-  "name": "Rich text",
+  "name": "Video",
   "tag": "section",
   "settings": [
     {
@@ -92,19 +89,16 @@
   ],
   "blocks": [
     {
-      "type": "subheading"
+      "type": "heading"
     },
     {
-      "type": "heading"
+      "type": "video"
     },
     {
       "type": "text"
     },
     {
-      "type": "image"
-    },
-    {
-      "type": "video"
+      "type": "button"
     },
     {
       "type": "group"
@@ -115,52 +109,50 @@
   },
   "presets": [
     {
-      "name": "Rich text",
-      "category": "Text",
-      "settings": {
-        "mobile_text_alignment": "center",
-        "desktop_text_alignment": "center"
-      },
+      "name": "Video",
+      "category": "Video",
       "blocks": [
-        {
-          "type": "subheading",
-          "settings": {
-            "subheading": "Share a focused message"
-          }
-        },
         {
           "type": "heading",
           "settings": {
-            "heading": "Rich text"
+            "heading": "Video",
+            "heading_tag": "2",
+            "heading_size": "h2",
+            "pb": 12
+          }
+        },
+        {
+          "type": "video",
+          "settings": {
+            "source": "uploaded",
+            "autoplay": false,
+            "loop": false,
+            "show_controls": true,
+            "video_width": 1200
           }
         },
         {
           "type": "text",
           "settings": {
-            "text": "<p>Present a clear message with supporting text and calls to action in a focused, easy-to-read layout.</p>"
+            "text": "<p>Share a product story or campaign with a short description and a clear action.</p>",
+            "pt": 18
           }
         },
         {
           "type": "group",
           "settings": {
             "mobile_content_direction": "column",
-            "mobile_gap": 8,
-            "desktop_content_direction": "row",
+            "mobile_gap": 10,
+            "desktop_content_direction": "column",
             "desktop_gap": 10
           },
           "blocks": [
             {
               "type": "button",
               "settings": {
-                "label": "Primary action",
+                "label": "Shop now",
+                "link": "shopify://collections/all",
                 "style": "btn-accent-solid"
-              }
-            },
-            {
-              "type": "button",
-              "settings": {
-                "label": "Secondary action",
-                "style": "btn-accent-outline"
               }
             }
           ]
