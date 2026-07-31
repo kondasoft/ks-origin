@@ -102,8 +102,8 @@
         "mobile_content_position": "bottom",
         "mobile_text_alignment": "center",
         "mobile_height": "medium",
-        "desktop_content_position": "bottom-left",
-        "desktop_text_alignment": "left",
+        "desktop_content_position": "center",
+        "desktop_text_alignment": "center",
         "desktop_height": "medium",
         "pt": 0,
         "pb": 0
