@@ -11,7 +11,101 @@
   "sections": {
     "hero": {
       "type": "hero",
-      "settings": {}
+      "blocks": {
+        "subheading_hero": {
+          "type": "subheading",
+          "settings": {
+            "subheading": "New collection",
+            "subheading_size": "fs-sm",
+            "pt": 0,
+            "pb": 0
+          },
+          "blocks": {}
+        },
+        "heading_hero": {
+          "type": "heading",
+          "settings": {
+            "heading": "A hero built around your story",
+            "heading_tag": "1",
+            "heading_size": "h1",
+            "pt": 0,
+            "pb": 0
+          },
+          "blocks": {}
+        },
+        "text_hero": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Introduce a collection, campaign, or key message with immersive full-width media.</p>",
+            "text_size": "fs-md",
+            "pt": 0,
+            "pb": 0
+          },
+          "blocks": {}
+        },
+        "group_hero": {
+          "type": "group",
+          "settings": {
+            "mobile_content_direction": "column",
+            "mobile_gap": 10,
+            "desktop_content_direction": "row",
+            "desktop_gap": 10,
+            "pt": 0,
+            "pb": 0
+          },
+          "blocks": {
+            "button_primary": {
+              "type": "button",
+              "settings": {
+                "label": "Shop now",
+                "link": "shopify://collections/all",
+                "style": "btn-accent-solid",
+                "size": "btn-md"
+              },
+              "blocks": {}
+            },
+            "button_secondary": {
+              "type": "button",
+              "settings": {
+                "label": "Learn more",
+                "link": "",
+                "style": "btn-text-solid",
+                "size": "btn-md"
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "button_primary",
+            "button_secondary"
+          ]
+        }
+      },
+      "block_order": [
+        "subheading_hero",
+        "heading_hero",
+        "text_hero",
+        "group_hero"
+      ],
+      "settings": {
+        "source": "image",
+        "desktop_image": "shopify://shop_images/theme_cover_image.jpg",
+        "mobile_image": "shopify://shop_images/Main.jpg",
+        "video": "shopify://files/videos/sample-15s.mp4",
+        "external_video": "https://www.youtube.com/watch?v=y48VlK6XIcw",
+        "external_video_alt": "",
+        "background_color": "{{ settings.colors.text }}",
+        "text_color": "{{ settings.colors.background }}",
+        "accent_color": "#eab2b5",
+        "overlay_color": "#000000",
+        "overlay_opacity": 40,
+        "mobile_content_position": "bottom",
+        "mobile_text_alignment": "center",
+        "desktop_content_position": "bottom-left",
+        "desktop_text_alignment": "left",
+        "pt": 0,
+        "pb": 0
+      }
     },
     "custom_section_tqiVAJ": {
       "type": "custom-section",
@@ -562,9 +656,9 @@
       ],
       "name": "Video",
       "settings": {
-        "background_color": "{{ settings.colors.text }}",
+        "background_color": "{{ settings.colors.background }}",
         "text_color": "{{ settings.colors.background }}",
-        "accent_color": "#E4AAAD",
+        "accent_color": "#e4aaad",
         "mobile_text_alignment": "left",
         "desktop_text_alignment": "center",
         "pt": 60,

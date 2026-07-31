@@ -47,7 +47,6 @@
   --color-text: var(--text-color);
   --link-active-color: var(--accent-color);
   position: relative;
-  margin-bottom: 1.5em;
   color: rgb(var(--text-color));
   background-color: rgb(var(--background-color));
 }
@@ -237,6 +236,12 @@
     position: relative;
   }
 
+  .header-nav-item:has(> .header-nav-trigger) {
+    border-radius: var(--border-radius);
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+  }
+
   .header-nav-trigger {
     display: inline-flex;
     align-items: center;
@@ -283,6 +288,14 @@
   .header-nav-toggle:focus-visible {
     outline-color: currentcolor;
     text-decoration: none;
+  }
+
+  .header-nav-item:has(> .header-nav-trigger > .header-nav-link:focus-visible) {
+    outline-color: currentcolor;
+  }
+
+  .header-nav-trigger > .header-nav-link:focus-visible {
+    outline-color: transparent;
   }
 
   span.header-nav-link.active {

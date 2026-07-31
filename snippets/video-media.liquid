@@ -9,11 +9,12 @@ Renders uploaded or external video media with poster and deferred-loading behavi
 @param {boolean} [autoplay] - Whether the video should autoplay.
 @param {boolean} [muted] - Whether an uploaded video should be muted.
 @param {boolean} [loop] - Whether the video should loop.
-@param {boolean} [show_controls] - Whether uploaded video controls should be shown.
+@param {boolean} [show_controls] - Whether video controls should be shown.
 @param {number} [media_width] - The target media width used for image generation and intrinsic sizing.
 @param {string} [sizes] - The responsive image sizes value for the poster.
 @param {string} [loading] - The media loading behavior: eager or lazy.
 @param {number} [section_index] - The section position used for deferred autoplay.
+@param {string} [placeholder_svg] - The Shopify placeholder SVG name.
 
 @example
 {% render 'video-media', source: 'uploaded', uploaded_video: section.settings.video, media_width: 1200 %}
@@ -22,11 +23,12 @@ Renders uploaded or external video media with poster and deferred-loading behavi
 {% liquid
   assign autoplay_value = '0'
   assign loop_value = '0'
-  assign controls_value = '1'
+  assign controls_value = '0'
   assign video_muted = muted
   assign loading = loading | default: 'lazy'
   assign media_width = media_width | default: 800
   assign sizes = sizes | default: '100vw'
+  assign placeholder_svg = placeholder_svg | default: 'detailed-apparel-1'
   assign video_preview_width = media_width | times: 2
   assign video_preview_size = video_preview_width | append: 'x'
   assign video_intrinsic_width = media_width
@@ -42,6 +44,10 @@ Renders uploaded or external video media with poster and deferred-loading behavi
 
   if loop
     assign loop_value = '1'
+  endif
+
+  if show_controls
+    assign controls_value = '1'
   endif
 
   if source == 'uploaded' and uploaded_video != blank
@@ -160,7 +166,7 @@ Renders uploaded or external video media with poster and deferred-loading behavi
               loading: loading
           }}
         {% else %}
-          {{ 'detailed-apparel-1' | placeholder_svg_tag: 'video-media-poster-image placeholder-svg' }}
+          {{ placeholder_svg | placeholder_svg_tag: 'video-media-poster-image placeholder-svg' }}
         {% endif %}
         <span class="video-play-button" aria-hidden="true">
           {% render 'svg-icons', icon: 'play', icon_size: 28 %}
@@ -174,7 +180,7 @@ Renders uploaded or external video media with poster and deferred-loading behavi
     {{ video_content }}
   {% else %}
     <div class="video-media-placeholder">
-      {{ 'detailed-apparel-1' | placeholder_svg_tag: 'video-media-video placeholder-svg' }}
+      {{ placeholder_svg | placeholder_svg_tag: 'video-media-video placeholder-svg' }}
       <span class="video-play-button" aria-hidden="true">
         {% render 'svg-icons', icon: 'play', icon_size: 28 %}
       </span>

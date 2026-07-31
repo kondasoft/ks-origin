@@ -1,0 +1,143 @@
+/*
+  Hero stylesheet
+
+  This file contains layout and presentation styles for the Hero section.
+  Keep reusable media and block styles in their respective files.
+*/
+
+
+/*
+  Hero
+*/
+.hero {
+  position: relative;
+  display: grid;
+  min-height: 600px;
+  overflow: hidden;
+  color: rgb(var(--color-text));
+}
+
+.hero-media,
+.hero-overlay,
+.hero-content-container {
+  grid-area: 1 / 1;
+}
+
+.hero-media {
+  position: absolute;
+  inset: 0;
+}
+
+.hero-image,
+.hero-picture,
+.hero-media > .video-media,
+.hero .video-media-deferred,
+.hero .video-media-placeholder,
+.hero .video-media-video,
+.hero .video-media-poster,
+.hero .video-media-poster-image {
+  width: 100%;
+  height: 100%;
+}
+
+.hero-picture {
+  display: block;
+}
+
+.hero-image,
+.hero .video-media-video,
+.hero .video-media-poster-image,
+.hero .placeholder-svg {
+  object-fit: cover;
+}
+
+.hero .video-media-deferred {
+  aspect-ratio: auto;
+}
+
+.hero .video-media-video {
+  position: absolute;
+  inset: 0;
+}
+
+.hero-overlay {
+  z-index: 1;
+  background-color: rgb(var(--color-overlay) / var(--overlay-opacity));
+  pointer-events: none;
+}
+
+.hero-content-container {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  min-height: inherit;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+.hero-content {
+  width: 100%;
+}
+
+.hero[data-mobile-content-position="top"] .hero-content {
+  align-self: start;
+}
+
+.hero[data-mobile-content-position="center"] .hero-content {
+  align-self: center;
+}
+
+.hero[data-mobile-content-position="bottom"] .hero-content {
+  align-self: end;
+}
+
+@media (min-width: 1200px) {
+  .hero {
+    min-height: 720px;
+  }
+
+  .hero-content-container {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+
+  .hero-content {
+    width: min(100%, 720px);
+  }
+
+  .hero[data-desktop-content-position="top-left"] .hero-content,
+  .hero[data-desktop-content-position="top-center"] .hero-content,
+  .hero[data-desktop-content-position="top-right"] .hero-content {
+    align-self: start;
+  }
+
+  .hero[data-desktop-content-position="center-left"] .hero-content,
+  .hero[data-desktop-content-position="center"] .hero-content,
+  .hero[data-desktop-content-position="center-right"] .hero-content {
+    align-self: center;
+  }
+
+  .hero[data-desktop-content-position="bottom-left"] .hero-content,
+  .hero[data-desktop-content-position="bottom-center"] .hero-content,
+  .hero[data-desktop-content-position="bottom-right"] .hero-content {
+    align-self: end;
+  }
+
+  .hero[data-desktop-content-position="top-left"] .hero-content,
+  .hero[data-desktop-content-position="center-left"] .hero-content,
+  .hero[data-desktop-content-position="bottom-left"] .hero-content {
+    justify-self: start;
+  }
+
+  .hero[data-desktop-content-position="top-center"] .hero-content,
+  .hero[data-desktop-content-position="center"] .hero-content,
+  .hero[data-desktop-content-position="bottom-center"] .hero-content {
+    justify-self: center;
+  }
+
+  .hero[data-desktop-content-position="top-right"] .hero-content,
+  .hero[data-desktop-content-position="center-right"] .hero-content,
+  .hero[data-desktop-content-position="bottom-right"] .hero-content {
+    justify-self: end;
+  }
+}

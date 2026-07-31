@@ -1,15 +1,353 @@
+{% liquid
+  assign media_loading = 'lazy'
+  assign media_fetchpriority = 'auto'
+  assign media_sizes = '100vw'
+  assign desktop_image = section.settings.desktop_image
+  assign mobile_image = section.settings.mobile_image | default: desktop_image
+  assign desktop_image = desktop_image | default: mobile_image
+
+  if section.index == 1
+    assign media_loading = 'eager'
+    assign media_fetchpriority = 'high'
+  else
+    assign media_sizes = 'auto, 100vw'
+  endif
+%}
+
+{% if section.index <= 3 or request.design_mode %}
+  <link href="{{ 'hero.css' | asset_url }}" rel="stylesheet" fetchpriority="high">
+{% endif %}
+
+<div
+  class="hero-wrapper section-spacing"
+  style="
+    --pt: {{ section.settings.pt | divided_by: 16.0 | append: 'em' }};
+    --pb: {{ section.settings.pb | divided_by: 16.0 | append: 'em' }};
+  "
+>
+  <div
+    class="hero responsive-text-alignment"
+    data-mobile-content-position="{{ section.settings.mobile_content_position }}"
+    data-desktop-content-position="{{ section.settings.desktop_content_position }}"
+    data-mobile-text-alignment="{{ section.settings.mobile_text_alignment }}"
+    data-desktop-text-alignment="{{ section.settings.desktop_text_alignment }}"
+    style="
+      --color-background: {{ section.settings.background_color.red }} {{ section.settings.background_color.green }} {{ section.settings.background_color.blue }};
+      --color-text: {{ section.settings.text_color.red }} {{ section.settings.text_color.green }} {{ section.settings.text_color.blue }};
+      --color-accent: {{ section.settings.accent_color.red }} {{ section.settings.accent_color.green }} {{ section.settings.accent_color.blue }};
+      --color-overlay: {{ section.settings.overlay_color.red }} {{ section.settings.overlay_color.green }} {{ section.settings.overlay_color.blue }};
+      --overlay-opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
+      --mobile-text-alignment: {{ section.settings.mobile_text_alignment }};
+      --desktop-text-alignment: {{ section.settings.desktop_text_alignment }};
+    "
+    data-section-css="{{ 'hero.css' | asset_url }}"
+  >
+    <div class="hero-media">
+      {% if section.settings.source == 'image' %}
+        {% if desktop_image != blank %}
+          <picture class="hero-picture">
+            <source
+              media="(min-width: 600px)"
+              srcset="
+                {{ desktop_image | image_url: width: 640 }} 640w,
+                {{ desktop_image | image_url: width: 960 }} 960w,
+                {{ desktop_image | image_url: width: 1280 }} 1280w,
+                {{ desktop_image | image_url: width: 1600 }} 1600w,
+                {{ desktop_image | image_url: width: 1920 }} 1920w,
+                {{ desktop_image | image_url: width: 2400 }} 2400w,
+                {{ desktop_image | image_url: width: 3200 }} 3200w,
+                {{ desktop_image | image_url: width: 3840 }} 3840w
+              "
+              sizes="{{ media_sizes }}"
+            >
+            {{ mobile_image
+              | image_url: width: 3840
+              | image_tag:
+                class: 'hero-image',
+                widths: '640, 960, 1280, 1600, 1920, 2400, 3200, 3840',
+                sizes: media_sizes,
+                loading: media_loading,
+                fetchpriority: media_fetchpriority
+            }}
+          </picture>
+        {% else %}
+          {{ 'hero-apparel-1' | placeholder_svg_tag: 'hero-image placeholder-svg' }}
+        {% endif %}
+      {% else %}
+        {% render 'video-media',
+          source: section.settings.source,
+          uploaded_video: section.settings.video,
+          external_video: section.settings.external_video,
+          cover_image: section.settings.cover_image,
+          external_video_alt: section.settings.external_video_alt,
+          autoplay: true,
+          muted: true,
+          loop: true,
+          show_controls: false,
+          media_width: 1920,
+          sizes: media_sizes,
+          loading: media_loading,
+          section_index: section.index,
+          placeholder_svg: 'hero-apparel-1'
+        %}
+      {% endif %}
+    </div>
+
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content-container container {{ settings.container_width }}">
+      <div class="hero-content">
+        {% content_for 'blocks' %}
+      </div>
+    </div>
+  </div>
+</div>
+
 {% schema %}
 {
   "name": "Hero",
-  "settings": [],
-  "blocks": [],
+  "tag": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Media"
+    },
+    {
+      "type": "select",
+      "id": "source",
+      "label": "Media source",
+      "options": [
+        { "value": "image", "label": "Image" },
+        { "value": "uploaded", "label": "Uploaded video" },
+        { "value": "url", "label": "External video" }
+      ],
+      "default": "image"
+    },
+    {
+      "type": "image_picker",
+      "id": "desktop_image",
+      "label": "Image",
+      "visible_if": "{{ section.settings.source == 'image' }}"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "Mobile image (optional)",
+      "info": "Uses the image above when left blank.",
+      "visible_if": "{{ section.settings.source == 'image' }}"
+    },
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Video",
+      "visible_if": "{{ section.settings.source == 'uploaded' }}"
+    },
+    {
+      "type": "video_url",
+      "id": "external_video",
+      "label": "YouTube or Vimeo URL",
+      "accept": ["youtube", "vimeo"],
+      "info": "Supports YouTube and Vimeo URLs.",
+      "visible_if": "{{ section.settings.source == 'url' }}"
+    },
+    {
+      "type": "image_picker",
+      "id": "cover_image",
+      "label": "Cover image",
+      "info": "Used as the poster for deferred external video.",
+      "visible_if": "{{ section.settings.source == 'url' }}"
+    },
+    {
+      "type": "text",
+      "id": "external_video_alt",
+      "label": "Video description",
+      "info": "Describe the video for customers using screen readers.",
+      "visible_if": "{{ section.settings.source == 'url' }}"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "{{ settings.colors.text }}"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "{{ settings.colors.background }}"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent color",
+      "default": "{{ settings.colors.accent }}"
+    },
+    {
+      "type": "header",
+      "content": "Overlay"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Overlay opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Mobile layout"
+    },
+    {
+      "type": "select",
+      "id": "mobile_content_position",
+      "label": "Content position",
+      "options": [
+        { "value": "top", "label": "Top" },
+        { "value": "center", "label": "Center" },
+        { "value": "bottom", "label": "Bottom" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "text_alignment",
+      "id": "mobile_text_alignment",
+      "label": "Text alignment",
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Desktop layout"
+    },
+    {
+      "type": "select",
+      "id": "desktop_content_position",
+      "label": "Content position",
+      "options": [
+        { "group": "Top", "value": "top-left", "label": "Left" },
+        { "group": "Top", "value": "top-center", "label": "Center" },
+        { "group": "Top", "value": "top-right", "label": "Right" },
+        { "group": "Center", "value": "center-left", "label": "Left" },
+        { "group": "Center", "value": "center", "label": "Center" },
+        { "group": "Center", "value": "center-right", "label": "Right" },
+        { "group": "Bottom", "value": "bottom-left", "label": "Left" },
+        { "group": "Bottom", "value": "bottom-center", "label": "Center" },
+        { "group": "Bottom", "value": "bottom-right", "label": "Right" }
+      ],
+      "default": "center-left"
+    },
+    {
+      "type": "text_alignment",
+      "id": "desktop_text_alignment",
+      "label": "Text alignment",
+      "default": "left"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pt",
+      "label": "Top",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "pb",
+      "label": "Bottom",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "blocks": [
+    {
+      "type": "subheading"
+    },
+    {
+      "type": "heading"
+    },
+    {
+      "type": "text"
+    },
+    {
+      "type": "group"
+    }
+  ],
   "disabled_on": {
     "groups": ["header", "footer"]
   },
   "presets": [
     {
       "name": "Hero",
-      "category": "Banners"
+      "category": "Banners",
+      "blocks": [
+        {
+          "type": "subheading",
+          "settings": {
+            "subheading": "New collection"
+          }
+        },
+        {
+          "type": "heading",
+          "settings": {
+            "heading": "A hero built around your story",
+            "heading_tag": "1",
+            "heading_size": "h1"
+          }
+        },
+        {
+          "type": "text",
+          "settings": {
+            "text": "<p>Introduce a collection, campaign, or key message with immersive full-width media.</p>"
+          }
+        },
+        {
+          "type": "group",
+          "settings": {
+            "mobile_content_direction": "column",
+            "mobile_gap": 10,
+            "desktop_content_direction": "row",
+            "desktop_gap": 10
+          },
+          "blocks": [
+            {
+              "type": "button",
+              "settings": {
+                "label": "Shop now",
+                "link": "shopify://collections/all",
+                "style": "btn-accent-solid"
+              }
+            },
+            {
+              "type": "button",
+              "settings": {
+                "label": "Learn more",
+                "style": "btn-text-outline"
+              }
+            }
+          ]
+        }
+      ]
     }
   ]
 }
