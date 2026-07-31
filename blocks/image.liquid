@@ -75,12 +75,12 @@
       "id": "image_ratio",
       "label": "Aspect ratio",
       "options": [
-        { "value": "adapt", "label": "Adapt to image" },
-        { "value": "square", "label": "Square (1:1)" },
-        { "value": "landscape", "label": "Landscape (4:3)" },
-        { "value": "widescreen", "label": "Widescreen (16:9)" },
-        { "value": "portrait", "label": "Portrait (3:4)" },
-        { "value": "vertical", "label": "Vertical (9:16)" }
+        { "group": "Adapt", "value": "adapt", "label": "Adapt to image" },
+        { "group": "Square", "value": "square", "label": "Square (1:1)" },
+        { "group": "Horizontal", "value": "landscape", "label": "Landscape (4:3)" },
+        { "group": "Horizontal", "value": "widescreen", "label": "Widescreen (16:9)" },
+        { "group": "Vertical", "value": "portrait", "label": "Portrait (3:4)" },
+        { "group": "Vertical", "value": "vertical", "label": "Vertical (9:16)" }
       ],
       "default": "adapt"
     },
@@ -116,7 +116,7 @@
       "max": 80,
       "step": 2,
       "unit": "px",
-      "default": 24
+      "default": 0
     }
   ],
   "presets": [

@@ -1,0 +1,306 @@
+{% liquid
+  assign video_loading = 'lazy'
+  assign video_sizes = '(min-width: 1200px) 50vw, 100vw'
+
+  if section.index == 1
+    assign video_loading = 'eager'
+  else
+    assign video_sizes = 'auto, ' | append: video_sizes
+  endif
+%}
+
+{% if section.index <= 3 or request.design_mode %}
+  <link href="{{ 'video-with-text.css' | asset_url }}" rel="stylesheet" fetchpriority="high">
+{% endif %}
+
+<div
+  class="video-with-text section-spacing"
+  data-mobile-text-alignment="{{ section.settings.mobile_text_alignment }}"
+  data-desktop-text-alignment="{{ section.settings.desktop_text_alignment }}"
+  data-mobile-video-position="{{ section.settings.mobile_video_position }}"
+  data-desktop-video-position="{{ section.settings.desktop_video_position }}"
+  style="
+    --color-background: {{ section.settings.background_color.red }} {{ section.settings.background_color.green }} {{ section.settings.background_color.blue }};
+    --color-text: {{ section.settings.text_color.red }} {{ section.settings.text_color.green }} {{ section.settings.text_color.blue }};
+    --color-accent: {{ section.settings.accent_color.red }} {{ section.settings.accent_color.green }} {{ section.settings.accent_color.blue }};
+    --mobile-text-alignment: {{ section.settings.mobile_text_alignment }};
+    --desktop-text-alignment: {{ section.settings.desktop_text_alignment }};
+    --mobile-gap: {{ section.settings.mobile_gap | divided_by: 16.0 | append: 'em' }};
+    --desktop-gap: {{ section.settings.desktop_gap | divided_by: 16.0 | append: 'em' }};
+    --pt: {{ section.settings.pt | divided_by: 16.0 | append: 'em' }};
+    --pb: {{ section.settings.pb | divided_by: 16.0 | append: 'em' }};
+  "
+  data-section-css="{{ 'video-with-text.css' | asset_url }}"
+>
+  <div class="container {{ settings.container_width }}">
+    <div class="video-with-text-layout">
+      <div class="video-with-text-media">
+        {% render 'video-media',
+          source: section.settings.source,
+          uploaded_video: section.settings.video,
+          external_video: section.settings.external_video,
+          cover_image: section.settings.cover_image,
+          external_video_alt: section.settings.external_video_alt,
+          autoplay: section.settings.autoplay,
+          muted: section.settings.muted,
+          loop: section.settings.loop,
+          show_controls: section.settings.show_controls,
+          media_width: 1200,
+          sizes: video_sizes,
+          loading: video_loading,
+          section_index: section.index
+        %}
+      </div>
+
+      <div class="video-with-text-content">
+        {% content_for 'blocks' %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Video with text",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "{{ settings.colors.background }}"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "{{ settings.colors.text }}"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent color",
+      "default": "{{ settings.colors.accent }}"
+    },
+    {
+      "type": "header",
+      "content": "Video"
+    },
+    {
+      "type": "select",
+      "id": "source",
+      "label": "Video source",
+      "options": [
+        { "value": "uploaded", "label": "Uploaded video" },
+        { "value": "url", "label": "External URL" }
+      ],
+      "default": "uploaded"
+    },
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Video",
+      "visible_if": "{{ section.settings.source == 'uploaded' }}"
+    },
+    {
+      "type": "video_url",
+      "id": "external_video",
+      "label": "YouTube or Vimeo URL",
+      "accept": ["youtube", "vimeo"],
+      "info": "Supports YouTube and Vimeo URLs.",
+      "visible_if": "{{ section.settings.source == 'url' }}"
+    },
+    {
+      "type": "image_picker",
+      "id": "cover_image",
+      "label": "Cover image",
+      "info": "Used as the poster for deferred external video.",
+      "visible_if": "{{ section.settings.source == 'url' }}"
+    },
+    {
+      "type": "text",
+      "id": "external_video_alt",
+      "label": "Video description",
+      "info": "Describe the video for customers using screen readers.",
+      "visible_if": "{{ section.settings.source == 'url' }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Autoplay",
+      "info": "Autoplay videos are muted.",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "muted",
+      "label": "Muted",
+      "info": "Autoplay videos are always muted.",
+      "default": false,
+      "visible_if": "{{ section.settings.source == 'uploaded' and section.settings.autoplay == false }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "loop",
+      "label": "Loop",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_controls",
+      "label": "Show controls",
+      "default": true,
+      "visible_if": "{{ section.settings.source == 'uploaded' }}"
+    },
+    {
+      "type": "header",
+      "content": "Mobile layout"
+    },
+    {
+      "type": "select",
+      "id": "mobile_video_position",
+      "label": "Video position",
+      "options": [
+        { "value": "top", "label": "Top" },
+        { "value": "bottom", "label": "Bottom" }
+      ],
+      "default": "top"
+    },
+    {
+      "type": "text_alignment",
+      "id": "mobile_text_alignment",
+      "label": "Text alignment",
+      "default": "left"
+    },
+    {
+      "type": "range",
+      "id": "mobile_gap",
+      "label": "Gap",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "header",
+      "content": "Desktop layout"
+    },
+    {
+      "type": "select",
+      "id": "desktop_video_position",
+      "label": "Video position",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "text_alignment",
+      "id": "desktop_text_alignment",
+      "label": "Text alignment",
+      "default": "left"
+    },
+    {
+      "type": "range",
+      "id": "desktop_gap",
+      "label": "Gap",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pt",
+      "label": "Top",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "pb",
+      "label": "Bottom",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 40
+    }
+  ],
+  "blocks": [
+    {
+      "type": "subheading"
+    },
+    {
+      "type": "heading"
+    },
+    {
+      "type": "text"
+    },
+    {
+      "type": "group"
+    }
+  ],
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "presets": [
+    {
+      "name": "Video with text",
+      "category": "Video",
+      "blocks": [
+        {
+          "type": "subheading",
+          "settings": {
+            "subheading": "Pair video with content"
+          }
+        },
+        {
+          "type": "heading",
+          "settings": {
+            "heading": "Video with text"
+          }
+        },
+        {
+          "type": "text",
+          "settings": {
+            "text": "<p>Combine an uploaded or external video with supporting content and an optional action in a responsive two-column layout.</p>"
+          }
+        },
+        {
+          "type": "group",
+          "settings": {
+            "mobile_content_direction": "column",
+            "mobile_gap": 8,
+            "desktop_content_direction": "row",
+            "desktop_gap": 10
+          },
+          "blocks": [
+            {
+              "type": "button",
+              "settings": {
+                "label": "Learn more",
+                "style": "btn-accent-solid"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

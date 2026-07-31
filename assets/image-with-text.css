@@ -1,0 +1,88 @@
+/*
+  Image with text stylesheet
+
+  This file contains layout and presentation styles for the Image with text section.
+  Keep reusable block styles in their respective block stylesheets.
+*/
+
+
+/*
+  Image with text
+*/
+.image-with-text {
+  color: rgb(var(--color-text));
+  background-color: rgb(var(--color-background));
+}
+
+.image-with-text-layout {
+  display: grid;
+  gap: var(--mobile-gap);
+}
+
+.image-with-text-media,
+.image-with-text-content {
+  min-width: 0;
+}
+
+.image-with-text-image {
+  width: 100%;
+  border-radius: var(--border-radius);
+}
+
+.image-with-text-content {
+  text-align: var(--mobile-text-alignment);
+}
+
+.image-with-text[data-mobile-image-position="bottom"] .image-with-text-media {
+  order: 2;
+}
+
+.image-with-text[data-mobile-text-alignment="left"] .group-block {
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.image-with-text[data-mobile-text-alignment="center"] .group-block {
+  align-items: center;
+  justify-content: center;
+}
+
+.image-with-text[data-mobile-text-alignment="right"] .group-block {
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+
+@media (min-width: 1200px) {
+  .image-with-text-layout {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: center;
+    gap: var(--desktop-gap);
+  }
+
+  .image-with-text-media {
+    order: 0;
+  }
+
+  .image-with-text[data-desktop-image-position="right"] .image-with-text-media {
+    order: 2;
+  }
+
+  .image-with-text-content {
+    text-align: var(--desktop-text-alignment);
+  }
+
+  .image-with-text[data-desktop-text-alignment="left"] .group-block {
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+
+  .image-with-text[data-desktop-text-alignment="center"] .group-block {
+    align-items: center;
+    justify-content: center;
+  }
+
+  .image-with-text[data-desktop-text-alignment="right"] .group-block {
+    align-items: flex-end;
+    justify-content: flex-end;
+  }
+}

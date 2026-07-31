@@ -1,51 +1,51 @@
 /*
-  Rich text stylesheet
+  Custom section stylesheet
 
-  This file contains styles for the Rich text section.
+  This file contains presentation styles for the Custom section.
   Keep reusable block styles in their respective block stylesheets.
 */
 
 
 /*
-  Rich text
+  Custom section
 */
-.rich-text {
+.custom-section {
   color: rgb(var(--color-text));
   text-align: var(--mobile-text-alignment);
   background-color: rgb(var(--color-background));
 }
 
-.rich-text[data-mobile-text-alignment="left"] .group-block {
+.custom-section[data-mobile-text-alignment="left"] .group-block {
   align-items: flex-start;
   justify-content: flex-start;
 }
 
-.rich-text[data-mobile-text-alignment="center"] .group-block {
+.custom-section[data-mobile-text-alignment="center"] .group-block {
   align-items: center;
   justify-content: center;
 }
 
-.rich-text[data-mobile-text-alignment="right"] .group-block {
+.custom-section[data-mobile-text-alignment="right"] .group-block {
   align-items: flex-end;
   justify-content: flex-end;
 }
 
 @media (min-width: 1200px) {
-  .rich-text {
+  .custom-section {
     text-align: var(--desktop-text-alignment);
   }
 
-  .rich-text[data-desktop-text-alignment="left"] .group-block {
+  .custom-section[data-desktop-text-alignment="left"] .group-block {
     align-items: flex-start;
     justify-content: flex-start;
   }
 
-  .rich-text[data-desktop-text-alignment="center"] .group-block {
+  .custom-section[data-desktop-text-alignment="center"] .group-block {
     align-items: center;
     justify-content: center;
   }
 
-  .rich-text[data-desktop-text-alignment="right"] .group-block {
+  .custom-section[data-desktop-text-alignment="right"] .group-block {
     align-items: flex-end;
     justify-content: flex-end;
   }

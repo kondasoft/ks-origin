@@ -1,0 +1,123 @@
+{% liquid
+  assign container_class = 'separator-content'
+  assign line_opacity = 'var(--border-opacity)'
+
+  if section.settings.container_width == 'site'
+    assign container_class = container_class | append: ' container ' | append: settings.container_width
+  elsif section.settings.container_width == 'narrow'
+    assign container_class = container_class | append: ' container container-content'
+  endif
+
+  if section.settings.custom_line_opacity
+    assign line_opacity = section.settings.line_opacity | append: '%'
+  endif
+%}
+
+<div
+  class="separator section-spacing"
+  style="
+    --color-background: {{ section.settings.background_color.red }} {{ section.settings.background_color.green }} {{ section.settings.background_color.blue }};
+    --color-line: {{ section.settings.line_color.red }} {{ section.settings.line_color.green }} {{ section.settings.line_color.blue }};
+    --line-opacity: {{ line_opacity }};
+    --pt: {{ section.settings.pt | divided_by: 16.0 | append: 'em' }};
+    --pb: {{ section.settings.pb | divided_by: 16.0 | append: 'em' }};
+    background-color: rgb(var(--color-background));
+  "
+>
+  <div class="{{ container_class }}">
+    <hr
+      class="separator-line"
+      style="border-top-color: rgb(var(--color-line) / var(--line-opacity));">
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Separator",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "{{ settings.colors.background }}"
+    },
+    {
+      "type": "color",
+      "id": "line_color",
+      "label": "Line color",
+      "default": "{{ settings.colors.text }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "custom_line_opacity",
+      "label": "Custom line opacity",
+      "info": "Enable to override the theme's global border opacity for this separator.",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "line_opacity",
+      "label": "Line opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 20,
+      "visible_if": "{{ section.settings.custom_line_opacity }}"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "container_width",
+      "label": "Container",
+      "options": [
+        { "value": "full", "label": "Full width" },
+        { "value": "site", "label": "Site container" },
+        { "value": "narrow", "label": "Narrow container" }
+      ],
+      "default": "site"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pt",
+      "label": "Top",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "pb",
+      "label": "Bottom",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 40
+    }
+  ],
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "presets": [
+    {
+      "name": "Separator",
+      "category": "Layout"
+    }
+  ]
+}
+{% endschema %}

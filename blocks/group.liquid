@@ -1,10 +1,12 @@
 <div
-  class="group-block"
+  class="group-block block-spacing"
   style="
     --mobile-content-direction: {{ block.settings.mobile_content_direction }};
     --mobile-gap: {{ block.settings.mobile_gap | divided_by: 16.0 | append: 'rem' }};
     --desktop-content-direction: {{ block.settings.desktop_content_direction }};
     --desktop-gap: {{ block.settings.desktop_gap | divided_by: 16.0 | append: 'rem' }};
+    --pt: {{ block.settings.pt | divided_by: 16.0 | append: 'em' }};
+    --pb: {{ block.settings.pb | divided_by: 16.0 | append: 'em' }};
   "
   {{ block.shopify_attributes }}
 >
@@ -32,9 +34,13 @@
   "tag": null,
   "settings": [
     {
+      "type": "header",
+      "content": "Mobile"
+    },
+    {
       "type": "select",
       "id": "mobile_content_direction",
-      "label": "Mobile direction",
+      "label": "Direction",
       "options": [
         { "value": "column", "label": "Vertical" },
         { "value": "row", "label": "Horizontal" }
@@ -52,9 +58,13 @@
       "default": 10
     },
     {
+      "type": "header",
+      "content": "Desktop"
+    },
+    {
       "type": "select",
       "id": "desktop_content_direction",
-      "label": "Desktop direction",
+      "label": "Direction",
       "options": [
         { "value": "column", "label": "Vertical" },
         { "value": "row", "label": "Horizontal" }
@@ -70,6 +80,30 @@
       "step": 2,
       "unit": "px",
       "default": 10
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pt",
+      "label": "Top",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "pb",
+      "label": "Bottom",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 0
     }
   ],
   "blocks": [

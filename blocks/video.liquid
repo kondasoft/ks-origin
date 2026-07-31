@@ -1,177 +1,39 @@
 {% liquid
-  assign autoplay_value = '0'
-  assign loop_value = '0'
-  assign controls_value = '1'
-  assign video_muted = block.settings.muted
   assign video_loading = 'lazy'
-  assign video_preview_width = block.settings.video_width | times: 2
-  assign video_preview_size = video_preview_width | append: 'x'
   assign video_sizes = 'min(' | append: block.settings.video_width | append: 'px, 100vw)'
-  assign video_intrinsic_width = block.settings.video_width
-  assign video_intrinsic_height = video_intrinsic_width | times: 9 | divided_by: 16
-  assign has_video = false
-  assign defer_video = false
-  assign observe_video = false
-  assign video_poster_class = 'video-block-poster-image'
 
   if section.index == 1
     assign video_loading = 'eager'
   else
     assign video_sizes = 'auto, ' | append: video_sizes
   endif
-
-  if block.settings.autoplay
-    assign autoplay_value = '1'
-    assign video_muted = true
-  endif
-
-  if block.settings.loop
-    assign loop_value = '1'
-  endif
-
-  if block.settings.source == 'uploaded' and block.settings.video != blank
-    assign has_video = true
-    assign video_preview_image = block.settings.video.preview_image
-
-    if block.settings.video.preview_image != blank
-      assign video_intrinsic_width = block.settings.video.preview_image.width
-      assign video_intrinsic_height = block.settings.video.preview_image.height
-    elsif block.settings.video.aspect_ratio
-      assign video_intrinsic_height = video_intrinsic_width | divided_by: block.settings.video.aspect_ratio | round
-    endif
-  elsif block.settings.source == 'url' and block.settings.external_video != blank
-    assign has_video = true
-    assign video_preview_image = block.settings.cover_image
-  endif
-
-  if block.settings.autoplay
-    if section.index > 1
-      assign defer_video = true
-      assign observe_video = true
-    endif
-  elsif video_preview_image != blank
-    assign defer_video = true
-  endif
-
-  assign video_tag_autoplay = block.settings.autoplay
-  assign external_autoplay_value = autoplay_value
-  assign external_video_title = 'accessibility.play_video' | t
-
-  if defer_video
-    assign video_tag_autoplay = true
-    assign external_autoplay_value = '1'
-  endif
-
-  if block.settings.source == 'url' and block.settings.external_video != blank
-    if block.settings.external_video_alt != blank
-      assign external_video_title = block.settings.external_video_alt
-    endif
-
-    if block.settings.external_video.type == 'youtube'
-      assign external_video_src = 'https://www.youtube.com/embed/' | append: block.settings.external_video.id
-      assign external_video_src = external_video_src | append: '?autoplay=' | append: external_autoplay_value
-      assign external_video_src = external_video_src | append: '&mute=' | append: autoplay_value
-      assign external_video_src = external_video_src | append: '&controls=' | append: controls_value
-      assign external_video_src = external_video_src | append: '&playsinline=1'
-
-      if block.settings.loop
-        assign external_video_src = external_video_src | append: '&loop=1&playlist=' | append: block.settings.external_video.id
-      endif
-    else
-      assign external_video_src = 'https://player.vimeo.com/video/' | append: block.settings.external_video.id
-      assign external_video_src = external_video_src | append: '?autoplay=' | append: external_autoplay_value
-      assign external_video_src = external_video_src | append: '&muted=' | append: autoplay_value
-      assign external_video_src = external_video_src | append: '&controls=' | append: controls_value
-      assign external_video_src = external_video_src | append: '&loop=' | append: loop_value
-    endif
-  endif
 %}
-
-{% capture video_content %}
-  {% if block.settings.source == 'uploaded' and block.settings.video != blank %}
-    {{ block.settings.video
-      | video_tag:
-        class: 'video-block-video',
-        image_size: video_preview_size,
-        width: video_intrinsic_width,
-        height: video_intrinsic_height,
-        autoplay: video_tag_autoplay,
-        loop: block.settings.loop,
-        muted: video_muted,
-        controls: block.settings.show_controls,
-        playsinline: true,
-        loading: video_loading
-    }}
-  {% elsif block.settings.source == 'url' and block.settings.external_video != blank %}
-    <iframe
-      class="video-block-video aspect-ratio aspect-ratio-widescreen"
-      src="{{ external_video_src | escape }}"
-      width="{{ video_intrinsic_width }}"
-      height="{{ video_intrinsic_height }}"
-      loading="{{ video_loading }}"
-      title="{{ external_video_title | escape }}"
-      allow="autoplay; encrypted-media; picture-in-picture"
-      allowfullscreen
-    ></iframe>
-  {% endif %}
-{% endcapture %}
 
 <div
   class="video-block block-spacing"
   style="
     --video-width: {{ block.settings.video_width | append: 'px' }};
-    --video-aspect-ratio: {{ video_intrinsic_width }} / {{ video_intrinsic_height }};
     --pt: {{ block.settings.pt | divided_by: 16.0 | append: 'em' }};
     --pb: {{ block.settings.pb | divided_by: 16.0 | append: 'em' }};
   "
   {{ block.shopify_attributes }}
 >
   <div class="video-block-media">
-    {% if has_video and defer_video %}
-      <deferred-video
-        class="video-block-deferred"
-        {% if observe_video %}
-          autoplay
-          data-intersection-observer
-          data-intersection-root-margin="300px 0px"
-        {% endif %}
-      >
-        <button
-          class="video-block-poster"
-          type="button"
-          aria-label="{{ 'accessibility.play_video' | t }}"
-          data-deferred-video-button
-        >
-          {% if video_preview_image != blank %}
-            {{ video_preview_image
-              | image_url: width: video_preview_width
-              | image_tag:
-                class: video_poster_class,
-                widths: '320, 640, 960, 1280, 1920, 2560, 3200, 3840',
-                sizes: video_sizes,
-                loading: video_loading
-            }}
-          {% else %}
-            {{ 'detailed-apparel-1' | placeholder_svg_tag: 'video-block-poster-image placeholder-svg' }}
-          {% endif %}
-          <span class="video-play-button" aria-hidden="true">
-            {% render 'svg-icons', icon: 'play', icon_size: 28 %}
-          </span>
-        </button>
-        <template>
-          {{ video_content }}
-        </template>
-      </deferred-video>
-    {% elsif has_video %}
-      {{ video_content }}
-    {% else %}
-      <div class="video-block-placeholder">
-        {{ 'detailed-apparel-1' | placeholder_svg_tag: 'video-block-video placeholder-svg' }}
-        <span class="video-play-button" aria-hidden="true">
-          {% render 'svg-icons', icon: 'play', icon_size: 28 %}
-        </span>
-      </div>
-    {% endif %}
+    {% render 'video-media',
+      source: block.settings.source,
+      uploaded_video: block.settings.video,
+      external_video: block.settings.external_video,
+      cover_image: block.settings.cover_image,
+      external_video_alt: block.settings.external_video_alt,
+      autoplay: block.settings.autoplay,
+      muted: block.settings.muted,
+      loop: block.settings.loop,
+      show_controls: block.settings.show_controls,
+      media_width: block.settings.video_width,
+      sizes: video_sizes,
+      loading: video_loading,
+      section_index: section.index
+    %}
   </div>
 </div>
 
@@ -185,62 +47,6 @@
     display: inline-block;
     width: min(100%, var(--video-width));
     vertical-align: middle;
-  }
-
-  .video-block-video {
-    display: block;
-    width: 100%;
-    height: auto;
-    border-radius: var(--border-radius);
-    border: 0;
-  }
-
-  .video-block-deferred {
-    position: relative;
-    display: block;
-    aspect-ratio: var(--video-aspect-ratio);
-  }
-
-  .video-block-deferred > .video-block-video {
-    position: absolute;
-    inset: 0;
-    height: 100%;
-  }
-
-  .video-block-deferred[data-media-loaded="true"] .video-block-poster {
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  .video-block-poster {
-    position: relative;
-    z-index: 1;
-    display: block;
-    width: 100%;
-    height: 100%;
-    padding: 0;
-    color: inherit;
-    background: rgb(var(--color-surface));
-    border: 0;
-    border-radius: var(--border-radius);
-    cursor: pointer;
-    outline: 2px solid transparent;
-    outline-offset: 2px;
-  }
-
-  .video-block-poster:focus-visible {
-    outline-color: currentcolor;
-  }
-
-  .video-block-poster .video-block-poster-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: var(--border-radius);
-  }
-
-  .video-block-placeholder {
-    position: relative;
   }
 
 {% endstylesheet %}
@@ -348,7 +154,7 @@
       "max": 80,
       "step": 2,
       "unit": "px",
-      "default": 24
+      "default": 0
     }
   ],
   "presets": [

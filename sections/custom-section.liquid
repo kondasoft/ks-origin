@@ -1,9 +1,19 @@
+{% liquid
+  assign container_class = 'custom-section-content'
+
+  if section.settings.container_width == 'site'
+    assign container_class = container_class | append: ' container ' | append: settings.container_width
+  elsif section.settings.container_width == 'narrow'
+    assign container_class = container_class | append: ' container container-content'
+  endif
+%}
+
 {% if section.index <= 3 or request.design_mode %}
-  <link href="{{ 'rich-text.css' | asset_url }}" rel="stylesheet" fetchpriority="high">
+  <link href="{{ 'custom-section.css' | asset_url }}" rel="stylesheet" fetchpriority="high">
 {% endif %}
 
 <div
-  class="rich-text section-spacing"
+  class="custom-section section-spacing"
   data-mobile-text-alignment="{{ section.settings.mobile_text_alignment }}"
   data-desktop-text-alignment="{{ section.settings.desktop_text_alignment }}"
   style="
@@ -15,16 +25,16 @@
     --pt: {{ section.settings.pt | divided_by: 16.0 | append: 'em' }};
     --pb: {{ section.settings.pb | divided_by: 16.0 | append: 'em' }};
   "
-  data-section-css="{{ 'rich-text.css' | asset_url }}"
+  data-section-css="{{ 'custom-section.css' | asset_url }}"
 >
-  <div class="container container-content">
+  <div class="{{ container_class }}">
     {% content_for 'blocks' %}
   </div>
 </div>
 
 {% schema %}
 {
-  "name": "Rich text",
+  "name": "Custom section",
   "tag": "section",
   "settings": [
     {
@@ -52,6 +62,17 @@
     {
       "type": "header",
       "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "container_width",
+      "label": "Container",
+      "options": [
+        { "value": "full", "label": "Full width" },
+        { "value": "site", "label": "Site container" },
+        { "value": "narrow", "label": "Narrow container" }
+      ],
+      "default": "site"
     },
     {
       "type": "text_alignment",
@@ -92,22 +113,10 @@
   ],
   "blocks": [
     {
-      "type": "subheading"
+      "type": "@theme"
     },
     {
-      "type": "heading"
-    },
-    {
-      "type": "text"
-    },
-    {
-      "type": "image"
-    },
-    {
-      "type": "video"
-    },
-    {
-      "type": "group"
+      "type": "@app"
     }
   ],
   "disabled_on": {
@@ -115,38 +124,59 @@
   },
   "presets": [
     {
-      "name": "Rich text",
-      "category": "Text",
+      "name": "Custom section",
+      "category": "Layout",
       "settings": {
+        "container_width": "site",
         "mobile_text_alignment": "center",
         "desktop_text_alignment": "center"
       },
       "blocks": [
         {
-          "type": "subheading",
+          "type": "group",
           "settings": {
-            "subheading": "Share a focused message"
-          }
+            "mobile_content_direction": "column",
+            "mobile_gap": 0,
+            "desktop_content_direction": "column",
+            "desktop_gap": 0,
+            "pb": 10
+          },
+          "blocks": [
+            {
+              "type": "subheading",
+              "settings": {
+                "subheading": "Build a flexible layout"
+              }
+            },
+            {
+              "type": "heading",
+              "settings": {
+                "heading": "Custom section"
+              }
+            },
+            {
+              "type": "text",
+              "settings": {
+                "text": "<p>Add, remove, and rearrange reusable blocks to create a section tailored to your content and layout needs.</p>"
+              }
+            }
+          ]
         },
         {
-          "type": "heading",
+          "type": "image",
           "settings": {
-            "heading": "Rich text"
-          }
-        },
-        {
-          "type": "text",
-          "settings": {
-            "text": "<p>Present a clear message with supporting text and calls to action in a focused, easy-to-read layout.</p>"
+            "image_ratio": "adapt",
+            "image_width": 800
           }
         },
         {
           "type": "group",
           "settings": {
             "mobile_content_direction": "column",
-            "mobile_gap": 8,
+            "mobile_gap": 10,
             "desktop_content_direction": "row",
-            "desktop_gap": 10
+            "desktop_gap": 10,
+            "pt": 24
           },
           "blocks": [
             {
@@ -160,7 +190,7 @@
               "type": "button",
               "settings": {
                 "label": "Secondary action",
-                "style": "btn-accent-outline"
+                "style": "btn-text-solid"
               }
             }
           ]

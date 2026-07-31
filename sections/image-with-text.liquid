@@ -1,0 +1,263 @@
+{% liquid
+  assign image_loading = 'lazy'
+  assign image_class = 'image-with-text-image'
+  assign image_sizes = '(min-width: 1200px) 50vw, 100vw'
+
+  unless section.settings.image_ratio == 'adapt'
+    assign image_class = image_class | append: ' aspect-ratio aspect-ratio-' | append: section.settings.image_ratio
+  endunless
+
+  assign placeholder_class = image_class | append: ' placeholder-svg'
+
+  if section.index == 1
+    assign image_loading = 'eager'
+  else
+    assign image_sizes = 'auto, ' | append: image_sizes
+  endif
+%}
+
+{% if section.index <= 3 or request.design_mode %}
+  <link href="{{ 'image-with-text.css' | asset_url }}" rel="stylesheet" fetchpriority="high">
+{% endif %}
+
+<div
+  class="image-with-text section-spacing"
+  data-mobile-text-alignment="{{ section.settings.mobile_text_alignment }}"
+  data-desktop-text-alignment="{{ section.settings.desktop_text_alignment }}"
+  data-mobile-image-position="{{ section.settings.mobile_image_position }}"
+  data-desktop-image-position="{{ section.settings.desktop_image_position }}"
+  style="
+    --color-background: {{ section.settings.background_color.red }} {{ section.settings.background_color.green }} {{ section.settings.background_color.blue }};
+    --color-text: {{ section.settings.text_color.red }} {{ section.settings.text_color.green }} {{ section.settings.text_color.blue }};
+    --color-accent: {{ section.settings.accent_color.red }} {{ section.settings.accent_color.green }} {{ section.settings.accent_color.blue }};
+    --mobile-text-alignment: {{ section.settings.mobile_text_alignment }};
+    --desktop-text-alignment: {{ section.settings.desktop_text_alignment }};
+    --mobile-gap: {{ section.settings.mobile_gap | divided_by: 16.0 | append: 'em' }};
+    --desktop-gap: {{ section.settings.desktop_gap | divided_by: 16.0 | append: 'em' }};
+    --pt: {{ section.settings.pt | divided_by: 16.0 | append: 'em' }};
+    --pb: {{ section.settings.pb | divided_by: 16.0 | append: 'em' }};
+  "
+  data-section-css="{{ 'image-with-text.css' | asset_url }}"
+>
+  <div class="container {{ settings.container_width }}">
+    <div class="image-with-text-layout">
+      <div class="image-with-text-media">
+        {% if section.settings.image != blank %}
+          {{ section.settings.image
+            | image_url: width: 2400
+            | image_tag:
+              class: image_class,
+              widths: '320, 640, 960, 1280, 1600, 2000, 2400',
+              sizes: image_sizes,
+              loading: image_loading
+          }}
+        {% else %}
+          {{ 'detailed-apparel-1' | placeholder_svg_tag: placeholder_class }}
+        {% endif %}
+      </div>
+
+      <div class="image-with-text-content">
+        {% content_for 'blocks' %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Image with text",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "{{ settings.colors.background }}"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "{{ settings.colors.text }}"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent color",
+      "default": "{{ settings.colors.accent }}"
+    },
+    {
+      "type": "header",
+      "content": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "Aspect ratio",
+      "options": [
+        { "group": "Adapt", "value": "adapt", "label": "Adapt to image" },
+        { "group": "Square", "value": "square", "label": "Square (1:1)" },
+        { "group": "Horizontal", "value": "landscape", "label": "Landscape (4:3)" },
+        { "group": "Horizontal", "value": "widescreen", "label": "Widescreen (16:9)" },
+        { "group": "Vertical", "value": "portrait", "label": "Portrait (3:4)" },
+        { "group": "Vertical", "value": "vertical", "label": "Vertical (9:16)" }
+      ],
+      "default": "adapt"
+    },
+    {
+      "type": "header",
+      "content": "Mobile layout"
+    },
+    {
+      "type": "select",
+      "id": "mobile_image_position",
+      "label": "Image position",
+      "options": [
+        { "value": "top", "label": "Top" },
+        { "value": "bottom", "label": "Bottom" }
+      ],
+      "default": "top"
+    },
+    {
+      "type": "text_alignment",
+      "id": "mobile_text_alignment",
+      "label": "Text alignment",
+      "default": "left"
+    },
+    {
+      "type": "range",
+      "id": "mobile_gap",
+      "label": "Gap",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "header",
+      "content": "Desktop layout"
+    },
+    {
+      "type": "select",
+      "id": "desktop_image_position",
+      "label": "Image position",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "text_alignment",
+      "id": "desktop_text_alignment",
+      "label": "Text alignment",
+      "default": "left"
+    },
+    {
+      "type": "range",
+      "id": "desktop_gap",
+      "label": "Gap",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pt",
+      "label": "Top",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "pb",
+      "label": "Bottom",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 40
+    }
+  ],
+  "blocks": [
+    {
+      "type": "subheading"
+    },
+    {
+      "type": "heading"
+    },
+    {
+      "type": "text"
+    },
+    {
+      "type": "group"
+    }
+  ],
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "presets": [
+    {
+      "name": "Image with text",
+      "category": "Image",
+      "blocks": [
+        {
+          "type": "subheading",
+          "settings": {
+            "subheading": "Pair imagery with content"
+          }
+        },
+        {
+          "type": "heading",
+          "settings": {
+            "heading": "Image with text"
+          }
+        },
+        {
+          "type": "text",
+          "settings": {
+            "text": "<p>Combine an image with supporting content and an optional action in a responsive two-column layout.</p>"
+          }
+        },
+        {
+          "type": "group",
+          "settings": {
+            "mobile_content_direction": "column",
+            "mobile_gap": 8,
+            "desktop_content_direction": "row",
+            "desktop_gap": 10
+          },
+          "blocks": [
+            {
+              "type": "button",
+              "settings": {
+                "label": "Learn more",
+                "style": "btn-accent-solid"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

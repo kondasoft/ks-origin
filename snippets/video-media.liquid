@@ -1,0 +1,183 @@
+{% doc %}
+Renders uploaded or external video media with poster and deferred-loading behavior.
+
+@param {string} source - The video source type: uploaded or url.
+@param {video} [uploaded_video] - The Shopify-hosted video.
+@param {object} [external_video] - The YouTube or Vimeo URL object.
+@param {image} [cover_image] - The poster image for an external video.
+@param {string} [external_video_alt] - The accessible external video description.
+@param {boolean} [autoplay] - Whether the video should autoplay.
+@param {boolean} [muted] - Whether an uploaded video should be muted.
+@param {boolean} [loop] - Whether the video should loop.
+@param {boolean} [show_controls] - Whether uploaded video controls should be shown.
+@param {number} [media_width] - The target media width used for image generation and intrinsic sizing.
+@param {string} [sizes] - The responsive image sizes value for the poster.
+@param {string} [loading] - The media loading behavior: eager or lazy.
+@param {number} [section_index] - The section position used for deferred autoplay.
+
+@example
+{% render 'video-media', source: 'uploaded', uploaded_video: section.settings.video, media_width: 1200 %}
+{% enddoc %}
+
+{% liquid
+  assign autoplay_value = '0'
+  assign loop_value = '0'
+  assign controls_value = '1'
+  assign video_muted = muted
+  assign loading = loading | default: 'lazy'
+  assign media_width = media_width | default: 800
+  assign sizes = sizes | default: '100vw'
+  assign video_preview_width = media_width | times: 2
+  assign video_preview_size = video_preview_width | append: 'x'
+  assign video_intrinsic_width = media_width
+  assign video_intrinsic_height = video_intrinsic_width | times: 9 | divided_by: 16
+  assign has_video = false
+  assign defer_video = false
+  assign observe_video = false
+
+  if autoplay
+    assign autoplay_value = '1'
+    assign video_muted = true
+  endif
+
+  if loop
+    assign loop_value = '1'
+  endif
+
+  if source == 'uploaded' and uploaded_video != blank
+    assign has_video = true
+    assign video_preview_image = uploaded_video.preview_image
+
+    if uploaded_video.preview_image != blank
+      assign video_intrinsic_width = uploaded_video.preview_image.width
+      assign video_intrinsic_height = uploaded_video.preview_image.height
+    elsif uploaded_video.aspect_ratio
+      assign video_intrinsic_height = video_intrinsic_width | divided_by: uploaded_video.aspect_ratio | round
+    endif
+  elsif source == 'url' and external_video != blank
+    assign has_video = true
+    assign video_preview_image = cover_image
+  endif
+
+  if autoplay
+    if section_index > 1
+      assign defer_video = true
+      assign observe_video = true
+    endif
+  elsif video_preview_image != blank
+    assign defer_video = true
+  endif
+
+  assign video_tag_autoplay = autoplay
+  assign external_autoplay_value = autoplay_value
+  assign external_video_title = 'accessibility.play_video' | t
+
+  if defer_video
+    assign video_tag_autoplay = true
+    assign external_autoplay_value = '1'
+  endif
+
+  if source == 'url' and external_video != blank
+    if external_video_alt != blank
+      assign external_video_title = external_video_alt
+    endif
+
+    if external_video.type == 'youtube'
+      assign external_video_src = 'https://www.youtube.com/embed/' | append: external_video.id
+      assign external_video_src = external_video_src | append: '?autoplay=' | append: external_autoplay_value
+      assign external_video_src = external_video_src | append: '&mute=' | append: autoplay_value
+      assign external_video_src = external_video_src | append: '&controls=' | append: controls_value
+      assign external_video_src = external_video_src | append: '&playsinline=1'
+
+      if loop
+        assign external_video_src = external_video_src | append: '&loop=1&playlist=' | append: external_video.id
+      endif
+    else
+      assign external_video_src = 'https://player.vimeo.com/video/' | append: external_video.id
+      assign external_video_src = external_video_src | append: '?autoplay=' | append: external_autoplay_value
+      assign external_video_src = external_video_src | append: '&muted=' | append: autoplay_value
+      assign external_video_src = external_video_src | append: '&controls=' | append: controls_value
+      assign external_video_src = external_video_src | append: '&loop=' | append: loop_value
+    endif
+  endif
+%}
+
+{% capture video_content %}
+  {% if source == 'uploaded' and uploaded_video != blank %}
+    {{ uploaded_video
+      | video_tag:
+        class: 'video-media-video',
+        image_size: video_preview_size,
+        width: video_intrinsic_width,
+        height: video_intrinsic_height,
+        autoplay: video_tag_autoplay,
+        loop: loop,
+        muted: video_muted,
+        controls: show_controls,
+        playsinline: true,
+        loading: loading
+    }}
+  {% elsif source == 'url' and external_video != blank %}
+    <iframe
+      class="video-media-video aspect-ratio aspect-ratio-widescreen"
+      src="{{ external_video_src | escape }}"
+      width="{{ video_intrinsic_width }}"
+      height="{{ video_intrinsic_height }}"
+      loading="{{ loading }}"
+      title="{{ external_video_title | escape }}"
+      allow="autoplay; encrypted-media; picture-in-picture"
+      allowfullscreen
+    ></iframe>
+  {% endif %}
+{% endcapture %}
+
+<div
+  class="video-media"
+  style="--video-aspect-ratio: {{ video_intrinsic_width }} / {{ video_intrinsic_height }};"
+>
+  {% if has_video and defer_video %}
+    <deferred-video
+      class="video-media-deferred"
+      {% if observe_video %}
+        autoplay
+        data-intersection-observer
+        data-intersection-root-margin="300px 0px"
+      {% endif %}
+    >
+      <button
+        class="video-media-poster"
+        type="button"
+        aria-label="{{ 'accessibility.play_video' | t }}"
+        data-deferred-video-button
+      >
+        {% if video_preview_image != blank %}
+          {{ video_preview_image
+            | image_url: width: video_preview_width
+            | image_tag:
+              class: 'video-media-poster-image',
+              widths: '320, 640, 960, 1280, 1920, 2560, 3200, 3840',
+              sizes: sizes,
+              loading: loading
+          }}
+        {% else %}
+          {{ 'detailed-apparel-1' | placeholder_svg_tag: 'video-media-poster-image placeholder-svg' }}
+        {% endif %}
+        <span class="video-play-button" aria-hidden="true">
+          {% render 'svg-icons', icon: 'play', icon_size: 28 %}
+        </span>
+      </button>
+      <template>
+        {{ video_content }}
+      </template>
+    </deferred-video>
+  {% elsif has_video %}
+    {{ video_content }}
+  {% else %}
+    <div class="video-media-placeholder">
+      {{ 'detailed-apparel-1' | placeholder_svg_tag: 'video-media-video placeholder-svg' }}
+      <span class="video-play-button" aria-hidden="true">
+        {% render 'svg-icons', icon: 'play', icon_size: 28 %}
+      </span>
+    </div>
+  {% endif %}
+</div>
