@@ -12,9 +12,25 @@
 .hero {
   position: relative;
   display: grid;
-  min-height: 600px;
   overflow: hidden;
   color: rgb(var(--color-text));
+}
+
+.hero[data-mobile-height="adapt"] {
+  min-height: auto;
+  aspect-ratio: var(--mobile-media-aspect-ratio);
+}
+
+.hero[data-mobile-height="small"] {
+  min-height: 400px;
+}
+
+.hero[data-mobile-height="medium"] {
+  min-height: 600px;
+}
+
+.hero[data-mobile-height="large"] {
+  min-height: 800px;
 }
 
 .hero-media,
@@ -92,8 +108,24 @@
 }
 
 @media (min-width: 1200px) {
-  .hero {
+  .hero[data-desktop-height="adapt"] {
+    min-height: auto;
+    aspect-ratio: var(--desktop-media-aspect-ratio);
+  }
+
+  .hero[data-desktop-height="small"] {
+    min-height: 560px;
+    aspect-ratio: auto;
+  }
+
+  .hero[data-desktop-height="medium"] {
     min-height: 720px;
+    aspect-ratio: auto;
+  }
+
+  .hero[data-desktop-height="large"] {
+    min-height: 880px;
+    aspect-ratio: auto;
   }
 
   .hero-content-container {

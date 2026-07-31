@@ -5,6 +5,27 @@
   assign desktop_image = section.settings.desktop_image
   assign mobile_image = section.settings.mobile_image | default: desktop_image
   assign desktop_image = desktop_image | default: mobile_image
+  assign mobile_media_width = 16
+  assign mobile_media_height = 9
+  assign desktop_media_width = 16
+  assign desktop_media_height = 9
+
+  if section.settings.source == 'image'
+    if mobile_image != blank
+      assign mobile_media_width = mobile_image.width
+      assign mobile_media_height = mobile_image.height
+    endif
+
+    if desktop_image != blank
+      assign desktop_media_width = desktop_image.width
+      assign desktop_media_height = desktop_image.height
+    endif
+  elsif section.settings.source == 'uploaded' and section.settings.video.preview_image != blank
+    assign mobile_media_width = section.settings.video.preview_image.width
+    assign mobile_media_height = section.settings.video.preview_image.height
+    assign desktop_media_width = mobile_media_width
+    assign desktop_media_height = mobile_media_height
+  endif
 
   if section.index == 1
     assign media_loading = 'eager'
@@ -29,6 +50,8 @@
     class="hero responsive-text-alignment"
     data-mobile-content-position="{{ section.settings.mobile_content_position }}"
     data-desktop-content-position="{{ section.settings.desktop_content_position }}"
+    data-mobile-height="{{ section.settings.mobile_height }}"
+    data-desktop-height="{{ section.settings.desktop_height }}"
     data-mobile-text-alignment="{{ section.settings.mobile_text_alignment }}"
     data-desktop-text-alignment="{{ section.settings.desktop_text_alignment }}"
     style="
@@ -37,6 +60,8 @@
       --color-accent: {{ section.settings.accent_color.red }} {{ section.settings.accent_color.green }} {{ section.settings.accent_color.blue }};
       --color-overlay: {{ section.settings.overlay_color.red }} {{ section.settings.overlay_color.green }} {{ section.settings.overlay_color.blue }};
       --overlay-opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
+      --mobile-media-aspect-ratio: {{ mobile_media_width }} / {{ mobile_media_height }};
+      --desktop-media-aspect-ratio: {{ desktop_media_width }} / {{ desktop_media_height }};
       --mobile-text-alignment: {{ section.settings.mobile_text_alignment }};
       --desktop-text-alignment: {{ section.settings.desktop_text_alignment }};
     "
@@ -228,10 +253,22 @@
       "default": "center"
     },
     {
+      "type": "select",
+      "id": "mobile_height",
+      "label": "Height",
+      "options": [
+        { "value": "adapt", "label": "Adapt" },
+        { "value": "small", "label": "Small" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "large", "label": "Large" }
+      ],
+      "default": "medium"
+    },
+    {
       "type": "header",
       "content": "Desktop layout"
     },
-    {
+   {
       "type": "select",
       "id": "desktop_content_position",
       "label": "Content position",
@@ -253,6 +290,18 @@
       "id": "desktop_text_alignment",
       "label": "Text alignment",
       "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "desktop_height",
+      "label": "Height",
+      "options": [
+        { "value": "adapt", "label": "Adapt" },
+        { "value": "small", "label": "Small" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "large", "label": "Large" }
+      ],
+      "default": "medium"
     },
     {
       "type": "header",
