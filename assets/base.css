@@ -557,6 +557,10 @@ img {
   height: auto;
 }
 
+.rte img {
+  border-radius: var(--border-radius);
+}
+
 
 /*
   Videos
@@ -565,6 +569,20 @@ video {
   display: block;
   max-width: 100%;
   height: auto;
+}
+
+.rte video {
+  border-radius: var(--border-radius);
+}
+
+.rte iframe[src*="youtube.com"],
+.rte iframe[src*="vimeo.com"] {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 0;
+  border-radius: var(--border-radius);
+  aspect-ratio: 16 / 9;
 }
 
 .video-media-video {

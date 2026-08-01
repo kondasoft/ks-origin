@@ -141,6 +141,7 @@
         "accent_color": "{{ settings.colors.accent }}",
         "mobile_text_alignment": "center",
         "desktop_text_alignment": "center",
+        "enable_faq_structured_data": true,
         "pt": 60,
         "pb": 60
       }

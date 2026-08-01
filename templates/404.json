@@ -10,12 +10,22 @@
 {
   "sections": {
     "main": {
-      "type": "contact-form",
+      "type": "rich-text",
       "blocks": {
+        "subheading": {
+          "type": "subheading",
+          "settings": {
+            "subheading": "404",
+            "subheading_size": "fs-sm",
+            "pt": 0,
+            "pb": 0
+          },
+          "blocks": {}
+        },
         "heading": {
           "type": "heading",
           "settings": {
-            "heading": "Contact us",
+            "heading": "Page not found",
             "heading_tag": "1",
             "heading_size": "h1",
             "pt": 0,
@@ -26,35 +36,55 @@
         "text": {
           "type": "text",
           "settings": {
-            "text": "<p>Have a question or need help? Send us a message and we'll get back to you as soon as possible.</p>",
+            "text": "<p>The page you were looking for does not exist or may have been moved.</p>",
             "text_size": "fs-md",
             "pt": 0,
             "pb": 0
           },
           "blocks": {}
         },
-        "contact_form": {
-          "type": "contact-form",
+        "actions": {
+          "type": "group",
           "settings": {
-            "pt": 24,
+            "mobile_content_direction": "column",
+            "mobile_gap": 10,
+            "desktop_content_direction": "row",
+            "desktop_gap": 10,
+            "pt": 20,
             "pb": 0
           },
-          "blocks": {}
+          "blocks": {
+            "home": {
+              "type": "button",
+              "settings": {
+                "label": "Return home",
+                "link": "/",
+                "style": "btn-accent-solid",
+                "size": "btn-md"
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "home"
+          ]
         }
       },
       "block_order": [
+        "subheading",
         "heading",
         "text",
-        "contact_form"
+        "actions"
       ],
+      "name": "404",
       "settings": {
         "background_color": "{{ settings.colors.background }}",
         "text_color": "{{ settings.colors.text }}",
         "accent_color": "{{ settings.colors.accent }}",
         "mobile_text_alignment": "center",
         "desktop_text_alignment": "center",
-        "pt": 60,
-        "pb": 60
+        "pt": 82,
+        "pb": 80
       }
     }
   },

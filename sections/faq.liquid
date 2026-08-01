@@ -16,6 +16,10 @@
     --pb: {{ section.settings.pb | divided_by: 16.0 | append: 'em' }};
   "
   data-section-css="{{ 'faq.css' | asset_url }}"
+  {% if section.settings.enable_faq_structured_data %}
+    itemscope
+    itemtype="https://schema.org/FAQPage"
+  {% endif %}
 >
   <div class="container container-content">
     {% content_for 'blocks' %}
@@ -64,6 +68,17 @@
       "id": "desktop_text_alignment",
       "label": "Desktop text alignment",
       "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Search engines"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_faq_structured_data",
+      "label": "Enable FAQ structured data",
+      "info": "Helps search engines understand the questions and answers in this section.",
+      "default": true
     },
     {
       "type": "header",

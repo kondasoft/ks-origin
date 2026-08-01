@@ -4,6 +4,11 @@
     --pt: {{ block.settings.pt | divided_by: 16.0 | append: 'em' }};
     --pb: {{ block.settings.pb | divided_by: 16.0 | append: 'em' }};
   "
+  {% if section.settings.enable_faq_structured_data %}
+    itemprop="mainEntity"
+    itemscope
+    itemtype="https://schema.org/Question"
+  {% endif %}
   {{ block.shopify_attributes }}
 >
   <details
@@ -13,14 +18,33 @@
     {% endif %}
   >
     <summary class="theme-collapse-summary">
-      <span>{{ block.settings.heading }}</span>
+      <span
+        {% if section.settings.enable_faq_structured_data %}
+          itemprop="name"
+        {% endif %}
+      >
+        {{ block.settings.heading }}
+      </span>
       <span class="theme-collapse-icon" aria-hidden="true">
         {% render 'svg-icons', icon: 'chevron-down', icon_size: 18 %}
       </span>
     </summary>
 
-    <div class="theme-collapse-content rte">
-      {{ block.settings.text }}
+    <div
+      class="theme-collapse-content rte"
+      {% if section.settings.enable_faq_structured_data %}
+        itemprop="acceptedAnswer"
+        itemscope
+        itemtype="https://schema.org/Answer"
+      {% endif %}
+    >
+      <div
+        {% if section.settings.enable_faq_structured_data %}
+          itemprop="text"
+        {% endif %}
+      >
+        {{ block.settings.text }}
+      </div>
     </div>
   </details>
 </theme-collapse>

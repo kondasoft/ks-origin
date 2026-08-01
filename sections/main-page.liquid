@@ -1,7 +1,13 @@
+{% liquid
+  assign container_class = 'container container-content'
+
+  if section.settings.container_width == 'site'
+    assign container_class = 'container ' | append: settings.container_width
+  endif
+%}
+
 <div
-  class="contact-form-section responsive-text-alignment section-spacing"
-  data-mobile-text-alignment="{{ section.settings.mobile_text_alignment }}"
-  data-desktop-text-alignment="{{ section.settings.desktop_text_alignment }}"
+  class="main-page responsive-text-alignment section-spacing"
   style="
     --color-background: {{ section.settings.background_color.red }} {{ section.settings.background_color.green }} {{ section.settings.background_color.blue }};
     --color-text: {{ section.settings.text_color.red }} {{ section.settings.text_color.green }} {{ section.settings.text_color.blue }};
@@ -10,16 +16,24 @@
     --desktop-text-alignment: {{ section.settings.desktop_text_alignment }};
     --pt: {{ section.settings.pt | divided_by: 16.0 | append: 'em' }};
     --pb: {{ section.settings.pb | divided_by: 16.0 | append: 'em' }};
+    color: rgb(var(--color-text));
+    background-color: rgb(var(--color-background));
   "
 >
-  <div class="container container-content">
-    {% content_for 'blocks' %}
+  <div class="{{ container_class }}">
+    {% if section.settings.show_title %}
+      <h1>{{ page.title }}</h1>
+    {% endif %}
+
+    <div class="rte">
+      {{ page.content }}
+    </div>
   </div>
 </div>
 
 {% schema %}
 {
-  "name": "Contact form",
+  "name": "Page",
   "tag": "section",
   "settings": [
     {
@@ -49,16 +63,32 @@
       "content": "Layout"
     },
     {
+      "type": "checkbox",
+      "id": "show_title",
+      "label": "Show page title",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "container_width",
+      "label": "Container",
+      "options": [
+        { "value": "site", "label": "Site container" },
+        { "value": "narrow", "label": "Narrow container" }
+      ],
+      "default": "narrow"
+    },
+    {
       "type": "text_alignment",
       "id": "mobile_text_alignment",
       "label": "Mobile text alignment",
-      "default": "center"
+      "default": "left"
     },
     {
       "type": "text_alignment",
       "id": "desktop_text_alignment",
       "label": "Desktop text alignment",
-      "default": "center"
+      "default": "left"
     },
     {
       "type": "header",
@@ -85,49 +115,13 @@
       "default": 60
     }
   ],
-  "blocks": [
-    {
-      "type": "subheading"
-    },
-    {
-      "type": "heading"
-    },
-    {
-      "type": "text"
-    },
-    {
-      "type": "contact-form"
-    }
-  ],
-  "disabled_on": {
-    "groups": ["header", "footer"]
+  "enabled_on": {
+    "templates": ["page"]
   },
   "presets": [
     {
-      "name": "Contact form",
-      "category": "Contact",
-      "blocks": [
-        {
-          "type": "heading",
-          "settings": {
-            "heading": "Contact us",
-            "heading_tag": "2",
-            "heading_size": "h2"
-          }
-        },
-        {
-          "type": "text",
-          "settings": {
-            "text": "<p>Have a question or need help? Send us a message and we'll get back to you as soon as possible.</p>"
-          }
-        },
-        {
-          "type": "contact-form",
-          "settings": {
-            "pt": 32
-          }
-        }
-      ]
+      "name": "Page",
+      "category": "Page"
     }
   ]
 }

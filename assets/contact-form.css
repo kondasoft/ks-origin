@@ -1,7 +1,7 @@
 /*
   Contact form stylesheet
 
-  This file contains layout and presentation styles for the Contact form section.
+  This file contains layout and presentation styles for the Contact form section and block.
   Keep global form controls and reusable button styles in the base stylesheet.
 */
 
@@ -15,7 +15,6 @@
 }
 
 .contact-form-form {
-  margin-top: 2rem;
   text-align: left;
 }
 
