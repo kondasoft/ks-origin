@@ -1,0 +1,234 @@
+{% if section.index <= 3 or request.design_mode %}
+  <link href="{{ 'contact-form.css' | asset_url }}" rel="stylesheet" fetchpriority="high">
+{% endif %}
+
+{% assign form_id = 'ContactForm-' | append: section.id %}
+
+<div
+  class="contact-form-section responsive-text-alignment section-spacing"
+  data-mobile-text-alignment="{{ section.settings.mobile_text_alignment }}"
+  data-desktop-text-alignment="{{ section.settings.desktop_text_alignment }}"
+  style="
+    --color-background: {{ section.settings.background_color.red }} {{ section.settings.background_color.green }} {{ section.settings.background_color.blue }};
+    --color-text: {{ section.settings.text_color.red }} {{ section.settings.text_color.green }} {{ section.settings.text_color.blue }};
+    --color-accent: {{ section.settings.accent_color.red }} {{ section.settings.accent_color.green }} {{ section.settings.accent_color.blue }};
+    --mobile-text-alignment: {{ section.settings.mobile_text_alignment }};
+    --desktop-text-alignment: {{ section.settings.desktop_text_alignment }};
+    --pt: {{ section.settings.pt | divided_by: 16.0 | append: 'em' }};
+    --pb: {{ section.settings.pb | divided_by: 16.0 | append: 'em' }};
+  "
+  data-section-css="{{ 'contact-form.css' | asset_url }}"
+>
+  <div class="container container-content">
+    <div class="contact-form-content">
+      {% content_for 'blocks' %}
+    </div>
+
+    {% form 'contact', id: form_id, class: 'contact-form-form' %}
+      {% comment %}
+        <input type="hidden" name="contact[id]" value="{{ form_id }}">
+      {% endcomment %}
+
+      {% liquid
+        assign form_matches = false
+
+        if form.id == form_id or form.id == blank
+          assign form_matches = true
+        endif
+      %}
+
+      {% if form.errors and form_matches %}
+        <div
+          id="{{ form_id }}-error"
+          class="contact-form-status alert alert-error"
+          role="alert"
+          tabindex="-1"
+          autofocus
+        >
+          {{ form.errors | default_errors }}
+        </div>
+      {% endif %}
+
+      {% if form.posted_successfully? and form_matches %}
+        <div
+          class="contact-form-status alert alert-success"
+          role="status"
+          tabindex="-1"
+          autofocus
+        >
+          {{ 'contact.form.success' | t }}
+        </div>
+      {% endif %}
+
+      <div class="contact-form-row">
+        <div class="input-group">
+          <label for="{{ form_id }}-name">{{ 'contact.form.name' | t }}</label>
+          <input
+            id="{{ form_id }}-name"
+            class="input"
+            type="text"
+            name="contact[name]"
+            autocomplete="name"
+            value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}"
+          >
+        </div>
+
+        <div class="input-group">
+          <label for="{{ form_id }}-email">
+            {{ 'contact.form.email' | t }}
+            <span aria-hidden="true">*</span>
+          </label>
+          <input
+            id="{{ form_id }}-email"
+            class="input"
+            type="email"
+            name="contact[email]"
+            autocomplete="email"
+            autocapitalize="off"
+            spellcheck="false"
+            value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+            aria-required="true"
+            required
+            {% if form.errors contains 'email' and form_matches %}
+              aria-invalid="true"
+              aria-describedby="{{ form_id }}-error"
+            {% endif %}
+          >
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label for="{{ form_id }}-phone">{{ 'contact.form.phone' | t }}</label>
+        <input
+          id="{{ form_id }}-phone"
+          class="input"
+          type="tel"
+          name="contact[phone]"
+          autocomplete="tel"
+          value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}"
+        >
+      </div>
+
+      <div class="input-group">
+        <label for="{{ form_id }}-body">{{ 'contact.form.message' | t }}</label>
+        <textarea
+          id="{{ form_id }}-body"
+          class="input"
+          name="contact[body]"
+          rows="8"
+        >{{ form.body }}</textarea>
+      </div>
+
+      <button class="btn btn-md btn-accent-solid" type="submit">
+        {{ 'contact.form.send' | t }}
+      </button>
+    {% endform %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Contact form",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "{{ settings.colors.background }}"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "{{ settings.colors.text }}"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent color",
+      "default": "{{ settings.colors.accent }}"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "text_alignment",
+      "id": "mobile_text_alignment",
+      "label": "Mobile text alignment",
+      "default": "center"
+    },
+    {
+      "type": "text_alignment",
+      "id": "desktop_text_alignment",
+      "label": "Desktop text alignment",
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pt",
+      "label": "Top",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "pb",
+      "label": "Bottom",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 60
+    }
+  ],
+  "blocks": [
+    {
+      "type": "subheading"
+    },
+    {
+      "type": "heading"
+    },
+    {
+      "type": "text"
+    }
+  ],
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "presets": [
+    {
+      "name": "Contact form",
+      "category": "Contact",
+      "blocks": [
+        {
+          "type": "heading",
+          "settings": {
+            "heading": "Contact us",
+            "heading_tag": "2",
+            "heading_size": "h2"
+          }
+        },
+        {
+          "type": "text",
+          "settings": {
+            "text": "<p>Have a question or need help? Send us a message and we'll get back to you as soon as possible.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

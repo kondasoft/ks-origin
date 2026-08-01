@@ -14,6 +14,8 @@
 ## Fast iteration workflow
 
 - During active iterative work, apply simple CSS, Liquid, JavaScript, and schema edits immediately.
+- For routine edits with an established local pattern, rely on the theme's existing implementation and targeted static checks. Do not add documentation-search or specialized-skill overhead unless the task is uncertain or a higher-priority instruction explicitly requires it.
+- When a higher-priority instruction requires a skill for a routine edit, keep the user-facing skill announcement to one short sentence and do not let the skill workflow expand the scope of the change.
 - Do not run full Theme Check after every small edit. Use targeted checks only when necessary.
 - Do not commit or push after each edit.
 - Treat "checkpoint", "commit", "push", or "commit and push" as an explicit checkpoint request.

@@ -39,6 +39,16 @@
     },
     "test_modal": "Test modal"
   },
+  "contact": {
+    "form": {
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone number",
+      "message": "Message",
+      "send": "Send message",
+      "success": "Thanks for contacting us. We'll get back to you as soon as possible."
+    }
+  },
   "gift_cards": {
     "issued": {
       "title": "{{ value }} gift card for {{ shop }}",

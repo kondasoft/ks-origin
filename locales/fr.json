@@ -39,6 +39,16 @@
     },
     "test_modal": "Fenêtre modale de test"
   },
+  "contact": {
+    "form": {
+      "name": "Nom",
+      "email": "E-mail",
+      "phone": "Numéro de téléphone",
+      "message": "Message",
+      "send": "Envoyer le message",
+      "success": "Merci de nous avoir contactés. Nous vous répondrons dans les plus brefs délais."
+    }
+  },
   "gift_cards": {
     "issued": {
       "title": "Carte-cadeau de {{ value }} pour {{ shop }}",
