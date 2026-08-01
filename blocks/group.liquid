@@ -7,7 +7,15 @@
     --desktop-gap: {{ block.settings.desktop_gap | divided_by: 16.0 | append: 'rem' }};
     --pt: {{ block.settings.pt | divided_by: 16.0 | append: 'em' }};
     --pb: {{ block.settings.pb | divided_by: 16.0 | append: 'em' }};
+    --pl: {{ block.settings.pl | divided_by: 16.0 | append: 'em' }};
+    --pr: {{ block.settings.pr | divided_by: 16.0 | append: 'em' }};
+    {% if block.settings.custom_colors %}
+      --color-background: {{ block.settings.background_color.red }} {{ block.settings.background_color.green }} {{ block.settings.background_color.blue }};
+      --color-text: {{ block.settings.text_color.red }} {{ block.settings.text_color.green }} {{ block.settings.text_color.blue }};
+      --color-accent: {{ block.settings.accent_color.red }} {{ block.settings.accent_color.green }} {{ block.settings.accent_color.blue }};
+    {% endif %}
   "
+  data-custom-colors="{{ block.settings.custom_colors }}"
   {{ block.shopify_attributes }}
 >
   {% content_for 'blocks' %}
@@ -18,6 +26,14 @@
     display: flex;
     flex-direction: var(--mobile-content-direction);
     gap: var(--mobile-gap);
+    padding-right: calc(var(--pr) * var(--spacing-scale));
+    padding-left: calc(var(--pl) * var(--spacing-scale));
+  }
+
+  .group-block[data-custom-colors="true"] {
+    color: rgb(var(--color-text));
+    background-color: rgb(var(--color-background));
+    border-radius: var(--border-radius);
   }
 
   [data-mobile-text-alignment="left"] .group-block {
@@ -63,6 +79,38 @@
   "name": "Group",
   "tag": null,
   "settings": [
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "checkbox",
+      "id": "custom_colors",
+      "label": "Use custom colors",
+      "info": "Overrides the colors inherited from the parent section.",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "{{ settings.colors.background }}",
+      "visible_if": "{{ block.settings.custom_colors }}"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "{{ settings.colors.text }}",
+      "visible_if": "{{ block.settings.custom_colors }}"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent color",
+      "default": "{{ settings.colors.accent }}",
+      "visible_if": "{{ block.settings.custom_colors }}"
+    },
     {
       "type": "header",
       "content": "Mobile"
@@ -129,6 +177,26 @@
       "type": "range",
       "id": "pb",
       "label": "Bottom",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "pl",
+      "label": "Left",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "pr",
+      "label": "Right",
       "min": 0,
       "max": 80,
       "step": 2,

@@ -1,0 +1,272 @@
+{% liquid
+  assign mobile_gap_count = section.settings.mobile_columns | minus: 1
+  assign mobile_grid_gaps = section.settings.mobile_gap | times: mobile_gap_count | divided_by: 16.0
+%}
+
+{% if section.index <= 3 or request.design_mode %}
+  <link href="{{ 'columns.css' | asset_url }}" rel="stylesheet" fetchpriority="high">
+{% endif %}
+
+<div
+  class="columns responsive-text-alignment section-spacing"
+  data-mobile-text-alignment="{{ section.settings.mobile_text_alignment }}"
+  data-desktop-text-alignment="{{ section.settings.desktop_text_alignment }}"
+  data-mobile-scroll="{{ section.settings.mobile_scroll }}"
+  style="
+    --color-background: {{ section.settings.background_color.red }} {{ section.settings.background_color.green }} {{ section.settings.background_color.blue }};
+    --color-column-background: {{ section.settings.column_background_color.red }} {{ section.settings.column_background_color.green }} {{ section.settings.column_background_color.blue }};
+    --color-text: {{ section.settings.text_color.red }} {{ section.settings.text_color.green }} {{ section.settings.text_color.blue }};
+    --color-accent: {{ section.settings.accent_color.red }} {{ section.settings.accent_color.green }} {{ section.settings.accent_color.blue }};
+    --mobile-text-alignment: {{ section.settings.mobile_text_alignment }};
+    --desktop-text-alignment: {{ section.settings.desktop_text_alignment }};
+    --mobile-columns: {{ section.settings.mobile_columns }};
+    --mobile-gap: {{ section.settings.mobile_gap | divided_by: 16.0 | append: 'rem' }};
+    --mobile-grid-gaps: {{ mobile_grid_gaps | append: 'rem' }};
+    --desktop-columns: {{ section.settings.desktop_columns }};
+    --desktop-gap: {{ section.settings.desktop_gap | divided_by: 16.0 | append: 'rem' }};
+    --pt: {{ section.settings.pt | divided_by: 16.0 | append: 'em' }};
+    --pb: {{ section.settings.pb | divided_by: 16.0 | append: 'em' }};
+  "
+  data-section-css="{{ 'columns.css' | asset_url }}"
+>
+  <div class="columns-container container {{ settings.container_width }}">
+    <div class="columns-grid">
+      {% content_for 'blocks' %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Columns",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "{{ settings.colors.surface }}"
+    },
+    {
+      "type": "color",
+      "id": "column_background_color",
+      "label": "Column background color",
+      "default": "{{ settings.colors.background }}"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "{{ settings.colors.text }}"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent color",
+      "default": "{{ settings.colors.accent }}"
+    },
+    {
+      "type": "header",
+      "content": "Mobile"
+    },
+    {
+      "type": "range",
+      "id": "mobile_columns",
+      "label": "Columns",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 1
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_scroll",
+      "label": "Enable horizontal scroll",
+      "info": "Shows part of the next column to indicate that more content is available.",
+      "default": false
+    },
+    {
+      "type": "text_alignment",
+      "id": "mobile_text_alignment",
+      "label": "Text alignment",
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "mobile_gap",
+      "label": "Gap",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "header",
+      "content": "Desktop"
+    },
+    {
+      "type": "range",
+      "id": "desktop_columns",
+      "label": "Columns",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "text_alignment",
+      "id": "desktop_text_alignment",
+      "label": "Text alignment",
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "desktop_gap",
+      "label": "Gap",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pt",
+      "label": "Top",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "pb",
+      "label": "Bottom",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 60
+    }
+  ],
+  "blocks": [
+    {
+      "type": "group"
+    }
+  ],
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "presets": [
+    {
+      "name": "Columns",
+      "category": "Text",
+      "blocks": [ 
+        {
+          "type": "group",
+          "name": "Column 1",
+          "settings": {
+            "mobile_content_direction": "column",
+            "mobile_gap": 0,
+            "desktop_content_direction": "column",
+            "desktop_gap": 0,
+            "pt": 24,
+            "pb": 24,
+            "pl": 24,
+            "pr": 24
+          },
+          "blocks": [
+            {
+              "type": "heading",
+              "settings": {
+                "heading": "Intentional design",
+                "heading_tag": "2",
+                "heading_size": "h4",
+                "pb": 6
+              }
+            },
+            {
+              "type": "text",
+              "settings": {
+                "text": "<p>Thoughtful products designed to solve real needs with clarity and purpose.</p>"
+              }
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "name": "Column 2",
+          "settings": {
+            "mobile_content_direction": "column",
+            "mobile_gap": 0,
+            "desktop_content_direction": "column",
+            "desktop_gap": 0,
+            "pt": 24,
+            "pb": 24,
+            "pl": 24,
+            "pr": 24
+          },
+          "blocks": [
+            {
+              "type": "heading",
+              "settings": {
+                "heading": "Quality first",
+                "heading_tag": "2",
+                "heading_size": "h4",
+                "pb": 6
+              }
+            },
+            {
+              "type": "text",
+              "settings": {
+                "text": "<p>Carefully selected materials and close attention to every detail.</p>"
+              }
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "name": "Column 3",
+          "settings": {
+            "mobile_content_direction": "column",
+            "mobile_gap": 0,
+            "desktop_content_direction": "column",
+            "desktop_gap": 0,
+            "pt": 24,
+            "pb": 24,
+            "pl": 24,
+            "pr": 24
+          },
+          "blocks": [
+            {
+              "type": "heading",
+              "settings": {
+                "heading": "Customer care",
+                "heading_tag": "2",
+                "heading_size": "h4",
+                "pb": 6
+              }
+            },
+            {
+              "type": "text",
+              "settings": {
+                "text": "<p>Helpful support before, during, and after every purchase.</p>"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,75 @@
+/*
+  Columns stylesheet
+
+  This file contains layout and presentation styles for the Columns section.
+  Each direct Group block is treated as one responsive grid column.
+*/
+
+
+/*
+  Columns
+*/
+.columns {
+  color: rgb(var(--color-text));
+  background-color: rgb(var(--color-background));
+}
+
+.columns-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--mobile-columns), minmax(0, 1fr));
+  gap: var(--mobile-gap);
+}
+
+.columns-grid > .group-block {
+  min-width: 0;
+  border-radius: var(--border-radius);
+}
+
+.columns-grid > .group-block:not([data-custom-colors="true"]) {
+  background-color: rgb(var(--color-column-background));
+}
+
+.columns[data-mobile-scroll="true"] .columns-grid {
+  --mobile-scroll-peek: 3rem;
+  box-sizing: border-box;
+  grid-template-columns: none;
+  grid-auto-flow: column;
+  grid-auto-columns: calc(
+    (100% - var(--mobile-scroll-peek) - var(--mobile-grid-gaps)) / var(--mobile-columns)
+  );
+  padding-right: 1rem;
+  padding-left: 1rem;
+  padding-bottom: 0.5rem;
+  margin-right: -1rem;
+  margin-left: -1rem;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  scroll-padding-left: 1rem;
+  scroll-snap-type: inline mandatory;
+}
+
+.columns[data-mobile-scroll="true"] .columns-grid > .group-block {
+  scroll-snap-align: start;
+}
+
+@media (min-width: 1200px) {
+  .columns-grid {
+    grid-template-columns: repeat(var(--desktop-columns), minmax(0, 1fr));
+    gap: var(--desktop-gap);
+  }
+
+  .columns[data-mobile-scroll="true"] .columns-grid {
+    grid-template-columns: repeat(var(--desktop-columns), minmax(0, 1fr));
+    grid-auto-flow: row;
+    grid-auto-columns: auto;
+    padding-right: 0;
+    padding-left: 0;
+    padding-bottom: 0;
+    margin-right: 0;
+    margin-left: 0;
+    overflow-x: visible;
+    overscroll-behavior-inline: auto;
+    scroll-padding-left: 0;
+    scroll-snap-type: none;
+  } 
+}
