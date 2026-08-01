@@ -1,6 +1,35 @@
-{% if section.blocks.size > 0 %}
-  <div class="footer">
-    <div class="container {{ settings.container_width }}">
+{% liquid
+  assign show_follow_on_shop = false
+  assign show_footer_bottom = false
+
+  if section.settings.enable_follow_on_shop and shop.features.follow_on_shop?
+    assign show_follow_on_shop = true
+  endif
+
+  if section.settings.show_copyright or section.settings.show_theme_credits or section.settings.show_powered_by_shopify
+    assign show_footer_bottom = true
+  elsif show_follow_on_shop
+    assign show_footer_bottom = true
+  elsif section.settings.show_policy_links and shop.policies.size > 0
+    assign show_footer_bottom = true
+  endif
+
+  assign shop_name = shop.name | escape | split: '(' | first | strip
+%}
+
+<div
+  class="footer"
+  style="
+    --color-background: {{ section.settings.background_color.red }} {{ section.settings.background_color.green }} {{ section.settings.background_color.blue }};
+    --color-text: {{ section.settings.text_color.red }} {{ section.settings.text_color.green }} {{ section.settings.text_color.blue }};
+    --color-accent: {{ section.settings.accent_color.red }} {{ section.settings.accent_color.green }} {{ section.settings.accent_color.blue }};
+    --pt: {{ section.settings.pt | divided_by: 16.0 | append: 'em' }};
+    --pb: {{ section.settings.pb | divided_by: 16.0 | append: 'em' }};
+  "
+  data-section-css="{{ 'footer.css' | asset_url }}"
+>
+  <div class="container {{ settings.container_width }}">
+    {% if section.blocks.size > 0 %}
       <div class="footer-blocks">
         {% for block in section.blocks %}
           <div
@@ -56,16 +85,154 @@
           </div>
         {% endfor %}
       </div>
-    </div>
+    {% endif %}
+
+    {% if show_footer_bottom %}
+      <div class="footer-bottom">
+        {% if section.settings.show_copyright or section.settings.show_theme_credits or section.settings.show_powered_by_shopify %}
+          <div class="footer-information">
+            {% if section.settings.show_copyright %}
+              <p class="footer-copyright">
+                &copy; {{ 'now' | date: '%Y' }}
+                <a href="{{ routes.root_url }}">{{ shop_name }}</a>.
+                {{ 'footer.all_rights_reserved' | t }}
+              </p>
+            {% endif %}
+
+            {% if section.settings.show_policy_links and shop.policies.size > 0 %}
+              <ul class="footer-policy-list" role="list">
+                {% for policy in shop.policies %}
+                  <li>
+                    <a href="{{ policy.url }}">{{ policy.title | escape }}</a>
+                  </li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+
+            {% if section.settings.show_theme_credits or section.settings.show_powered_by_shopify %}
+              <p class="footer-credits">
+                {% if section.settings.show_theme_credits %}
+                  <span>
+                    {{ 'footer.designed_with' | t }}
+                    <span class="footer-heart" aria-hidden="true">&hearts;</span><span class="visually-hidden">{{ 'accessibility.love' | t }}</span>
+                    {{ 'footer.by' | t }}
+                    <a href="https://kondasoft.com" target="_blank" rel="nofollow noopener">KondaSoft</a>
+                  </span>
+                {% endif %}
+
+                {% if section.settings.show_powered_by_shopify %}
+                  <span class="footer-powered-by">
+                    {% if section.settings.show_theme_credits %}
+                      <span class="footer-credit-separator" aria-hidden="true">&middot;&nbsp;</span>
+                    {% endif %}
+                    {{ powered_by_link }}
+                  </span>
+                {% endif %}
+              </p>
+            {% endif %}
+          </div>
+        {% endif %}
+
+        {% if show_follow_on_shop %}
+          <div class="footer-follow-on-shop">
+            {{ shop | login_button: action: 'follow' }}
+          </div>
+        {% endif %}
+      </div>
+    {% endif %}
   </div>
-{% endif %}
+</div>
 
 {% schema %}
 {
   "name": "Footer",
   "tag": "footer",
   "limit": 1,
-  "settings": [],
+  "settings": [
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "{{ settings.colors.surface }}"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "{{ settings.colors.text }}"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent color",
+      "default": "{{ settings.colors.accent }}"
+    },
+    {
+      "type": "header",
+      "content": "Footer information"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_copyright",
+      "label": "Show copyright information",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_policy_links",
+      "label": "Show policy links",
+      "default": true,
+      "info": "Displays the legal policies configured in Shopify admin."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_theme_credits",
+      "label": "Show theme credits",
+      "default": true,
+      "info": "Thank you for supporting KondaSoft. This optional credit does not affect theme functionality, and its link is set not to influence search rankings. You can disable it at any time."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_powered_by_shopify",
+      "label": "Show Powered by Shopify",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_follow_on_shop",
+      "label": "Enable Follow on Shop",
+      "default": true,
+      "info": "Displays the Follow on Shop button when it is available for the store."
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pt",
+      "label": "Top",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "pb",
+      "label": "Bottom",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 60
+    }
+  ],
   "blocks": [
     {
       "type": "menu",

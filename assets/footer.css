@@ -1,0 +1,181 @@
+/*
+  Footer stylesheet
+
+  This file contains layout and presentation styles for the Footer section.
+  Shared collapse behavior remains in the base stylesheet and components script.
+*/
+
+/*
+  Footer
+*/
+.footer {
+  padding-top: var(--pt);
+  padding-bottom: var(--pb);
+  color: rgb(var(--color-text));
+  background-color: rgb(var(--color-background));
+  border-top: 1px solid rgb(var(--color-text) / var(--border-opacity));
+}
+
+.footer-block {
+  border-bottom: 1px solid rgb(var(--color-text) / var(--border-opacity));
+}
+
+.footer-block:first-child {
+  border-top: 1px solid rgb(var(--color-text) / var(--border-opacity));
+}
+
+.footer-block-summary {
+  padding: 1em 0;
+}
+
+.footer-block-title {
+  font-family: var(--font-heading-family);
+  font-style: var(--font-heading-style);
+  font-weight: var(--font-heading-weight);
+}
+
+.footer-block-heading {
+  font-family: var(--font-heading-family);
+  font-style: var(--font-heading-style);
+  font-weight: var(--font-heading-weight);
+}
+
+.footer-block-content {
+  padding-bottom: 1.25em;
+}
+
+.footer-block-heading {
+  display: none;
+}
+
+.footer-menu-list {
+  display: grid;
+  gap: 0.6em;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.footer-menu-list a {
+  display: inline-block;
+}
+
+.footer-text > :first-child {
+  margin-top: 0;
+}
+
+.footer-text > :last-child {
+  margin-bottom: 0;
+}
+
+.footer-bottom {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding-top: 2em;
+  margin-top: 2em;
+  border-top: 1px solid rgb(var(--color-text) / var(--border-opacity));
+  font-size: var(--fs-sm);
+}
+
+.footer-policy-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75em;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.footer-policy-list li {
+  display: flex;
+  align-items: center;
+}
+
+.footer-policy-list li:not(:last-child)::after {
+  margin-inline-start: 0.75em;
+  content: "\00b7";
+}
+
+.footer-policy-list a {
+  display: flex;
+}
+
+.footer-information {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.footer-copyright {
+  margin: 0;
+}
+
+.footer-copyright a {
+  text-decoration: none;
+}
+
+.footer-credits {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0 0.5rem;
+  margin: 0;
+  margin: 1em 0 0;
+  background: rgb(var(--color-text) / 0.1);
+  border-radius: var(--border-radius);
+  padding: 0.25em 0.75em;
+}
+
+.footer-credits a {
+  text-decoration: none;
+}
+
+.footer-heart {
+  display: inline-flex;
+  margin: 0 0.125em;
+  color: #ff4d73;
+  transform: translateY(2px) scale(1.2);
+}
+
+@media (min-width: 1200px) {
+  .footer-blocks {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 2rem;
+  }
+
+  .footer-block {
+    border: 0;
+  }
+
+  .footer-block:first-child {
+    border: 0;
+  }
+
+  .footer-block-details {
+    overflow: visible;
+  }
+
+  .footer-block-summary {
+    display: none;
+  }
+
+  .footer-block-content {
+    padding-bottom: 0;
+  }
+
+  .footer-block-heading {
+    display: block;
+    margin: 0 0 1em;
+    font-size: var(--fs-lg);
+  }
+
+  .footer-bottom {
+    padding-top: 2.5em;
+    margin-top: 2.5em;
+  }
+}

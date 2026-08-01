@@ -20,7 +20,8 @@
     "search": "Search",
     "account": "Account",
     "cart": "Cart",
-    "play_video": "Play video"
+    "play_video": "Play video",
+    "love": "love"
   },
   "general": {
     "account": "Account",
@@ -56,6 +57,11 @@
       "submit": "Sign up",
       "success": "Thanks for signing up."
     }
+  },
+  "footer": {
+    "all_rights_reserved": "All rights reserved.",
+    "designed_with": "Designed with",
+    "by": "by"
   },
   "gift_cards": {
     "issued": {

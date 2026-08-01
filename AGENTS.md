@@ -66,7 +66,7 @@
   */
   ```
 - Use kebab-case CSS class and ID names such as `some-css-class`, not `some__css__class` or `someCssClass`.
-- Do not group unrelated CSS selectors only because they share declarations. Keep component selectors and styles separate.
+- Do not group CSS selectors, even when they share declarations. Give each selector its own rule so component styles remain independent.
 - Organize CSS into clearly labeled logical groups using multiline comments in this format:
   ```css
   /*

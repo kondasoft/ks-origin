@@ -20,7 +20,8 @@
     "search": "Rechercher",
     "account": "Compte",
     "cart": "Panier",
-    "play_video": "Lire la vidéo"
+    "play_video": "Lire la vidéo",
+    "love": "amour"
   },
   "general": {
     "account": "Compte",
@@ -56,6 +57,11 @@
       "submit": "S'inscrire",
       "success": "Merci pour votre inscription."
     }
+  },
+  "footer": {
+    "all_rights_reserved": "Tous droits réservés.",
+    "designed_with": "Conçu avec",
+    "by": "par"
   },
   "gift_cards": {
     "issued": {
