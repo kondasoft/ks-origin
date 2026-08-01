@@ -1,0 +1,22 @@
+/*
+  FAQ stylesheet
+
+  This file contains presentation styles for the FAQ section.
+  Keep shared collapse structure and behavior in the base theme foundations.
+*/
+
+
+/*
+  FAQ
+*/
+.faq {
+  color: rgb(var(--color-text));
+  text-align: var(--mobile-text-alignment);
+  background-color: rgb(var(--color-background));
+}
+
+@media (min-width: 1200px) {
+  .faq {
+    text-align: var(--desktop-text-alignment);
+  }
+}

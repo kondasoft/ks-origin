@@ -1,0 +1,83 @@
+<theme-collapse
+  class="collapse-block block-spacing"
+  style="
+    --pt: {{ block.settings.pt | divided_by: 16.0 | append: 'em' }};
+    --pb: {{ block.settings.pb | divided_by: 16.0 | append: 'em' }};
+  "
+  {{ block.shopify_attributes }}
+>
+  <details
+    class="theme-collapse-details"
+    {% if block.settings.open_by_default %}
+      open
+    {% endif %}
+  >
+    <summary class="theme-collapse-summary">
+      <span>{{ block.settings.heading }}</span>
+      <span class="theme-collapse-icon" aria-hidden="true">
+        {% render 'svg-icons', icon: 'chevron-down', icon_size: 18 %}
+      </span>
+    </summary>
+
+    <div class="theme-collapse-content rte">
+      {{ block.settings.text }}
+    </div>
+  </details>
+</theme-collapse>
+
+{% schema %}
+{
+  "name": "Collapse",
+  "tag": null,
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "What would you like to know?"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text",
+      "default": "<p>Add the answer or supporting information here.</p>"
+    },
+    {
+      "type": "checkbox",
+      "id": "open_by_default",
+      "label": "Open by default",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pt",
+      "label": "Top",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "pb",
+      "label": "Bottom",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collapse",
+      "category": "Interactive"
+    }
+  ]
+}
+{% endschema %}

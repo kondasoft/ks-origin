@@ -385,6 +385,82 @@ textarea.input {
 
 
 /*
+  Collapses
+*/
+theme-collapse {
+  display: block;
+  border-top: 1px solid rgb(var(--color-text) / var(--border-opacity));
+  border-bottom: 1px solid rgb(var(--color-text) / var(--border-opacity));
+}
+
+theme-collapse + theme-collapse {
+  border-top: 0;
+}
+
+.theme-collapse-details {
+  overflow: clip;
+  transition: height 250ms ease;
+}
+
+.theme-collapse-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.85em 0;
+  margin: 0;
+  list-style: none;
+  cursor: pointer;
+  outline: 2px solid transparent;
+  outline-offset: -2px;
+  transition: color 200ms ease-out;
+}
+
+.theme-collapse-summary::-webkit-details-marker {
+  display: none;
+}
+
+.theme-collapse-summary:hover {
+  color: rgb(var(--color-text) / 0.8);
+}
+
+.theme-collapse-details[open] .theme-collapse-summary {
+  color: rgb(var(--color-accent));
+}
+
+.theme-collapse-summary:focus-visible {
+  outline-color: currentcolor;
+}
+
+.theme-collapse-icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme-collapse-icon .svg-icon {
+  transition: transform 200ms ease;
+}
+
+.theme-collapse-details[open] .theme-collapse-icon .svg-icon {
+  transform: rotate(180deg);
+}
+
+.theme-collapse-content {
+  padding: 0.125em 0 1.5em;
+  text-align: left;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .theme-collapse-details,
+  .theme-collapse-icon .svg-icon {
+    transition: none;
+  }
+}
+
+
+/*
   Headings
 */
 h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
@@ -455,6 +531,10 @@ p {
   margin: 0;
   margin-bottom: 1.25em;
   line-height: 1.6;
+}
+
+.rte p:last-child {
+  margin-bottom: 0;
 }
 
 

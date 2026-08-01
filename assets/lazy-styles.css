@@ -6,63 +6,7 @@
 */
 
 
-/*
-  Collapses
-*/
-theme-collapse {
-  display: block;
-}
 
-.theme-collapse-details {
-  overflow: clip;
-  transition: height 250ms ease;
-}
-
-.theme-collapse-summary {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  margin: 0;
-  list-style: none;
-  cursor: pointer;
-  outline: 2px solid transparent;
-  outline-offset: -2px;
-}
-
-.theme-collapse-summary::-webkit-details-marker {
-  display: none;
-}
-
-.theme-collapse-summary:hover {
-  color: rgb(var(--color-text) / 0.8);
-}
-
-.theme-collapse-summary:focus-visible {
-  outline-color: currentcolor;
-}
-
-.theme-collapse-icon {
-  display: inline-flex;
-  flex-shrink: 0;
-  align-items: center;
-  justify-content: center;
-}
-
-.theme-collapse-icon .svg-icon {
-  transition: transform 200ms ease;
-}
-
-.theme-collapse-details[open] .theme-collapse-icon .svg-icon {
-  transform: rotate(180deg);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .theme-collapse-details,
-  .theme-collapse-icon .svg-icon {
-    transition: none;
-  }
-}
 /*
   Dialogs
 */

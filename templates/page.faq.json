@@ -1,0 +1,152 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "faq_DEgyQk": {
+      "type": "faq",
+      "blocks": {
+        "heading_d3B4V9": {
+          "type": "heading",
+          "settings": {
+            "heading": "FAQs",
+            "heading_tag": "2",
+            "heading_size": "h2",
+            "pt": 0,
+            "pb": 0
+          },
+          "blocks": {}
+        },
+        "text_RLfqpY": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Find quick answers to common questions about ordering, delivery, and returns.</p>",
+            "text_size": "fs-md",
+            "pt": 0,
+            "pb": 30
+          },
+          "blocks": {}
+        },
+        "collapse_XiyJd7": {
+          "type": "collapse",
+          "settings": {
+            "heading": "How long does shipping take?",
+            "text": "<p>Orders are usually processed within 1–2 business days. Delivery times depend on your location and the shipping method selected at checkout.</p>",
+            "open_by_default": true,
+            "pt": 0,
+            "pb": 0
+          },
+          "blocks": {}
+        },
+        "collapse_mtTMTy": {
+          "type": "collapse",
+          "settings": {
+            "heading": "Can I return or exchange an item?",
+            "text": "<p>Eligible items can be returned or exchanged within the return period shown in our policy. Items must be unused and returned in their original condition.</p>",
+            "open_by_default": false,
+            "pt": 0,
+            "pb": 0
+          },
+          "blocks": {}
+        },
+        "collapse_BYPbb9": {
+          "type": "collapse",
+          "settings": {
+            "heading": "How can I contact your team?",
+            "text": "<p>Send us a message through our contact page. Our customer support team will respond as soon as possible during regular business hours.</p>",
+            "open_by_default": false,
+            "pt": 0,
+            "pb": 0
+          },
+          "blocks": {}
+        },
+        "collapse_7EjPaV": {
+          "type": "collapse",
+          "settings": {
+            "heading": "How can I track my order?",
+            "text": "<p>Once your order ships, you will receive a confirmation email containing a tracking link. You can use that link to follow your delivery.</p>",
+            "open_by_default": false,
+            "pt": 0,
+            "pb": 0
+          },
+          "blocks": {}
+        },
+        "collapse_XmATt8": {
+          "type": "collapse",
+          "settings": {
+            "heading": "Can I change or cancel my order?",
+            "text": "<p>Contact us as soon as possible after placing your order. We will do our best to help before the order has been processed or shipped.</p>",
+            "open_by_default": false,
+            "pt": 0,
+            "pb": 0
+          },
+          "blocks": {}
+        },
+        "collapse_reP6RB": {
+          "type": "collapse",
+          "settings": {
+            "heading": "What payment methods do you accept?",
+            "text": "<p>Available payment methods are displayed securely at checkout and may include major credit cards, accelerated checkout options, and local payment methods.</p>",
+            "open_by_default": false,
+            "pt": 0,
+            "pb": 0
+          },
+          "blocks": {}
+        },
+        "collapse_cQeq8h": {
+          "type": "collapse",
+          "settings": {
+            "heading": "Do you ship internationally?",
+            "text": "<p>International shipping availability and rates are calculated at checkout based on your delivery address. Additional duties or taxes may apply.</p>",
+            "open_by_default": false,
+            "pt": 0,
+            "pb": 0
+          },
+          "blocks": {}
+        },
+        "collapse_bGVPwP": {
+          "type": "collapse",
+          "settings": {
+            "heading": "Will sold-out products be restocked?",
+            "text": "<p>Some popular products are restocked. Check the product page regularly or sign up for restock notifications when that option is available.</p>",
+            "open_by_default": false,
+            "pt": 0,
+            "pb": 0
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "heading_d3B4V9",
+        "text_RLfqpY",
+        "collapse_XiyJd7",
+        "collapse_mtTMTy",
+        "collapse_BYPbb9",
+        "collapse_7EjPaV",
+        "collapse_XmATt8",
+        "collapse_reP6RB",
+        "collapse_cQeq8h",
+        "collapse_bGVPwP"
+      ],
+      "name": "FAQ",
+      "settings": {
+        "background_color": "{{ settings.colors.background }}",
+        "text_color": "{{ settings.colors.text }}",
+        "accent_color": "{{ settings.colors.accent }}",
+        "mobile_text_alignment": "center",
+        "desktop_text_alignment": "center",
+        "pt": 60,
+        "pb": 60
+      }
+    }
+  },
+  "order": [
+    "faq_DEgyQk"
+  ]
+}

@@ -1,0 +1,181 @@
+{% if section.index <= 3 or request.design_mode %}
+  <link href="{{ 'faq.css' | asset_url }}" rel="stylesheet" fetchpriority="high">
+{% endif %}
+
+<div
+  class="faq section-spacing"
+  data-mobile-text-alignment="{{ section.settings.mobile_text_alignment }}"
+  data-desktop-text-alignment="{{ section.settings.desktop_text_alignment }}"
+  style="
+    --color-background: {{ section.settings.background_color.red }} {{ section.settings.background_color.green }} {{ section.settings.background_color.blue }};
+    --color-text: {{ section.settings.text_color.red }} {{ section.settings.text_color.green }} {{ section.settings.text_color.blue }};
+    --color-accent: {{ section.settings.accent_color.red }} {{ section.settings.accent_color.green }} {{ section.settings.accent_color.blue }};
+    --mobile-text-alignment: {{ section.settings.mobile_text_alignment }};
+    --desktop-text-alignment: {{ section.settings.desktop_text_alignment }};
+    --pt: {{ section.settings.pt | divided_by: 16.0 | append: 'em' }};
+    --pb: {{ section.settings.pb | divided_by: 16.0 | append: 'em' }};
+  "
+  data-section-css="{{ 'faq.css' | asset_url }}"
+>
+  <div class="container container-content">
+    {% content_for 'blocks' %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "FAQ",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "{{ settings.colors.background }}"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "{{ settings.colors.text }}"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent color",
+      "default": "{{ settings.colors.accent }}"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "text_alignment",
+      "id": "mobile_text_alignment",
+      "label": "Mobile text alignment",
+      "default": "center"
+    },
+    {
+      "type": "text_alignment",
+      "id": "desktop_text_alignment",
+      "label": "Desktop text alignment",
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pt",
+      "label": "Top",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "pb",
+      "label": "Bottom",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 60
+    }
+  ],
+  "blocks": [
+    { "type": "subheading" },
+    { "type": "heading" },
+    { "type": "text" },
+    { "type": "collapse" }
+  ],
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "presets": [
+    {
+      "name": "FAQ",
+      "category": "Text",
+      "blocks": [
+        {
+          "type": "heading",
+          "settings": {
+            "heading": "FAQs"
+          }
+        },
+        {
+          "type": "text",
+          "settings": {
+            "text": "<p>Find quick answers to common questions about ordering, delivery, and returns.</p>",
+            "pb": 24
+          }
+        },
+        {
+          "type": "collapse",
+          "settings": {
+            "heading": "How long does shipping take?",
+            "text": "<p>Orders are usually processed within 1–2 business days. Delivery times depend on your location and the shipping method selected at checkout.</p>",
+            "open_by_default": true
+          }
+        },
+        {
+          "type": "collapse",
+          "settings": {
+            "heading": "Can I return or exchange an item?",
+            "text": "<p>Eligible items can be returned or exchanged within the return period shown in our policy. Items must be unused and returned in their original condition.</p>"
+          }
+        },
+        {
+          "type": "collapse",
+          "settings": {
+            "heading": "How can I contact your team?",
+            "text": "<p>Send us a message through our contact page. Our customer support team will respond as soon as possible during regular business hours.</p>"
+          }
+        },
+        {
+          "type": "collapse",
+          "settings": {
+            "heading": "How can I track my order?",
+            "text": "<p>Once your order ships, you will receive a confirmation email containing a tracking link. You can use that link to follow your delivery.</p>"
+          }
+        },
+        {
+          "type": "collapse",
+          "settings": {
+            "heading": "Can I change or cancel my order?",
+            "text": "<p>Contact us as soon as possible after placing your order. We will do our best to help before the order has been processed or shipped.</p>"
+          }
+        },
+        {
+          "type": "collapse",
+          "settings": {
+            "heading": "What payment methods do you accept?",
+            "text": "<p>Available payment methods are displayed securely at checkout and may include major credit cards, accelerated checkout options, and local payment methods.</p>"
+          }
+        },
+        {
+          "type": "collapse",
+          "settings": {
+            "heading": "Do you ship internationally?",
+            "text": "<p>International shipping availability and rates are calculated at checkout based on your delivery address. Additional duties or taxes may apply.</p>"
+          }
+        },
+        {
+          "type": "collapse",
+          "settings": {
+            "heading": "Will sold-out products be restocked?",
+            "text": "<p>Some popular products are restocked. Check the product page regularly or sign up for restock notifications when that option is available.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
