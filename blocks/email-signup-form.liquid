@@ -1,0 +1,107 @@
+{% if section.index <= 3 or request.design_mode %}
+  <link href="{{ 'email-signup.css' | asset_url }}" rel="stylesheet" fetchpriority="high">
+{% endif %}
+
+{% assign form_id = 'EmailSignupForm-' | append: section.id | append: '-' | append: block.id %}
+
+<div
+  class="email-signup-form-block block-spacing"
+  style="
+    --pt: {{ block.settings.pt | divided_by: 16.0 | append: 'em' }};
+    --pb: {{ block.settings.pb | divided_by: 16.0 | append: 'em' }};
+  "
+  data-section-css="{{ 'email-signup.css' | asset_url }}"
+  {{ block.shopify_attributes }}
+>
+  {% form 'customer', id: form_id, class: 'email-signup-form' %}
+    <input type="hidden" name="contact[tags]" value="newsletter">
+
+    {% if form.errors %}
+      <div
+        id="{{ form_id }}-error"
+        class="email-signup-form-status alert alert-error"
+        role="alert"
+        tabindex="-1"
+        autofocus
+      >
+        {{ form.errors | default_errors }}
+      </div>
+    {% endif %}
+
+    {% if form.posted_successfully? %}
+      <div
+        class="email-signup-form-status alert alert-success"
+        role="status"
+        tabindex="-1"
+        autofocus
+      >
+        {{ 'email_signup.form.success' | t }}
+      </div>
+    {% endif %}
+
+    <div class="email-signup-form-fields">
+      <label class="visually-hidden" for="{{ form_id }}-email">
+        {{ 'email_signup.form.email' | t }}
+      </label>
+      <input
+        id="{{ form_id }}-email"
+        class="email-signup-form-input input"
+        type="email"
+        name="contact[email]"
+        value="{% if customer %}{{ customer.email }}{% endif %}"
+        autocomplete="email"
+        autocapitalize="off"
+        spellcheck="false"
+        placeholder="{{ 'email_signup.form.placeholder' | t }}"
+        aria-required="true"
+        required
+        {% if form.errors contains 'email' %}
+          aria-invalid="true"
+          aria-describedby="{{ form_id }}-error"
+        {% endif %}
+      >
+      <button class="btn btn-md btn-accent-solid" type="submit">
+        {{ 'email_signup.form.submit' | t }}
+      </button>
+    </div>
+  {% endform %}
+</div>
+
+{% schema %}
+{
+  "name": "Email signup form",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pt",
+      "label": "Top",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "pb",
+      "label": "Bottom",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Email signup form",
+      "category": "Forms"
+    }
+  ]
+}
+{% endschema %}

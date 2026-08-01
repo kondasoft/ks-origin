@@ -1,5 +1,5 @@
 <div
-  class="video-section responsive-text-alignment section-spacing"
+  class="email-signup responsive-text-alignment section-spacing"
   data-mobile-text-alignment="{{ section.settings.mobile_text_alignment }}"
   data-desktop-text-alignment="{{ section.settings.desktop_text_alignment }}"
   style="
@@ -14,14 +14,14 @@
     background-color: rgb(var(--color-background));
   "
 >
-  <div class="container {{ settings.container_width }}">
+  <div class="container container-content">
     {% content_for 'blocks' %}
   </div>
 </div>
 
 {% schema %}
 {
-  "name": "Video",
+  "name": "Email signup",
   "tag": "section",
   "settings": [
     {
@@ -54,13 +54,13 @@
       "type": "text_alignment",
       "id": "mobile_text_alignment",
       "label": "Mobile text alignment",
-      "default": "left"
+      "default": "center"
     },
     {
       "type": "text_alignment",
       "id": "desktop_text_alignment",
       "label": "Desktop text alignment",
-      "default": "left"
+      "default": "center"
     },
     {
       "type": "header",
@@ -92,16 +92,10 @@
       "type": "heading"
     },
     {
-      "type": "video"
-    },
-    {
       "type": "text"
     },
     {
-      "type": "button"
-    },
-    {
-      "type": "group"
+      "type": "email-signup-form"
     }
   ],
   "disabled_on": {
@@ -109,43 +103,25 @@
   },
   "presets": [
     {
-      "name": "Video",
-      "category": "Video",
+      "name": "Email signup",
+      "category": "Promotional",
       "blocks": [
         {
           "type": "heading",
           "settings": {
-            "heading": "Video",
-            "heading_tag": "2",
-            "heading_size": "h2",
-            "pb": 16
-          }
-        },
-        {
-          "type": "video",
-          "settings": {
-            "source": "uploaded",
-            "autoplay": false,
-            "loop": false,
-            "show_controls": true,
-            "video_width": 1200
+            "heading": "Join our newsletter",
+            "pb": 6
           }
         },
         {
           "type": "text",
           "settings": {
-            "text": "<p>Share a product story or campaign with a short description and a clear action.</p>",
-            "pt": 18,
+            "text": "<p>Sign up for new arrivals, special offers, and updates.</p>",
             "pb": 20
           }
         },
         {
-          "type": "button",
-          "settings": {
-            "label": "Shop now",
-            "link": "shopify://collections/all",
-            "style": "btn-accent-solid"
-          }
+          "type": "email-signup-form"
         }
       ]
     }

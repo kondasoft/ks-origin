@@ -11,10 +11,16 @@
   "
   {{ block.shopify_attributes }}
 >
-  <h{{ heading_tag }} class="{{ heading_size }}">
+  <h{{ heading_tag }} class="heading-block-heading {{ heading_size }}">
     {{ block.settings.heading }}
   </h{{ heading_tag }}>
 </div>
+
+{% stylesheet %}
+  .heading-block .heading-block-heading {
+    margin: 0;
+  }
+{% endstylesheet %}
 
 {% schema %}
 {

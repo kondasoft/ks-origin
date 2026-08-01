@@ -49,6 +49,14 @@
       "success": "Thanks for contacting us. We'll get back to you as soon as possible."
     }
   },
+  "email_signup": {
+    "form": {
+      "email": "Email address",
+      "placeholder": "Enter your email",
+      "submit": "Sign up",
+      "success": "Thanks for signing up."
+    }
+  },
   "gift_cards": {
     "issued": {
       "title": "{{ value }} gift card for {{ shop }}",

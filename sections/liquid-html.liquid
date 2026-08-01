@@ -1,7 +1,15 @@
+{% liquid
+  assign container_class = 'liquid-html-content'
+
+  if section.settings.container_width == 'site'
+    assign container_class = container_class | append: ' container ' | append: settings.container_width
+  elsif section.settings.container_width == 'narrow'
+    assign container_class = container_class | append: ' container container-content'
+  endif
+%}
+
 <div
-  class="video-section responsive-text-alignment section-spacing"
-  data-mobile-text-alignment="{{ section.settings.mobile_text_alignment }}"
-  data-desktop-text-alignment="{{ section.settings.desktop_text_alignment }}"
+  class="liquid-html responsive-text-alignment section-spacing"
   style="
     --color-background: {{ section.settings.background_color.red }} {{ section.settings.background_color.green }} {{ section.settings.background_color.blue }};
     --color-text: {{ section.settings.text_color.red }} {{ section.settings.text_color.green }} {{ section.settings.text_color.blue }};
@@ -14,16 +22,26 @@
     background-color: rgb(var(--color-background));
   "
 >
-  <div class="container {{ settings.container_width }}">
-    {% content_for 'blocks' %}
+  <div class="{{ container_class }}">
+    {{ section.settings.custom_liquid }}
   </div>
 </div>
 
 {% schema %}
 {
-  "name": "Video",
+  "name": "Liquid / HTML",
   "tag": "section",
   "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "liquid",
+      "id": "custom_liquid",
+      "label": "Liquid / HTML",
+      "default": "<p class=\"alert\">Today's date: {{ 'now' | date: '%B %d, %Y' }}</p>"
+    },
     {
       "type": "header",
       "content": "Colors"
@@ -49,6 +67,17 @@
     {
       "type": "header",
       "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "container_width",
+      "label": "Container",
+      "options": [
+        { "value": "full", "label": "Full width" },
+        { "value": "site", "label": "Site container" },
+        { "value": "narrow", "label": "Narrow container" }
+      ],
+      "default": "site"
     },
     {
       "type": "text_alignment",
@@ -87,67 +116,13 @@
       "default": 60
     }
   ],
-  "blocks": [
-    {
-      "type": "heading"
-    },
-    {
-      "type": "video"
-    },
-    {
-      "type": "text"
-    },
-    {
-      "type": "button"
-    },
-    {
-      "type": "group"
-    }
-  ],
   "disabled_on": {
     "groups": ["header", "footer"]
   },
   "presets": [
     {
-      "name": "Video",
-      "category": "Video",
-      "blocks": [
-        {
-          "type": "heading",
-          "settings": {
-            "heading": "Video",
-            "heading_tag": "2",
-            "heading_size": "h2",
-            "pb": 16
-          }
-        },
-        {
-          "type": "video",
-          "settings": {
-            "source": "uploaded",
-            "autoplay": false,
-            "loop": false,
-            "show_controls": true,
-            "video_width": 1200
-          }
-        },
-        {
-          "type": "text",
-          "settings": {
-            "text": "<p>Share a product story or campaign with a short description and a clear action.</p>",
-            "pt": 18,
-            "pb": 20
-          }
-        },
-        {
-          "type": "button",
-          "settings": {
-            "label": "Shop now",
-            "link": "shopify://collections/all",
-            "style": "btn-accent-solid"
-          }
-        }
-      ]
+      "name": "Liquid / HTML",
+      "category": "Custom"
     }
   ]
 }

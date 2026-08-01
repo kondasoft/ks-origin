@@ -1,0 +1,66 @@
+/*
+  Email signup stylesheet
+
+  This file contains layout and presentation styles for the reusable Email signup form block.
+  Keep global form controls, alerts, and reusable button styles in the base stylesheet.
+*/
+
+
+/*
+  Email signup form
+*/
+.email-signup-form-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  width: 100%;
+}
+
+.email-signup-form-input {
+  min-width: 0;
+}
+
+.email-signup-form-status {
+  margin-bottom: 1.25em;
+}
+
+[data-mobile-text-alignment="center"] .email-signup-form-fields,
+[data-mobile-text-alignment="center"] .email-signup-form-status {
+  margin-right: auto;
+  margin-left: auto;
+}
+
+[data-mobile-text-alignment="right"] .email-signup-form-fields,
+[data-mobile-text-alignment="right"] .email-signup-form-status {
+  margin-left: auto;
+}
+
+@media (min-width: 600px) {
+  .email-signup-form-fields {
+    flex-direction: row;
+  }
+
+  .email-signup-form-input {
+    flex: 1;
+  }
+}
+
+@media (min-width: 1200px) {
+  [data-desktop-text-alignment="left"] .email-signup-form-fields,
+  [data-desktop-text-alignment="left"] .email-signup-form-status {
+    margin-right: auto;
+    margin-left: 0;
+  }
+
+  [data-desktop-text-alignment="center"] .email-signup-form-fields,
+  [data-desktop-text-alignment="center"] .email-signup-form-status {
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  [data-desktop-text-alignment="right"] .email-signup-form-fields,
+  [data-desktop-text-alignment="right"] .email-signup-form-status {
+    margin-right: 0;
+    margin-left: auto;
+  }
+}

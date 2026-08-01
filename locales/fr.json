@@ -49,6 +49,14 @@
       "success": "Merci de nous avoir contactés. Nous vous répondrons dans les plus brefs délais."
     }
   },
+  "email_signup": {
+    "form": {
+      "email": "Adresse e-mail",
+      "placeholder": "Saisissez votre adresse e-mail",
+      "submit": "S'inscrire",
+      "success": "Merci pour votre inscription."
+    }
+  },
   "gift_cards": {
     "issued": {
       "title": "Carte-cadeau de {{ value }} pour {{ shop }}",
