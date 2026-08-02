@@ -9,10 +9,10 @@
  */
 {
   "sections": {
-    "hero_p9akMr": {
+    "hero_epRUea": {
       "type": "hero",
       "blocks": {
-        "subheading_3NLFWV": {
+        "subheading_H8xPFr": {
           "type": "subheading",
           "settings": {
             "subheading": "New collection",
@@ -22,39 +22,45 @@
           },
           "blocks": {}
         },
-        "heading_UKihbK": {
+        "heading_ax8Ben": {
           "type": "heading",
           "settings": {
             "heading": "A hero built around your story",
             "heading_tag": "1",
             "heading_size": "h1",
             "pt": 0,
-            "pb": 0
+            "pb": 6
           },
           "blocks": {}
         },
-        "text_344fRh": {
+        "text_3qMdHr": {
           "type": "text",
           "settings": {
             "text": "<p>Introduce a collection, campaign, or key message with immersive full-width media.</p>",
             "text_size": "fs-lg",
             "pt": 0,
-            "pb": 0
+            "pb": 28
           },
           "blocks": {}
         },
-        "group_RDeqwa": {
+        "group_Ja4JVd": {
           "type": "group",
           "settings": {
+            "custom_colors": false,
+            "background_color": "{{ settings.colors.background }}",
+            "text_color": "{{ settings.colors.text }}",
+            "accent_color": "{{ settings.colors.accent }}",
             "mobile_content_direction": "column",
             "mobile_gap": 10,
             "desktop_content_direction": "row",
             "desktop_gap": 10,
-            "pt": 10,
-            "pb": 0
+            "pt": 0,
+            "pb": 0,
+            "pl": 0,
+            "pr": 0
           },
           "blocks": {
-            "button_jeaL4h": {
+            "button_hanNAa": {
               "type": "button",
               "settings": {
                 "label": "Latest arrivals",
@@ -64,7 +70,7 @@
               },
               "blocks": {}
             },
-            "button_7JeFeF": {
+            "button_f7pPTR": {
               "type": "button",
               "settings": {
                 "label": "Best selling",
@@ -76,20 +82,21 @@
             }
           },
           "block_order": [
-            "button_jeaL4h",
-            "button_7JeFeF"
+            "button_hanNAa",
+            "button_f7pPTR"
           ]
         }
       },
       "block_order": [
-        "subheading_3NLFWV",
-        "heading_UKihbK",
-        "text_344fRh",
-        "group_RDeqwa"
+        "subheading_H8xPFr",
+        "heading_ax8Ben",
+        "text_3qMdHr",
+        "group_Ja4JVd"
       ],
       "name": "Hero",
       "settings": {
         "source": "image",
+        "external_video": "",
         "external_video_alt": "",
         "background_color": "#0a0a0a",
         "text_color": "#ffffff",
@@ -106,21 +113,134 @@
         "pb": 0
       }
     },
-    "image_fJijb8": {
+    "email_signup_bC6B3d": {
+      "type": "email-signup",
+      "blocks": {
+        "heading_tmEbcH": {
+          "type": "heading",
+          "settings": {
+            "heading": "Join our newsletter",
+            "heading_tag": "2",
+            "heading_size": "h2",
+            "pt": 0,
+            "pb": 0
+          },
+          "blocks": {}
+        },
+        "text_JYXbFg": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Sign up for new arrivals, special offers, and updates.</p>",
+            "text_size": "fs-md",
+            "pt": 0,
+            "pb": 24
+          },
+          "blocks": {}
+        },
+        "email_signup_form_GKq4Kd": {
+          "type": "email-signup-form",
+          "settings": {
+            "pt": 0,
+            "pb": 0
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "heading_tmEbcH",
+        "text_JYXbFg",
+        "email_signup_form_GKq4Kd"
+      ],
+      "name": "Email signup",
+      "settings": {
+        "background_color": "{{ settings.colors.text }}",
+        "text_color": "{{ settings.colors.background }}",
+        "accent_color": "#eab2b5",
+        "mobile_text_alignment": "left",
+        "desktop_text_alignment": "center",
+        "pt": 60,
+        "pb": 60
+      }
+    },
+    "contact_form_jN7QXd": {
+      "type": "contact-form",
+      "blocks": {
+        "heading_yUXnBx": {
+          "type": "heading",
+          "settings": {
+            "heading": "Contact us",
+            "heading_tag": "2",
+            "heading_size": "h2",
+            "pt": 0,
+            "pb": 6
+          },
+          "blocks": {}
+        },
+        "text_qpEw6A": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Have a question or need help? Send us a message and we'll get back to you as soon as possible.</p>",
+            "text_size": "fs-md",
+            "pt": 0,
+            "pb": 0
+          },
+          "blocks": {}
+        },
+        "contact_form_aNzjxg": {
+          "type": "contact-form",
+          "settings": {
+            "pt": 32,
+            "pb": 0
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "heading_yUXnBx",
+        "text_qpEw6A",
+        "contact_form_aNzjxg"
+      ],
+      "name": "Contact form",
+      "settings": {
+        "background_color": "{{ settings.colors.background }}",
+        "text_color": "{{ settings.colors.text }}",
+        "accent_color": "{{ settings.colors.accent }}",
+        "mobile_text_alignment": "left",
+        "desktop_text_alignment": "left",
+        "pt": 60,
+        "pb": 60
+      }
+    },
+    "liquid_html_6ttYfG": {
+      "type": "liquid-html",
+      "name": "Liquid / HTML",
+      "settings": {
+        "custom_liquid": "<p class=\"alert\">Today's date: {{ 'now' | date: '%B %d, %Y' }}",
+        "background_color": "{{ settings.colors.background }}",
+        "text_color": "{{ settings.colors.text }}",
+        "accent_color": "{{ settings.colors.accent }}",
+        "container_width": "site",
+        "mobile_text_alignment": "left",
+        "desktop_text_alignment": "left",
+        "pt": 60,
+        "pb": 60
+      }
+    },
+    "image_4hw3MC": {
       "type": "image",
       "blocks": {
-        "heading_jA34xW": {
+        "heading_6mByj7": {
           "type": "heading",
           "settings": {
             "heading": "Image",
             "heading_tag": "2",
             "heading_size": "h2",
             "pt": 0,
-            "pb": 10
+            "pb": 16
           },
           "blocks": {}
         },
-        "image_mX3UmE": {
+        "image_VH9bfR": {
           "type": "image",
           "settings": {
             "image_ratio": "widescreen",
@@ -130,17 +250,17 @@
           },
           "blocks": {}
         },
-        "text_F3AfKc": {
+        "text_RMBRUE": {
           "type": "text",
           "settings": {
             "text": "<p>Highlight a visual with a short description and a clear action.</p>",
             "text_size": "fs-md",
-            "pt": 16,
-            "pb": 0
+            "pt": 18,
+            "pb": 20
           },
           "blocks": {}
         },
-        "button_9tyGKY": {
+        "button_L4AVj3": {
           "type": "button",
           "settings": {
             "label": "Shop now",
@@ -152,10 +272,10 @@
         }
       },
       "block_order": [
-        "heading_jA34xW",
-        "image_mX3UmE",
-        "text_F3AfKc",
-        "button_9tyGKY"
+        "heading_6mByj7",
+        "image_VH9bfR",
+        "text_RMBRUE",
+        "button_L4AVj3"
       ],
       "name": "Image",
       "settings": {
@@ -168,7 +288,7 @@
         "pb": 60
       }
     },
-    "divider_a8n9wx": {
+    "divider_mhqKLJ": {
       "type": "divider",
       "name": "Divider",
       "settings": {
@@ -181,21 +301,21 @@
         "pb": 0
       }
     },
-    "video_w7eDqQ": {
+    "video_DJLR97": {
       "type": "video",
       "blocks": {
-        "heading_PnTWPL": {
+        "heading_KxpmGf": {
           "type": "heading",
           "settings": {
             "heading": "Video",
             "heading_tag": "2",
             "heading_size": "h2",
             "pt": 0,
-            "pb": 12
+            "pb": 16
           },
           "blocks": {}
         },
-        "video_na9VaW": {
+        "video_QLERf4": {
           "type": "video",
           "settings": {
             "source": "uploaded",
@@ -211,48 +331,32 @@
           },
           "blocks": {}
         },
-        "text_CwQNTN": {
+        "text_zHBXBH": {
           "type": "text",
           "settings": {
             "text": "<p>Share a product story or campaign with a short description and a clear action.</p>",
             "text_size": "fs-md",
             "pt": 18,
-            "pb": 0
+            "pb": 20
           },
           "blocks": {}
         },
-        "group_XbRaNY": {
-          "type": "group",
+        "button_7tXwzK": {
+          "type": "button",
           "settings": {
-            "mobile_content_direction": "column",
-            "mobile_gap": 10,
-            "desktop_content_direction": "column",
-            "desktop_gap": 10,
-            "pt": 0,
-            "pb": 0
+            "label": "Shop now",
+            "link": "shopify://collections/all",
+            "style": "btn-accent-solid",
+            "size": "btn-md"
           },
-          "blocks": {
-            "button_ic8y8P": {
-              "type": "button",
-              "settings": {
-                "label": "Shop now",
-                "link": "shopify://collections/all",
-                "style": "btn-accent-solid",
-                "size": "btn-md"
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "button_ic8y8P"
-          ]
+          "blocks": {}
         }
       },
       "block_order": [
-        "heading_PnTWPL",
-        "video_na9VaW",
-        "text_CwQNTN",
-        "group_XbRaNY"
+        "heading_KxpmGf",
+        "video_QLERf4",
+        "text_zHBXBH",
+        "button_7tXwzK"
       ],
       "name": "Video",
       "settings": {
@@ -265,10 +369,10 @@
         "pb": 60
       }
     },
-    "image_with_text_9gQ6wU": {
+    "image_with_text_CMaCke": {
       "type": "image-with-text",
       "blocks": {
-        "subheading_xyJ93P": {
+        "subheading_tMNtVR": {
           "type": "subheading",
           "settings": {
             "subheading": "Pair imagery with content",
@@ -278,39 +382,45 @@
           },
           "blocks": {}
         },
-        "heading_Mje3wC": {
+        "heading_iQBNkm": {
           "type": "heading",
           "settings": {
             "heading": "Image with text",
             "heading_tag": "2",
             "heading_size": "h2",
             "pt": 0,
-            "pb": 0
+            "pb": 6
           },
           "blocks": {}
         },
-        "text_79MwW3": {
+        "text_MQLN3P": {
           "type": "text",
           "settings": {
             "text": "<p>Combine an image with supporting content and an optional action in a responsive two-column layout.</p>",
             "text_size": "fs-md",
             "pt": 0,
-            "pb": 0
+            "pb": 20
           },
           "blocks": {}
         },
-        "group_D3wP3r": {
+        "group_rmyLyQ": {
           "type": "group",
           "settings": {
+            "custom_colors": false,
+            "background_color": "{{ settings.colors.background }}",
+            "text_color": "{{ settings.colors.text }}",
+            "accent_color": "{{ settings.colors.accent }}",
             "mobile_content_direction": "column",
             "mobile_gap": 8,
             "desktop_content_direction": "row",
             "desktop_gap": 10,
-            "pt": 10,
-            "pb": 0
+            "pt": 0,
+            "pb": 0,
+            "pl": 0,
+            "pr": 0
           },
           "blocks": {
-            "button_EmDi96": {
+            "button_ewP6RF": {
               "type": "button",
               "settings": {
                 "label": "Learn more",
@@ -322,15 +432,15 @@
             }
           },
           "block_order": [
-            "button_EmDi96"
+            "button_ewP6RF"
           ]
         }
       },
       "block_order": [
-        "subheading_xyJ93P",
-        "heading_Mje3wC",
-        "text_79MwW3",
-        "group_D3wP3r"
+        "subheading_tMNtVR",
+        "heading_iQBNkm",
+        "text_MQLN3P",
+        "group_rmyLyQ"
       ],
       "name": "Image with text",
       "settings": {
@@ -348,34 +458,27 @@
         "pb": 60
       }
     },
-    "divider_QwVDRb": {
-      "type": "divider",
-      "name": "Divider",
-      "settings": {
-        "background_color": "{{ settings.colors.background }}",
-        "line_color": "{{ settings.colors.text }}",
-        "custom_line_opacity": false,
-        "line_opacity": 20,
-        "container_width": "site",
-        "pt": 0,
-        "pb": 0
-      }
-    },
-    "custom_section_HTpRyc": {
+    "custom_section_cVKwjJ": {
       "type": "custom-section",
       "blocks": {
-        "group_GFqDAz": {
+        "group_FzmKYG": {
           "type": "group",
           "settings": {
+            "custom_colors": false,
+            "background_color": "{{ settings.colors.background }}",
+            "text_color": "{{ settings.colors.text }}",
+            "accent_color": "{{ settings.colors.accent }}",
             "mobile_content_direction": "column",
             "mobile_gap": 0,
             "desktop_content_direction": "column",
             "desktop_gap": 0,
             "pt": 0,
-            "pb": 10
+            "pb": 20,
+            "pl": 0,
+            "pr": 0
           },
           "blocks": {
-            "subheading_yXjDNw": {
+            "subheading_GXWfnR": {
               "type": "subheading",
               "settings": {
                 "subheading": "Build a flexible layout",
@@ -385,18 +488,18 @@
               },
               "blocks": {}
             },
-            "heading_pXnaCq": {
+            "heading_3p4Tex": {
               "type": "heading",
               "settings": {
                 "heading": "Custom section",
                 "heading_tag": "2",
                 "heading_size": "h2",
                 "pt": 0,
-                "pb": 0
+                "pb": 6
               },
               "blocks": {}
             },
-            "text_TEc97k": {
+            "text_jBkGgn": {
               "type": "text",
               "settings": {
                 "text": "<p>Add, remove, and rearrange reusable blocks to create a section tailored to your content and layout needs.</p>",
@@ -408,12 +511,12 @@
             }
           },
           "block_order": [
-            "subheading_yXjDNw",
-            "heading_pXnaCq",
-            "text_TEc97k"
+            "subheading_GXWfnR",
+            "heading_3p4Tex",
+            "text_jBkGgn"
           ]
         },
-        "image_HdMDwr": {
+        "image_BrMJEK": {
           "type": "image",
           "settings": {
             "image_ratio": "adapt",
@@ -423,18 +526,24 @@
           },
           "blocks": {}
         },
-        "group_xGaQ4M": {
+        "group_tG6YBN": {
           "type": "group",
           "settings": {
+            "custom_colors": false,
+            "background_color": "{{ settings.colors.background }}",
+            "text_color": "{{ settings.colors.text }}",
+            "accent_color": "{{ settings.colors.accent }}",
             "mobile_content_direction": "column",
             "mobile_gap": 10,
             "desktop_content_direction": "row",
             "desktop_gap": 10,
-            "pt": 34,
-            "pb": 0
+            "pt": 24,
+            "pb": 0,
+            "pl": 0,
+            "pr": 0
           },
           "blocks": {
-            "button_qnbAtf": {
+            "button_HmYm7U": {
               "type": "button",
               "settings": {
                 "label": "Primary action",
@@ -444,7 +553,7 @@
               },
               "blocks": {}
             },
-            "button_RADebr": {
+            "button_BPPLAH": {
               "type": "button",
               "settings": {
                 "label": "Secondary action",
@@ -456,15 +565,15 @@
             }
           },
           "block_order": [
-            "button_qnbAtf",
-            "button_RADebr"
+            "button_HmYm7U",
+            "button_BPPLAH"
           ]
         }
       },
       "block_order": [
-        "group_GFqDAz",
-        "image_HdMDwr",
-        "group_xGaQ4M"
+        "group_FzmKYG",
+        "image_BrMJEK",
+        "group_tG6YBN"
       ],
       "name": "Custom section",
       "settings": {
@@ -478,10 +587,196 @@
         "pb": 60
       }
     },
-    "rich_text_takpHV": {
+    "email_signup_qQHGQ8": {
+      "type": "email-signup",
+      "blocks": {
+        "heading_mQpYne": {
+          "type": "heading",
+          "settings": {
+            "heading": "Join our newsletter",
+            "heading_tag": "2",
+            "heading_size": "h2",
+            "pt": 0,
+            "pb": 6
+          },
+          "blocks": {}
+        },
+        "text_bmLXED": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Sign up for new arrivals, special offers, and updates.</p>",
+            "text_size": "fs-md",
+            "pt": 0,
+            "pb": 20
+          },
+          "blocks": {}
+        },
+        "email_signup_form_Hmifed": {
+          "type": "email-signup-form",
+          "settings": {
+            "pt": 0,
+            "pb": 0
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "heading_mQpYne",
+        "text_bmLXED",
+        "email_signup_form_Hmifed"
+      ],
+      "name": "Email signup",
+      "settings": {
+        "background_color": "{{ settings.colors.background }}",
+        "text_color": "{{ settings.colors.text }}",
+        "accent_color": "{{ settings.colors.accent }}",
+        "mobile_text_alignment": "center",
+        "desktop_text_alignment": "center",
+        "pt": 60,
+        "pb": 60
+      }
+    },
+    "faq_yDtf3p": {
+      "type": "faq",
+      "blocks": {
+        "heading_d47BVd": {
+          "type": "heading",
+          "settings": {
+            "heading": "FAQs",
+            "heading_tag": "2",
+            "heading_size": "h2",
+            "pt": 0,
+            "pb": 6
+          },
+          "blocks": {}
+        },
+        "text_EHpGfa": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Find quick answers to common questions about ordering, delivery, and returns.</p>",
+            "text_size": "fs-md",
+            "pt": 0,
+            "pb": 24
+          },
+          "blocks": {}
+        },
+        "collapse_zjWgxx": {
+          "type": "collapse",
+          "settings": {
+            "heading": "How long does shipping take?",
+            "text": "<p>Orders are usually processed within 1–2 business days. Delivery times depend on your location and the shipping method selected at checkout.</p>",
+            "open_by_default": true,
+            "pt": 0,
+            "pb": 0
+          },
+          "blocks": {}
+        },
+        "collapse_ar7GH3": {
+          "type": "collapse",
+          "settings": {
+            "heading": "Can I return or exchange an item?",
+            "text": "<p>Eligible items can be returned or exchanged within the return period shown in our policy. Items must be unused and returned in their original condition.</p>",
+            "open_by_default": false,
+            "pt": 0,
+            "pb": 0
+          },
+          "blocks": {}
+        },
+        "collapse_AgxQYR": {
+          "type": "collapse",
+          "settings": {
+            "heading": "How can I contact your team?",
+            "text": "<p>Send us a message through our contact page. Our customer support team will respond as soon as possible during regular business hours.</p>",
+            "open_by_default": false,
+            "pt": 0,
+            "pb": 0
+          },
+          "blocks": {}
+        },
+        "collapse_pQrEEU": {
+          "type": "collapse",
+          "settings": {
+            "heading": "How can I track my order?",
+            "text": "<p>Once your order ships, you will receive a confirmation email containing a tracking link. You can use that link to follow your delivery.</p>",
+            "open_by_default": false,
+            "pt": 0,
+            "pb": 0
+          },
+          "blocks": {}
+        },
+        "collapse_GGrEGh": {
+          "type": "collapse",
+          "settings": {
+            "heading": "Can I change or cancel my order?",
+            "text": "<p>Contact us as soon as possible after placing your order. We will do our best to help before the order has been processed or shipped.</p>",
+            "open_by_default": false,
+            "pt": 0,
+            "pb": 0
+          },
+          "blocks": {}
+        },
+        "collapse_LwKLpb": {
+          "type": "collapse",
+          "settings": {
+            "heading": "What payment methods do you accept?",
+            "text": "<p>Available payment methods are displayed securely at checkout and may include major credit cards, accelerated checkout options, and local payment methods.</p>",
+            "open_by_default": false,
+            "pt": 0,
+            "pb": 0
+          },
+          "blocks": {}
+        },
+        "collapse_JVdnBQ": {
+          "type": "collapse",
+          "settings": {
+            "heading": "Do you ship internationally?",
+            "text": "<p>International shipping availability and rates are calculated at checkout based on your delivery address. Additional duties or taxes may apply.</p>",
+            "open_by_default": false,
+            "pt": 0,
+            "pb": 0
+          },
+          "blocks": {}
+        },
+        "collapse_Uh6V7F": {
+          "type": "collapse",
+          "settings": {
+            "heading": "Will sold-out products be restocked?",
+            "text": "<p>Some popular products are restocked. Check the product page regularly or sign up for restock notifications when that option is available.</p>",
+            "open_by_default": false,
+            "pt": 0,
+            "pb": 0
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "heading_d47BVd",
+        "text_EHpGfa",
+        "collapse_zjWgxx",
+        "collapse_ar7GH3",
+        "collapse_AgxQYR",
+        "collapse_pQrEEU",
+        "collapse_GGrEGh",
+        "collapse_LwKLpb",
+        "collapse_JVdnBQ",
+        "collapse_Uh6V7F"
+      ],
+      "name": "FAQ",
+      "settings": {
+        "background_color": "{{ settings.colors.background }}",
+        "text_color": "{{ settings.colors.text }}",
+        "accent_color": "{{ settings.colors.accent }}",
+        "mobile_text_alignment": "center",
+        "desktop_text_alignment": "center",
+        "enable_faq_structured_data": true,
+        "pt": 60,
+        "pb": 60
+      }
+    },
+    "rich_text_Yt7LTn": {
       "type": "rich-text",
       "blocks": {
-        "subheading_bNMGej": {
+        "subheading_QLTjmV": {
           "type": "subheading",
           "settings": {
             "subheading": "Share a focused message",
@@ -491,39 +786,45 @@
           },
           "blocks": {}
         },
-        "heading_JnnkEq": {
+        "heading_nWFdi3": {
           "type": "heading",
           "settings": {
             "heading": "Rich text",
             "heading_tag": "2",
             "heading_size": "h2",
             "pt": 0,
-            "pb": 0
+            "pb": 6
           },
           "blocks": {}
         },
-        "text_RQ8ngD": {
+        "text_mDgqgy": {
           "type": "text",
           "settings": {
             "text": "<p>Present a clear message with supporting text and calls to action in a focused, easy-to-read layout.</p>",
             "text_size": "fs-md",
             "pt": 0,
-            "pb": 0
+            "pb": 24
           },
           "blocks": {}
         },
-        "group_wkCyg3": {
+        "group_gCTL4f": {
           "type": "group",
           "settings": {
+            "custom_colors": false,
+            "background_color": "{{ settings.colors.background }}",
+            "text_color": "{{ settings.colors.text }}",
+            "accent_color": "{{ settings.colors.accent }}",
             "mobile_content_direction": "column",
             "mobile_gap": 8,
             "desktop_content_direction": "row",
             "desktop_gap": 10,
-            "pt": 10,
-            "pb": 0
+            "pt": 0,
+            "pb": 0,
+            "pl": 0,
+            "pr": 0
           },
           "blocks": {
-            "button_WKYPbY": {
+            "button_HCt4r7": {
               "type": "button",
               "settings": {
                 "label": "Primary action",
@@ -533,7 +834,7 @@
               },
               "blocks": {}
             },
-            "button_qiRbXj": {
+            "button_fEEDgN": {
               "type": "button",
               "settings": {
                 "label": "Secondary action",
@@ -545,20 +846,20 @@
             }
           },
           "block_order": [
-            "button_WKYPbY",
-            "button_qiRbXj"
+            "button_HCt4r7",
+            "button_fEEDgN"
           ]
         }
       },
       "block_order": [
-        "subheading_bNMGej",
-        "heading_JnnkEq",
-        "text_RQ8ngD",
-        "group_wkCyg3"
+        "subheading_QLTjmV",
+        "heading_nWFdi3",
+        "text_mDgqgy",
+        "group_gCTL4f"
       ],
       "name": "Rich text",
       "settings": {
-        "background_color": "{{ settings.colors.surface }}",
+        "background_color": "{{ settings.colors.background }}",
         "text_color": "{{ settings.colors.text }}",
         "accent_color": "{{ settings.colors.accent }}",
         "mobile_text_alignment": "center",
@@ -567,26 +868,25 @@
         "pb": 60
       }
     },
-    "video_hn3jRi": {
+    "video_TetJLA": {
       "type": "video",
       "blocks": {
-        "heading_Rh6XEx": {
+        "heading_E8TGqG": {
           "type": "heading",
           "settings": {
             "heading": "Video",
             "heading_tag": "2",
             "heading_size": "h2",
             "pt": 0,
-            "pb": 12
+            "pb": 16
           },
           "blocks": {}
         },
-        "video_UU8qJ7": {
+        "video_aNEGy6": {
           "type": "video",
           "settings": {
-            "source": "url",
-            "external_video": "https://www.youtube.com/watch?v=D60hHjROMts",
-            "cover_image": "shopify://shop_images/Main.jpg",
+            "source": "uploaded",
+            "external_video": "",
             "external_video_alt": "",
             "autoplay": false,
             "muted": false,
@@ -598,32 +898,100 @@
           },
           "blocks": {}
         },
-        "text_376wFV": {
+        "text_FUMbFU": {
           "type": "text",
           "settings": {
             "text": "<p>Share a product story or campaign with a short description and a clear action.</p>",
             "text_size": "fs-md",
             "pt": 18,
+            "pb": 20
+          },
+          "blocks": {}
+        },
+        "button_ybdH6Q": {
+          "type": "button",
+          "settings": {
+            "label": "Shop now",
+            "link": "shopify://collections/all",
+            "style": "btn-accent-solid",
+            "size": "btn-md"
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "heading_E8TGqG",
+        "video_aNEGy6",
+        "text_FUMbFU",
+        "button_ybdH6Q"
+      ],
+      "name": "Video",
+      "settings": {
+        "background_color": "{{ settings.colors.background }}",
+        "text_color": "{{ settings.colors.text }}",
+        "accent_color": "{{ settings.colors.accent }}",
+        "mobile_text_alignment": "left",
+        "desktop_text_alignment": "left",
+        "pt": 60,
+        "pb": 60
+      }
+    },
+    "video_with_text_mUK9FU": {
+      "type": "video-with-text",
+      "blocks": {
+        "subheading_VbpWiG": {
+          "type": "subheading",
+          "settings": {
+            "subheading": "Pair video with content",
+            "subheading_size": "fs-sm",
+            "pt": 0,
             "pb": 0
           },
           "blocks": {}
         },
-        "group_p638MX": {
+        "heading_zcAbcY": {
+          "type": "heading",
+          "settings": {
+            "heading": "Video with text",
+            "heading_tag": "2",
+            "heading_size": "h2",
+            "pt": 0,
+            "pb": 6
+          },
+          "blocks": {}
+        },
+        "text_J8DhmV": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Combine an uploaded or external video with supporting content and an optional action in a responsive two-column layout.</p>",
+            "text_size": "fs-md",
+            "pt": 0,
+            "pb": 20
+          },
+          "blocks": {}
+        },
+        "group_QUxPxt": {
           "type": "group",
           "settings": {
+            "custom_colors": false,
+            "background_color": "{{ settings.colors.background }}",
+            "text_color": "{{ settings.colors.text }}",
+            "accent_color": "{{ settings.colors.accent }}",
             "mobile_content_direction": "column",
-            "mobile_gap": 10,
-            "desktop_content_direction": "column",
+            "mobile_gap": 8,
+            "desktop_content_direction": "row",
             "desktop_gap": 10,
             "pt": 0,
-            "pb": 0
+            "pb": 0,
+            "pl": 0,
+            "pr": 0
           },
           "blocks": {
-            "button_fML69b": {
+            "button_Ni9kf6": {
               "type": "button",
               "settings": {
-                "label": "Shop now",
-                "link": "shopify://collections/all",
+                "label": "Learn more",
+                "link": "",
                 "style": "btn-accent-solid",
                 "size": "btn-md"
               },
@@ -631,37 +999,252 @@
             }
           },
           "block_order": [
-            "button_fML69b"
+            "button_Ni9kf6"
           ]
         }
       },
       "block_order": [
-        "heading_Rh6XEx",
-        "video_UU8qJ7",
-        "text_376wFV",
-        "group_p638MX"
+        "subheading_VbpWiG",
+        "heading_zcAbcY",
+        "text_J8DhmV",
+        "group_QUxPxt"
       ],
-      "name": "Video",
+      "name": "Video with text",
       "settings": {
-        "background_color": "{{ settings.colors.text }}",
-        "text_color": "{{ settings.colors.background }}",
-        "accent_color": "#e4aaad",
+        "background_color": "{{ settings.colors.background }}",
+        "text_color": "{{ settings.colors.text }}",
+        "accent_color": "{{ settings.colors.accent }}",
+        "source": "uploaded",
+        "external_video": "",
+        "external_video_alt": "",
+        "autoplay": false,
+        "muted": false,
+        "loop": false,
+        "show_controls": true,
+        "mobile_video_position": "top",
         "mobile_text_alignment": "left",
+        "mobile_gap": 24,
+        "desktop_video_position": "left",
+        "desktop_text_alignment": "left",
+        "desktop_gap": 40,
+        "pt": 60,
+        "pb": 60
+      }
+    },
+    "columns_xVQnwK": {
+      "type": "columns",
+      "blocks": {
+        "group_UnRVfz": {
+          "type": "group",
+          "name": "Column 1",
+          "settings": {
+            "custom_colors": false,
+            "background_color": "{{ settings.colors.background }}",
+            "text_color": "{{ settings.colors.text }}",
+            "accent_color": "{{ settings.colors.accent }}",
+            "mobile_content_direction": "column",
+            "mobile_gap": 0,
+            "desktop_content_direction": "column",
+            "desktop_gap": 0,
+            "pt": 0,
+            "pb": 0,
+            "pl": 0,
+            "pr": 0
+          },
+          "blocks": {
+            "image_f7WyFx": {
+              "type": "image",
+              "name": "Image",
+              "settings": {
+                "image_ratio": "adapt",
+                "image_width": 800,
+                "pt": 0,
+                "pb": 0
+              },
+              "blocks": {}
+            },
+            "group_8XVNAF": {
+              "type": "group",
+              "name": "Group",
+              "settings": {
+                "custom_colors": false,
+                "background_color": "{{ settings.colors.background }}",
+                "text_color": "{{ settings.colors.text }}",
+                "accent_color": "{{ settings.colors.accent }}",
+                "mobile_content_direction": "column",
+                "mobile_gap": 10,
+                "desktop_content_direction": "column",
+                "desktop_gap": 10,
+                "pt": 18,
+                "pb": 16,
+                "pl": 16,
+                "pr": 16
+              },
+              "blocks": {
+                "heading_cWQ9j8": {
+                  "type": "heading",
+                  "name": "Heading",
+                  "settings": {
+                    "heading": "A thoughtful heading",
+                    "heading_tag": "3",
+                    "heading_size": "h4",
+                    "pt": 0,
+                    "pb": 0
+                  },
+                  "blocks": {}
+                },
+                "text_UamhKU": {
+                  "type": "text",
+                  "name": "Text",
+                  "settings": {
+                    "text": "<p>Share information about your brand with your customers. Share information about your brand with your customers.</p>",
+                    "text_size": "fs-md",
+                    "pt": 0,
+                    "pb": 0
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "heading_cWQ9j8",
+                "text_UamhKU"
+              ]
+            }
+          },
+          "block_order": [
+            "image_f7WyFx",
+            "group_8XVNAF"
+          ]
+        },
+        "group_chdhGG": {
+          "type": "group",
+          "name": "Column 2",
+          "settings": {
+            "custom_colors": true,
+            "background_color": "#E7CACC",
+            "text_color": "{{ settings.colors.text }}",
+            "accent_color": "{{ settings.colors.accent }}",
+            "mobile_content_direction": "column",
+            "mobile_gap": 0,
+            "desktop_content_direction": "column",
+            "desktop_gap": 0,
+            "pt": 0,
+            "pb": 0,
+            "pl": 0,
+            "pr": 0
+          },
+          "blocks": {
+            "heading_XPBJD8": {
+              "type": "heading",
+              "settings": {
+                "heading": "Quality first",
+                "heading_tag": "2",
+                "heading_size": "h4",
+                "pt": 0,
+                "pb": 6
+              },
+              "blocks": {}
+            },
+            "text_3GDKeJ": {
+              "type": "text",
+              "settings": {
+                "text": "<p>Carefully selected materials and close attention to every detail.</p>",
+                "text_size": "fs-md",
+                "pt": 0,
+                "pb": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "heading_XPBJD8",
+            "text_3GDKeJ"
+          ]
+        },
+        "group_mznWLa": {
+          "type": "group",
+          "name": "Column 3",
+          "settings": {
+            "custom_colors": false,
+            "background_color": "{{ settings.colors.background }}",
+            "text_color": "{{ settings.colors.text }}",
+            "accent_color": "{{ settings.colors.accent }}",
+            "mobile_content_direction": "column",
+            "mobile_gap": 0,
+            "desktop_content_direction": "column",
+            "desktop_gap": 0,
+            "pt": 0,
+            "pb": 0,
+            "pl": 0,
+            "pr": 0
+          },
+          "blocks": {
+            "heading_pL79Rr": {
+              "type": "heading",
+              "settings": {
+                "heading": "Customer care",
+                "heading_tag": "2",
+                "heading_size": "h4",
+                "pt": 0,
+                "pb": 6
+              },
+              "blocks": {}
+            },
+            "text_Tjm3YQ": {
+              "type": "text",
+              "settings": {
+                "text": "<p>Helpful support before, during, and after every purchase.</p>",
+                "text_size": "fs-md",
+                "pt": 0,
+                "pb": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "heading_pL79Rr",
+            "text_Tjm3YQ"
+          ]
+        }
+      },
+      "block_order": [
+        "group_UnRVfz",
+        "group_chdhGG",
+        "group_mznWLa"
+      ],
+      "name": "Columns",
+      "settings": {
+        "background_color": "{{ settings.colors.surface }}",
+        "column_background_color": "{{ settings.colors.background }}",
+        "text_color": "{{ settings.colors.text }}",
+        "accent_color": "{{ settings.colors.accent }}",
+        "mobile_columns": 1,
+        "mobile_scroll": true,
+        "mobile_text_alignment": "center",
+        "mobile_gap": 24,
+        "desktop_columns": 3,
         "desktop_text_alignment": "center",
+        "desktop_gap": 24,
         "pt": 60,
         "pb": 60
       }
     }
   },
   "order": [
-    "hero_p9akMr",
-    "image_fJijb8",
-    "divider_a8n9wx",
-    "video_w7eDqQ",
-    "image_with_text_9gQ6wU",
-    "divider_QwVDRb",
-    "custom_section_HTpRyc",
-    "rich_text_takpHV",
-    "video_hn3jRi"
+    "hero_epRUea",
+    "email_signup_bC6B3d",
+    "contact_form_jN7QXd",
+    "liquid_html_6ttYfG",
+    "image_4hw3MC",
+    "divider_mhqKLJ",
+    "video_DJLR97",
+    "image_with_text_CMaCke",
+    "custom_section_cVKwjJ",
+    "email_signup_qQHGQ8",
+    "faq_yDtf3p",
+    "rich_text_Yt7LTn",
+    "video_TetJLA",
+    "video_with_text_mUK9FU",
+    "columns_xVQnwK"
   ]
 }

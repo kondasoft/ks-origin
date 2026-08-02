@@ -106,7 +106,18 @@
         "menu_44FEe7",
         "text_qyraHm"
       ],
-      "settings": {}
+      "settings": {
+        "background_color": "{{ settings.colors.text }}",
+        "text_color": "{{ settings.colors.background }}",
+        "accent_color": "#eab2b5",
+        "show_copyright": true,
+        "show_policy_links": true,
+        "show_theme_credits": true,
+        "show_powered_by_shopify": true,
+        "enable_follow_on_shop": true,
+        "pt": 60,
+        "pb": 50
+      }
     }
   },
   "order": [

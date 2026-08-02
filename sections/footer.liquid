@@ -1,6 +1,11 @@
 {% liquid
+  assign load_footer_css = false
   assign show_follow_on_shop = false
   assign show_footer_bottom = false
+
+  if request.page_type == '404' or template.suffix == 'contact' or template.suffix == 'faq'
+    assign load_footer_css = true
+  endif
 
   if section.settings.enable_follow_on_shop and shop.features.follow_on_shop?
     assign show_follow_on_shop = true
@@ -16,6 +21,10 @@
 
   assign shop_name = shop.name | escape | split: '(' | first | strip
 %}
+
+{% if load_footer_css %}
+  <link href="{{ 'footer.css' | asset_url }}" rel="stylesheet" fetchpriority="high">
+{% endif %}
 
 <div
   class="footer"
