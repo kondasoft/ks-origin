@@ -332,7 +332,7 @@ input[type='radio'] {
   font: inherit;
   outline: 1px solid transparent;
   outline-offset: 0;
-  transition: border-color 200ms ease-out outline-color 200ms ease-out;
+  transition: border-color 200ms ease-out, outline-color 200ms ease-out;
 }
 
 .input:hover {
@@ -372,7 +372,7 @@ textarea.input {
   --alert-color: var(--color-accent);
   padding: 0.75em 1em;
   color: rgb(var(--alert-color));
-  background-color: rgb(var(--alert-color) / 0.1);
+  background-color: rgb(var(--color-site-background));
   border: 1px solid rgb(var(--alert-color));
   border-radius: var(--border-radius);
 }

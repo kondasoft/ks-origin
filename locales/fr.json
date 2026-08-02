@@ -58,6 +58,10 @@
       "success": "Merci pour votre inscription."
     }
   },
+  "payment": {
+    "methods": "Moyens de paiement",
+    "secure_options": "Payez en toute sécurité avec des moyens de paiement fiables"
+  },
   "footer": {
     "all_rights_reserved": "Tous droits réservés.",
     "designed_with": "Conçu avec",

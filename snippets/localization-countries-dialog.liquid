@@ -22,27 +22,29 @@
 
       <div class="dialog-body">
         <localization-country-filter>
-          <div class="localization-filter">
-            <input
-              class="localization-filter-input"
-              type="search"
-              placeholder="{{ 'general.localization.filter_countries' | t }}"
-              aria-label="{{ 'general.localization.filter_countries' | t }}"
-              aria-controls="localization-countries-list"
-              autocomplete="off"
-              data-localization-country-filter-input
-            >
-          </div>
+          {% if localization.available_countries.size > 5 %}
+            <div class="localization-filter">
+              <input
+                class="localization-filter-input input"
+                type="search"
+                placeholder="{{ 'general.localization.filter_countries' | t }}"
+                aria-label="{{ 'general.localization.filter_countries' | t }}"
+                aria-controls="localization-countries-list"
+                autocomplete="off"
+                data-localization-country-filter-input
+              >
+            </div>
 
-          <p
-            class="visually-hidden"
-            role="status"
-            aria-live="polite"
-            data-localization-country-filter-status
-            data-text-results-one="{{ 'general.localization.country_results.one' | t: count: '[count]' | escape }}"
-            data-text-results-other="{{ 'general.localization.country_results.other' | t: count: '[count]' | escape }}"
-            data-text-no-results="{{ 'general.localization.no_results' | t | escape }}"
-          ></p>
+            <p
+              class="visually-hidden"
+              role="status"
+              aria-live="polite"
+              data-localization-country-filter-status
+              data-text-results-one="{{ 'general.localization.country_results.one' | t: count: '[count]' | escape }}"
+              data-text-results-other="{{ 'general.localization.country_results.other' | t: count: '[count]' | escape }}"
+              data-text-no-results="{{ 'general.localization.no_results' | t | escape }}"
+            ></p>
+          {% endif %}
 
           <ul
             id="localization-countries-list"
@@ -74,9 +76,11 @@
             {% endfor %}
           </ul>
 
-          <p class="localization-filter-empty" hidden>
-            {{ 'general.localization.no_results' | t }}
-          </p>
+          {% if localization.available_countries.size > 5 %}
+            <p class="localization-filter-empty" hidden>
+              {{ 'general.localization.no_results' | t }}
+            </p>
+          {% endif %}
         </localization-country-filter>
       </div>
     </dialog>

@@ -308,26 +308,19 @@ class ThemeDialog extends HTMLElement {
     }
 
     this.listenerController = new AbortController();
-    this.triggers = Array.from(
-      document.querySelectorAll(`[data-toggle="${this.dialog.id}"]`),
-    );
+    this.triggers = [];
     this.onDialogClose = this.onDialogClose.bind(this);
     this.onDialogCancel = this.onDialogCancel.bind(this);
     this.onDialogClick = this.onDialogClick.bind(this);
     this.onDialogKeydown = this.onDialogKeydown.bind(this);
     this.onInternalClick = this.onInternalClick.bind(this);
+    this.onSectionLoad = this.onSectionLoad.bind(this);
 
-    this.triggers.forEach((trigger) => {
-      trigger.setAttribute("aria-controls", this.dialog.id);
-      trigger.setAttribute("aria-expanded", "false");
-      trigger.setAttribute("aria-haspopup", "dialog");
-      trigger.addEventListener(
-        "click",
-        this.onTriggerClick.bind(this, trigger),
-        { signal: this.listenerController.signal },
-      );
+    this.bindTriggers(document);
+
+    document.addEventListener("shopify:section:load", this.onSectionLoad, {
+      signal: this.listenerController.signal,
     });
-
     this.dialog.addEventListener("close", this.onDialogClose, {
       signal: this.listenerController.signal,
     });
@@ -344,6 +337,30 @@ class ThemeDialog extends HTMLElement {
       signal: this.listenerController.signal,
     });
     this.isInitialized = true;
+  }
+
+  bindTriggers(root) {
+    this.triggers = this.triggers.filter((trigger) => trigger.isConnected);
+
+    const selector = `[data-toggle="${this.dialog.id}"]`;
+
+    getMatchingElements(root, selector).forEach((trigger) => {
+      if (this.triggers.includes(trigger)) return;
+
+      trigger.setAttribute("aria-controls", this.dialog.id);
+      trigger.setAttribute("aria-expanded", "false");
+      trigger.setAttribute("aria-haspopup", "dialog");
+      trigger.addEventListener(
+        "click",
+        this.onTriggerClick.bind(this, trigger),
+        { signal: this.listenerController.signal },
+      );
+      this.triggers.push(trigger);
+    });
+  }
+
+  onSectionLoad(event) {
+    this.bindTriggers(event.target);
   }
 
   disconnectedCallback() {

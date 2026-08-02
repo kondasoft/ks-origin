@@ -73,6 +73,16 @@ let headerScrollFrame;
 
 function updateRevealHeaders() {
   const currentScrollY = window.scrollY;
+  const lockedScrollY = Number(
+    document.body.dataset.scrollLockTop || currentScrollY,
+  );
+
+  if (document.body.dataset.scrollLocked === "true") {
+    previousScrollY = lockedScrollY;
+    headerScrollFrame = null;
+    return;
+  }
+
   const isScrollingDown = currentScrollY > previousScrollY;
 
   document

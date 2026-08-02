@@ -58,6 +58,10 @@
       "success": "Thanks for signing up."
     }
   },
+  "payment": {
+    "methods": "Payment methods",
+    "secure_options": "Pay securely with trusted payment methods"
+  },
   "footer": {
     "all_rights_reserved": "All rights reserved.",
     "designed_with": "Designed with",

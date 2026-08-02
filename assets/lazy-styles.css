@@ -214,23 +214,6 @@
   background-color: rgb(var(--color-background));
 }
 
-.localization-filter-input {
-  box-sizing: border-box;
-  width: 100%;
-  padding: 0.75em 1em;
-  color: rgb(var(--color-text));
-  font: inherit;
-  background-color: rgb(var(--color-background));
-  border: 1px solid rgb(var(--color-text) / var(--border-opacity));
-  border-radius: var(--border-radius);
-  outline: 2px solid transparent;
-  outline-offset: 2px;
-}
-
-.localization-filter-input:focus-visible {
-  outline-color: currentcolor;
-}
-
 .localization-list {
   padding: 0;
   margin: 0;
@@ -258,11 +241,6 @@
 
 .localization-option.active {
   color: rgb(var(--color-accent));
-}
-
-.localization-option:focus-visible {
-  padding-right: 0.5em;
-  padding-left: 0.5em;
 }
 
 .localization-option-image {
@@ -296,6 +274,44 @@
   .localization-option {
     min-width: 300px;
   }
+}
+
+
+/*
+  Payment icons
+*/
+.payment-icons-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25em;
+  font-size: calc(1rem * var(--body-size-scale));
+}
+
+.payment-icons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.25rem;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.payment-icons li {
+  display: flex;
+}
+
+.payment-icons svg {
+  display: block;
+  width: auto;
+  height: var(--payment-icon-height);
+}
+
+.payment-icons-message {
+  margin: 0;
+  text-align: center;
+  color: rgb(var(--color-text) / 0.6);
 }
 
 
