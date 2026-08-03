@@ -20,11 +20,13 @@
     "search": "Search",
     "account": "Account",
     "cart": "Cart",
+    "breadcrumbs": "Breadcrumbs",
     "play_video": "Play video",
     "love": "love"
   },
   "general": {
     "account": "Account",
+    "home": "Home",
     "menu": "Menu",
     "localization": {
       "country": "Country",

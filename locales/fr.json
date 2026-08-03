@@ -20,11 +20,13 @@
     "search": "Rechercher",
     "account": "Compte",
     "cart": "Panier",
+    "breadcrumbs": "Fil d’Ariane",
     "play_video": "Lire la vidéo",
     "love": "amour"
   },
   "general": {
     "account": "Compte",
+    "home": "Accueil",
     "menu": "Menu",
     "localization": {
       "country": "Pays",

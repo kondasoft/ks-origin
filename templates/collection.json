@@ -1,0 +1,33 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-collection",
+      "settings": {
+        "background_color": "{{ settings.colors.background }}",
+        "text_color": "{{ settings.colors.text }}",
+        "accent_color": "{{ settings.colors.accent }}",
+        "heading_size": "h1",
+        "show_description": true,
+        "description_size": "fs-md",
+        "show_image": true,
+        "image_ratio": "widescreen",
+        "mobile_text_alignment": "left",
+        "desktop_text_alignment": "left",
+        "show_breadcrumbs": true,
+        "desktop_image_width": "half",
+        "pt": 40,
+        "pb": 60
+      }
+    }
+  },
+  "order": ["main"]
+}

@@ -18,6 +18,7 @@
           "type": "menu",
           "settings": {
             "heading": "Handbags",
+            "heading_size": "fs-xl",
             "link_1_label": "Handbags",
             "link_1_url": "https://ks-origin-demo.kondasoft.com/collections/men",
             "link_2_label": "Tote Bags",
@@ -44,6 +45,7 @@
           "type": "menu",
           "settings": {
             "heading": "Crossbody Bags",
+            "heading_size": "fs-xl",
             "link_1_label": "Mini Crossbody",
             "link_1_url": "https://ks-origin-demo.kondasoft.com/collections/crossbody-bags/mini-crossbody",
             "link_2_label": "Chain Bags",
@@ -70,6 +72,7 @@
           "type": "menu",
           "settings": {
             "heading": "Company",
+            "heading_size": "fs-xl",
             "link_1_label": "About",
             "link_1_url": "https://ks-origin-demo.kondasoft.com/pages/about-us",
             "link_2_label": "Contact",
@@ -94,9 +97,31 @@
         },
         "text_qyraHm": {
           "type": "text",
+          "disabled": true,
           "settings": {
             "heading": "About",
-            "text": "<p>Share information about your brand with your customers.</p>"
+            "heading_size": "fs-xl",
+            "text": "<p>Share information about your brand with your customers.</p>",
+            "text_size": "fs-md",
+            "button_1_label": "Learn more",
+            "button_1_link": "",
+            "button_1_style": "btn-accent-solid",
+            "button_1_size": "btn-sm",
+            "button_2_label": "Buy theme",
+            "button_2_link": "",
+            "button_2_style": "btn-text-solid",
+            "button_2_size": "btn-sm"
+          }
+        },
+        "newsletter_LGJp9E": {
+          "type": "newsletter",
+          "settings": {
+            "heading": "Join our newsletter",
+            "heading_size": "fs-xl",
+            "text": "<p>Sign up for new arrivals, special offers, and updates.</p>",
+            "text_size": "fs-md",
+            "button_style": "btn-accent-solid",
+            "button_size": "btn-sm"
           }
         }
       },
@@ -104,12 +129,17 @@
         "menu_mc8rAw",
         "menu_n6HqK8",
         "menu_44FEe7",
-        "text_qyraHm"
+        "text_qyraHm",
+        "newsletter_LGJp9E"
       ],
       "settings": {
         "background_color": "{{ settings.colors.text }}",
         "text_color": "{{ settings.colors.background }}",
         "accent_color": "#eab2b5",
+        "show_social_links": true,
+        "show_country_selector": true,
+        "show_language_selector": true,
+        "show_payment_icons": true,
         "show_copyright": true,
         "show_policy_links": true,
         "show_theme_credits": true,

@@ -1,0 +1,101 @@
+/*
+  Main collection stylesheet
+
+  This file contains the collection header layout for its title, description, and image.
+*/
+
+
+/*
+  Collection header
+*/
+.main-collection {
+  color: rgb(var(--color-text));
+  background-color: rgb(var(--color-background));
+}
+
+.main-collection-header {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.main-collection-header-content {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.main-collection-title {
+  margin: 0;
+}
+
+.main-collection-description {
+  width: 100%;
+  max-width: 720px;
+}
+
+.main-collection .breadcrumb-list {
+  justify-content: var(--mobile-text-alignment);
+}
+
+.main-collection[data-mobile-text-alignment="center"]
+  .main-collection-description {
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.main-collection[data-mobile-text-alignment="right"]
+  .main-collection-description {
+  margin-left: auto;
+}
+
+.main-collection-image {
+  width: 100%;
+  border-radius: var(--border-radius);
+}
+
+@media (min-width: 1200px) {
+  .main-collection .breadcrumb-list {
+    justify-content: var(--desktop-text-alignment);
+  }
+
+  .main-collection-header-with-image {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: center;
+    gap: 3rem;
+  }
+
+  .main-collection-header-with-image[data-desktop-image-width="one-third"] {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  }
+
+  .main-collection-header-content {
+    gap: 0.75rem;
+  }
+
+  .main-collection-header-with-image .main-collection-header-content {
+    grid-row: 1;
+    grid-column: 1;
+  }
+
+  .main-collection-header-with-image .main-collection-image {
+    grid-row: 1;
+    grid-column: 2;
+  }
+
+  .main-collection[data-desktop-text-alignment="left"]
+    .main-collection-description {
+    margin-right: 0;
+    margin-left: 0;
+  }
+
+  .main-collection[data-desktop-text-alignment="center"]
+    .main-collection-description {
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  .main-collection[data-desktop-text-alignment="right"]
+    .main-collection-description {
+    margin-right: 0;
+    margin-left: auto;
+  }
+}

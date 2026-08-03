@@ -1,8 +1,7 @@
 /*
   Lazy-loaded components stylesheet
 
-  This file loads after base.css and critical.css and contains non-critical components and interactions.
-  Keep global foundations in base.css and immediately visible component layout in critical.css.
+  This file contains deferred styles for non-critical components and interactions.
 */
 
 

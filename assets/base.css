@@ -1,8 +1,7 @@
 /*
   Base stylesheet
 
-  This file loads first and contains global foundations, element defaults, shared controls, and utilities.
-  Keep above-the-fold component layout in critical.css and deferred presentation in lazy-styles.css.
+  This file contains global foundations, element defaults, shared components, and utilities.
 */
 
 
@@ -132,6 +131,44 @@ a.active {
 a:focus-visible {
   outline-color: currentcolor;
   text-decoration: none;
+}
+
+
+/*
+  Breadcrumb
+*/
+.breadcrumb {
+  font-size: var(--fs-sm);
+}
+
+.breadcrumb-list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.breadcrumb-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
+.breadcrumb-item:not(:last-child)::after {
+  content: "/";
+  opacity: 0.5;
+}
+
+.breadcrumb-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.breadcrumb-link:hover {
+  text-decoration: underline;
 }
 
 

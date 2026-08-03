@@ -1,8 +1,7 @@
 /*
   Critical stylesheet
 
-  This file contains critical page-shell and immediately visible component styles.
-  Keep global foundations in base.css and deferred interactions in lazy-styles.css.
+  This file contains page-shell and above-the-fold component styles needed for the initial render.
 */
 
 

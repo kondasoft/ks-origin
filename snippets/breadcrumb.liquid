@@ -1,0 +1,78 @@
+{% doc %}
+Renders a simple breadcrumb trail and matching structured data for the current page.
+
+@param {string} current_title - The current page title.
+@param {string} [parent_title] - An optional parent page title.
+@param {string} [parent_url] - The optional parent page URL.
+
+@example
+{% render 'breadcrumb', current_title: collection.title %}
+{% enddoc %}
+
+{% if current_title != blank %}
+  {% liquid
+    assign breadcrumb_home_name = 'general.home' | t
+    assign breadcrumb_home_url = request.origin | append: routes.root_url
+    assign breadcrumb_current_position = 2
+    assign breadcrumb_parent_url = parent_url
+
+    if parent_title != blank and parent_url != blank
+      assign breadcrumb_current_position = 3
+
+      unless parent_url contains '://'
+        assign breadcrumb_parent_url = request.origin | append: parent_url
+      endunless
+    endif
+  %}
+
+  <nav class="breadcrumb" aria-label="{{ 'accessibility.breadcrumbs' | t }}">
+    <ol class="breadcrumb-list">
+      <li class="breadcrumb-item">
+        <a class="breadcrumb-link" href="{{ routes.root_url }}">
+          {{ 'general.home' | t }}
+        </a>
+      </li>
+
+      {% if parent_title != blank and parent_url != blank %}
+        <li class="breadcrumb-item">
+          <a class="breadcrumb-link" href="{{ parent_url | escape }}">
+            {{ parent_title | escape }}
+          </a>
+        </li>
+      {% endif %}
+
+      <li class="breadcrumb-item" aria-current="page">
+        {{ current_title | escape }}
+      </li>
+    </ol>
+  </nav>
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": {{ breadcrumb_home_name | json }},
+          "item": {{ breadcrumb_home_url | json }}
+        },
+        {% if parent_title != blank and parent_url != blank %}
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": {{ parent_title | json }},
+            "item": {{ breadcrumb_parent_url | json }}
+          },
+        {% endif %}
+        {
+          "@type": "ListItem",
+          "position": {{ breadcrumb_current_position }},
+          "name": {{ current_title | json }},
+          "item": {{ canonical_url | json }}
+        }
+      ]
+    }
+  </script>
+{% endif %}
