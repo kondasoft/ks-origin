@@ -20,6 +20,7 @@
 
 .main-collection-header-content {
   display: grid;
+  min-width: 0;
   gap: 0.5rem;
 }
 

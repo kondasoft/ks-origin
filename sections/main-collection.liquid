@@ -37,10 +37,10 @@
     >
       {% if section.settings.show_image and collection.image != blank %}
         {{ collection.image
-          | image_url: width: 2000
+          | image_url: width: 2400
           | image_tag:
             class: collection_image_class,
-            widths: '320, 640, 960, 1280, 1600, 2000',
+            widths: '320, 640, 960, 1280, 1600, 2000, 2400',
             sizes: collection_image_sizes,
             loading: 'eager',
             fetchpriority: 'high'
@@ -101,7 +101,8 @@
       "type": "checkbox",
       "id": "show_image",
       "label": "Show collection image",
-      "default": true
+      "default": true,
+      "info": "Uses the image assigned to this collection."
     },
     {
       "type": "select",
@@ -113,7 +114,7 @@
         { "group": "Horizontal", "value": "landscape", "label": "Landscape (4:3)" },
         { "group": "Horizontal", "value": "widescreen", "label": "Widescreen (16:9)" }
       ],
-      "default": "adapt",
+      "default": "widescreen",
       "visible_if": "{{ section.settings.show_image == true }}"
     },
     {
@@ -161,7 +162,8 @@
         { "value": "h5", "label": "H5" },
         { "value": "h6", "label": "H6" }
       ],
-      "default": "h1"
+      "default": "h1",
+      "info": "Changes the visual size only. The HTML heading remains H1."
     },
     {
       "type": "checkbox",
