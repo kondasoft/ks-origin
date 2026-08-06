@@ -617,13 +617,13 @@ textarea.input {
 /*
   Collapses
 */
-theme-collapse {
+.theme-collapse {
   display: block;
   border-top: 1px solid rgb(var(--color-text) / var(--border-opacity));
   border-bottom: 1px solid rgb(var(--color-text) / var(--border-opacity));
 }
 
-theme-collapse + theme-collapse {
+.theme-collapse + .theme-collapse {
   border-top: 0;
 }
 

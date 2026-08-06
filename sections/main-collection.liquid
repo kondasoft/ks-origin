@@ -13,7 +13,7 @@
   assign prouducts_per_page = section.settings.products_per_page | default: 24
 
   if shop.permanent_domain contains 'ks-'
-    assign prouducts_per_page = 8
+    assign prouducts_per_page = 12
   endif
 
   assign pagination_previous = 'general.pagination.previous' | t
@@ -107,6 +107,7 @@
       class="main-collection-product-grid"
       data-collection-product-grid
       data-product-count-text="{{ 'collections.products_count' | t: count: collection.products_count | escape }}"
+      tabindex="-1"
     >
       {% if section.settings.show_product_count or show_collection_filters or section.settings.show_sort %}
         <div class="collection-utilities">
@@ -304,7 +305,7 @@
                     endcase
                   %}
 
-                  <theme-collapse class="collection-filter">
+                  <theme-collapse class="theme-collapse collection-filter">
                     <details class="theme-collapse-details" open>
                       <summary class="theme-collapse-summary">
                         <span>
@@ -474,7 +475,7 @@
     },
     {
       "type": "header",
-      "content": "Header image"
+      "content": "Header"
     },
     {
       "type": "checkbox",
@@ -506,10 +507,6 @@
       ],
       "default": "half",
       "visible_if": "{{ section.settings.show_image == true }}"
-    },
-    {
-      "type": "header",
-      "content": "Header content"
     },
     {
       "type": "text_alignment",
@@ -578,6 +575,7 @@
       "type": "checkbox",
       "id": "show_filters",
       "label": "Show filters",
+      "info": "Manage available filters with Shopify's [Search & Discovery app](https://apps.shopify.com/search-and-discovery).",
       "default": true
     },
     {

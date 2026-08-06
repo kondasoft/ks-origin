@@ -14,6 +14,9 @@ class CollectionView extends HTMLElement {
     window.addEventListener("popstate", this.onPopState.bind(this), {
       signal: this.listenerController.signal,
     });
+    this.addEventListener("click", this.onClick.bind(this), {
+      signal: this.listenerController.signal,
+    });
     this.isInitialized = true;
   }
 
@@ -28,7 +31,35 @@ class CollectionView extends HTMLElement {
     this.update(new URL(window.location.href), { updateHistory: false });
   }
 
-  async update(url, { updateHistory = true } = {}) {
+  onClick(event) {
+    const paginationLink = event.target.closest(".pagination a");
+
+    if (
+      !paginationLink ||
+      event.defaultPrevented ||
+      event.button !== 0 ||
+      event.metaKey ||
+      event.ctrlKey ||
+      event.shiftKey ||
+      event.altKey ||
+      paginationLink.target === "_blank" ||
+      paginationLink.hasAttribute("download")
+    ) {
+      return;
+    }
+
+    event.preventDefault();
+    this.update(new URL(paginationLink.href), { focusProductGrid: true });
+  }
+
+  async update(
+    url,
+    {
+      focusProductGrid = false,
+      scrollToProductGrid = true,
+      updateHistory = true,
+    } = {},
+  ) {
     const navigationUrl = new URL(url, window.location.origin);
     const requestUrl = new URL(navigationUrl);
     const currentProductGrid = this.querySelector(
@@ -78,6 +109,11 @@ class CollectionView extends HTMLElement {
       }
 
       this.announceProductCount();
+
+      if (scrollToProductGrid) {
+        this.scrollToProductGrid({ focus: focusProductGrid });
+      }
+
       return true;
     } catch (error) {
       if (error.name === "AbortError") return false;
@@ -184,6 +220,48 @@ class CollectionView extends HTMLElement {
       status.textContent = productGrid.dataset.productCountText;
     }, 100);
   }
+
+  scrollToProductGrid({ focus = false } = {}) {
+    const productGrid = this.querySelector("[data-collection-product-grid]");
+
+    if (!productGrid) return;
+
+    const headerGroup = document.querySelector("#header-group");
+    const headerBehavior = headerGroup?.dataset.headerBehavior;
+    const isPageScrollLocked =
+      document.body.dataset.scrollLocked === "true";
+    const currentScrollY = isPageScrollLocked
+      ? Number(document.body.dataset.scrollLockTop || 0)
+      : window.scrollY;
+    const productGridTop =
+      productGrid.getBoundingClientRect().top + currentScrollY;
+    const isScrollingUp = productGridTop < currentScrollY;
+    const shouldOffsetHeader =
+      headerBehavior === "sticky" ||
+      (headerBehavior === "reveal" && isScrollingUp);
+    const headerOffset = shouldOffsetHeader ? headerGroup.offsetHeight : 0;
+    const scrollMarginTop = Number.parseFloat(
+      window.getComputedStyle(productGrid).scrollMarginTop,
+    );
+    const targetScrollY = Math.max(
+      productGridTop - headerOffset - (scrollMarginTop || 0),
+      0,
+    );
+
+    if (isPageScrollLocked) {
+      document.body.dataset.scrollLockTop = String(targetScrollY);
+      document.body.style.top = `-${targetScrollY}px`;
+    } else {
+      window.scrollTo({
+        top: targetScrollY,
+        behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+          ? "auto"
+          : "smooth",
+      });
+    }
+
+    if (focus) productGrid.focus({ preventScroll: true });
+  }
 }
 
 if (!customElements.get("collection-view")) {
@@ -287,13 +365,33 @@ class CollectionFilters extends HTMLElement {
     }
 
     if (url.toString() === window.location.href) {
-      if (closeDialog) dialog?.requestClose?.();
+      if (closeDialog) this.closeDialogAndScroll(dialog, view);
       return;
     }
 
     const updated = await view.update(url);
 
-    if (updated && closeDialog) dialog?.requestClose?.();
+    if (updated && closeDialog) {
+      if (dialog?.dialog?.open) {
+        dialog.requestClose?.();
+      } else {
+        view.scrollToProductGrid();
+      }
+    }
+  }
+
+  closeDialogAndScroll(dialog, view) {
+    if (!dialog?.dialog?.open) {
+      view.scrollToProductGrid();
+      return;
+    }
+
+    dialog.dialog.addEventListener(
+      "close",
+      () => view.scrollToProductGrid(),
+      { once: true },
+    );
+    dialog.requestClose?.();
   }
 }
 
