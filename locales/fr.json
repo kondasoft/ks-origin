@@ -29,6 +29,10 @@
     "account": "Compte",
     "home": "Accueil",
     "menu": "Menu",
+    "pagination": {
+      "previous": "Précédent",
+      "next": "Suivant"
+    },
     "localization": {
       "country": "Pays",
       "countries": "Pays",

@@ -417,6 +417,12 @@
   color: rgb(var(--color-text) / 0.6);
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .pagination a {
+    transition: none;
+  }
+}
+
 
 /*
   Mobile menu

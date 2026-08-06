@@ -15,6 +15,9 @@
   if shop.permanent_domain contains 'ks-'
     assign prouducts_per_page = 8
   endif
+
+  assign pagination_previous = 'general.pagination.previous' | t
+  assign pagination_next = 'general.pagination.next' | t
 %}
 
 {% if section.index <= 3 or request.design_mode %}
@@ -88,7 +91,11 @@
 
           {% if paginate.pages > 1 %}
             <nav class="pagination" aria-label="{{ 'accessibility.pagination' | t }}">
-              {{ paginate | default_pagination }}
+              {{ paginate
+                | default_pagination:
+                  previous: pagination_previous,
+                  next: pagination_next
+              }}
             </nav>
           {% endif %}
         {% else %}

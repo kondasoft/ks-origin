@@ -29,6 +29,10 @@
     "account": "Account",
     "home": "Home",
     "menu": "Menu",
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next"
+    },
     "localization": {
       "country": "Country",
       "countries": "Countries",
