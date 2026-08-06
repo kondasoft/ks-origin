@@ -1,0 +1,67 @@
+{% liquid
+  assign product = closest.product
+  assign product_image_alt = product.featured_image.alt | default: product.title
+  assign product_image_class = 'product-card-image'
+
+  unless block.settings.image_ratio == 'adapt'
+    assign product_image_class = product_image_class | append: ' aspect-ratio aspect-ratio-' | append: block.settings.image_ratio
+  endunless
+
+  assign product_image_placeholder_class = product_image_class | append: ' placeholder-svg'
+%}
+
+<div class="product-card-image-block" {{ block.shopify_attributes }}>
+  {% if product.featured_image != blank %}
+    {{ product.featured_image
+      | image_url: width: 2400
+      | image_tag:
+        alt: product_image_alt,
+        class: product_image_class,
+        widths: '320, 640, 960, 1280, 1600, 2000, 2400',
+        sizes: 'auto, 100vw',
+        loading: 'lazy'
+    }}
+  {% else %}
+    {{ 'product-apparel-1' | placeholder_svg_tag: product_image_placeholder_class }}
+  {% endif %}
+
+  {% if product != blank and product.available == false %}
+    <span class="badge product-card-badge">
+      {{ 'products.badges.sold_out' | t }}
+    </span>
+  {% elsif product.compare_at_price > product.price %}
+    <span class="badge product-card-badge">
+      {{ 'products.badges.sale' | t }}
+    </span>
+  {% endif %}
+
+</div>
+
+{% schema %}
+{
+  "name": "Product image",
+  "tag": null,
+  "settings": [
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "Aspect ratio",
+      "options": [
+        { "group": "Adapt", "value": "adapt", "label": "Adapt to image" },
+        { "group": "Square", "value": "square", "label": "Square (1:1)" },
+        { "group": "Horizontal", "value": "landscape", "label": "Landscape (4:3)" },
+        { "group": "Horizontal", "value": "widescreen", "label": "Widescreen (16:9)" },
+        { "group": "Vertical", "value": "portrait", "label": "Portrait (3:4)" },
+        { "group": "Vertical", "value": "vertical", "label": "Vertical (9:16)" }
+      ],
+      "default": "square"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product image",
+      "category": "Product"
+    }
+  ]
+}
+{% endschema %}

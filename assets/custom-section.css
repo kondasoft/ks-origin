@@ -4,10 +4,6 @@
   This file contains the layout and presentation styles for the Custom section.
 */
 
-
-/*
-  Custom section
-*/
 .custom-section {
   color: rgb(var(--color-text));
   text-align: var(--mobile-text-alignment);

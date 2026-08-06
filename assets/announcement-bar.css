@@ -5,9 +5,6 @@
 */
 
 
-/*
-  Announcement bar
-*/
 .announcement-bar {
   color: rgb(var(--text-color));
   font-size: var(--fs-mobile);

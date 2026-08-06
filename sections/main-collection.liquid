@@ -9,26 +9,37 @@
   if section.settings.desktop_image_width == 'one-third'
     assign collection_image_sizes = '(min-width: 1200px) 33vw, 100vw'
   endif
+
+  assign prouducts_per_page = section.settings.products_per_page | default: 24
+
+  if shop.permanent_domain contains 'ks-'
+    assign prouducts_per_page = 8
+  endif
 %}
 
 {% if section.index <= 3 or request.design_mode %}
   <link href="{{ 'main-collection.css' | asset_url }}" rel="stylesheet" fetchpriority="high">
+  <link href="{{ 'product-card.css' | asset_url }}" rel="stylesheet" fetchpriority="high">
 {% endif %}
 
 <div
   class="main-collection responsive-text-alignment section-spacing"
   data-mobile-text-alignment="{{ section.settings.mobile_text_alignment }}"
   data-desktop-text-alignment="{{ section.settings.desktop_text_alignment }}"
+  data-has-image="{% if section.settings.show_image and collection.image != blank %}true{% else %}false{% endif %}"
   style="
     --color-background: {{ section.settings.background_color.red }} {{ section.settings.background_color.green }} {{ section.settings.background_color.blue }};
     --color-text: {{ section.settings.text_color.red }} {{ section.settings.text_color.green }} {{ section.settings.text_color.blue }};
     --color-accent: {{ section.settings.accent_color.red }} {{ section.settings.accent_color.green }} {{ section.settings.accent_color.blue }};
     --mobile-text-alignment: {{ section.settings.mobile_text_alignment }};
     --desktop-text-alignment: {{ section.settings.desktop_text_alignment }};
+    --mobile-columns: {{ section.settings.mobile_columns }};
+    --tablet-columns: 2;
+    --desktop-columns: {{ section.settings.desktop_columns }};
     --pt: {{ section.settings.pt | divided_by: 16.0 | append: 'em' }};
     --pb: {{ section.settings.pb | divided_by: 16.0 | append: 'em' }};
   "
-  data-section-css="{{ 'main-collection.css' | asset_url }}"
+  data-section-css="{{ 'main-collection.css' | asset_url }}, {{ 'product-card.css' | asset_url }}"
 >
   <div class="container {{ settings.container_width }}">
     <header
@@ -63,6 +74,30 @@
         {% endif %}
       </div>
     </header>
+
+    <div class="main-collection-product-grid">
+      {% paginate collection.products by prouducts_per_page %}
+        {% if collection.products.size > 0 %}
+          <ul class="product-grid" role="list">
+            {% for product in collection.products %}
+              <li class="product-grid-item">
+                {% content_for 'block', type: 'product-card', id: 'product-card', closest.product: product %}
+              </li>
+            {% endfor %}
+          </ul>
+
+          {% if paginate.pages > 1 %}
+            <nav class="pagination" aria-label="{{ 'accessibility.pagination' | t }}">
+              {{ paginate | default_pagination }}
+            </nav>
+          {% endif %}
+        {% else %}
+          <p class="product-grid-empty">
+            {{ 'collections.empty' | t }}
+          </p>
+        {% endif %}
+      {% endpaginate %}
+    </div>
   </div>
 </div>
 
@@ -184,6 +219,38 @@
       ],
       "default": "fs-md",
       "visible_if": "{{ section.settings.show_description == true }}"
+    },
+    {
+      "type": "header",
+      "content": "Product grid"
+    },
+    {
+      "type": "range",
+      "id": "mobile_columns",
+      "label": "Mobile columns",
+      "info": "Tablet layouts always use two columns.",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "desktop_columns",
+      "label": "Desktop columns",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "label": "Products per page",
+      "min": 8,
+      "max": 48,
+      "step": 4,
+      "default": 24
     },
     {
       "type": "header",

@@ -4,10 +4,6 @@
   This file contains the layout and presentation styles for the Video with text section.
 */
 
-
-/*
-  Video with text
-*/
 .video-with-text {
   color: rgb(var(--color-text));
   background-color: rgb(var(--color-background));

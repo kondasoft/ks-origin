@@ -18,11 +18,18 @@
     "social_pinterest": "",
     "social_snapchat": "",
     "content_for_index": [],
+    "blocks": {
+      "11532412952436166569": {
+        "type": "shopify://apps/loox-reviews/blocks/loox-inject/5c3b337f-fd14-4df5-b1d6-80ec13e6e28e",
+        "disabled": false,
+        "settings": {}
+      }
+    },
     "colors": {
       "background": "#ffffff",
       "text": "#0a0a0a",
       "surface": "#ebebec",
-      "accent": "#C10008"
+      "accent": "#2563EB"
     }
   }
 }

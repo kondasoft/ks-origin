@@ -135,7 +135,7 @@
       "settings": {
         "background_color": "{{ settings.colors.text }}",
         "text_color": "{{ settings.colors.background }}",
-        "accent_color": "#eab2b5",
+        "accent_color": "#60A5FA",
         "show_social_links": true,
         "show_country_selector": true,
         "show_language_selector": true,

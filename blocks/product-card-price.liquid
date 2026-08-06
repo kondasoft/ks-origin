@@ -1,0 +1,46 @@
+{% assign product = closest.product %}
+
+<div class="product-card-price-block" {{ block.shopify_attributes }}>
+  <p class="product-card-price {{ block.settings.price_size }}">
+    {% if product == blank %}
+      <span class="visually-hidden">{{ 'products.price.regular_price' | t }}</span>
+      <span class="product-card-price-current">{{ 1999 | money }}</span>
+    {% elsif product.compare_at_price > product.price %}
+      <span class="visually-hidden">{{ 'products.price.sale_price' | t }}</span>
+      <span class="product-card-price-current product-card-price-sale">{{ product.price | money }}</span>
+      <span class="visually-hidden">{{ 'products.price.regular_price' | t }}</span>
+      <s class="product-card-price-compare">{{ product.compare_at_price | money }}</s>
+    {% else %}
+      <span class="visually-hidden">{{ 'products.price.regular_price' | t }}</span>
+      <span class="product-card-price-current">{{ product.price | money }}</span>
+    {% endif %}
+  </p>
+</div>
+
+{% schema %}
+{
+  "name": "Product price",
+  "tag": null,
+  "settings": [
+    {
+      "type": "select",
+      "id": "price_size",
+      "label": "Price size",
+      "options": [
+        { "value": "fs-xs", "label": "Extra small" },
+        { "value": "fs-sm", "label": "Small" },
+        { "value": "fs-md", "label": "Medium" },
+        { "value": "fs-lg", "label": "Large" },
+        { "value": "fs-xl", "label": "Extra large" }
+      ],
+      "default": "fs-md"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product price",
+      "category": "Product"
+    }
+  ]
+}
+{% endschema %}

@@ -65,6 +65,7 @@
     Keep component-specific styles in their respective component stylesheets.
   */
   ```
+- Keep file-purpose comments durable and complete. Describe the file's overall responsibility and ownership boundary; do not list only the elements or features currently implemented, because that wording becomes incomplete as the file grows.
 - Use kebab-case CSS class and ID names such as `some-css-class`, not `some__css__class` or `someCssClass`.
 - Do not group CSS selectors, even when they share declarations. Give each selector its own rule so component styles remain independent.
 - Organize CSS into clearly labeled logical groups using multiline comments in this format:

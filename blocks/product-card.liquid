@@ -1,0 +1,55 @@
+{% doc %}
+Renders the ordered inner blocks shared by every product card in a product grid.
+
+@example
+{% content_for 'block', type: 'product-card', id: 'product-card', closest.product: product %}
+{% enddoc %}
+
+<article
+  class="product-card"
+  data-text-alignment="{{ block.settings.text_alignment }}"
+  {{ block.shopify_attributes }}
+>
+  {% content_for 'blocks', closest.product: closest.product %}
+</article>
+
+{% schema %}
+{
+  "name": "Product card",
+  "tag": null,
+  "settings": [
+    {
+      "type": "text_alignment",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "default": "left"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product-card-image"
+    },
+    {
+      "type": "product-card-title"
+    },
+    {
+      "type": "product-card-price"
+    },
+    {
+      "type": "product-vendor"
+    },
+    {
+      "type": "product-sku"
+    },
+    {
+      "type": "product-rating"
+    },
+    {
+      "type": "product-card-form"
+    },
+    {
+      "type": "@app"
+    }
+  ]
+}
+{% endschema %}

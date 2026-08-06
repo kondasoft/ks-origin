@@ -1,0 +1,44 @@
+{% liquid
+  assign product = closest.product
+  assign sku = product.selected_or_first_available_variant.sku
+
+  if product == blank
+    assign sku = 'products.placeholders.sku' | t
+  endif
+%}
+
+{% if sku != blank %}
+  <div class="product-sku-block" {{ block.shopify_attributes }}>
+    <p class="product-sku {{ block.settings.text_size }}">
+      {{ 'products.sku' | t: sku: sku }}
+    </p>
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Product SKU",
+  "tag": null,
+  "settings": [
+    {
+      "type": "select",
+      "id": "text_size",
+      "label": "Text size",
+      "options": [
+        { "value": "fs-xs", "label": "Extra small" },
+        { "value": "fs-sm", "label": "Small" },
+        { "value": "fs-md", "label": "Medium" },
+        { "value": "fs-lg", "label": "Large" },
+        { "value": "fs-xl", "label": "Extra large" }
+      ],
+      "default": "fs-sm"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product SKU",
+      "category": "Product"
+    }
+  ]
+}
+{% endschema %}

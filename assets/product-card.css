@@ -1,0 +1,130 @@
+/*
+  Product card stylesheet
+
+  This file owns the reusable layout and presentation styles for product cards and their inner content blocks.
+*/
+
+
+.product-card {
+  position: relative;
+  display: grid;
+  min-width: 0;
+  gap: 0.5rem;
+  text-align: left;
+}
+
+.product-card[data-text-alignment="center"] {
+  text-align: center;
+}
+
+.product-card[data-text-alignment="right"] {
+  text-align: right;
+}
+
+.product-card .product-rating {
+  justify-self: start;
+}
+
+.product-card[data-text-alignment="center"] .product-rating {
+  justify-self: center;
+}
+
+.product-card[data-text-alignment="right"] .product-rating {
+  justify-self: end;
+}
+
+.product-card[data-text-alignment="center"] .product-card-price {
+  justify-content: center;
+}
+
+.product-card[data-text-alignment="right"] .product-card-price {
+  justify-content: flex-end;
+}
+
+.product-card-image-block {
+  position: relative;
+  margin-bottom: 0.25rem;
+}
+
+.product-card-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--border-radius);
+  transition: opacity 0.2s ease-out;
+}
+
+.product-card:has(.product-card-title-link:hover) .product-card-image {
+  opacity: 0.85;
+}
+
+.product-card-badge {
+  position: absolute;
+  top: 0.75em;
+  right: 0.75em;
+}
+
+.product-card-title {
+  margin: 0;
+}
+
+.product-card-title[data-font-family="body"] {
+  font-family: var(--font-body-family);
+  font-style: var(--font-body-style);
+  font-weight: var(--font-body-weight);
+}
+
+.product-card-title-link {
+  text-decoration: none;
+}
+
+.product-card-title-link::after {
+  position: absolute;
+  inset: 0;
+  content: '';
+  border-radius: var(--border-radius);
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+.product-card-title-link:hover {
+}
+
+.product-card-title-link:focus-visible {
+  outline-color: transparent;
+}
+
+.product-card-title-link:focus-visible::after {
+  outline-color: currentcolor;
+}
+
+.product-card-price {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5em;
+  margin: 0;
+  line-height: normal;
+}
+
+.product-card-price-sale {
+  color: rgb(var(--color-accent));
+}
+
+.product-card-price-compare {
+  color: rgb(var(--color-text) / 0.6);
+}
+
+.product-card-form-block {
+  position: relative;
+  z-index: 1;
+  margin: 0.25rem 0 0;
+}
+
+.product-card-form-block .btn {
+  width: 100%;
+}
+
+.product-card-form-link-block {
+  pointer-events: none;
+}

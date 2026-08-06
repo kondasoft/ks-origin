@@ -21,6 +21,7 @@
     "account": "Compte",
     "cart": "Panier",
     "breadcrumbs": "Fil d’Ariane",
+    "pagination": "Pagination",
     "play_video": "Lire la vidéo",
     "love": "amour"
   },
@@ -68,6 +69,37 @@
     "all_rights_reserved": "Tous droits réservés.",
     "designed_with": "Conçu avec",
     "by": "par"
+  },
+  "collections": {
+    "empty": "Aucun produit trouvé."
+  },
+  "products": {
+    "sku": "UGS : {{ sku }}",
+    "placeholders": {
+      "title": "Exemple de titre de produit",
+      "vendor": "Exemple de fournisseur",
+      "sku": "DEMO-001"
+    },
+    "badges": {
+      "sale": "Promotion",
+      "sold_out": "Épuisé"
+    },
+    "rating": {
+      "value": "Noté {{ rating }} sur {{ scale_max }}",
+      "reviews": {
+        "one": "{{ count }} avis",
+        "other": "{{ count }} avis"
+      }
+    },
+    "price": {
+      "regular_price": "Prix normal",
+      "sale_price": "Prix promotionnel"
+    },
+    "form": {
+      "add_to_cart": "Ajouter au panier",
+      "select_options": "Choisir les options",
+      "sold_out": "Épuisé"
+    }
   },
   "gift_cards": {
     "issued": {

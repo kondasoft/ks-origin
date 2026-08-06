@@ -1,0 +1,54 @@
+{% assign product = closest.product %}
+
+<div class="product-card-title-block" {{ block.shopify_attributes }}>
+  <h3
+    class="product-card-title {{ block.settings.heading_size }}"
+    data-font-family="{{ block.settings.font_family }}"
+  >
+    {% if product == blank %}
+      {{ 'products.placeholders.title' | t }}
+    {% else %}
+      <a class="product-card-title-link" href="{{ product.url }}">
+        {{ product.title | escape }}
+      </a>
+    {% endif %}
+  </h3>
+</div>
+
+{% schema %}
+{
+  "name": "Product title",
+  "tag": null,
+  "settings": [
+    {
+      "type": "select",
+      "id": "font_family",
+      "label": "Font family",
+      "options": [
+        { "value": "heading", "label": "Heading" },
+        { "value": "body", "label": "Body" }
+      ],
+      "default": "heading"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "options": [
+        { "value": "fs-xs", "label": "Extra small" },
+        { "value": "fs-sm", "label": "Small" },
+        { "value": "fs-md", "label": "Medium" },
+        { "value": "fs-lg", "label": "Large" },
+        { "value": "fs-xl", "label": "Extra large" }
+      ],
+      "default": "fs-md"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product title",
+      "category": "Product"
+    }
+  ]
+}
+{% endschema %}

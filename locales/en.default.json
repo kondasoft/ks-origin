@@ -21,6 +21,7 @@
     "account": "Account",
     "cart": "Cart",
     "breadcrumbs": "Breadcrumbs",
+    "pagination": "Pagination",
     "play_video": "Play video",
     "love": "love"
   },
@@ -68,6 +69,37 @@
     "all_rights_reserved": "All rights reserved.",
     "designed_with": "Designed with",
     "by": "by"
+  },
+  "collections": {
+    "empty": "No products found."
+  },
+  "products": {
+    "sku": "SKU: {{ sku }}",
+    "placeholders": {
+      "title": "Example product title",
+      "vendor": "Example vendor",
+      "sku": "DEMO-001"
+    },
+    "badges": {
+      "sale": "Sale",
+      "sold_out": "Sold out"
+    },
+    "rating": {
+      "value": "Rated {{ rating }} out of {{ scale_max }}",
+      "reviews": {
+        "one": "{{ count }} review",
+        "other": "{{ count }} reviews"
+      }
+    },
+    "price": {
+      "regular_price": "Regular price",
+      "sale_price": "Sale price"
+    },
+    "form": {
+      "add_to_cart": "Add to cart",
+      "select_options": "Select options",
+      "sold_out": "Sold out"
+    }
   },
   "gift_cards": {
     "issued": {

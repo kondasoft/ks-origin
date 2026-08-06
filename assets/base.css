@@ -333,6 +333,77 @@ button {
 
 
 /*
+  Badges
+*/
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.375em 0.75em;
+  color: rgb(var(--color-background));
+  background-color: rgb(var(--color-accent));
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  line-height: 1;
+  border-radius: var(--border-radius);
+  letter-spacing: var(--ls-loose);
+}
+
+
+/*
+  Product ratings
+*/
+.product-rating {
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
+  width: fit-content;
+  line-height: 1;
+}
+
+.product-rating-stars {
+  position: relative;
+  display: inline-block;
+  color: rgb(var(--color-text) / 0.2);
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+}
+
+.product-rating-stars::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--product-rating-percentage);
+  overflow: hidden;
+  color: rgb(var(--color-text));
+  content: '★★★★★';
+  white-space: nowrap;
+}
+
+.product-rating-count {
+  color: rgb(var(--color-text) / 0.7);
+  white-space: nowrap;
+}
+
+
+/*
+  Product information
+*/
+.product-vendor {
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: var(--ls-loose);
+  line-height: normal;
+  color: rgb(var(--color-text) / 0.7);
+}
+
+.product-sku {
+  margin: 0;
+  line-height: normal;
+}
+
+
+/*
   Form controls
 */
 fieldset {

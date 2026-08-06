@@ -1,7 +1,7 @@
 /*
   Main collection stylesheet
 
-  This file contains the collection header layout for its title, description, and image.
+  This file owns the collection header and product grid layout, including responsive and empty states.
 */
 
 
@@ -11,6 +11,10 @@
 .main-collection {
   color: rgb(var(--color-text));
   background-color: rgb(var(--color-background));
+}
+
+.main-collection[data-has-image="true"] {
+  padding-top: 1rem;
 }
 
 .main-collection-header {
@@ -51,6 +55,12 @@
 .main-collection-image {
   width: 100%;
   border-radius: var(--border-radius);
+}
+
+@media (min-width: 600px) {
+  .main-collection[data-has-image="true"] {
+    padding-top: calc(var(--pt) * var(--spacing-scale));
+  }
 }
 
 @media (min-width: 1200px) {
@@ -98,5 +108,45 @@
     .main-collection-description {
     margin-right: 0;
     margin-left: auto;
+  }
+}
+
+
+/*
+  Product grid
+*/
+.main-collection-product-grid {
+  margin-top: calc(3em * var(--spacing-scale));
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--mobile-columns), minmax(0, 1fr));
+  gap: 2rem 1rem;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.product-grid-item {
+  min-width: 0;
+}
+
+.product-grid-empty {
+  margin: 0;
+  padding: 5rem 0;
+  text-align: center;
+}
+
+@media (min-width: 600px) {
+  .product-grid {
+    grid-template-columns: repeat(var(--tablet-columns), minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1200px) {
+  .product-grid {
+    grid-template-columns: repeat(var(--desktop-columns), minmax(0, 1fr));
+    gap: 2.5rem 1.5rem;
   }
 }

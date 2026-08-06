@@ -1,0 +1,44 @@
+{% liquid
+  assign product = closest.product
+  assign vendor = product.vendor
+
+  if product == blank
+    assign vendor = 'products.placeholders.vendor' | t
+  endif
+%}
+
+{% if vendor != blank %}
+  <div class="product-vendor-block" {{ block.shopify_attributes }}>
+    <p class="product-vendor {{ block.settings.text_size }}">
+      {{ vendor | escape }}
+    </p>
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Product vendor",
+  "tag": null,
+  "settings": [
+    {
+      "type": "select",
+      "id": "text_size",
+      "label": "Text size",
+      "options": [
+        { "value": "fs-xs", "label": "Extra small" },
+        { "value": "fs-sm", "label": "Small" },
+        { "value": "fs-md", "label": "Medium" },
+        { "value": "fs-lg", "label": "Large" },
+        { "value": "fs-xl", "label": "Extra large" }
+      ],
+      "default": "fs-sm"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product vendor",
+      "category": "Product"
+    }
+  ]
+}
+{% endschema %}

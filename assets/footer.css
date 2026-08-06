@@ -5,9 +5,6 @@
 */
 
 
-/*
-  Footer
-*/
 .footer {
   padding-top: var(--pt);
   padding-bottom: var(--pb);
@@ -224,7 +221,7 @@
   display: inline-flex;
   margin: 0 0.125em;
   color: #ff4d73;
-  transform: translateY(2px) scale(1.2);
+  transform: translateY(2px) scale(1.1);
 }
 
 @media (min-width: 1200px) {

@@ -4,10 +4,6 @@
   This file contains the layout and presentation styles for the Hero section.
 */
 
-
-/*
-  Hero
-*/
 .hero {
   position: relative;
   display: grid;
