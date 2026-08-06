@@ -41,13 +41,13 @@
         tabindex="-1"
         autofocus
       >
-        {{ 'contact.form.success' | t }}
+        {{ 'general.contact.form.success' | t }}
       </div>
     {% endif %}
 
     <div class="contact-form-row">
       <div class="input-group">
-        <label for="{{ form_id }}-name">{{ 'contact.form.name' | t }}</label>
+        <label for="{{ form_id }}-name">{{ 'general.contact.form.name' | t }}</label>
         <input
           id="{{ form_id }}-name"
           class="input"
@@ -60,7 +60,7 @@
 
       <div class="input-group">
         <label for="{{ form_id }}-email">
-          {{ 'contact.form.email' | t }}
+          {{ 'general.contact.form.email' | t }}
           <span aria-hidden="true">*</span>
         </label>
         <input
@@ -83,7 +83,7 @@
     </div>
 
     <div class="input-group">
-      <label for="{{ form_id }}-phone">{{ 'contact.form.phone' | t }}</label>
+      <label for="{{ form_id }}-phone">{{ 'general.contact.form.phone' | t }}</label>
       <input
         id="{{ form_id }}-phone"
         class="input"
@@ -95,7 +95,7 @@
     </div>
 
     <div class="input-group">
-      <label for="{{ form_id }}-body">{{ 'contact.form.message' | t }}</label>
+      <label for="{{ form_id }}-body">{{ 'general.contact.form.message' | t }}</label>
       <textarea
         id="{{ form_id }}-body"
         class="input"
@@ -105,7 +105,7 @@
     </div>
 
     <button class="btn btn-md btn-accent-solid" type="submit">
-      {{ 'contact.form.send' | t }}
+      {{ 'general.contact.form.send' | t }}
     </button>
   {% endform %}
 </div>

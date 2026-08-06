@@ -182,13 +182,13 @@
                             tabindex="-1"
                             autofocus
                           >
-                            {{ 'email_signup.form.success' | t }}
+                            {{ 'general.email_signup.form.success' | t }}
                           </div>
                         {% endif %}
 
                         <div class="footer-newsletter-form-fields">
                           <label class="visually-hidden" for="{{ form_id }}-email">
-                            {{ 'email_signup.form.email' | t }}
+                            {{ 'general.email_signup.form.email' | t }}
                           </label>
                           <input
                             id="{{ form_id }}-email"
@@ -199,7 +199,7 @@
                             autocomplete="email"
                             autocapitalize="off"
                             spellcheck="false"
-                            placeholder="{{ 'email_signup.form.placeholder' | t }}"
+                            placeholder="{{ 'general.email_signup.form.placeholder' | t }}"
                             aria-required="true"
                             required
                             {% if form.errors contains 'email' %}
@@ -211,7 +211,7 @@
                             class="footer-newsletter-form-button btn {{ block.settings.button_size }} {{ block.settings.button_style }}"
                             type="submit"
                           >
-                            {{ 'email_signup.form.submit' | t }}
+                            {{ 'general.email_signup.form.submit' | t }}
                           </button>
                         </div>
                       {% endform %}
@@ -230,7 +230,7 @@
           <p class="footer-copyright">
             &copy; {{ 'now' | date: '%Y' }}
             <a href="{{ routes.root_url }}">{{ shop_name }}</a>.
-            {{ 'footer.all_rights_reserved' | t }}
+            {{ 'general.footer.all_rights_reserved' | t }}
           </p>
         {% endif %}
 
@@ -308,9 +308,9 @@
           <p class="footer-credits">
             {% if section.settings.show_theme_credits %}
               <span>
-                {{ 'footer.designed_with' | t }}
+                {{ 'general.footer.designed_with' | t }}
                 <span class="footer-heart" aria-hidden="true">&hearts;</span><span class="visually-hidden">{{ 'accessibility.love' | t }}</span>
-                {{ 'footer.by' | t }}
+                {{ 'general.footer.by' | t }}
                 <a href="https://kondasoft.com" target="_blank" rel="nofollow noopener">KondaSoft</a>
               </span>
             {% endif %}

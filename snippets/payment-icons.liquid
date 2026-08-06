@@ -11,7 +11,7 @@
     <ul
       class="payment-icons"
       role="list"
-      aria-label="{{ 'payment.methods' | t }}"
+      aria-label="{{ 'general.payment.methods' | t }}"
     >
       {% for payment_type in shop.enabled_payment_types %}
         <li>{{ payment_type | payment_type_svg_tag }}</li>
@@ -19,7 +19,7 @@
     </ul>
 
     <p class="payment-icons-message fs-xs">
-      {{ 'payment.secure_options' | t }}
+      {{ 'general.payment.secure_options' | t }}
     </p>
   </div>
 {% endif %}

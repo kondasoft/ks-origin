@@ -26,10 +26,7 @@
     "love": "love"
   },
   "general": {
-    "account": "Account",
-    "apply": "Apply",
     "home": "Home",
-    "menu": "Menu",
     "pagination": {
       "previous": "Previous",
       "next": "Next"
@@ -46,34 +43,46 @@
       "languages": "Languages",
       "no_results": "No results found"
     },
+    "contact": {
+      "form": {
+        "name": "Name",
+        "email": "Email",
+        "phone": "Phone number",
+        "message": "Message",
+        "send": "Send message",
+        "success": "Thanks for contacting us. We'll get back to you as soon as possible."
+      }
+    },
+    "email_signup": {
+      "form": {
+        "email": "Email address",
+        "placeholder": "Enter your email",
+        "submit": "Sign up",
+        "success": "Thanks for signing up."
+      }
+    },
+    "payment": {
+      "methods": "Payment methods",
+      "secure_options": "Pay securely with trusted payment methods"
+    },
+    "footer": {
+      "all_rights_reserved": "All rights reserved.",
+      "designed_with": "Designed with",
+      "by": "by"
+    },
+    "facets": {
+      "apply": "Apply",
+      "filters": "Filters",
+      "sort": "Sort",
+      "active_filters_count": {
+        "one": "{{ count }} active filter",
+        "other": "{{ count }} active filters"
+      },
+      "clear_filters": "Clear all",
+      "price_from": "From",
+      "price_to": "To"
+    },
     "test_modal": "Test modal"
-  },
-  "contact": {
-    "form": {
-      "name": "Name",
-      "email": "Email",
-      "phone": "Phone number",
-      "message": "Message",
-      "send": "Send message",
-      "success": "Thanks for contacting us. We'll get back to you as soon as possible."
-    }
-  },
-  "email_signup": {
-    "form": {
-      "email": "Email address",
-      "placeholder": "Enter your email",
-      "submit": "Sign up",
-      "success": "Thanks for signing up."
-    }
-  },
-  "payment": {
-    "methods": "Payment methods",
-    "secure_options": "Pay securely with trusted payment methods"
-  },
-  "footer": {
-    "all_rights_reserved": "All rights reserved.",
-    "designed_with": "Designed with",
-    "by": "by"
   },
   "collections": {
     "empty": "No products found.",
@@ -81,15 +90,6 @@
       "one": "{{ count }} product",
       "other": "{{ count }} products"
     },
-    "filters": "Filters",
-    "sort": "Sort",
-    "active_filters_count": {
-      "one": "{{ count }} active filter",
-      "other": "{{ count }} active filters"
-    },
-    "clear_filters": "Clear all",
-    "price_from": "From",
-    "price_to": "To",
     "show_products": {
       "one": "Show {{ count }} product",
       "other": "Show {{ count }} products"
@@ -105,15 +105,6 @@
       "other": "{{ count }} results"
     },
     "no_results": "No products found for “{{ terms }}”",
-    "filters": "Filters",
-    "sort": "Sort",
-    "active_filters_count": {
-      "one": "{{ count }} active filter",
-      "other": "{{ count }} active filters"
-    },
-    "clear_filters": "Clear all",
-    "price_from": "From",
-    "price_to": "To",
     "show_results": {
       "one": "Show {{ count }} result",
       "other": "Show {{ count }} results"

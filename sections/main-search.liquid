@@ -110,11 +110,11 @@
                     data-toggle="FacetsDialog-{{ section.id }}"
                   >
                     {% render 'svg-icons', icon: 'filter', icon_size: 16 %}
-                    {{ 'search.filters' | t }}
+                    {{ 'general.facets.filters' | t }}
                     {% if active_filter_count > 0 %}
                       <span aria-hidden="true">({{ active_filter_count }})</span>
                       <span class="visually-hidden">
-                        {{ 'search.active_filters_count' | t: count: active_filter_count }}
+                        {{ 'general.facets.active_filters_count' | t: count: active_filter_count }}
                       </span>
                     {% endif %}
                   </button>

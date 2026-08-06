@@ -26,10 +26,7 @@
     "love": "amour"
   },
   "general": {
-    "account": "Compte",
-    "apply": "Appliquer",
     "home": "Accueil",
-    "menu": "Menu",
     "pagination": {
       "previous": "Précédent",
       "next": "Suivant"
@@ -46,34 +43,46 @@
       "languages": "Langues",
       "no_results": "Aucun résultat trouvé"
     },
+    "contact": {
+      "form": {
+        "name": "Nom",
+        "email": "E-mail",
+        "phone": "Numéro de téléphone",
+        "message": "Message",
+        "send": "Envoyer le message",
+        "success": "Merci de nous avoir contactés. Nous vous répondrons dans les plus brefs délais."
+      }
+    },
+    "email_signup": {
+      "form": {
+        "email": "Adresse e-mail",
+        "placeholder": "Saisissez votre adresse e-mail",
+        "submit": "S'inscrire",
+        "success": "Merci pour votre inscription."
+      }
+    },
+    "payment": {
+      "methods": "Moyens de paiement",
+      "secure_options": "Payez en toute sécurité avec des moyens de paiement fiables"
+    },
+    "footer": {
+      "all_rights_reserved": "Tous droits réservés.",
+      "designed_with": "Conçu avec",
+      "by": "par"
+    },
+    "facets": {
+      "apply": "Appliquer",
+      "filters": "Filtres",
+      "sort": "Trier",
+      "active_filters_count": {
+        "one": "{{ count }} filtre actif",
+        "other": "{{ count }} filtres actifs"
+      },
+      "clear_filters": "Tout effacer",
+      "price_from": "De",
+      "price_to": "À"
+    },
     "test_modal": "Fenêtre modale de test"
-  },
-  "contact": {
-    "form": {
-      "name": "Nom",
-      "email": "E-mail",
-      "phone": "Numéro de téléphone",
-      "message": "Message",
-      "send": "Envoyer le message",
-      "success": "Merci de nous avoir contactés. Nous vous répondrons dans les plus brefs délais."
-    }
-  },
-  "email_signup": {
-    "form": {
-      "email": "Adresse e-mail",
-      "placeholder": "Saisissez votre adresse e-mail",
-      "submit": "S'inscrire",
-      "success": "Merci pour votre inscription."
-    }
-  },
-  "payment": {
-    "methods": "Moyens de paiement",
-    "secure_options": "Payez en toute sécurité avec des moyens de paiement fiables"
-  },
-  "footer": {
-    "all_rights_reserved": "Tous droits réservés.",
-    "designed_with": "Conçu avec",
-    "by": "par"
   },
   "collections": {
     "empty": "Aucun produit trouvé.",
@@ -81,15 +90,6 @@
       "one": "{{ count }} produit",
       "other": "{{ count }} produits"
     },
-    "filters": "Filtres",
-    "sort": "Trier",
-    "active_filters_count": {
-      "one": "{{ count }} filtre actif",
-      "other": "{{ count }} filtres actifs"
-    },
-    "clear_filters": "Tout effacer",
-    "price_from": "De",
-    "price_to": "À",
     "show_products": {
       "one": "Afficher {{ count }} produit",
       "other": "Afficher {{ count }} produits"
@@ -105,15 +105,6 @@
       "other": "{{ count }} résultats"
     },
     "no_results": "Aucun produit trouvé pour « {{ terms }} »",
-    "filters": "Filtres",
-    "sort": "Trier",
-    "active_filters_count": {
-      "one": "{{ count }} filtre actif",
-      "other": "{{ count }} filtres actifs"
-    },
-    "clear_filters": "Tout effacer",
-    "price_from": "De",
-    "price_to": "À",
     "show_results": {
       "one": "Afficher {{ count }} résultat",
       "other": "Afficher {{ count }} résultats"

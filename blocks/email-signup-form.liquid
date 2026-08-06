@@ -35,13 +35,13 @@
         tabindex="-1"
         autofocus
       >
-        {{ 'email_signup.form.success' | t }}
+        {{ 'general.email_signup.form.success' | t }}
       </div>
     {% endif %}
 
     <div class="email-signup-form-fields">
       <label class="visually-hidden" for="{{ form_id }}-email">
-        {{ 'email_signup.form.email' | t }}
+        {{ 'general.email_signup.form.email' | t }}
       </label>
       <input
         id="{{ form_id }}-email"
@@ -52,7 +52,7 @@
         autocomplete="email"
         autocapitalize="off"
         spellcheck="false"
-        placeholder="{{ 'email_signup.form.placeholder' | t }}"
+        placeholder="{{ 'general.email_signup.form.placeholder' | t }}"
         aria-required="true"
         required
         {% if form.errors contains 'email' %}
@@ -61,7 +61,7 @@
         {% endif %}
       >
       <button class="btn btn-md btn-accent-solid" type="submit">
-        {{ 'email_signup.form.submit' | t }}
+        {{ 'general.email_signup.form.submit' | t }}
       </button>
     </div>
   {% endform %}

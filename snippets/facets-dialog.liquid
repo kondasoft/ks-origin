@@ -15,19 +15,15 @@
 {% liquid
   assign dialog_id = 'FacetsDialog-' | append: section_id
   assign dialog_title_id = dialog_id | append: '-title'
+  assign filters_label = 'general.facets.filters' | t
+  assign price_from_label = 'general.facets.price_from' | t
+  assign price_to_label = 'general.facets.price_to' | t
+  assign clear_filters_label = 'general.facets.clear_filters' | t
 
   if context == 'search'
-    assign filters_label = 'search.filters' | t
-    assign price_from_label = 'search.price_from' | t
-    assign price_to_label = 'search.price_to' | t
     assign show_results_label = 'search.show_results' | t: count: result_count
-    assign clear_filters_label = 'search.clear_filters' | t
   else
-    assign filters_label = 'collections.filters' | t
-    assign price_from_label = 'collections.price_from' | t
-    assign price_to_label = 'collections.price_to' | t
     assign show_results_label = 'collections.show_products' | t: count: result_count
-    assign clear_filters_label = 'collections.clear_filters' | t
   endif
 %}
 
