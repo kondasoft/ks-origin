@@ -29,10 +29,10 @@
   for filter in collection.filters
     case filter.type
       when 'boolean'
-        if filter.true_value.active
+        if filter.true_value != nil and filter.true_value.active
           assign active_filter_count = active_filter_count | plus: 1
         endif
-        if filter.false_value.active
+        if filter.false_value != nil and filter.false_value.active
           assign active_filter_count = active_filter_count | plus: 1
         endif
       when 'list'
@@ -163,10 +163,10 @@
                         {% for filter in collection.filters %}
                           {% case filter.type %}
                             {% when 'boolean' %}
-                              {% if filter.true_value.active %}
+                              {% if filter.true_value != nil and filter.true_value.active %}
                                 <input type="hidden" name="{{ filter.param_name }}" value="{{ filter.true_value.value }}">
                               {% endif %}
-                              {% if filter.false_value.active %}
+                              {% if filter.false_value != nil and filter.false_value.active %}
                                 <input type="hidden" name="{{ filter.param_name }}" value="{{ filter.false_value.value }}">
                               {% endif %}
                             {% when 'list' %}
@@ -290,10 +290,10 @@
 
                     case filter.type
                       when 'boolean'
-                        if filter.true_value.active
+                        if filter.true_value != nil and filter.true_value.active
                           assign filter_active_count = filter_active_count | plus: 1
                         endif
-                        if filter.false_value.active
+                        if filter.false_value != nil and filter.false_value.active
                           assign filter_active_count = filter_active_count | plus: 1
                         endif
                       when 'list'
@@ -323,32 +323,36 @@
                         {% case filter.type %}
                           {% when 'boolean' %}
                             <ul class="collection-filter-list" role="list">
-                              <li>
-                                <label class="collection-filter-option">
-                                  <input
-                                    type="checkbox"
-                                    name="{{ filter.param_name }}"
-                                    value="{{ filter.true_value.value }}"
-                                    {% if filter.true_value.active %}checked{% endif %}
-                                    {% if filter.true_value.count == 0 and filter.true_value.active == false %}disabled{% endif %}
-                                  >
-                                  <span>{{ filter.true_value.label | escape }}</span>
-                                  <span class="collection-filter-count">{{ filter.true_value.count }}</span>
-                                </label>
-                              </li>
-                              <li>
-                                <label class="collection-filter-option">
-                                  <input
-                                    type="checkbox"
-                                    name="{{ filter.param_name }}"
-                                    value="{{ filter.false_value.value }}"
-                                    {% if filter.false_value.active %}checked{% endif %}
-                                    {% if filter.false_value.count == 0 and filter.false_value.active == false %}disabled{% endif %}
-                                  >
-                                  <span>{{ filter.false_value.label | escape }}</span>
-                                  <span class="collection-filter-count">{{ filter.false_value.count }}</span>
-                                </label>
-                              </li>
+                              {% if filter.true_value != nil %}
+                                <li>
+                                  <label class="collection-filter-option">
+                                    <input
+                                      type="checkbox"
+                                      name="{{ filter.param_name }}"
+                                      value="{{ filter.true_value.value }}"
+                                      {% if filter.true_value.active %}checked{% endif %}
+                                      {% if filter.true_value.count == 0 and filter.true_value.active == false %}disabled{% endif %}
+                                    >
+                                    <span>{{ filter.true_value.label | escape }}</span>
+                                    <span class="collection-filter-count">{{ filter.true_value.count }}</span>
+                                  </label>
+                                </li>
+                              {% endif %}
+                              {% if filter.false_value != nil %}
+                                <li>
+                                  <label class="collection-filter-option">
+                                    <input
+                                      type="checkbox"
+                                      name="{{ filter.param_name }}"
+                                      value="{{ filter.false_value.value }}"
+                                      {% if filter.false_value.active %}checked{% endif %}
+                                      {% if filter.false_value.count == 0 and filter.false_value.active == false %}disabled{% endif %}
+                                    >
+                                    <span>{{ filter.false_value.label | escape }}</span>
+                                    <span class="collection-filter-count">{{ filter.false_value.count }}</span>
+                                  </label>
+                                </li>
+                              {% endif %}
                             </ul>
 
                           {% when 'list' %}
@@ -363,7 +367,14 @@
                                       {% if filter_value.active %}checked{% endif %}
                                       {% if filter_value.count == 0 and filter_value.active == false %}disabled{% endif %}
                                     >
-                                    {% if filter.presentation == 'swatch' %}
+                                    {% if filter.presentation == 'image' and filter_value.image != blank %}
+                                      <span class="collection-filter-image" aria-hidden="true">
+                                        {{ filter_value.image
+                                          | image_url: width: 80, height: 80, crop: 'center'
+                                          | image_tag: loading: 'lazy', widths: '40, 80'
+                                        }}
+                                      </span>
+                                    {% elsif filter.presentation == 'swatch' %}
                                       <span
                                         class="collection-filter-swatch"
                                         style="--swatch-color: {{ filter_value.swatch.color | default: 'transparent' }};"
@@ -647,7 +658,52 @@
   "presets": [
     {
       "name": "Collection",
-      "category": "Collection"
+      "category": "Collection",
+      "blocks": [
+        {
+          "type": "product-card",
+          "id": "product-card",
+          "static": true,
+          "settings": {
+            "text_alignment": "left"
+          },
+          "blocks": [
+            {
+              "type": "product-card-image",
+              "settings": {
+                "image_ratio": "square"
+              }
+            },
+            {
+              "type": "product-card-title",
+              "settings": {
+                "font_family": "heading",
+                "heading_size": "fs-md"
+              }
+            },
+            {
+              "type": "product-rating",
+              "settings": {
+                "show_count": true,
+                "rating_size": "fs-sm"
+              }
+            },
+            {
+              "type": "product-card-price",
+              "settings": {
+                "price_size": "fs-md"
+              }
+            },
+            {
+              "type": "product-card-form",
+              "settings": {
+                "button_style": "btn-accent-solid",
+                "button_size": "btn-sm"
+              }
+            }
+          ]
+        }
+      ]
     }
   ]
 }

@@ -1,18 +1,30 @@
-{% assign product = closest.product %}
+{% liquid
+  assign product = closest.product
+
+  if product == blank
+    assign current_price = 1999 | money
+  else
+    assign current_price = product.price | money
+
+    if product.price_varies
+      assign current_price = 'products.price.from_price' | t: price: current_price
+    endif
+  endif
+%}
 
 <div class="product-card-price-block" {{ block.shopify_attributes }}>
   <p class="product-card-price {{ block.settings.price_size }}">
     {% if product == blank %}
       <span class="visually-hidden">{{ 'products.price.regular_price' | t }}</span>
-      <span class="product-card-price-current">{{ 1999 | money }}</span>
+      <span class="product-card-price-current">{{ current_price }}</span>
     {% elsif product.compare_at_price > product.price %}
       <span class="visually-hidden">{{ 'products.price.sale_price' | t }}</span>
-      <span class="product-card-price-current product-card-price-sale">{{ product.price | money }}</span>
+      <span class="product-card-price-current product-card-price-sale">{{ current_price }}</span>
       <span class="visually-hidden">{{ 'products.price.regular_price' | t }}</span>
       <s class="product-card-price-compare">{{ product.compare_at_price | money }}</s>
     {% else %}
       <span class="visually-hidden">{{ 'products.price.regular_price' | t }}</span>
-      <span class="product-card-price-current">{{ product.price | money }}</span>
+      <span class="product-card-price-current">{{ current_price }}</span>
     {% endif %}
   </p>
 </div>

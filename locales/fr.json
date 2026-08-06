@@ -115,7 +115,8 @@
     },
     "price": {
       "regular_price": "Prix normal",
-      "sale_price": "Prix promotionnel"
+      "sale_price": "Prix promotionnel",
+      "from_price": "À partir de {{ price }}"
     },
     "form": {
       "add_to_cart": "Ajouter au panier",

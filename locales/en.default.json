@@ -115,7 +115,8 @@
     },
     "price": {
       "regular_price": "Regular price",
-      "sale_price": "Sale price"
+      "sale_price": "Sale price",
+      "from_price": "From {{ price }}"
     },
     "form": {
       "add_to_cart": "Add to cart",
