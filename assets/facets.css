@@ -1,0 +1,284 @@
+/*
+  Facets stylesheet
+
+  This file owns shared utilities, filters, sorting, loading, and product-grid presentation for faceted result pages.
+*/
+
+
+/*
+  Utilities and sorting
+*/
+.facets-utilities {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.facets-result-count {
+  margin: 0;
+  font-size: var(--fs-sm);
+}
+
+.facets-utilities .btn-group {
+  flex-wrap: nowrap;
+  margin-left: auto;
+}
+
+.facets-utilities .btn {
+  min-width: auto;
+}
+
+.facets-sort-form {
+  margin: 0;
+}
+
+.facets-sort-list {
+  padding: 0;
+  margin: -0.5rem -1rem;
+  list-style: none;
+}
+
+.facets-sort-option {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0.5em 1em;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  outline: 2px solid transparent;
+  outline-offset: -2px;
+  white-space: nowrap;
+}
+
+.facets-sort-option:hover {
+  color: rgb(var(--color-text) / 0.8);
+}
+
+.facets-sort-option:has(input:checked) {
+  color: rgb(var(--color-accent));
+}
+
+.facets-sort-option:has(input:focus-visible) {
+  outline-color: currentcolor;
+}
+
+
+/*
+  Filter drawer
+*/
+.facets .dialog-body {
+  background-color: rgb(var(--color-surface));
+}
+
+.facets {
+  display: flex;
+  min-height: 0;
+  flex: 1;
+}
+
+.facets-form {
+  display: flex;
+  min-height: 0;
+  flex: 1;
+  flex-direction: column;
+}
+
+.facets-groups {
+  display: grid;
+  flex: 1;
+  gap: 1rem;
+}
+
+.theme-collapse.facet {
+  background-color: rgb(var(--color-background));
+  border: none;
+  border-radius: var(--border-radius);
+}
+
+.theme-collapse.facet .theme-collapse-summary {
+  padding-right: 1em;
+  padding-left: 1em;
+}
+
+.theme-collapse.facet .theme-collapse-details[open] .theme-collapse-summary {
+  color: inherit;
+}
+
+.theme-collapse.facet .theme-collapse-content {
+  padding: 1em;
+  border-top: 1px dotted rgb(var(--color-text) / var(--border-opacity));
+}
+
+.facets-list {
+  display: grid;
+  gap: 0.75em;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.facets-option {
+  display: flex;
+  align-items: center;
+  gap: 0.85em;
+  font-weight: inherit;
+  cursor: pointer;
+}
+
+.facets-option:has(input:disabled) {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.facets-count {
+  margin-left: auto;
+  color: rgb(var(--color-text) / 0.65);
+  font-size: var(--fs-sm);
+}
+
+.facets-image {
+  display: inline-flex;
+  width: 40px;
+  height: 40px;
+  flex: 0 0 auto;
+  overflow: hidden;
+  border: 1px solid rgb(var(--color-text) / var(--border-opacity));
+  border-radius: var(--border-radius);
+}
+
+.facets-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.facets-swatch {
+  display: inline-flex;
+  width: 20px;
+  height: 20px;
+  flex: 0 0 auto;
+  overflow: hidden;
+  background-color: var(--swatch-color);
+  border: 1px solid rgb(var(--color-text) / var(--border-opacity));
+  border-radius: 50%;
+}
+
+.facets-swatch img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.facets-price-range {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 1rem;
+}
+
+.facets-price-range label {
+  display: grid;
+  min-width: 0;
+  gap: 0.5em;
+}
+
+.facets-price-input {
+  position: relative;
+  display: block;
+}
+
+.facets-price-input > span {
+  position: absolute;
+  top: 50%;
+  left: 1em;
+  z-index: 1;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.facets-price-input .input {
+  padding-left: 2em;
+}
+
+.facets-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  background-color: rgb(var(--color-background));
+}
+
+.facets-actions .btn {
+  width: 100%;
+  min-width: 0;
+  flex: none;
+}
+
+
+/*
+  Results grid
+*/
+.faceted-results-grid {
+  margin-top: calc(3em * var(--spacing-scale));
+  scroll-margin-top: 1rem;
+  outline: 2px solid transparent;
+  outline-offset: 0;
+}
+
+.faceted-results-grid:focus-visible {
+  outline-color: currentcolor;
+}
+
+.faceted-results-grid[aria-busy="true"] {
+  pointer-events: none;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--mobile-columns), minmax(0, 1fr));
+  gap: 2rem 1rem;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  transition: opacity 200ms ease-out;
+}
+
+.faceted-results-grid[aria-busy="true"] .product-grid {
+  opacity: 0.2;
+}
+
+.facets-utilities + .product-grid {
+  margin-top: 1.5rem;
+}
+
+.facets-utilities + .faceted-results-empty {
+  margin-top: 1.5rem;
+}
+
+.product-grid-item {
+  min-width: 0;
+}
+
+.faceted-results-empty {
+  margin: 0;
+  padding: 5rem 0;
+  text-align: center;
+}
+
+@media (min-width: 600px) {
+  .product-grid {
+    grid-template-columns: repeat(var(--tablet-columns), minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1200px) {
+  .product-grid {
+    grid-template-columns: repeat(var(--desktop-columns), minmax(0, 1fr));
+    gap: 2.5rem 1.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .product-grid {
+    transition: none;
+  }
+}

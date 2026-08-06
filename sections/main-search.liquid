@@ -1,0 +1,377 @@
+{% liquid
+  assign products_per_page = section.settings.products_per_page | default: 24
+
+  if shop.permanent_domain contains 'ks-'
+    assign products_per_page = 12
+  endif
+
+  assign pagination_previous = 'general.pagination.previous' | t
+  assign pagination_next = 'general.pagination.next' | t
+  assign sort_by = search.sort_by | default: search.default_sort_by
+  assign show_search_filters = false
+  assign active_filter_count = 0
+
+  if section.settings.show_filters and search.filters.size > 0
+    assign show_search_filters = true
+  endif
+
+  for filter in search.filters
+    case filter.type
+      when 'boolean'
+        if filter.true_value != nil and filter.true_value.active
+          assign active_filter_count = active_filter_count | plus: 1
+        endif
+        if filter.false_value != nil and filter.false_value.active
+          assign active_filter_count = active_filter_count | plus: 1
+        endif
+      when 'list'
+        assign active_filter_count = active_filter_count | plus: filter.active_values.size
+      when 'price_range'
+        if filter.min_value.value != nil or filter.max_value.value != nil
+          assign active_filter_count = active_filter_count | plus: 1
+        endif
+    endcase
+  endfor
+
+  assign encoded_search_terms = search.terms | url_encode
+  assign escaped_search_terms = search.terms | escape
+  assign encoded_sort_by = sort_by | url_encode
+  assign filters_clear_url = routes.search_url | append: '?type=product&q=' | append: encoded_search_terms | append: '&options%5Bprefix%5D=last&sort_by=' | append: encoded_sort_by
+%}
+
+<faceted-results
+  class="main-search responsive-text-alignment section-spacing"
+  data-section-id="{{ section.id }}"
+  data-mobile-text-alignment="{{ section.settings.mobile_text_alignment }}"
+  data-desktop-text-alignment="{{ section.settings.desktop_text_alignment }}"
+  style="
+    --color-background: {{ section.settings.background_color.red }} {{ section.settings.background_color.green }} {{ section.settings.background_color.blue }};
+    --color-text: {{ section.settings.text_color.red }} {{ section.settings.text_color.green }} {{ section.settings.text_color.blue }};
+    --color-accent: {{ section.settings.accent_color.red }} {{ section.settings.accent_color.green }} {{ section.settings.accent_color.blue }};
+    --mobile-text-alignment: {{ section.settings.mobile_text_alignment }};
+    --desktop-text-alignment: {{ section.settings.desktop_text_alignment }};
+    --mobile-columns: {{ section.settings.mobile_columns }};
+    --tablet-columns: 2;
+    --desktop-columns: {{ section.settings.desktop_columns }};
+    --pt: {{ section.settings.pt | divided_by: 16.0 | append: 'em' }};
+    --pb: {{ section.settings.pb | divided_by: 16.0 | append: 'em' }};
+  "
+>
+  <p class="visually-hidden" role="status" aria-live="polite" data-faceted-results-status></p>
+
+  <div class="container {{ settings.container_width }}">
+    <header class="main-search-header">
+      <h1 class="main-search-title {{ section.settings.heading_size }}">
+        {{ 'search.title' | t }}
+      </h1>
+
+      <form class="main-search-form" action="{{ routes.search_url }}" method="get" role="search">
+        <label class="visually-hidden" for="SearchInput-{{ section.id }}">
+          {{ 'search.label' | t }}
+        </label>
+        <input
+          id="SearchInput-{{ section.id }}"
+          class="input"
+          type="search"
+          name="q"
+          value="{{ search.terms | escape }}"
+          placeholder="{{ 'search.placeholder' | t }}"
+          required
+        >
+        <input type="hidden" name="type" value="product">
+        <input type="hidden" name="options[prefix]" value="last">
+        <button class="btn btn-accent-solid" type="submit">
+          {{ 'search.submit' | t }}
+        </button>
+      </form>
+    </header>
+
+    {% if search.performed %}
+      <div
+        class="faceted-results-grid"
+        data-faceted-results-grid
+        data-result-count-text="{{ 'search.results_count' | t: count: search.results_count | escape }}"
+        tabindex="-1"
+      >
+        {% if section.settings.show_result_count or show_search_filters or section.settings.show_sort %}
+          <div class="facets-utilities">
+            {% if section.settings.show_result_count %}
+              <p class="facets-result-count">
+                {{ 'search.results_count' | t: count: search.results_count }}
+              </p>
+            {% endif %}
+
+            {% if show_search_filters or section.settings.show_sort %}
+              <div class="btn-group">
+                {% if show_search_filters %}
+                  <button
+                    class="btn btn-sm btn-text-outline"
+                    type="button"
+                    data-toggle="FacetsDialog-{{ section.id }}"
+                  >
+                    {% render 'svg-icons', icon: 'filter', icon_size: 16 %}
+                    {{ 'search.filters' | t }}
+                    {% if active_filter_count > 0 %}
+                      <span aria-hidden="true">({{ active_filter_count }})</span>
+                      <span class="visually-hidden">
+                        {{ 'search.active_filters_count' | t: count: active_filter_count }}
+                      </span>
+                    {% endif %}
+                  </button>
+                {% endif %}
+
+                {% if section.settings.show_sort %}
+                  {% render 'facets-sort',
+                    context: 'search',
+                    filters: search.filters,
+                    form_action: routes.search_url,
+                    sort_by: sort_by,
+                    sort_options: search.sort_options,
+                    search_terms: search.terms
+                  %}
+                {% endif %}
+              </div>
+            {% endif %}
+          </div>
+        {% endif %}
+
+        {% paginate search.results by products_per_page %}
+          {% if search.results_count > 0 %}
+            <ul class="product-grid" role="list">
+              {% for product in search.results %}
+                {% if product.object_type == 'product' %}
+                  <li class="product-grid-item">
+                    {% content_for 'block', type: 'product-card', id: 'product-card', closest.product: product %}
+                  </li>
+                {% endif %}
+              {% endfor %}
+            </ul>
+
+            {% if paginate.pages > 1 %}
+              <nav class="pagination" aria-label="{{ 'accessibility.pagination' | t }}">
+                {{ paginate
+                  | default_pagination:
+                    previous: pagination_previous,
+                    next: pagination_next
+                }}
+              </nav>
+            {% endif %}
+          {% else %}
+            <p class="faceted-results-empty">
+              {{ 'search.no_results' | t: terms: escaped_search_terms }}
+            </p>
+          {% endif %}
+        {% endpaginate %}
+      </div>
+    {% endif %}
+  </div>
+
+  {% if search.performed and show_search_filters %}
+    {% render 'facets-dialog',
+      context: 'search',
+      filters: search.filters,
+      form_action: routes.search_url,
+      sort_by: sort_by,
+      clear_url: filters_clear_url,
+      active_filter_count: active_filter_count,
+      result_count: search.results_count,
+      section_id: section.id,
+      search_terms: search.terms
+    %}
+  {% endif %}
+</faceted-results>
+
+{% schema %}
+{
+  "name": "Search",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "{{ settings.colors.background }}"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "{{ settings.colors.text }}"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent color",
+      "default": "{{ settings.colors.accent }}"
+    },
+    {
+      "type": "header",
+      "content": "Header"
+    },
+    {
+      "type": "text_alignment",
+      "id": "mobile_text_alignment",
+      "label": "Mobile text alignment",
+      "default": "left"
+    },
+    {
+      "type": "text_alignment",
+      "id": "desktop_text_alignment",
+      "label": "Desktop text alignment",
+      "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "options": [
+        { "value": "h1", "label": "H1" },
+        { "value": "h2", "label": "H2" },
+        { "value": "h3", "label": "H3" },
+        { "value": "h4", "label": "H4" },
+        { "value": "h5", "label": "H5" },
+        { "value": "h6", "label": "H6" }
+      ],
+      "default": "h1",
+      "info": "Changes the visual size only. The HTML heading remains H1."
+    },
+    {
+      "type": "header",
+      "content": "Search utilities"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_result_count",
+      "label": "Show result count",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_filters",
+      "label": "Show filters",
+      "info": "Manage available filters with Shopify's [Search & Discovery app](https://apps.shopify.com/search-and-discovery).",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_sort",
+      "label": "Show sort",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Product grid"
+    },
+    {
+      "type": "range",
+      "id": "mobile_columns",
+      "label": "Mobile columns",
+      "info": "Tablet layouts always use two columns.",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "desktop_columns",
+      "label": "Desktop columns",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "label": "Products per page",
+      "min": 8,
+      "max": 48,
+      "step": 4,
+      "default": 24
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pt",
+      "label": "Top",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "pb",
+      "label": "Bottom",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 60
+    }
+  ],
+  "enabled_on": {
+    "templates": ["search"]
+  },
+  "presets": [
+    {
+      "name": "Search",
+      "category": "Search",
+      "blocks": [
+        {
+          "type": "product-card",
+          "id": "product-card",
+          "static": true,
+          "settings": {
+            "text_alignment": "left"
+          },
+          "blocks": [
+            {
+              "type": "product-card-image",
+              "settings": {
+                "image_ratio": "square"
+              }
+            },
+            {
+              "type": "product-card-title",
+              "settings": {
+                "font_family": "heading",
+                "heading_size": "fs-md"
+              }
+            },
+            {
+              "type": "product-rating",
+              "settings": {
+                "show_count": true,
+                "rating_size": "fs-sm"
+              }
+            },
+            {
+              "type": "product-card-price",
+              "settings": {
+                "price_size": "fs-md"
+              }
+            },
+            {
+              "type": "product-card-form",
+              "settings": {
+                "button_style": "btn-accent-solid",
+                "button_size": "btn-sm"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -95,6 +95,30 @@
       "other": "Afficher {{ count }} produits"
     }
   },
+  "search": {
+    "title": "Rechercher",
+    "label": "Rechercher des produits",
+    "placeholder": "Rechercher des produits",
+    "submit": "Rechercher",
+    "results_count": {
+      "one": "{{ count }} résultat",
+      "other": "{{ count }} résultats"
+    },
+    "no_results": "Aucun produit trouvé pour « {{ terms }} »",
+    "filters": "Filtres",
+    "sort": "Trier",
+    "active_filters_count": {
+      "one": "{{ count }} filtre actif",
+      "other": "{{ count }} filtres actifs"
+    },
+    "clear_filters": "Tout effacer",
+    "price_from": "De",
+    "price_to": "À",
+    "show_results": {
+      "one": "Afficher {{ count }} résultat",
+      "other": "Afficher {{ count }} résultats"
+    }
+  },
   "products": {
     "sku": "UGS : {{ sku }}",
     "placeholders": {

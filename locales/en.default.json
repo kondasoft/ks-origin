@@ -95,6 +95,30 @@
       "other": "Show {{ count }} products"
     }
   },
+  "search": {
+    "title": "Search",
+    "label": "Search products",
+    "placeholder": "Search products",
+    "submit": "Search",
+    "results_count": {
+      "one": "{{ count }} result",
+      "other": "{{ count }} results"
+    },
+    "no_results": "No products found for “{{ terms }}”",
+    "filters": "Filters",
+    "sort": "Sort",
+    "active_filters_count": {
+      "one": "{{ count }} active filter",
+      "other": "{{ count }} active filters"
+    },
+    "clear_filters": "Clear all",
+    "price_from": "From",
+    "price_to": "To",
+    "show_results": {
+      "one": "Show {{ count }} result",
+      "other": "Show {{ count }} results"
+    }
+  },
   "products": {
     "sku": "SKU: {{ sku }}",
     "placeholders": {

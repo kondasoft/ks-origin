@@ -1,0 +1,105 @@
+{% doc %}
+  Renders the shared sort dropdown for collection and search result pages.
+
+  @param {string} context - The result context: collection or search.
+  @param {object} filters - The filters whose active values must be preserved.
+  @param {string} form_action - The URL submitted by the sort form.
+  @param {string} sort_by - The currently selected sort value.
+  @param {object} sort_options - The available sort options.
+  @param {string} [search_terms] - The current product-search terms.
+{% enddoc %}
+
+{% liquid
+  if context == 'search'
+    assign sort_label = 'search.sort' | t
+  else
+    assign sort_label = 'collections.sort' | t
+  endif
+%}
+
+<theme-dropdown class="theme-dropdown">
+  <button
+    class="theme-dropdown-btn btn btn-sm btn-text-outline"
+    type="button"
+    aria-expanded="false"
+  >
+    {% render 'svg-icons', icon: 'sliders', icon_size: 16 %}
+    {{ sort_label }}
+    {% render 'svg-icons', icon: 'chevron-down', icon_size: 14 %}
+  </button>
+
+  <div
+    class="theme-dropdown-content"
+    data-dropdown-alignment="right"
+    hidden
+  >
+    <facet-sort>
+      <form
+        class="facets-sort-form"
+        action="{{ form_action }}"
+        method="get"
+        aria-label="{{ sort_label }}"
+      >
+        {% if context == 'search' %}
+          <input type="hidden" name="q" value="{{ search_terms | escape }}">
+          <input type="hidden" name="type" value="product">
+          <input type="hidden" name="options[prefix]" value="last">
+        {% endif %}
+
+        {% for filter in filters %}
+          {% case filter.type %}
+            {% when 'boolean' %}
+              {% if filter.true_value != nil and filter.true_value.active %}
+                <input type="hidden" name="{{ filter.param_name }}" value="{{ filter.true_value.value }}">
+              {% endif %}
+              {% if filter.false_value != nil and filter.false_value.active %}
+                <input type="hidden" name="{{ filter.param_name }}" value="{{ filter.false_value.value }}">
+              {% endif %}
+            {% when 'list' %}
+              {% for filter_value in filter.active_values %}
+                <input type="hidden" name="{{ filter_value.param_name }}" value="{{ filter_value.value }}">
+              {% endfor %}
+            {% when 'price_range' %}
+              {% if filter.min_value.value %}
+                <input
+                  type="hidden"
+                  name="{{ filter.min_value.param_name }}"
+                  value="{{ filter.min_value.value | money_without_currency }}"
+                >
+              {% endif %}
+              {% if filter.max_value.value %}
+                <input
+                  type="hidden"
+                  name="{{ filter.max_value.param_name }}"
+                  value="{{ filter.max_value.value | money_without_currency }}"
+                >
+              {% endif %}
+          {% endcase %}
+        {% endfor %}
+
+        <ul class="facets-sort-list" role="list">
+          {% for option in sort_options %}
+            <li>
+              <label class="facets-sort-option">
+                <input
+                  class="visually-hidden"
+                  type="radio"
+                  name="sort_by"
+                  value="{{ option.value }}"
+                  {% if option.value == sort_by %}checked{% endif %}
+                >
+                <span>{{ option.name }}</span>
+              </label>
+            </li>
+          {% endfor %}
+        </ul>
+
+        <noscript>
+          <button class="btn btn-sm btn-text-outline" type="submit">
+            {{ 'general.apply' | t }}
+          </button>
+        </noscript>
+      </form>
+    </facet-sort>
+  </div>
+</theme-dropdown>

@@ -71,6 +71,11 @@
 
 {% if request.page_type == 'collection' %}
   {{ 'main-collection.css' | asset_url | stylesheet_tag: preload: true }}
+  {{ 'facets.css' | asset_url | stylesheet_tag: preload: true }}
+  {{ 'product-card.css' | asset_url | stylesheet_tag: preload: true }}
+{% elsif request.page_type == 'search' %}
+  {{ 'main-search.css' | asset_url | stylesheet_tag: preload: true }}
+  {{ 'facets.css' | asset_url | stylesheet_tag: preload: true }}
   {{ 'product-card.css' | asset_url | stylesheet_tag: preload: true }}
 {% endif %}
 
@@ -84,6 +89,6 @@
 <script src="{{ 'base.js' | asset_url }}" type="module"></script>
 <script src="{{ 'components.js' | asset_url }}" type="module"></script>
 
-{% if request.page_type == 'collection' %}
-  <script src="{{ 'main-collection.js' | asset_url }}" type="module"></script>
+{% if request.page_type == 'collection' or request.page_type == 'search' %}
+  <script src="{{ 'faceted-results.js' | asset_url }}" type="module"></script>
 {% endif %}

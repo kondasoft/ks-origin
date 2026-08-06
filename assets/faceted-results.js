@@ -1,12 +1,11 @@
 /*
-  Main collection script
+  Faceted results script
 
-  This file owns interactive behavior specific to collection utilities and product-grid controls.
-  Keep reusable interface components in the shared components script.
+  This file owns shared AJAX filtering, sorting, pagination, history, and interaction state for product-result pages.
 */
 
 
-class CollectionView extends HTMLElement {
+class FacetedResults extends HTMLElement {
   connectedCallback() {
     if (this.isInitialized) return;
 
@@ -49,21 +48,21 @@ class CollectionView extends HTMLElement {
     }
 
     event.preventDefault();
-    this.update(new URL(paginationLink.href), { focusProductGrid: true });
+    this.update(new URL(paginationLink.href), { focusResultsGrid: true });
   }
 
   async update(
     url,
     {
-      focusProductGrid = false,
-      scrollToProductGrid = true,
+      focusResultsGrid = false,
+      scrollToResultsGrid = true,
       updateHistory = true,
     } = {},
   ) {
     const navigationUrl = new URL(url, window.location.origin);
     const requestUrl = new URL(navigationUrl);
-    const currentProductGrid = this.querySelector(
-      "[data-collection-product-grid]",
+    const currentResultsGrid = this.querySelector(
+      "[data-faceted-results-grid]",
     );
     const filterState = this.captureFilterState();
 
@@ -72,7 +71,7 @@ class CollectionView extends HTMLElement {
     const requestController = this.requestController;
 
     requestUrl.searchParams.set("section_id", this.dataset.sectionId);
-    currentProductGrid?.setAttribute("aria-busy", "true");
+    currentResultsGrid?.setAttribute("aria-busy", "true");
 
     try {
       const response = await fetch(requestUrl.toString(), {
@@ -81,7 +80,7 @@ class CollectionView extends HTMLElement {
       });
 
       if (!response.ok) {
-        throw new Error(`Failed to update collection: ${response.status}`);
+        throw new Error(`Failed to update results: ${response.status}`);
       }
 
       const html = await response.text();
@@ -89,18 +88,18 @@ class CollectionView extends HTMLElement {
         html,
         "text/html",
       );
-      const nextView = documentFragment.querySelector("collection-view");
-      const nextProductGrid = nextView?.querySelector(
-        "[data-collection-product-grid]",
+      const nextView = documentFragment.querySelector("faceted-results");
+      const nextResultsGrid = nextView?.querySelector(
+        "[data-faceted-results-grid]",
       );
 
-      if (!currentProductGrid || !nextView || !nextProductGrid) {
-        throw new Error("Failed to find the updated collection markup");
+      if (!currentResultsGrid || !nextView || !nextResultsGrid) {
+        throw new Error("Failed to find the updated results markup");
       }
 
       if (this.requestController !== requestController) return false;
 
-      currentProductGrid.replaceWith(nextProductGrid);
+      currentResultsGrid.replaceWith(nextResultsGrid);
       this.refreshDialogTriggers();
       this.replaceFilters(nextView, filterState);
 
@@ -108,10 +107,10 @@ class CollectionView extends HTMLElement {
         window.history.pushState({}, "", navigationUrl.toString());
       }
 
-      this.announceProductCount();
+      this.announceResultCount();
 
-      if (scrollToProductGrid) {
-        this.scrollToProductGrid({ focus: focusProductGrid });
+      if (scrollToResultsGrid) {
+        this.scrollToResultsGrid({ focus: focusResultsGrid });
       }
 
       return true;
@@ -123,7 +122,7 @@ class CollectionView extends HTMLElement {
       return false;
     } finally {
       if (this.requestController === requestController) {
-        this.querySelector("[data-collection-product-grid]")?.removeAttribute(
+        this.querySelector("[data-faceted-results-grid]")?.removeAttribute(
           "aria-busy",
         );
       }
@@ -131,7 +130,7 @@ class CollectionView extends HTMLElement {
   }
 
   captureFilterState() {
-    const filters = this.querySelector("collection-filters");
+    const filters = this.querySelector("facet-filters");
 
     if (!filters) return null;
 
@@ -168,8 +167,8 @@ class CollectionView extends HTMLElement {
   }
 
   replaceFilters(nextView, filterState) {
-    const currentFilters = this.querySelector("collection-filters");
-    const nextFilters = nextView.querySelector("collection-filters");
+    const currentFilters = this.querySelector("facet-filters");
+    const nextFilters = nextView.querySelector("facet-filters");
 
     if (!currentFilters || !nextFilters) return;
 
@@ -194,9 +193,10 @@ class CollectionView extends HTMLElement {
     const matchingInputs = nextFilters.querySelectorAll(
       `[name="${CSS.escape(filterState.activeName)}"]`,
     );
-    const matchingInput = Array.from(matchingInputs).find(
-      (input) => input.value === filterState.activeValue,
-    ) || matchingInputs[0];
+    const matchingInput =
+      Array.from(matchingInputs).find(
+        (input) => input.value === filterState.activeValue,
+      ) || matchingInputs[0];
 
     matchingInput?.focus({ preventScroll: true });
 
@@ -208,23 +208,23 @@ class CollectionView extends HTMLElement {
     }
   }
 
-  announceProductCount() {
-    const status = this.querySelector("[data-collection-status]");
-    const productGrid = this.querySelector("[data-collection-product-grid]");
+  announceResultCount() {
+    const status = this.querySelector("[data-faceted-results-status]");
+    const resultsGrid = this.querySelector("[data-faceted-results-grid]");
 
-    if (!status || !productGrid?.dataset.productCountText) return;
+    if (!status || !resultsGrid?.dataset.resultCountText) return;
 
     status.textContent = "";
     window.clearTimeout(this.announcementTimer);
     this.announcementTimer = window.setTimeout(() => {
-      status.textContent = productGrid.dataset.productCountText;
+      status.textContent = resultsGrid.dataset.resultCountText;
     }, 100);
   }
 
-  scrollToProductGrid({ focus = false } = {}) {
-    const productGrid = this.querySelector("[data-collection-product-grid]");
+  scrollToResultsGrid({ focus = false } = {}) {
+    const resultsGrid = this.querySelector("[data-faceted-results-grid]");
 
-    if (!productGrid) return;
+    if (!resultsGrid) return;
 
     const headerGroup = document.querySelector("#header-group");
     const headerBehavior = headerGroup?.dataset.headerBehavior;
@@ -233,18 +233,19 @@ class CollectionView extends HTMLElement {
     const currentScrollY = isPageScrollLocked
       ? Number(document.body.dataset.scrollLockTop || 0)
       : window.scrollY;
-    const productGridTop =
-      productGrid.getBoundingClientRect().top + currentScrollY;
-    const isScrollingUp = productGridTop < currentScrollY;
+    const resultsGridTop =
+      resultsGrid.getBoundingClientRect().top + currentScrollY;
+    const scrollMarginTop = Number.parseFloat(
+      window.getComputedStyle(resultsGrid).scrollMarginTop,
+    );
+    const isScrollingUp =
+      resultsGridTop - (scrollMarginTop || 0) < currentScrollY;
     const shouldOffsetHeader =
       headerBehavior === "sticky" ||
       (headerBehavior === "reveal" && isScrollingUp);
     const headerOffset = shouldOffsetHeader ? headerGroup.offsetHeight : 0;
-    const scrollMarginTop = Number.parseFloat(
-      window.getComputedStyle(productGrid).scrollMarginTop,
-    );
     const targetScrollY = Math.max(
-      productGridTop - headerOffset - (scrollMarginTop || 0),
+      resultsGridTop - headerOffset - (scrollMarginTop || 0),
       0,
     );
 
@@ -260,20 +261,20 @@ class CollectionView extends HTMLElement {
       });
     }
 
-    if (focus) productGrid.focus({ preventScroll: true });
+    if (focus) resultsGrid.focus({ preventScroll: true });
   }
 }
 
-if (!customElements.get("collection-view")) {
-  customElements.define("collection-view", CollectionView);
+if (!customElements.get("faceted-results")) {
+  customElements.define("faceted-results", FacetedResults);
 }
 
 
-class CollectionFilters extends HTMLElement {
+class FacetFilters extends HTMLElement {
   connectedCallback() {
     if (this.isInitialized) return;
 
-    this.form = this.querySelector("[data-collection-filters-form]");
+    this.form = this.querySelector("[data-facets-form]");
 
     if (!this.form) return;
 
@@ -302,7 +303,7 @@ class CollectionFilters extends HTMLElement {
   onSubmit(event) {
     event.preventDefault();
     window.clearTimeout(this.inputTimer);
-    this.updateCollection({ closeDialog: true });
+    this.updateResults({ closeDialog: true });
   }
 
   onChange(event) {
@@ -310,7 +311,7 @@ class CollectionFilters extends HTMLElement {
 
     if (!input || input.type === "text") return;
 
-    this.updateCollection();
+    this.updateResults();
   }
 
   onInput(event) {
@@ -320,21 +321,24 @@ class CollectionFilters extends HTMLElement {
 
     window.clearTimeout(this.inputTimer);
     this.inputTimer = window.setTimeout(() => {
-      this.updateCollection();
+      this.updateResults();
     }, 500);
   }
 
   onClick(event) {
-    const clearLink = event.target.closest("[data-collection-filter-clear]");
+    const clearLink = event.target.closest("[data-facets-clear]");
 
     if (!clearLink) return;
 
     event.preventDefault();
     window.clearTimeout(this.inputTimer);
-    const view = this.closest("collection-view");
+    const view = this.closest("faceted-results");
+    const dialog = this.closest("theme-dialog");
 
     if (view) {
-      view.update(new URL(clearLink.href));
+      view.update(new URL(clearLink.href), {
+        scrollToResultsGrid: dialog?.dialog?.open !== true,
+      });
     } else {
       window.location.assign(clearLink.href);
     }
@@ -354,10 +358,11 @@ class CollectionFilters extends HTMLElement {
     return url;
   }
 
-  async updateCollection({ closeDialog = false } = {}) {
-    const view = this.closest("collection-view");
+  async updateResults({ closeDialog = false } = {}) {
+    const view = this.closest("faceted-results");
     const dialog = this.closest("theme-dialog");
     const url = this.getUrl();
+    const shouldDeferScroll = dialog?.dialog?.open === true;
 
     if (!view) {
       window.location.assign(url.toString());
@@ -369,38 +374,36 @@ class CollectionFilters extends HTMLElement {
       return;
     }
 
-    const updated = await view.update(url);
+    const updated = await view.update(url, {
+      scrollToResultsGrid: !shouldDeferScroll,
+    });
 
-    if (updated && closeDialog) {
-      if (dialog?.dialog?.open) {
-        dialog.requestClose?.();
-      } else {
-        view.scrollToProductGrid();
-      }
+    if (updated && closeDialog && shouldDeferScroll) {
+      this.closeDialogAndScroll(dialog, view);
     }
   }
 
   closeDialogAndScroll(dialog, view) {
     if (!dialog?.dialog?.open) {
-      view.scrollToProductGrid();
+      view.scrollToResultsGrid();
       return;
     }
 
     dialog.dialog.addEventListener(
       "close",
-      () => view.scrollToProductGrid(),
+      () => view.scrollToResultsGrid(),
       { once: true },
     );
     dialog.requestClose?.();
   }
 }
 
-if (!customElements.get("collection-filters")) {
-  customElements.define("collection-filters", CollectionFilters);
+if (!customElements.get("facet-filters")) {
+  customElements.define("facet-filters", FacetFilters);
 }
 
 
-class CollectionSort extends HTMLElement {
+class FacetSort extends HTMLElement {
   connectedCallback() {
     if (this.isInitialized) return;
 
@@ -438,7 +441,7 @@ class CollectionSort extends HTMLElement {
 
     if (!input || !input.checked) return;
 
-    const view = this.closest("collection-view");
+    const view = this.closest("faceted-results");
     const url = new URL(window.location.href);
     const keepDropdownOpen = this.keepDropdownOpen === true;
 
@@ -452,7 +455,7 @@ class CollectionSort extends HTMLElement {
 
       if (updated) {
         const nextDropdown = view
-          .querySelector("collection-sort")
+          .querySelector("facet-sort")
           ?.closest("theme-dropdown");
 
         if (keepDropdownOpen) {
@@ -470,6 +473,6 @@ class CollectionSort extends HTMLElement {
   }
 }
 
-if (!customElements.get("collection-sort")) {
-  customElements.define("collection-sort", CollectionSort);
+if (!customElements.get("facet-sort")) {
+  customElements.define("facet-sort", FacetSort);
 }
