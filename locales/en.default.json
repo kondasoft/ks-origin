@@ -27,6 +27,7 @@
   },
   "general": {
     "account": "Account",
+    "apply": "Apply",
     "home": "Home",
     "menu": "Menu",
     "pagination": {
@@ -75,7 +76,24 @@
     "by": "by"
   },
   "collections": {
-    "empty": "No products found."
+    "empty": "No products found.",
+    "products_count": {
+      "one": "{{ count }} product",
+      "other": "{{ count }} products"
+    },
+    "filters": "Filters",
+    "sort": "Sort",
+    "active_filters_count": {
+      "one": "{{ count }} active filter",
+      "other": "{{ count }} active filters"
+    },
+    "clear_filters": "Clear all",
+    "price_from": "From",
+    "price_to": "To",
+    "show_products": {
+      "one": "Show {{ count }} product",
+      "other": "Show {{ count }} products"
+    }
   },
   "products": {
     "sku": "SKU: {{ sku }}",

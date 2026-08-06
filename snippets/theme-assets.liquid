@@ -68,6 +68,12 @@
 
 {{ 'base.css' | asset_url | stylesheet_tag: preload: true }}
 {{ 'critical.css' | asset_url | stylesheet_tag: preload: true }}
+
+{% if request.page_type == 'collection' %}
+  {{ 'main-collection.css' | asset_url | stylesheet_tag: preload: true }}
+  {{ 'product-card.css' | asset_url | stylesheet_tag: preload: true }}
+{% endif %}
+
 <link 
   id="lazy-styles" 
   rel="stylesheet"
@@ -77,3 +83,7 @@
 
 <script src="{{ 'base.js' | asset_url }}" type="module"></script>
 <script src="{{ 'components.js' | asset_url }}" type="module"></script>
+
+{% if request.page_type == 'collection' %}
+  <script src="{{ 'main-collection.js' | asset_url }}" type="module"></script>
+{% endif %}

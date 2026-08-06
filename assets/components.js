@@ -538,6 +538,151 @@ if (!customElements.get("theme-dialog")) {
 }
 
 
+class ThemeDropdown extends HTMLElement {
+  static instanceCount = 0;
+
+  connectedCallback() {
+    if (this.isInitialized) return;
+
+    this.button = this.querySelector(".theme-dropdown-btn");
+    this.content = this.querySelector(".theme-dropdown-content");
+
+    if (!this.button || !this.content) return;
+
+    if (!this.content.id) {
+      ThemeDropdown.instanceCount += 1;
+      this.content.id = `theme-dropdown-${ThemeDropdown.instanceCount}`;
+    }
+
+    this.listenerController = new AbortController();
+    this.button.setAttribute("aria-controls", this.content.id);
+    this.button.setAttribute("aria-expanded", "false");
+    this.button.setAttribute("aria-haspopup", "true");
+    this.content.hidden = true;
+
+    this.button.addEventListener("click", this.onButtonClick.bind(this), {
+      signal: this.listenerController.signal,
+    });
+    document.addEventListener("click", this.onDocumentClick.bind(this), {
+      signal: this.listenerController.signal,
+    });
+    this.addEventListener("keydown", this.onKeydown.bind(this), {
+      signal: this.listenerController.signal,
+    });
+    this.addEventListener("focusout", this.onFocusOut.bind(this), {
+      signal: this.listenerController.signal,
+    });
+    this.addEventListener("pointerdown", this.onPointerDown.bind(this), {
+      signal: this.listenerController.signal,
+    });
+    document.addEventListener("pointerup", this.onPointerEnd.bind(this), {
+      signal: this.listenerController.signal,
+    });
+    document.addEventListener("pointercancel", this.onPointerEnd.bind(this), {
+      signal: this.listenerController.signal,
+    });
+    this.isInitialized = true;
+  }
+
+  disconnectedCallback() {
+    this.listenerController?.abort();
+    window.clearTimeout(this.focusOutTimer);
+    this.isPointerInteracting = false;
+    this.isInitialized = false;
+  }
+
+  onButtonClick(event) {
+    event.preventDefault();
+    this.toggle();
+  }
+
+  onDocumentClick(event) {
+    if (this.contains(event.target)) return;
+
+    this.close();
+  }
+
+  onKeydown(event) {
+    if (event.key === "Escape") {
+      if (!this.isOpen()) return;
+
+      event.preventDefault();
+      this.close();
+      this.button.focus();
+      return;
+    }
+
+    if (event.key === "ArrowDown" && event.target === this.button) {
+      event.preventDefault();
+      this.open();
+      this.focusFirstItem();
+    }
+  }
+
+  onFocusOut() {
+    if (this.isPointerInteracting) return;
+
+    window.clearTimeout(this.focusOutTimer);
+    this.focusOutTimer = window.setTimeout(() => {
+      if (!this.contains(document.activeElement)) this.close();
+    });
+  }
+
+  onPointerDown() {
+    this.isPointerInteracting = true;
+  }
+
+  onPointerEnd() {
+    this.isPointerInteracting = false;
+  }
+
+  isOpen() {
+    return this.button?.getAttribute("aria-expanded") === "true";
+  }
+
+  toggle() {
+    if (this.isOpen()) {
+      this.close();
+    } else {
+      this.open();
+    }
+  }
+
+  open() {
+    if (!this.button || !this.content || this.isOpen()) return;
+
+    this.closeOtherDropdowns();
+    this.button.setAttribute("aria-expanded", "true");
+    this.content.hidden = false;
+  }
+
+  close() {
+    if (!this.button || !this.content || !this.isOpen()) return;
+
+    this.button.setAttribute("aria-expanded", "false");
+    this.content.hidden = true;
+  }
+
+  closeOtherDropdowns() {
+    document.querySelectorAll("theme-dropdown").forEach((dropdown) => {
+      if (dropdown !== this) dropdown.close?.();
+    });
+  }
+
+  focusFirstItem() {
+    const firstItem = this.content.querySelector(
+      'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])',
+    );
+
+    firstItem?.focus();
+  }
+}
+
+if (!customElements.get("theme-dropdown")) {
+  customElements.define("theme-dropdown", ThemeDropdown);
+}
+
+
 class ThemeCollapse extends HTMLElement {
   connectedCallback() {
     if (this.isInitialized) return;

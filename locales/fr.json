@@ -27,6 +27,7 @@
   },
   "general": {
     "account": "Compte",
+    "apply": "Appliquer",
     "home": "Accueil",
     "menu": "Menu",
     "pagination": {
@@ -75,7 +76,24 @@
     "by": "par"
   },
   "collections": {
-    "empty": "Aucun produit trouvé."
+    "empty": "Aucun produit trouvé.",
+    "products_count": {
+      "one": "{{ count }} produit",
+      "other": "{{ count }} produits"
+    },
+    "filters": "Filtres",
+    "sort": "Trier",
+    "active_filters_count": {
+      "one": "{{ count }} filtre actif",
+      "other": "{{ count }} filtres actifs"
+    },
+    "clear_filters": "Tout effacer",
+    "price_from": "De",
+    "price_to": "À",
+    "show_products": {
+      "one": "Afficher {{ count }} produit",
+      "other": "Afficher {{ count }} produits"
+    }
   },
   "products": {
     "sku": "UGS : {{ sku }}",
