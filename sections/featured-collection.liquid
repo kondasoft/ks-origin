@@ -1,0 +1,301 @@
+{% liquid
+  assign products_to_show = section.settings.products_to_show | default: 4
+
+  capture header_content
+    content_for 'blocks'
+  endcapture
+%}
+
+{% if section.index <= 3 or request.design_mode %}
+  <link href="{{ 'featured-collection.css' | asset_url }}" rel="stylesheet" fetchpriority="high">
+  <link href="{{ 'product-card.css' | asset_url }}" rel="stylesheet" fetchpriority="high">
+{% endif %}
+
+<div
+  class="featured-collection section-spacing"
+  style="
+    --color-background: {{ section.settings.background_color.red }} {{ section.settings.background_color.green }} {{ section.settings.background_color.blue }};
+    --color-text: {{ section.settings.text_color.red }} {{ section.settings.text_color.green }} {{ section.settings.text_color.blue }};
+    --color-accent: {{ section.settings.accent_color.red }} {{ section.settings.accent_color.green }} {{ section.settings.accent_color.blue }};
+    --mobile-text-alignment: {{ section.settings.mobile_text_alignment }};
+    --desktop-text-alignment: {{ section.settings.desktop_text_alignment }};
+    --mobile-columns: {{ section.settings.mobile_columns }};
+    --desktop-columns: {{ section.settings.desktop_columns }};
+    --pt: {{ section.settings.pt | divided_by: 16.0 | append: 'em' }};
+    --pb: {{ section.settings.pb | divided_by: 16.0 | append: 'em' }};
+  "
+  data-section-css="{{ 'featured-collection.css' | asset_url }}, {{ 'product-card.css' | asset_url }}"
+>
+  <div class="container {{ settings.container_width }}">
+    {% if header_content != blank %}
+      <div
+        class="featured-collection-header responsive-text-alignment"
+        data-mobile-text-alignment="{{ section.settings.mobile_text_alignment }}"
+        data-desktop-text-alignment="{{ section.settings.desktop_text_alignment }}"
+      >
+        {{ header_content }}
+      </div>
+    {% endif %}
+
+    <ul class="featured-collection-grid" role="list">
+      {% if section.settings.collection != blank and section.settings.collection.products_count > 0 %}
+        {% for product in section.settings.collection.products limit: products_to_show %}
+          <li class="featured-collection-grid-item">
+            {% content_for 'block', type: 'product-card', id: 'product-card', closest.product: product %}
+          </li>
+        {% endfor %}
+      {% else %}
+        {% for index in (1..products_to_show) %}
+          <li class="featured-collection-grid-item">
+            {% content_for 'block', type: 'product-card', id: 'product-card', closest.product: null %}
+          </li>
+        {% endfor %}
+      {% endif %}
+    </ul>
+
+    {% if section.settings.show_view_all
+      and section.settings.collection != blank
+      and section.settings.view_all_label != blank
+    %}
+      <div class="featured-collection-view-all">
+        <a
+          class="btn {{ section.settings.view_all_size }} {{ section.settings.view_all_style }}"
+          href="{{ section.settings.collection.url }}"
+        >
+          {{ section.settings.view_all_label }}
+        </a>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Featured collection",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "Products to show",
+      "min": 2,
+      "max": 24,
+      "step": 1,
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "{{ settings.colors.background }}"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "{{ settings.colors.text }}"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent color",
+      "default": "{{ settings.colors.accent }}"
+    },
+    {
+      "type": "header",
+      "content": "Header"
+    },
+    {
+      "type": "text_alignment",
+      "id": "mobile_text_alignment",
+      "label": "Mobile text alignment",
+      "default": "left"
+    },
+    {
+      "type": "text_alignment",
+      "id": "desktop_text_alignment",
+      "label": "Desktop text alignment",
+      "default": "left"
+    },
+    {
+      "type": "header",
+      "content": "Columns"
+    },
+    {
+      "type": "range",
+      "id": "mobile_columns",
+      "label": "Mobile columns",
+      "info": "Tablet layouts always use two columns.",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "desktop_columns",
+      "label": "Desktop columns",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "header",
+      "content": "View all button"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "label": "Show button",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "view_all_label",
+      "label": "Button label",
+      "default": "View all",
+      "visible_if": "{{ section.settings.show_view_all }}"
+    },
+    {
+      "type": "select",
+      "id": "view_all_style",
+      "label": "Button style",
+      "options": [
+        { "value": "btn-accent-solid", "label": "Accent solid" },
+        { "value": "btn-accent-outline", "label": "Accent outline" },
+        { "value": "btn-text-solid", "label": "Text solid" },
+        { "value": "btn-text-outline", "label": "Text outline" }
+      ],
+      "default": "btn-text-outline",
+      "visible_if": "{{ section.settings.show_view_all }}"
+    },
+    {
+      "type": "select",
+      "id": "view_all_size",
+      "label": "Button size",
+      "options": [
+        { "value": "btn-sm", "label": "Small" },
+        { "value": "btn-md", "label": "Medium" },
+        { "value": "btn-lg", "label": "Large" }
+      ],
+      "default": "btn-md",
+      "visible_if": "{{ section.settings.show_view_all }}"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pt",
+      "label": "Top",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "pb",
+      "label": "Bottom",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 60
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@theme"
+    },
+    {
+      "type": "@app"
+    }
+  ],
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "presets": [
+    {
+      "name": "Featured collection",
+      "category": "Products",
+      "blocks": [
+        {
+          "type": "heading",
+          "settings": {
+            "heading": "Featured collection",
+            "heading_tag": "2",
+            "heading_size": "h2",
+            "pt": 0,
+            "pb": 6
+          }
+        },
+        {
+          "type": "text",
+          "settings": {
+            "text": "<p>Explore featured new arrivals, customer favorites, and everyday essentials.</p>",
+            "text_size": "fs-md",
+            "pt": 0,
+            "pb": 0
+          }
+        },
+        {
+          "type": "product-card",
+          "id": "product-card",
+          "static": true,
+          "settings": {
+            "text_alignment": "left"
+          },
+          "blocks": [
+            {
+              "type": "_product-card-image",
+              "settings": {
+                "image_ratio": "square"
+              }
+            },
+            {
+              "type": "_product-card-title",
+              "settings": {
+                "font_family": "heading",
+                "heading_size": "fs-md"
+              }
+            },
+            {
+              "type": "_product-rating",
+              "settings": {
+                "show_count": true,
+                "rating_size": "fs-sm"
+              }
+            },
+            {
+              "type": "_product-card-price",
+              "settings": {
+                "price_size": "fs-md"
+              }
+            },
+            {
+              "type": "_product-card-form",
+              "settings": {
+                "button_style": "btn-accent-solid",
+                "button_size": "btn-sm"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

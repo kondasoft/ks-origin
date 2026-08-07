@@ -1,0 +1,55 @@
+/*
+  Featured collection stylesheet
+
+  This file owns the Featured collection section layout and product-grid presentation.
+  Keep reusable product-card presentation in the product-card stylesheet.
+*/
+
+.featured-collection {
+  color: rgb(var(--color-text));
+  background-color: rgb(var(--color-background));
+}
+
+.featured-collection-header {
+  margin-bottom: 1.75rem;
+}
+
+.featured-collection-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--mobile-columns), minmax(0, 1fr));
+  gap: 2rem 1rem;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.featured-collection-grid-item {
+  min-width: 0;
+}
+
+.featured-collection-view-all {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+@media (min-width: 600px) {
+  .featured-collection-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1200px) {
+  .featured-collection-header {
+    margin-bottom: 2rem;
+  }
+
+  .featured-collection-grid {
+    grid-template-columns: repeat(var(--desktop-columns), minmax(0, 1fr));
+    gap: 2.5rem 1.5rem;
+  }
+
+  .featured-collection-view-all {
+    margin-top: 2.5rem;
+  }
+}

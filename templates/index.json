@@ -100,7 +100,7 @@
         "external_video_alt": "",
         "background_color": "#0a0a0a",
         "text_color": "#ffffff",
-        "accent_color": "#60A5FA",
+        "accent_color": "#60a5fa",
         "overlay_color": "#000000",
         "overlay_opacity": 30,
         "mobile_content_position": "center",
@@ -113,53 +113,119 @@
         "pb": 0
       }
     },
-    "email_signup_bC6B3d": {
-      "type": "email-signup",
+    "featured_collection_zBQiyp": {
+      "type": "featured-collection",
       "blocks": {
-        "heading_tmEbcH": {
+        "heading_HDjxhr": {
           "type": "heading",
           "settings": {
-            "heading": "Join our newsletter",
+            "heading": "Featured collection",
             "heading_tag": "2",
             "heading_size": "h2",
             "pt": 0,
-            "pb": 0
+            "pb": 6
           },
           "blocks": {}
         },
-        "text_JYXbFg": {
+        "text_yKAUnX": {
           "type": "text",
           "settings": {
-            "text": "<p>Sign up for new arrivals, special offers, and updates.</p>",
+            "text": "<p>Introduce a collection, campaign, or key message with immersive full-width media.</p>",
             "text_size": "fs-md",
-            "pt": 0,
-            "pb": 24
-          },
-          "blocks": {}
-        },
-        "email_signup_form_GKq4Kd": {
-          "type": "email-signup-form",
-          "settings": {
             "pt": 0,
             "pb": 0
           },
           "blocks": {}
+        },
+        "product-card": {
+          "type": "product-card",
+          "static": true,
+          "settings": {
+            "text_alignment": "left"
+          },
+          "blocks": {
+            "product_card_image_yiCBiq": {
+              "type": "_product-card-image",
+              "settings": {
+                "image_ratio": "square"
+              },
+              "blocks": {}
+            },
+            "product_card_title_HVka4L": {
+              "type": "_product-card-title",
+              "settings": {
+                "font_family": "heading",
+                "heading_size": "fs-md"
+              },
+              "blocks": {}
+            },
+            "product_rating_HBbUqt": {
+              "type": "_product-rating",
+              "settings": {
+                "show_count": true,
+                "rating_size": "fs-sm"
+              },
+              "blocks": {}
+            },
+            "product_card_price_pHjnjE": {
+              "type": "_product-card-price",
+              "settings": {
+                "price_size": "fs-md"
+              },
+              "blocks": {}
+            },
+            "product_card_form_Mkjbif": {
+              "type": "_product-card-form",
+              "settings": {
+                "button_style": "btn-accent-solid",
+                "button_size": "btn-sm"
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "product_card_image_yiCBiq",
+            "product_card_title_HVka4L",
+            "product_rating_HBbUqt",
+            "product_card_price_pHjnjE",
+            "product_card_form_Mkjbif"
+          ]
         }
       },
       "block_order": [
-        "heading_tmEbcH",
-        "text_JYXbFg",
-        "email_signup_form_GKq4Kd"
+        "heading_HDjxhr",
+        "text_yKAUnX"
       ],
-      "name": "Email signup",
+      "name": "Featured collection",
       "settings": {
-        "background_color": "{{ settings.colors.text }}",
-        "text_color": "{{ settings.colors.background }}",
-        "accent_color": "#60A5FA",
+        "collection": "all",
+        "products_to_show": 8,
+        "background_color": "{{ settings.colors.background }}",
+        "text_color": "{{ settings.colors.text }}",
+        "accent_color": "{{ settings.colors.accent }}",
         "mobile_text_alignment": "left",
-        "desktop_text_alignment": "center",
+        "desktop_text_alignment": "left",
+        "mobile_columns": 2,
+        "desktop_columns": 4,
+        "show_view_all": false,
+        "view_all_label": "View all",
+        "view_all_style": "btn-text-outline",
+        "view_all_size": "btn-md",
         "pt": 60,
         "pb": 60
+      }
+    },
+    "divider_mhqKLJ": {
+      "type": "divider",
+      "name": "Divider",
+      "settings": {
+        "background_color": "{{ settings.colors.background }}",
+        "line_color": "{{ settings.colors.text }}",
+        "custom_line_opacity": false,
+        "line_opacity": 20,
+        "container_width": "site",
+        "pt": 0,
+        "pb": 0
       }
     },
     "contact_form_jN7QXd": {
@@ -286,19 +352,6 @@
         "desktop_text_alignment": "left",
         "pt": 60,
         "pb": 60
-      }
-    },
-    "divider_mhqKLJ": {
-      "type": "divider",
-      "name": "Divider",
-      "settings": {
-        "background_color": "{{ settings.colors.background }}",
-        "line_color": "{{ settings.colors.text }}",
-        "custom_line_opacity": false,
-        "line_opacity": 20,
-        "container_width": "site",
-        "pt": 0,
-        "pb": 0
       }
     },
     "video_DJLR97": {
@@ -1121,7 +1174,7 @@
           "name": "Column 2",
           "settings": {
             "custom_colors": true,
-            "background_color": "#E7CACC",
+            "background_color": "#e7cacc",
             "text_color": "{{ settings.colors.text }}",
             "accent_color": "{{ settings.colors.accent }}",
             "mobile_content_direction": "column",
@@ -1228,15 +1281,64 @@
         "pt": 60,
         "pb": 60
       }
+    },
+    "email_signup_bC6B3d": {
+      "type": "email-signup",
+      "blocks": {
+        "heading_tmEbcH": {
+          "type": "heading",
+          "settings": {
+            "heading": "Join our newsletter",
+            "heading_tag": "2",
+            "heading_size": "h2",
+            "pt": 0,
+            "pb": 0
+          },
+          "blocks": {}
+        },
+        "text_JYXbFg": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Sign up for new arrivals, special offers, and updates.</p>",
+            "text_size": "fs-md",
+            "pt": 0,
+            "pb": 24
+          },
+          "blocks": {}
+        },
+        "email_signup_form_GKq4Kd": {
+          "type": "email-signup-form",
+          "settings": {
+            "pt": 0,
+            "pb": 0
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "heading_tmEbcH",
+        "text_JYXbFg",
+        "email_signup_form_GKq4Kd"
+      ],
+      "name": "Email signup",
+      "settings": {
+        "background_color": "{{ settings.colors.surface }}",
+        "text_color": "{{ settings.colors.text }}",
+        "accent_color": "{{ settings.colors.accent }}",
+        "mobile_text_alignment": "left",
+        "desktop_text_alignment": "center",
+        "pt": 60,
+        "pb": 60
+      }
     }
   },
   "order": [
     "hero_epRUea",
-    "email_signup_bC6B3d",
+    "featured_collection_zBQiyp",
+    "divider_mhqKLJ",
     "contact_form_jN7QXd",
     "liquid_html_6ttYfG",
     "image_4hw3MC",
-    "divider_mhqKLJ",
     "video_DJLR97",
     "image_with_text_CMaCke",
     "custom_section_cVKwjJ",
@@ -1245,6 +1347,7 @@
     "rich_text_Yt7LTn",
     "video_TetJLA",
     "video_with_text_mUK9FU",
-    "columns_xVQnwK"
+    "columns_xVQnwK",
+    "email_signup_bC6B3d"
   ]
 }
