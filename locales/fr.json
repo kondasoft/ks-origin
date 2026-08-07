@@ -32,6 +32,12 @@
       "previous": "Précédent",
       "next": "Suivant"
     },
+    "share": {
+      "share": "Partager",
+      "link": "Lien à partager",
+      "copy": "Copier le lien",
+      "copied": "Copié"
+    },
     "localization": {
       "country": "Pays",
       "countries": "Pays",
@@ -107,6 +113,11 @@
     "tags": "Étiqueté avec",
     "by_author": "Par {{ author }}",
     "read_more": "Lire la suite",
+    "navigation": {
+      "label": "Navigation des articles",
+      "previous": "Précédent",
+      "next": "Suivant"
+    },
     "placeholders": {
       "title": "Exemple de titre d’article",
       "excerpt": "Partagez un court aperçu de votre article pour aider les lecteurs à découvrir son contenu."

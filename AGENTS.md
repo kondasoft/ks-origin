@@ -43,7 +43,7 @@
 ## JSON templates
 
 - Do not edit or delete existing JSON templates inside `templates/` or `sections/` unless the user explicitly asks for those JSON template changes.
-- When a change includes JSON templates or section-group JSON files, edit all supporting Liquid sections and their schemas first, then edit the dependent JSON files last. Shopify's live uploader may otherwise process the JSON before the updated section schema and reject unsupported sections.
+- When a change includes JSON templates or section-group JSON files, edit all supporting Liquid sections and their schemas first, then edit the dependent JSON files last. Make these changes in separate filesystem operations; never batch supporting schema changes and dependent JSON changes in the same `apply_patch` call. Shopify's live uploader may otherwise process the JSON before the updated section schema and reject unsupported sections.
 
 ## Liquid and theme schemas
 
@@ -76,6 +76,7 @@
   ```
 - Leave two blank lines before each CSS group comment, except when the comment is the first content in the file.
 - Let headings and body copy inherit the theme's global typography. Add component-specific font sizes, line heights, or text spacing only when explicitly requested or clearly required by the design.
+- Use `rgb(var(--color-surface))` for subtle component backgrounds. Do not simulate surface backgrounds with low-opacity text colors such as `rgb(var(--color-text) / 0.05)`.
 - Use `px` for explicit width and height values.
 - Use `em` for section and component spacing that should scale with the surrounding typography, including section top and bottom spacing, component padding, and gaps. Use `rem` for layout spacing that should remain independent of the local font size.
 - Keep merchant-facing spacing settings in `px`. When the storefront spacing should scale proportionally, divide the setting by `16.0` in Liquid and emit the resulting CSS custom property in `em`.

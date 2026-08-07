@@ -1,0 +1,80 @@
+<div
+  class="article-share-block block-spacing"
+  style="
+    --pt: {{ block.settings.pt | divided_by: 16.0 | append: 'em' }};
+    --pb: {{ block.settings.pb | divided_by: 16.0 | append: 'em' }};
+  "
+  {{ block.shopify_attributes }}
+>
+  <div class="article-share">
+    {% render 'share-button',
+      id: block.id,
+      title: article.title,
+      url: canonical_url,
+      button_style: block.settings.button_style,
+      button_size: block.settings.button_size
+    %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Article share",
+  "tag": null,
+  "settings": [
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "Button style",
+      "options": [
+        { "value": "btn-accent-solid", "label": "Accent solid" },
+        { "value": "btn-accent-outline", "label": "Accent outline" },
+        { "value": "btn-text-solid", "label": "Text solid" },
+        { "value": "btn-text-outline", "label": "Text outline" }
+      ],
+      "default": "btn-text-outline"
+    },
+    {
+      "type": "select",
+      "id": "button_size",
+      "label": "Button size",
+      "options": [
+        { "value": "btn-sm", "label": "Small" },
+        { "value": "btn-md", "label": "Medium" },
+        { "value": "btn-lg", "label": "Large" }
+      ],
+      "default": "btn-sm"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pt",
+      "label": "Top",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "pb",
+      "label": "Bottom",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Article share",
+      "category": "Blog"
+    }
+  ]
+}
+{% endschema %}

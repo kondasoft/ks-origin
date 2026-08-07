@@ -1252,3 +1252,84 @@ if (!customElements.get("localization-country-filter")) {
     LocalizationCountryFilter,
   );
 }
+
+
+/*
+  Share
+*/
+class ShareComponent extends HTMLElement {
+  connectedCallback() {
+    if (this.isInitialized) return;
+
+    this.shareButton = this.querySelector("[data-share-button]");
+    this.copyButton = this.querySelector("[data-share-copy]");
+    this.urlInput = this.querySelector("[data-share-url-input]");
+    this.dialog = this.querySelector("theme-dialog");
+
+    if (!this.shareButton) return;
+
+    this.listenerController = new AbortController();
+    this.addEventListener("click", this.onShareClick.bind(this), {
+      capture: true,
+      signal: this.listenerController.signal,
+    });
+    this.copyButton?.addEventListener("click", this.onCopyClick.bind(this), {
+      signal: this.listenerController.signal,
+    });
+    this.isInitialized = true;
+  }
+
+  disconnectedCallback() {
+    this.listenerController?.abort();
+    window.clearTimeout(this.copyResetTimer);
+    this.isInitialized = false;
+  }
+
+  async onShareClick(event) {
+    const shareButton = event.target.closest("[data-share-button]");
+
+    if (!shareButton || !this.contains(shareButton) || !navigator.share) return;
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    try {
+      await navigator.share({
+        title: shareButton.dataset.shareTitle,
+        url: shareButton.dataset.shareUrl,
+      });
+    } catch (error) {
+      if (error.name === "AbortError") return;
+
+      this.dialog.lastTrigger = shareButton;
+      this.dialog.openedByPointer = event.detail !== 0;
+      this.dialog.openDialog();
+    }
+  }
+
+  async onCopyClick() {
+    if (!this.urlInput || !this.copyButton) return;
+
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(this.urlInput.value);
+      } else {
+        this.urlInput.select();
+
+        if (!document.execCommand("copy")) return;
+      }
+    } catch {
+      return;
+    }
+
+    this.copyButton.textContent = this.copyButton.dataset.textCopied;
+    window.clearTimeout(this.copyResetTimer);
+    this.copyResetTimer = window.setTimeout(() => {
+      this.copyButton.textContent = this.copyButton.dataset.textCopy;
+    }, 2000);
+  }
+}
+
+if (!customElements.get("share-component")) {
+  customElements.define("share-component", ShareComponent);
+}

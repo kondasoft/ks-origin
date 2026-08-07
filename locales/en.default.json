@@ -32,6 +32,12 @@
       "previous": "Previous",
       "next": "Next"
     },
+    "share": {
+      "share": "Share",
+      "link": "Link to share",
+      "copy": "Copy link",
+      "copied": "Copied"
+    },
     "localization": {
       "country": "Country",
       "countries": "Countries",
@@ -107,6 +113,11 @@
     "tags": "Tagged with",
     "by_author": "By {{ author }}",
     "read_more": "Read more",
+    "navigation": {
+      "label": "Article navigation",
+      "previous": "Previous",
+      "next": "Next"
+    },
     "placeholders": {
       "title": "Example article title",
       "excerpt": "Share a short preview of your article to help readers discover the story."

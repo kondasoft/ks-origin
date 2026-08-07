@@ -17,7 +17,7 @@
         {% assign tag_handle = tag | handle %}
         {% assign tag_url = blog.url | append: '/tagged/' | append: tag_handle %}
         <li>
-          <a class="article-tag fs-sm" href="{{ tag_url }}">
+          <a class="article-tag badge fs-sm" href="{{ tag_url }}">
             {{ tag | escape }}
           </a>
         </li>

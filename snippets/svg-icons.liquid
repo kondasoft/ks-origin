@@ -58,4 +58,11 @@
     <svg aria-hidden="true" class="svg-icon svg-icon-translate" width="{{ scaled_icon_size }}" height="{{ scaled_icon_size }}" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="m5 8 6 6M4 14l6-6 2-3M2 5h12M7 2h1m14 20-5-10-5 10m2-4h8" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="{{ stroke_width }}"></path>
     </svg>
+  {% when 'share' %}
+    <svg aria-hidden="true" class="svg-icon svg-icon-share" width="{{ scaled_icon_size }}" height="{{ scaled_icon_size }}" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="18" cy="5" r="3" stroke="currentColor" stroke-width="{{ stroke_width }}"></circle>
+      <circle cx="6" cy="12" r="3" stroke="currentColor" stroke-width="{{ stroke_width }}"></circle>
+      <circle cx="18" cy="19" r="3" stroke="currentColor" stroke-width="{{ stroke_width }}"></circle>
+      <path d="m8.59 13.51 6.82 3.98M15.41 6.51 8.59 10.49" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="{{ stroke_width }}"></path>
+    </svg>
 {% endcase %}

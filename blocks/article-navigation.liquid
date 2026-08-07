@@ -1,0 +1,76 @@
+{% if blog.previous_article or blog.next_article %}
+  <nav
+    class="article-navigation-block block-spacing"
+    aria-label="{{ 'blogs.navigation.label' | t }}"
+    style="
+      --pt: {{ block.settings.pt | divided_by: 16.0 | append: 'em' }};
+      --pb: {{ block.settings.pb | divided_by: 16.0 | append: 'em' }};
+    "
+    {{ block.shopify_attributes }}
+  >
+    <div class="article-navigation">
+      {% if blog.previous_article %}
+        <a class="article-navigation-link article-navigation-previous" href="{{ blog.previous_article.url }}">
+          <span class="article-navigation-label fs-sm">
+            {% render 'svg-icons', icon: 'arrow-left', icon_size: 18 %}
+            {{ 'blogs.navigation.previous' | t }}
+          </span>
+          <span class="article-navigation-title">
+            {{ blog.previous_article.title | escape }}
+          </span>
+        </a>
+      {% endif %}
+
+      {% if blog.next_article %}
+        <a class="article-navigation-link article-navigation-next" href="{{ blog.next_article.url }}">
+          <span class="article-navigation-label fs-sm">
+            {{ 'blogs.navigation.next' | t }}
+            {% render 'svg-icons', icon: 'arrow-right', icon_size: 18 %}
+          </span>
+          <span class="article-navigation-title">
+            {{ blog.next_article.title | escape }}
+          </span>
+        </a>
+      {% endif %}
+    </div>
+  </nav>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Previous and next",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pt",
+      "label": "Top",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "pb",
+      "label": "Bottom",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Previous and next",
+      "category": "Blog"
+    }
+  ]
+}
+{% endschema %}

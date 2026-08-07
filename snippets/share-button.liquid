@@ -1,0 +1,79 @@
+{% doc %}
+Renders a share button that uses the native share sheet when available and a copy-link dialog as a fallback.
+
+@param {string} id - A unique identifier used by the fallback dialog.
+@param {string} title - The title supplied to the native share sheet.
+@param {string} url - The canonical URL to share and copy.
+@param {string} [button_style] - A theme button style class.
+@param {string} [button_size] - A theme button size class.
+{% enddoc %}
+
+{% liquid
+  assign dialog_id = 'ShareDialog-' | append: id
+  assign button_style = button_style | default: 'btn-text-outline'
+  assign button_size = button_size | default: 'btn-sm'
+%}
+
+<share-component>
+  <button
+    class="btn {{ button_size }} {{ button_style }}"
+    type="button"
+    data-share-button
+    data-share-title="{{ title | escape }}"
+    data-share-url="{{ url | escape }}"
+    data-toggle="{{ dialog_id }}"
+  >
+    {% render 'svg-icons', icon: 'share', icon_size: 18 %}
+    {{ 'general.share.share' | t }}
+  </button>
+
+  <theme-dialog>
+    <dialog
+      id="{{ dialog_id }}"
+      class="dialog modal share-dialog"
+      aria-labelledby="{{ dialog_id }}-title"
+    >
+      <div class="dialog-header">
+        <h2 id="{{ dialog_id }}-title" class="dialog-title">
+          {{ 'general.share.share' | t }}
+        </h2>
+
+        <button
+          class="icon-button dialog-close"
+          type="button"
+          data-dialog-close
+          aria-label="{{ 'accessibility.close' | t }}"
+        >
+          {% render 'svg-icons', icon: 'close' %}
+        </button>
+      </div>
+
+      <div class="dialog-body">
+        <label class="visually-hidden" for="{{ dialog_id }}-url">
+          {{ 'general.share.link' | t }}
+        </label>
+        <input
+          id="{{ dialog_id }}-url"
+          class="input share-dialog-input"
+          type="text"
+          value="{{ url | escape }}"
+          readonly
+          data-share-url-input
+        >
+      </div>
+
+      <div class="dialog-footer">
+        <button
+          class="btn btn-md btn-accent-solid share-dialog-copy"
+          type="button"
+          data-share-copy
+          data-text-copy="{{ 'general.share.copy' | t | escape }}"
+          data-text-copied="{{ 'general.share.copied' | t | escape }}"
+          aria-live="polite"
+        >
+          {{ 'general.share.copy' | t }}
+        </button>
+      </div>
+    </dialog>
+  </theme-dialog>
+</share-component>

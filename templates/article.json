@@ -17,7 +17,7 @@
           "settings": {
             "image_ratio": "landscape",
             "pt": 0,
-            "pb": 26
+            "pb": 30
           },
           "blocks": {}
         },
@@ -65,6 +65,25 @@
             "pb": 0
           },
           "blocks": {}
+        },
+        "article-share": {
+          "type": "article-share",
+          "settings": {
+            "button_style": "btn-text-outline",
+            "button_size": "btn-sm",
+            "pt": 24,
+            "pb": 0
+          },
+          "blocks": {}
+        },
+
+        "article-navigation": {
+          "type": "article-navigation",
+          "settings": {
+            "pt": 24,
+            "pb": 0
+          },
+          "blocks": {}
         }
       },
       "block_order": [
@@ -73,7 +92,9 @@
         "article-heading",
         "article-meta",
         "article-content",
-        "article-tags"
+        "article-tags",
+        "article-share",
+        "article-navigation"
       ],
       "settings": {
         "background_color": "{{ settings.colors.background }}",
@@ -87,6 +108,7 @@
       }
     }
   },
+
   "order": [
     "main"
   ]

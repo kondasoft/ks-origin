@@ -184,6 +184,18 @@
 
 
 /*
+  Share
+*/
+.share-dialog-input {
+  width: 100%;
+}
+
+.share-dialog-copy {
+  width: 100%;
+}
+
+
+/*
   Predictive search
 */
 predictive-search {
