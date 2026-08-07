@@ -9,6 +9,7 @@
             class="header-nav-link{% if link.active %} active{% endif %}"
             href="{{ link.url }}"
             {% if link.current %}aria-current="page"{% endif %}
+            {% if link.url contains 'https://' %}target="_blank" rel="noopener noreferrer"{% endif %}
           >
             <span>{{ link.title }}</span>
           </a>
@@ -25,6 +26,7 @@
                 class="header-nav-link{% if link.active or link.child_active %} active{% endif %}"
                 href="{{ link.url }}"
                 {% if link.current %}aria-current="page"{% endif %}
+                {% if link.url contains 'https://' %}target="_blank" rel="noopener noreferrer"{% endif %}
               >
                 <span>{{ link.title }}</span>
               </a>
@@ -55,6 +57,7 @@
                     class="header-dropdown-link{% if childlink.active %} active{% endif %}"
                     href="{{ childlink.url }}"
                     {% if childlink.current %}aria-current="page"{% endif %}
+                    {% if childlink.url contains 'https://' %}target="_blank" rel="noopener noreferrer"{% endif %}
                   >
                     <span>{{ childlink.title }}</span>
                   </a>
@@ -93,6 +96,7 @@
                           class="header-megamenu-image-link{% if childlink.active %} active{% endif %}"
                           href="{{ childlink.url }}"
                           {% if childlink.current %}aria-current="page"{% endif %}
+                          {% if childlink.url contains 'https://' %}target="_blank" rel="noopener noreferrer"{% endif %}
                         >
                           <span class="header-megamenu-image">
                             <img
@@ -113,6 +117,7 @@
                             class="header-megamenu-heading{% if childlink.active %} active{% endif %}"
                             href="{{ childlink.url }}"
                             {% if childlink.current %}aria-current="page"{% endif %}
+                            {% if childlink.url contains 'https://' %}target="_blank" rel="noopener noreferrer"{% endif %}
                           >
                             <span>{{ childlink_title }}</span>
                           </a>
@@ -126,6 +131,7 @@
                                   class="header-megamenu-link{% if grandchildlink.active %} active{% endif %}"
                                   href="{{ grandchildlink.url }}"
                                   {% if grandchildlink.current %}aria-current="page"{% endif %}
+                                  {% if grandchildlink.url contains 'https://' %}target="_blank" rel="noopener noreferrer"{% endif %}
                                 >
                                   <span>{{ grandchildlink.title }}</span>
                                 </a>

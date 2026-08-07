@@ -1,0 +1,43 @@
+<div class="article-card-read-more-block" {{ block.shopify_attributes }}>
+  <span class="btn {{ block.settings.button_size }} {{ block.settings.button_style }}">
+    {{ 'blogs.read_more' | t }}
+  </span>
+</div>
+
+{% schema %}
+{
+  "name": "Read more",
+  "tag": null,
+  "settings": [
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "Button style",
+      "options": [
+        { "value": "btn-accent-solid", "label": "Accent solid" },
+        { "value": "btn-accent-outline", "label": "Accent outline" },
+        { "value": "btn-text-solid", "label": "Text solid" },
+        { "value": "btn-text-outline", "label": "Text outline" }
+      ],
+      "default": "btn-text-outline"
+    },
+    {
+      "type": "select",
+      "id": "button_size",
+      "label": "Button size",
+      "options": [
+        { "value": "btn-sm", "label": "Small" },
+        { "value": "btn-md", "label": "Medium" },
+        { "value": "btn-lg", "label": "Large" }
+      ],
+      "default": "btn-sm"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Read more",
+      "category": "Blog"
+    }
+  ]
+}
+{% endschema %}

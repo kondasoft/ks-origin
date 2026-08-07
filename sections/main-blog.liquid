@@ -1,0 +1,350 @@
+{% liquid
+  assign articles_per_page = section.settings.articles_per_page | default: 12
+  assign pagination_previous = 'general.pagination.previous' | t
+  assign pagination_next = 'general.pagination.next' | t
+  assign active_blog_tag = current_tags | first
+  assign tag_filter_label = 'blogs.filter_by_tag' | t
+  assign show_blog_tag_filter = false
+
+  if active_blog_tag != blank
+    assign tag_filter_label = active_blog_tag
+  endif
+
+  if section.settings.show_tag_filter and blog.all_tags.size > 0
+    assign show_blog_tag_filter = true
+  endif
+
+  if shop.permanent_domain contains 'ks-'
+    assign articles_per_page = 8
+  endif
+%}
+
+<div
+  class="main-blog section-spacing"
+  style="
+    --color-background: {{ section.settings.background_color.red }} {{ section.settings.background_color.green }} {{ section.settings.background_color.blue }};
+    --color-text: {{ section.settings.text_color.red }} {{ section.settings.text_color.green }} {{ section.settings.text_color.blue }};
+    --color-accent: {{ section.settings.accent_color.red }} {{ section.settings.accent_color.green }} {{ section.settings.accent_color.blue }};
+    --pt: {{ section.settings.pt | divided_by: 16.0 | append: 'em' }};
+    --pb: {{ section.settings.pb | divided_by: 16.0 | append: 'em' }};
+  "
+>
+  <div class="container {{ settings.container_width }}">
+    <header
+      class="main-blog-header responsive-text-alignment"
+      data-mobile-text-alignment="{{ section.settings.header_mobile_text_alignment }}"
+      data-desktop-text-alignment="{{ section.settings.header_desktop_text_alignment }}"
+      style="
+        --mobile-text-alignment: {{ section.settings.header_mobile_text_alignment }};
+        --desktop-text-alignment: {{ section.settings.header_desktop_text_alignment }};
+      "
+    >
+      {% if section.settings.show_breadcrumbs %}
+        {% if active_blog_tag != blank %}
+          {% render 'breadcrumb',
+            current_title: active_blog_tag,
+            parent_title: blog.title,
+            parent_url: blog.url
+          %}
+        {% else %}
+          {% render 'breadcrumb', current_title: blog.title %}
+        {% endif %}
+      {% endif %}
+
+      <h1 class="main-blog-title {{ section.settings.heading_size }}">
+        {{ blog.title | escape }}
+      </h1>
+    </header>
+
+    {% paginate blog.articles by articles_per_page %}
+      {% if section.settings.show_article_count or show_blog_tag_filter %}
+        <div class="blog-utilities">
+          {% if section.settings.show_article_count %}
+            <p class="blog-article-count">
+              {{ 'blogs.articles_count' | t: count: paginate.items }}
+            </p>
+          {% endif %}
+
+          {% if show_blog_tag_filter %}
+            <theme-dropdown class="theme-dropdown blog-tag-filter">
+              <button
+                class="theme-dropdown-btn btn btn-sm btn-text-outline"
+                type="button"
+                aria-expanded="false"
+              >
+                {% render 'svg-icons', icon: 'filter', icon_size: 16 %}
+                {{ tag_filter_label | escape }}
+                {% render 'svg-icons', icon: 'chevron-down', icon_size: 14 %}
+              </button>
+
+              <div
+                class="theme-dropdown-content"
+                data-dropdown-alignment="right"
+                hidden
+              >
+                <ul class="blog-tag-filter-list" role="list">
+                  <li>
+                    <a
+                      class="blog-tag-filter-link"
+                      href="{{ blog.url }}"
+                      {% if current_tags == blank %}aria-current="page"{% endif %}
+                    >
+                      {{ 'blogs.all_articles' | t }}
+                    </a>
+                  </li>
+
+                  {% for tag in blog.all_tags %}
+                    {% assign tag_handle = tag | handle %}
+                    {% assign tag_url = blog.url | append: '/tagged/' | append: tag_handle %}
+                    <li>
+                      <a
+                        class="blog-tag-filter-link"
+                        href="{{ tag_url }}"
+                        {% if current_tags contains tag %}aria-current="page"{% endif %}
+                      >
+                        {{ tag | escape }}
+                      </a>
+                    </li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </theme-dropdown>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      {% if blog.articles.size > 0 %}
+        <ul
+          class="article-grid"
+          role="list"
+          style="
+            --mobile-columns: {{ section.settings.mobile_columns }};
+            --tablet-columns: 2;
+            --desktop-columns: {{ section.settings.desktop_columns }};
+          "
+        >
+          {% for article in blog.articles %}
+            <li class="article-grid-item">
+              {% content_for 'block', type: 'article-card', id: 'article-card', closest.article: article %}
+            </li>
+          {% endfor %}
+        </ul>
+
+        {% if paginate.pages > 1 %}
+          <nav class="pagination" aria-label="{{ 'accessibility.pagination' | t }}">
+            {{ paginate
+              | default_pagination:
+                previous: pagination_previous,
+                next: pagination_next
+            }}
+          </nav>
+        {% endif %}
+      {% else %}
+        <p class="main-blog-empty">
+          {{ 'blogs.empty' | t }}
+        </p>
+      {% endif %}
+    {% endpaginate %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Blog",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "{{ settings.colors.background }}"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "{{ settings.colors.text }}"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent color",
+      "default": "{{ settings.colors.accent }}"
+    },
+    {
+      "type": "header",
+      "content": "Header"
+    },
+    {
+      "type": "text_alignment",
+      "id": "header_mobile_text_alignment",
+      "label": "Mobile text alignment",
+      "default": "left"
+    },
+    {
+      "type": "text_alignment",
+      "id": "header_desktop_text_alignment",
+      "label": "Desktop text alignment",
+      "default": "left"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_breadcrumbs",
+      "label": "Show breadcrumbs",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "options": [
+        { "value": "h1", "label": "H1" },
+        { "value": "h2", "label": "H2" },
+        { "value": "h3", "label": "H3" },
+        { "value": "h4", "label": "H4" },
+        { "value": "h5", "label": "H5" },
+        { "value": "h6", "label": "H6" }
+      ],
+      "default": "h1",
+      "info": "Changes the visual size only. The HTML heading remains H1."
+    },
+    {
+      "type": "header",
+      "content": "Blog utilities"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_article_count",
+      "label": "Show article count",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_tag_filter",
+      "label": "Show tag filter",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Article grid"
+    },
+    {
+      "type": "range",
+      "id": "mobile_columns",
+      "label": "Mobile columns",
+      "info": "Tablet layouts always use two columns.",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "desktop_columns",
+      "label": "Desktop columns",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "articles_per_page",
+      "label": "Articles per page",
+      "min": 4,
+      "max": 48,
+      "step": 2,
+      "default": 24
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pt",
+      "label": "Top",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "pb",
+      "label": "Bottom",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 60
+    }
+  ],
+  "blocks": [
+    {
+      "type": "article-card"
+    }
+  ],
+  "enabled_on": {
+    "templates": ["blog"]
+  },
+  "presets": [
+    {
+      "name": "Blog",
+      "category": "Blog",
+      "blocks": [
+        {
+          "type": "article-card",
+          "id": "article-card",
+          "static": true,
+          "settings": {
+            "text_alignment": "left"
+          },
+          "blocks": [
+            {
+              "type": "article-card-image",
+              "settings": {
+                "image_ratio": "landscape"
+              }
+            },
+            {
+              "type": "article-card-heading",
+              "settings": {
+                "font_family": "heading",
+                "heading_size": "fs-xl"
+              }
+            },
+            {
+              "type": "article-card-meta",
+              "settings": {
+                "show_date": true,
+                "show_author": true,
+                "text_size": "fs-sm"
+              }
+            },
+            {
+              "type": "article-card-excerpt",
+              "settings": {
+                "text_size": "fs-md",
+                "max_words": 40
+              }
+            },
+            {
+              "type": "article-card-read-more",
+              "settings": {
+                "button_style": "btn-text-outline",
+                "button_size": "btn-sm"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

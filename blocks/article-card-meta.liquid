@@ -1,0 +1,68 @@
+{% liquid
+  assign article = closest.article
+  assign article_author = article.author | default: shop.name
+  assign show_date = block.settings.show_date
+  assign show_author = block.settings.show_author
+%}
+
+{% if show_date or show_author %}
+  <div class="article-card-meta-block" {{ block.shopify_attributes }}>
+    <p class="article-card-meta {{ block.settings.text_size }}">
+      {% if show_date %}
+        {% if article == blank %}
+          {{ 'now' | time_tag: format: 'date' }}
+        {% else %}
+          {{ article.published_at | time_tag: format: 'date' }}
+        {% endif %}
+      {% endif %}
+
+      {% if show_date and show_author %}
+        <span aria-hidden="true">·</span>
+      {% endif %}
+
+      {% if show_author %}
+        {{ 'blogs.by_author' | t: author: article_author }}
+      {% endif %}
+    </p>
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Article meta",
+  "tag": null,
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_date",
+      "label": "Show date",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_author",
+      "label": "Show author",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "text_size",
+      "label": "Text size",
+      "options": [
+        { "value": "fs-xs", "label": "Extra small" },
+        { "value": "fs-sm", "label": "Small" },
+        { "value": "fs-md", "label": "Medium" },
+        { "value": "fs-lg", "label": "Large" },
+        { "value": "fs-xl", "label": "Extra large" }
+      ],
+      "default": "fs-sm"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Article meta",
+      "category": "Blog"
+    }
+  ]
+}
+{% endschema %}

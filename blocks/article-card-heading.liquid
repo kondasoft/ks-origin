@@ -1,0 +1,54 @@
+{% assign article = closest.article %}
+
+<div class="article-card-heading-block" {{ block.shopify_attributes }}>
+  <h3
+    class="article-card-heading {{ block.settings.heading_size }}"
+    data-font-family="{{ block.settings.font_family }}"
+  >
+    {% if article == blank %}
+      {{ 'blogs.placeholders.title' | t }}
+    {% else %}
+      <a class="article-card-heading-link" href="{{ article.url }}">
+        {{ article.title | escape }}
+      </a>
+    {% endif %}
+  </h3>
+</div>
+
+{% schema %}
+{
+  "name": "Article heading",
+  "tag": null,
+  "settings": [
+    {
+      "type": "select",
+      "id": "font_family",
+      "label": "Font family",
+      "options": [
+        { "value": "heading", "label": "Heading" },
+        { "value": "body", "label": "Body" }
+      ],
+      "default": "heading"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "options": [
+        { "value": "fs-xs", "label": "Extra small" },
+        { "value": "fs-sm", "label": "Small" },
+        { "value": "fs-md", "label": "Medium" },
+        { "value": "fs-lg", "label": "Large" },
+        { "value": "fs-xl", "label": "Extra large" }
+      ],
+      "default": "fs-xl"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Article heading",
+      "category": "Blog"
+    }
+  ]
+}
+{% endschema %}

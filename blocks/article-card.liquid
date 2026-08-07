@@ -1,0 +1,49 @@
+{% doc %}
+Renders the ordered inner blocks shared by every article card in an article grid.
+
+@example
+{% content_for 'block', type: 'article-card', id: 'article-card', closest.article: article %}
+{% enddoc %}
+
+<article
+  class="article-card"
+  data-text-alignment="{{ block.settings.text_alignment }}"
+  {{ block.shopify_attributes }}
+>
+  {% content_for 'blocks', closest.article: closest.article %}
+</article>
+
+{% schema %}
+{
+  "name": "Article card",
+  "tag": null,
+  "settings": [
+    {
+      "type": "text_alignment",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "default": "left"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "article-card-image"  
+    },
+    {
+      "type": "article-card-heading"
+    },
+    {
+      "type": "article-card-meta"
+    },
+    {
+      "type": "article-card-excerpt"
+    },
+    {
+      "type": "article-card-read-more"
+    },
+    {
+      "type": "@app"
+    }
+  ]
+}
+{% endschema %}

@@ -116,7 +116,7 @@
 
 .drawer {
   --dialog-width: var(--drawer-width);
-  width: min(100vw, var(--drawer-width));
+  width: min(90vw, var(--drawer-width));
   height: 100dvh;
   max-height: none;
   overflow: visible;
@@ -417,7 +417,9 @@ predictive-search {
   box-sizing: border-box;
   min-width: 220px;
   max-width: calc(100vw - 2rem);
+  max-height: 50vh;
   padding: 1rem;
+  overflow-y: auto;
   color: rgb(var(--color-text));
   background-color: rgb(var(--color-background));
   border: 1px solid rgb(var(--color-text) / var(--border-opacity));

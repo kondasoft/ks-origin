@@ -663,7 +663,7 @@ textarea.input {
 }
 
 .theme-collapse-details[open] .theme-collapse-summary {
-  color: rgb(var(--color-accent));
+  /* color: rgb(var(--color-accent)); */
 }
 
 .theme-collapse-summary:focus-visible {

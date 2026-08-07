@@ -1,0 +1,53 @@
+{% liquid
+  assign article = closest.article
+  assign article_excerpt = article.excerpt_or_content | strip_html | truncatewords: block.settings.max_words
+
+  if article == blank
+    assign article_excerpt = 'blogs.placeholders.excerpt' | t
+  endif
+%}
+
+{% if article_excerpt != blank %}
+  <div class="article-card-excerpt-block" {{ block.shopify_attributes }}>
+    <p class="article-card-excerpt {{ block.settings.text_size }}">
+      {{ article_excerpt }}
+    </p>
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Article excerpt",
+  "tag": null,
+  "settings": [
+    {
+      "type": "select",
+      "id": "text_size",
+      "label": "Text size",
+      "options": [
+        { "value": "fs-xs", "label": "Extra small" },
+        { "value": "fs-sm", "label": "Small" },
+        { "value": "fs-md", "label": "Medium" },
+        { "value": "fs-lg", "label": "Large" },
+        { "value": "fs-xl", "label": "Extra large" }
+      ],
+      "default": "fs-md"
+    },
+    {
+      "type": "range",
+      "id": "max_words",
+      "label": "Maximum words",
+      "min": 10,
+      "max": 50,
+      "step": 5,
+      "default": 40
+    }
+  ],
+  "presets": [
+    {
+      "name": "Article excerpt",
+      "category": "Blog"
+    }
+  ]
+}
+{% endschema %}

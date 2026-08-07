@@ -67,19 +67,12 @@
 %}
 
 <faceted-results
-  class="main-search responsive-text-alignment section-spacing"
+  class="main-search section-spacing"
   data-section-id="{{ section.id }}"
-  data-mobile-text-alignment="{{ section.settings.mobile_text_alignment }}"
-  data-desktop-text-alignment="{{ section.settings.desktop_text_alignment }}"
   style="
     --color-background: {{ section.settings.background_color.red }} {{ section.settings.background_color.green }} {{ section.settings.background_color.blue }};
     --color-text: {{ section.settings.text_color.red }} {{ section.settings.text_color.green }} {{ section.settings.text_color.blue }};
     --color-accent: {{ section.settings.accent_color.red }} {{ section.settings.accent_color.green }} {{ section.settings.accent_color.blue }};
-    --mobile-text-alignment: {{ section.settings.mobile_text_alignment }};
-    --desktop-text-alignment: {{ section.settings.desktop_text_alignment }};
-    --mobile-columns: {{ section.settings.mobile_columns }};
-    --tablet-columns: 2;
-    --desktop-columns: {{ section.settings.desktop_columns }};
     --pt: {{ section.settings.pt | divided_by: 16.0 | append: 'em' }};
     --pb: {{ section.settings.pb | divided_by: 16.0 | append: 'em' }};
   "
@@ -87,7 +80,15 @@
   <p class="visually-hidden" role="status" aria-live="polite" data-faceted-results-status></p>
 
   <div class="container {{ settings.container_width }}">
-    <header class="main-search-header">
+    <header
+      class="main-search-header responsive-text-alignment"
+      data-mobile-text-alignment="{{ section.settings.header_mobile_text_alignment }}"
+      data-desktop-text-alignment="{{ section.settings.header_desktop_text_alignment }}"
+      style="
+        --mobile-text-alignment: {{ section.settings.header_mobile_text_alignment }};
+        --desktop-text-alignment: {{ section.settings.header_desktop_text_alignment }};
+      "
+    >
       <h1 class="main-search-title {{ section.settings.heading_size }}">
         {% if search.performed %}
           {{ 'search.results_title' | t }}
@@ -169,7 +170,15 @@
 
         {% paginate search.results by results_per_page %}
           {% if search.results_count > 0 %}
-            <ul class="product-grid" role="list">
+            <ul
+              class="product-grid"
+              role="list"
+              style="
+                --mobile-columns: {{ section.settings.mobile_columns }};
+                --tablet-columns: 2;
+                --desktop-columns: {{ section.settings.desktop_columns }};
+              "
+            >
               {% for result in search.results %}
                 <li class="product-grid-item">
                   {% case result.object_type %}
@@ -288,13 +297,13 @@
     },
     {
       "type": "text_alignment",
-      "id": "mobile_text_alignment",
+      "id": "header_mobile_text_alignment",
       "label": "Mobile text alignment",
       "default": "left"
     },
     {
       "type": "text_alignment",
-      "id": "desktop_text_alignment",
+      "id": "header_desktop_text_alignment",
       "label": "Desktop text alignment",
       "default": "left"
     },

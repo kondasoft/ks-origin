@@ -1,0 +1,103 @@
+/*
+  Article card stylesheet
+
+  This file owns the reusable layout and presentation styles for article cards and their inner content blocks.
+*/
+
+.article-card {
+  position: relative;
+  display: grid;
+  min-width: 0;
+  gap: 0.5rem;
+  text-align: left;
+}
+
+.article-card[data-text-alignment="center"] {
+  text-align: center;
+}
+
+.article-card[data-text-alignment="right"] {
+  text-align: right;
+}
+
+.article-card-image-block {
+  margin-bottom: 0.25rem;
+}
+
+.article-card-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--border-radius);
+  transition: opacity 200ms ease-out;
+}
+
+.article-card-heading {
+  margin: 0;
+}
+
+.article-card-heading[data-font-family="body"] {
+  font-family: var(--font-body-family);
+  font-style: var(--font-body-style);
+  font-weight: var(--font-body-weight);
+}
+
+.article-card-heading-link {
+  text-decoration: none;
+}
+
+.article-card-heading-link::after {
+  position: absolute;
+  inset: 0;
+  content: '';
+  border-radius: var(--border-radius);
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+.article-card-heading-link:focus-visible {
+  outline-color: transparent;
+}
+
+.article-card-heading-link:focus-visible::after {
+  outline-color: currentcolor;
+}
+
+.article-card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 0.35em;
+  margin: 0;
+  color: rgb(var(--color-text) / 0.65);
+}
+
+.article-card[data-text-alignment="center"] .article-card-meta {
+  justify-content: center;
+}
+
+.article-card[data-text-alignment="right"] .article-card-meta {
+  justify-content: flex-end;
+}
+
+.article-card-excerpt {
+  margin: 0;
+  line-height: normal;
+}
+
+.article-card-read-more-block {
+  pointer-events: none;
+  margin-top: 0.5rem;
+}
+
+@media (hover: hover) {
+  .article-card:has(.article-card-heading-link:hover) .article-card-image {
+    opacity: 0.85;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .article-card-image {
+    transition: none;
+  }
+}

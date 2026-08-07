@@ -23,6 +23,7 @@
                     class="mobile-menu-link{% if link.active %} active{% endif %}"
                     href="{{ link.url }}"
                     {% if link.current %}aria-current="page"{% endif %}
+                    {% if link.url contains 'https://' %}target="_blank" rel="noopener noreferrer"{% endif %}
                   >
                     {{ link.title }}
                   </a>
@@ -63,6 +64,7 @@
                             class="mobile-menu-link{% if child_link.active %} active{% endif %}"
                             href="{{ child_link.url }}"
                             {% if child_link.current %}aria-current="page"{% endif %}
+                            {% if child_link.url contains 'https://' %}target="_blank" rel="noopener noreferrer"{% endif %}
                           >
                             {{ child_link.title }}
                           </a>
@@ -102,6 +104,7 @@
                                   class="mobile-menu-link{% if grandchild_link.active %} active{% endif %}"
                                   href="{{ grandchild_link.url }}"
                                   {% if grandchild_link.current %}aria-current="page"{% endif %}
+                                  {% if grandchild_link.url contains 'https://' %}target="_blank" rel="noopener noreferrer"{% endif %}
                                 >
                                   {{ grandchild_link.title }}
                                 </a>

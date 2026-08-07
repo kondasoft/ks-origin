@@ -1,0 +1,58 @@
+{% liquid
+  assign article = closest.article
+  assign article_image_alt = article.image.alt | default: article.title
+  assign article_image_class = 'article-card-image'
+
+  unless block.settings.image_ratio == 'adapt'
+    assign article_image_class = article_image_class | append: ' aspect-ratio aspect-ratio-' | append: block.settings.image_ratio
+  endunless
+
+  assign article_image_placeholder_class = article_image_class | append: ' placeholder-svg'
+%}
+
+{% if article.image != blank or article == blank %}
+  <div class="article-card-image-block" {{ block.shopify_attributes }}>
+    {% if article.image != blank %}
+      {{ article.image
+        | image_url: width: 2400
+        | image_tag:
+          alt: article_image_alt,
+          class: article_image_class,
+          widths: '320, 640, 960, 1280, 1600, 2000, 2400',
+          sizes: 'auto, 100vw',
+          loading: 'lazy'
+      }}
+    {% else %}
+      {{ 'lifestyle-1' | placeholder_svg_tag: article_image_placeholder_class }}
+    {% endif %}
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Article image",
+  "tag": null,
+  "settings": [
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "Aspect ratio",
+      "options": [
+        { "group": "Adapt", "value": "adapt", "label": "Adapt to image" },
+        { "group": "Square", "value": "square", "label": "Square (1:1)" },
+        { "group": "Horizontal", "value": "landscape", "label": "Landscape (4:3)" },
+        { "group": "Horizontal", "value": "widescreen", "label": "Widescreen (16:9)" },
+        { "group": "Vertical", "value": "portrait", "label": "Portrait (3:4)" },
+        { "group": "Vertical", "value": "vertical", "label": "Vertical (9:16)" }
+      ],
+      "default": "landscape"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Article image",
+      "category": "Blog"
+    }
+  ]
+}
+{% endschema %}

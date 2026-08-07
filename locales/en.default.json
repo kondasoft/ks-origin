@@ -96,6 +96,21 @@
       "other": "Show {{ count }} products"
     }
   },
+  "blogs": {
+    "empty": "No articles found.",
+    "articles_count": {
+      "one": "{{ count }} article",
+      "other": "{{ count }} articles"
+    },
+    "filter_by_tag": "Filter by tag",
+    "all_articles": "All articles",
+    "by_author": "By {{ author }}",
+    "read_more": "Read more",
+    "placeholders": {
+      "title": "Example article title",
+      "excerpt": "Share a short preview of your article to help readers discover the story."
+    }
+  },
   "search": {
     "title": "Search",
     "results_title": "Search results",

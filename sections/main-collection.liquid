@@ -49,20 +49,13 @@
 %}
 
 <faceted-results
-  class="main-collection responsive-text-alignment section-spacing"
+  class="main-collection section-spacing"
   data-section-id="{{ section.id }}"
-  data-mobile-text-alignment="{{ section.settings.mobile_text_alignment }}"
-  data-desktop-text-alignment="{{ section.settings.desktop_text_alignment }}"
   data-has-image="{% if section.settings.show_image and collection.image != blank %}true{% else %}false{% endif %}"
   style="
     --color-background: {{ section.settings.background_color.red }} {{ section.settings.background_color.green }} {{ section.settings.background_color.blue }};
     --color-text: {{ section.settings.text_color.red }} {{ section.settings.text_color.green }} {{ section.settings.text_color.blue }};
     --color-accent: {{ section.settings.accent_color.red }} {{ section.settings.accent_color.green }} {{ section.settings.accent_color.blue }};
-    --mobile-text-alignment: {{ section.settings.mobile_text_alignment }};
-    --desktop-text-alignment: {{ section.settings.desktop_text_alignment }};
-    --mobile-columns: {{ section.settings.mobile_columns }};
-    --tablet-columns: 2;
-    --desktop-columns: {{ section.settings.desktop_columns }};
     --pt: {{ section.settings.pt | divided_by: 16.0 | append: 'em' }};
     --pb: {{ section.settings.pb | divided_by: 16.0 | append: 'em' }};
   "
@@ -71,8 +64,14 @@
 
   <div class="container {{ settings.container_width }}">
     <header
-      class="main-collection-header{% if section.settings.show_image and collection.image != blank %} main-collection-header-with-image{% endif %}"
+      class="main-collection-header responsive-text-alignment{% if section.settings.show_image and collection.image != blank %} main-collection-header-with-image{% endif %}"
+      data-mobile-text-alignment="{{ section.settings.header_mobile_text_alignment }}"
+      data-desktop-text-alignment="{{ section.settings.header_desktop_text_alignment }}"
       data-desktop-image-width="{{ section.settings.desktop_image_width }}"
+      style="
+        --mobile-text-alignment: {{ section.settings.header_mobile_text_alignment }};
+        --desktop-text-alignment: {{ section.settings.header_desktop_text_alignment }};
+      "
     >
       {% if section.settings.show_image and collection.image != blank %}
         {{ collection.image
@@ -152,7 +151,15 @@
 
       {% paginate collection.products by products_per_page %}
         {% if collection.products.size > 0 %}
-          <ul class="product-grid" role="list">
+          <ul
+            class="product-grid"
+            role="list"
+            style="
+              --mobile-columns: {{ section.settings.mobile_columns }};
+              --tablet-columns: 2;
+              --desktop-columns: {{ section.settings.desktop_columns }};
+            "
+          >
             {% for product in collection.products %}
               <li class="product-grid-item">
                 {% content_for 'block', type: 'product-card', id: 'product-card', closest.product: product %}
@@ -256,13 +263,13 @@
     },
     {
       "type": "text_alignment",
-      "id": "mobile_text_alignment",
+      "id": "header_mobile_text_alignment",
       "label": "Mobile text alignment",
       "default": "left"
     },
     {
       "type": "text_alignment",
-      "id": "desktop_text_alignment",
+      "id": "header_desktop_text_alignment",
       "label": "Desktop text alignment",
       "default": "left"
     },

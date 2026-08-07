@@ -96,6 +96,21 @@
       "other": "Afficher {{ count }} produits"
     }
   },
+  "blogs": {
+    "empty": "Aucun article trouvé.",
+    "articles_count": {
+      "one": "{{ count }} article",
+      "other": "{{ count }} articles"
+    },
+    "filter_by_tag": "Filtrer par étiquette",
+    "all_articles": "Tous les articles",
+    "by_author": "Par {{ author }}",
+    "read_more": "Lire la suite",
+    "placeholders": {
+      "title": "Exemple de titre d’article",
+      "excerpt": "Partagez un court aperçu de votre article pour aider les lecteurs à découvrir son contenu."
+    }
+  },
   "search": {
     "title": "Rechercher",
     "results_title": "Résultats de recherche",
