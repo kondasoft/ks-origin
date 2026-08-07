@@ -19,6 +19,86 @@
       </button>
     </div>
 
-    <div class="dialog-body"></div>
+    <div class="dialog-body">
+      <predictive-search
+        data-route="{{ routes.predictive_search_url }}"
+        data-resource-types="query,product,collection,article,page"
+        data-limit="4"
+        data-text-loading="{{ 'search.searching' | t | escape }}"
+      >
+        <form
+          class="predictive-search-form"
+          action="{{ routes.search_url }}"
+          method="get"
+          role="search"
+        >
+          <input type="hidden" name="type" value="product,article,page">
+          <input type="hidden" name="options[prefix]" value="last">
+
+          <div class="predictive-search-input-wrapper">
+            <label class="visually-hidden" for="PredictiveSearchInput">
+              {{ 'search.label' | t }}
+            </label>
+            <input
+              id="PredictiveSearchInput"
+              class="input predictive-search-input"
+              type="search"
+              name="q"
+              placeholder="{{ 'search.placeholder' | t }}"
+              role="combobox"
+              aria-expanded="false"
+              aria-controls="predictive-search-results"
+              aria-haspopup="listbox"
+              aria-autocomplete="list"
+              autocomplete="off"
+              autocapitalize="off"
+              autocorrect="off"
+              spellcheck="false"
+            >
+
+            <button
+              class="icon-button predictive-search-reset"
+              type="reset"
+              aria-label="{{ 'accessibility.clear_search' | t }}"
+              hidden
+            >
+              {% render 'svg-icons', icon: 'close', icon_size: 18 %}
+            </button>
+
+            <button
+              class="icon-button predictive-search-submit"
+              type="submit"
+              aria-label="{{ 'accessibility.search' | t }}"
+            >
+              <span data-predictive-search-submit-icon>
+                {% render 'svg-icons', icon: 'search', icon_size: 22 %}
+              </span>
+              <span class="predictive-search-spinner-wrapper" aria-hidden="true" hidden>
+                <span class="predictive-search-spinner"></span>
+              </span>
+            </button>
+          </div>
+        </form>
+
+        <div
+          id="predictive-search-results"
+          class="predictive-search-results"
+          role="listbox"
+          aria-label="{{ 'search.suggestions' | t }}"
+          hidden
+        ></div>
+
+        <p
+          class="visually-hidden"
+          role="status"
+          aria-live="polite"
+          data-predictive-search-status
+        ></p>
+      </predictive-search>
+    </div>
+
+    <div class="dialog-footer predictive-search-footer" data-predictive-search-footer hidden></div>
   </dialog>
 </theme-dialog>
+
+<script src="{{ 'predictive-search.js' | asset_url }}" type="module"></script>

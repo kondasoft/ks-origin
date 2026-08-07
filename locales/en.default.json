@@ -23,6 +23,7 @@
     "breadcrumbs": "Breadcrumbs",
     "pagination": "Pagination",
     "play_video": "Play video",
+    "clear_search": "Clear search",
     "love": "love"
   },
   "general": {
@@ -97,9 +98,20 @@
   },
   "search": {
     "title": "Search",
+    "results_title": "Search results",
     "label": "Search the store",
-    "placeholder": "Search the store",
+    "placeholder": "Search for…",
     "submit": "Search",
+    "searching": "Searching…",
+    "suggestions": "Search suggestions",
+    "groups": {
+      "suggestions": "Suggestions",
+      "products": "Products",
+      "collections": "Collections",
+      "articles": "Articles",
+      "pages": "Pages"
+    },
+    "view_all": "View all results for “{{ terms }}”",
     "results_count": {
       "one": "{{ count }} result",
       "other": "{{ count }} results"

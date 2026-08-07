@@ -86,7 +86,11 @@
   <div class="container {{ settings.container_width }}">
     <header class="main-search-header">
       <h1 class="main-search-title {{ section.settings.heading_size }}">
-        {{ 'search.title' | t }}
+        {% if search.performed %}
+          {{ 'search.results_title' | t }}
+        {% else %}
+          {{ 'search.title' | t }}
+        {% endif %}
       </h1>
 
       <form class="main-search-form" action="{{ routes.search_url }}" method="get" role="search">

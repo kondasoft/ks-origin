@@ -54,10 +54,6 @@
   transition: opacity 0.2s ease-out;
 }
 
-.product-card:has(.product-card-title-link:hover) .product-card-image {
-  opacity: 0.85;
-}
-
 .product-card-badge {
   position: absolute;
   top: 0.75em;
@@ -127,4 +123,16 @@
 
 .product-card-form-link-block {
   pointer-events: none;
+}
+
+@media (hover: hover) {
+  .product-card:has(.product-card-title-link:hover) .product-card-image {
+    opacity: 0.85;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .product-card-image {
+    transition: none;
+  }
 }

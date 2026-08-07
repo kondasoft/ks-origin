@@ -23,6 +23,7 @@
     "breadcrumbs": "Fil d’Ariane",
     "pagination": "Pagination",
     "play_video": "Lire la vidéo",
+    "clear_search": "Effacer la recherche",
     "love": "amour"
   },
   "general": {
@@ -97,9 +98,20 @@
   },
   "search": {
     "title": "Rechercher",
+    "results_title": "Résultats de recherche",
     "label": "Rechercher dans la boutique",
-    "placeholder": "Rechercher dans la boutique",
+    "placeholder": "Rechercher…",
     "submit": "Rechercher",
+    "searching": "Recherche en cours…",
+    "suggestions": "Suggestions de recherche",
+    "groups": {
+      "suggestions": "Suggestions",
+      "products": "Produits",
+      "collections": "Collections",
+      "articles": "Articles",
+      "pages": "Pages"
+    },
+    "view_all": "Afficher tous les résultats pour « {{ terms }} »",
     "results_count": {
       "one": "{{ count }} résultat",
       "other": "{{ count }} résultats"
