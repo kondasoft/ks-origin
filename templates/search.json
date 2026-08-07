@@ -13,7 +13,7 @@
       "type": "main-search",
       "blocks": {
         "product-card": {
-          "type": "_product-card",
+          "type": "product-card",
           "static": true,
           "settings": {
             "text_alignment": "left"
@@ -76,7 +76,7 @@
           ]
         },
         "article-card": {
-          "type": "_article-card",
+          "type": "article-card",
           "static": true,
           "settings": {
             "text_alignment": "left"

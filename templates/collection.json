@@ -13,7 +13,7 @@
       "type": "main-collection",
       "blocks": {
         "product-card": {
-          "type": "_product-card",
+          "type": "product-card",
           "static": true,
           "settings": {
             "text_alignment": "left"

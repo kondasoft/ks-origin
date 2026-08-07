@@ -125,7 +125,7 @@
         >
           {% for article in blog.articles %}
             <li class="article-grid-item">
-              {% content_for 'block', type: '_article-card', id: 'article-card', closest.article: article %}
+              {% content_for 'block', type: 'article-card', id: 'article-card', closest.article: article %}
             </li>
           {% endfor %}
         </ul>
@@ -287,7 +287,7 @@
   ],
   "blocks": [
     {
-      "type": "_article-card"
+      "type": "article-card"
     }
   ],
   "enabled_on": {
@@ -299,7 +299,7 @@
       "category": "Blog",
       "blocks": [
         {
-          "type": "_article-card",
+          "type": "article-card",
           "id": "article-card",
           "static": true,
           "settings": {

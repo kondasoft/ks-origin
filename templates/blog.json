@@ -13,7 +13,7 @@
       "type": "main-blog",
       "blocks": {
         "article-card": {
-          "type": "_article-card",
+          "type": "article-card",
           "static": true,
           "settings": {
             "text_alignment": "left"

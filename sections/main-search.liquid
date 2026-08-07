@@ -180,10 +180,10 @@
                 <li class="product-grid-item">
                   {% case result.object_type %}
                     {% when 'product' %}
-                      {% content_for 'block', type: '_product-card', id: 'product-card', closest.product: result %}
+                      {% content_for 'block', type: 'product-card', id: 'product-card', closest.product: result %}
 
                     {% when 'article' %}
-                      {% content_for 'block', type: '_article-card', id: 'article-card', closest.article: result %}
+                      {% content_for 'block', type: 'article-card', id: 'article-card', closest.article: result %}
 
                     {% when 'page' %}
                       <article class="search-result-card">
@@ -412,7 +412,7 @@
       "category": "Search",
       "blocks": [
         {
-          "type": "_product-card",
+          "type": "product-card",
           "id": "product-card",
           "static": true,
           "settings": {
@@ -455,7 +455,7 @@
           ]
         },
         {
-          "type": "_article-card",
+          "type": "article-card",
           "id": "article-card",
           "static": true,
           "settings": {

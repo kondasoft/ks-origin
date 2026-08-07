@@ -162,7 +162,7 @@
           >
             {% for product in collection.products %}
               <li class="product-grid-item">
-                {% content_for 'block', type: '_product-card', id: 'product-card', closest.product: product %}
+                {% content_for 'block', type: 'product-card', id: 'product-card', closest.product: product %}
               </li>
             {% endfor %}
           </ul>
@@ -403,7 +403,7 @@
       "category": "Collection",
       "blocks": [
         {
-          "type": "_product-card",
+          "type": "product-card",
           "id": "product-card",
           "static": true,
           "settings": {
