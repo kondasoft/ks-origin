@@ -77,6 +77,15 @@
       "designed_with": "Conçu avec",
       "by": "par"
     },
+    "password": {
+      "enter_password": "Saisir le mot de passe de la boutique",
+      "password": "Mot de passe",
+      "submit": "Entrer",
+      "incorrect_password": "Le mot de passe saisi est incorrect.",
+      "enter_using_password": "Entrer avec un mot de passe",
+      "store_owner": "Êtes-vous propriétaire de la boutique ?",
+      "log_in": "Connectez-vous ici"
+    },
     "facets": {
       "apply": "Appliquer",
       "filters": "Filtres",

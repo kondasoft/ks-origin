@@ -337,6 +337,13 @@ class ThemeDialog extends HTMLElement {
       signal: this.listenerController.signal,
     });
     this.isInitialized = true;
+
+    if (this.dialog.hasAttribute("data-open-on-load")) {
+      this.dialog.removeAttribute("data-open-on-load");
+      window.requestAnimationFrame(() => {
+        if (this.isConnected) this.openDialog();
+      });
+    }
   }
 
   bindTriggers(root) {

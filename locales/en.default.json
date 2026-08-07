@@ -77,6 +77,15 @@
       "designed_with": "Designed with",
       "by": "by"
     },
+    "password": {
+      "enter_password": "Enter store password",
+      "password": "Password",
+      "submit": "Enter",
+      "incorrect_password": "The password you entered is incorrect.",
+      "enter_using_password": "Enter using password",
+      "store_owner": "Are you the store owner?",
+      "log_in": "Log in here"
+    },
     "facets": {
       "apply": "Apply",
       "filters": "Filters",

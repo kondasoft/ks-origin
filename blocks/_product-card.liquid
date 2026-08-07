@@ -2,7 +2,7 @@
 Renders the ordered inner blocks shared by every product card in a product grid.
 
 @example
-{% content_for 'block', type: 'product-card', id: 'product-card', closest.product: product %}
+{% content_for 'block', type: '_product-card', id: 'product-card', closest.product: product %}
 {% enddoc %}
 
 <article
@@ -27,25 +27,25 @@ Renders the ordered inner blocks shared by every product card in a product grid.
   ],
   "blocks": [
     {
-      "type": "product-card-image"
+      "type": "_product-card-image"
     },
     {
-      "type": "product-card-title"
+      "type": "_product-card-title"
     },
     {
-      "type": "product-card-price"
+      "type": "_product-card-price"
     },
     {
-      "type": "product-vendor"
+      "type": "_product-vendor"
     },
     {
-      "type": "product-sku"
+      "type": "_product-sku"
     },
     {
-      "type": "product-rating"
+      "type": "_product-rating"
     },
     {
-      "type": "product-card-form"
+      "type": "_product-card-form"
     },
     {
       "type": "@app"

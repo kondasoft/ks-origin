@@ -2,7 +2,7 @@
 Renders the ordered inner blocks shared by every article card in an article grid.
 
 @example
-{% content_for 'block', type: 'article-card', id: 'article-card', closest.article: article %}
+{% content_for 'block', type: '_article-card', id: 'article-card', closest.article: article %}
 {% enddoc %}
 
 <article
@@ -27,19 +27,19 @@ Renders the ordered inner blocks shared by every article card in an article grid
   ],
   "blocks": [
     {
-      "type": "article-card-image"  
+      "type": "_article-card-image"
     },
     {
-      "type": "article-card-heading"
+      "type": "_article-card-heading"
     },
     {
-      "type": "article-card-meta"
+      "type": "_article-card-meta"
     },
     {
-      "type": "article-card-excerpt"
+      "type": "_article-card-excerpt"
     },
     {
-      "type": "article-card-read-more"
+      "type": "_article-card-read-more"
     },
     {
       "type": "@app"

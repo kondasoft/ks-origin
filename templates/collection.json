@@ -13,21 +13,21 @@
       "type": "main-collection",
       "blocks": {
         "product-card": {
-          "type": "product-card",
+          "type": "_product-card",
           "static": true,
           "settings": {
             "text_alignment": "left"
           },
           "blocks": {
             "product-card-image": {
-              "type": "product-card-image",
+              "type": "_product-card-image",
               "settings": {
                 "image_ratio": "square"
               },
               "blocks": {}
             },
             "product-vendor": {
-              "type": "product-vendor",
+              "type": "_product-vendor",
               "disabled": true,
               "settings": {
                 "text_size": "fs-sm"
@@ -35,7 +35,7 @@
               "blocks": {}
             },
             "product-card-title": {
-              "type": "product-card-title",
+              "type": "_product-card-title",
               "settings": {
                 "font_family": "heading",
                 "heading_size": "fs-md"
@@ -43,7 +43,7 @@
               "blocks": {}
             },
             "product-rating": {
-              "type": "product-rating",
+              "type": "_product-rating",
               "settings": {
                 "show_count": true,
                 "rating_size": "fs-sm"
@@ -51,14 +51,14 @@
               "blocks": {}
             },
             "product-card-price": {
-              "type": "product-card-price",
+              "type": "_product-card-price",
               "settings": {
                 "price_size": "fs-md"
               },
               "blocks": {}
             },
             "product-card-form": {
-              "type": "product-card-form",
+              "type": "_product-card-form",
               "settings": {
                 "button_style": "btn-accent-solid",
                 "button_size": "btn-sm"

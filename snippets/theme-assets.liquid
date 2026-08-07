@@ -78,6 +78,8 @@
   {{ 'article-card.css' | asset_url | stylesheet_tag: preload: true }}
 {% elsif request.page_type == 'article' %}
   {{ 'main-article.css' | asset_url | stylesheet_tag: preload: true }}
+{% elsif request.page_type == 'password' %}
+  {{ 'password.css' | asset_url | stylesheet_tag: preload: true }}
 {% elsif request.page_type == 'search' %}
   {{ 'main-search.css' | asset_url | stylesheet_tag: preload: true }}
   {{ 'facets.css' | asset_url | stylesheet_tag: preload: true }}

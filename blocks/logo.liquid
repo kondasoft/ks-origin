@@ -1,0 +1,138 @@
+{% liquid
+  assign image_loading = 'lazy'
+  assign image_fetchpriority = 'auto'
+  assign logo_height_max = block.settings.mobile_height
+
+  if block.settings.desktop_height > logo_height_max
+    assign logo_height_max = block.settings.desktop_height
+  endif
+
+  assign image_render_height = logo_height_max | times: 2
+
+  if section.index == 1
+    assign image_loading = 'eager'
+    assign image_fetchpriority = 'high'
+  endif
+%}
+
+<div
+  class="logo-block block-spacing"
+  style="
+    --logo-height-mobile: {{ block.settings.mobile_height | append: 'px' }};
+    --logo-height-desktop: {{ block.settings.desktop_height | append: 'px' }};
+    --pt: {{ block.settings.pt | divided_by: 16.0 | append: 'em' }};
+    --pb: {{ block.settings.pb | divided_by: 16.0 | append: 'em' }};
+  "
+  {{ block.shopify_attributes }}
+>
+  {% if block.settings.logo != blank %}
+    <div class="logo-block-media">
+      {{ block.settings.logo
+        | image_url: height: image_render_height
+        | image_tag:
+          class: 'logo-block-image',
+          loading: image_loading,
+          fetchpriority: image_fetchpriority
+      }}
+    </div>
+  {% endif %}
+</div>
+
+{% stylesheet %}
+  .logo-block {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .logo-block-media {
+    display: inline-flex;
+    height: var(--logo-height-mobile);
+    max-width: 100%;
+    vertical-align: middle;
+  }
+
+  .logo-block-image {
+    width: auto;
+    height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+  }
+
+  @media (min-width: 1200px) {
+    .logo-block-media {
+      height: var(--logo-height-desktop);
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Logo",
+  "tag": null,
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo"
+    },
+    {
+      "type": "header",
+      "content": "Mobile"
+    },
+    {
+      "type": "range",
+      "id": "mobile_height",
+      "label": "Logo height",
+      "min": 20,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Desktop"
+    },
+    {
+      "type": "range",
+      "id": "desktop_height",
+      "label": "Logo height",
+      "min": 20,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 50
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pt",
+      "label": "Top",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "pb",
+      "label": "Bottom",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Logo",
+      "category": "Media"
+    }
+  ]
+}
+{% endschema %}

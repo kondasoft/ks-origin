@@ -162,7 +162,7 @@
           >
             {% for product in collection.products %}
               <li class="product-grid-item">
-                {% content_for 'block', type: 'product-card', id: 'product-card', closest.product: product %}
+                {% content_for 'block', type: '_product-card', id: 'product-card', closest.product: product %}
               </li>
             {% endfor %}
           </ul>
@@ -403,7 +403,7 @@
       "category": "Collection",
       "blocks": [
         {
-          "type": "product-card",
+          "type": "_product-card",
           "id": "product-card",
           "static": true,
           "settings": {
@@ -411,33 +411,33 @@
           },
           "blocks": [
             {
-              "type": "product-card-image",
+              "type": "_product-card-image",
               "settings": {
                 "image_ratio": "square"
               }
             },
             {
-              "type": "product-card-title",
+              "type": "_product-card-title",
               "settings": {
                 "font_family": "heading",
                 "heading_size": "fs-md"
               }
             },
             {
-              "type": "product-rating",
+              "type": "_product-rating",
               "settings": {
                 "show_count": true,
                 "rating_size": "fs-sm"
               }
             },
             {
-              "type": "product-card-price",
+              "type": "_product-card-price",
               "settings": {
                 "price_size": "fs-md"
               }
             },
             {
-              "type": "product-card-form",
+              "type": "_product-card-form",
               "settings": {
                 "button_style": "btn-accent-solid",
                 "button_size": "btn-sm"

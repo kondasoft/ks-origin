@@ -17,6 +17,18 @@
     "social_threads": "",
     "social_pinterest": "",
     "social_snapchat": "",
+    "sections": {
+      "password-footer": {
+        "type": "password-footer",
+        "settings": {
+          "background_color": "{{ settings.colors.background }}",
+          "text_color": "{{ settings.colors.text }}",
+          "accent_color": "{{ settings.colors.accent }}",
+          "pt": 24,
+          "pb": 24
+        }
+      }
+    },
     "content_for_index": [],
     "blocks": {
       "11532412952436166569": {

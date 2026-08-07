@@ -13,21 +13,21 @@
       "type": "main-blog",
       "blocks": {
         "article-card": {
-          "type": "article-card",
+          "type": "_article-card",
           "static": true,
           "settings": {
             "text_alignment": "left"
           },
           "blocks": {
             "article-card-image": {
-              "type": "article-card-image",
+              "type": "_article-card-image",
               "settings": {
                 "image_ratio": "landscape"
               },
               "blocks": {}
             },
             "article-card-heading": {
-              "type": "article-card-heading",
+              "type": "_article-card-heading",
               "settings": {
                 "font_family": "heading",
                 "heading_size": "fs-xl"
@@ -35,7 +35,7 @@
               "blocks": {}
             },
             "article-card-meta": {
-              "type": "article-card-meta",
+              "type": "_article-card-meta",
               "settings": {
                 "show_date": true,
                 "show_author": true,
@@ -44,7 +44,7 @@
               "blocks": {}
             },
             "article-card-excerpt": {
-              "type": "article-card-excerpt",
+              "type": "_article-card-excerpt",
               "settings": {
                 "text_size": "fs-md",
                 "max_words": 40
@@ -52,7 +52,7 @@
               "blocks": {}
             },
             "article-card-read-more": {
-              "type": "article-card-read-more",
+              "type": "_article-card-read-more",
               "settings": {
                 "button_style": "btn-text-outline",
                 "button_size": "btn-sm"
