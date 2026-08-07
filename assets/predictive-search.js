@@ -23,6 +23,9 @@ class PredictiveSearch extends HTMLElement {
     this.footer = this.dialog?.querySelector(
       "[data-predictive-search-footer]",
     );
+    this.footerLabel = this.footer?.querySelector(
+      "[data-predictive-search-footer-label]",
+    );
 
     if (
       !this.form ||
@@ -33,13 +36,15 @@ class PredictiveSearch extends HTMLElement {
       !this.spinner ||
       !this.results ||
       !this.status ||
-      !this.footer
+      !this.footer ||
+      !this.footerLabel
     ) {
       return;
     }
 
     this.cache = new Map();
     this.currentIndex = -1;
+    this.searchVersion = 0;
     this.listenerController = new AbortController();
     const { signal } = this.listenerController;
 
@@ -76,7 +81,7 @@ class PredictiveSearch extends HTMLElement {
       return;
     }
 
-    this.requestController?.abort();
+    this.cancelPendingSearch();
     this.input.value = "";
     this.resetButton.hidden = true;
     this.clearResults();
@@ -86,21 +91,25 @@ class PredictiveSearch extends HTMLElement {
   onInput() {
     const query = this.input.value.trim();
 
+    this.cancelPendingSearch();
     this.resetButton.hidden = query.length === 0;
-    window.clearTimeout(this.inputTimer);
+    this.clearResults();
+    this.setLoading(false);
 
-    if (!query) {
-      this.requestController?.abort();
-      this.clearResults();
-      return;
-    }
+    if (!query) return;
 
-    this.inputTimer = window.setTimeout(() => this.fetchResults(query), 250);
+    this.updateFooter(query);
+    const searchVersion = this.searchVersion;
+
+    this.inputTimer = window.setTimeout(
+      () => this.fetchResults(query, searchVersion),
+      250,
+    );
   }
 
   onReset() {
-    window.clearTimeout(this.inputTimer);
-    this.requestController?.abort();
+    this.cancelPendingSearch();
+    this.setLoading(false);
 
     window.requestAnimationFrame(() => {
       this.resetButton.hidden = true;
@@ -112,9 +121,14 @@ class PredictiveSearch extends HTMLElement {
   onKeydown(event) {
     const options = this.getOptions();
 
-    if (event.key === "Escape" && !this.results.hidden) {
+    const hasSearchState =
+      !this.results.hidden || !this.footer.hidden || !this.spinner.hidden;
+
+    if (event.key === "Escape" && hasSearchState) {
       event.preventDefault();
       event.stopPropagation();
+      this.cancelPendingSearch();
+      this.setLoading(false);
       this.clearResults();
       this.input.focus();
       return;
@@ -132,7 +146,7 @@ class PredictiveSearch extends HTMLElement {
     if (event.key === "ArrowUp") {
       event.preventDefault();
       this.currentIndex =
-        (this.currentIndex - 1 + options.length) % options.length;
+        this.currentIndex <= 0 ? options.length - 1 : this.currentIndex - 1;
       this.setActiveOption(options);
       return;
     }
@@ -175,7 +189,9 @@ class PredictiveSearch extends HTMLElement {
     });
   }
 
-  async fetchResults(query) {
+  async fetchResults(query, searchVersion) {
+    if (!this.isCurrentSearch(query, searchVersion)) return;
+
     const cacheKey = query.toLocaleLowerCase();
     const cachedResults = this.cache.get(cacheKey);
 
@@ -222,17 +238,27 @@ class PredictiveSearch extends HTMLElement {
         throw new Error("Failed to find predictive search markup");
       }
 
-      if (this.requestController !== requestController) return;
+      if (
+        this.requestController !== requestController ||
+        !this.isCurrentSearch(query, searchVersion)
+      ) {
+        return;
+      }
 
       this.cache.set(cacheKey, section.innerHTML);
       this.renderResults(section.innerHTML);
     } catch (error) {
       if (error.name === "AbortError") return;
+      if (!this.isCurrentSearch(query, searchVersion)) return;
 
       console.error(error);
       this.clearResults();
+      this.updateFooter(query);
     } finally {
-      if (this.requestController === requestController) {
+      if (
+        this.requestController === requestController &&
+        this.searchVersion === searchVersion
+      ) {
         this.setLoading(false);
       }
     }
@@ -240,15 +266,6 @@ class PredictiveSearch extends HTMLElement {
 
   renderResults(markup) {
     this.results.innerHTML = markup;
-    const viewAll = this.results.querySelector(".predictive-search-view-all");
-
-    if (viewAll) {
-      this.footer.replaceChildren(viewAll);
-      this.footer.hidden = false;
-    } else {
-      this.clearFooter();
-    }
-
     this.results.hidden = false;
     this.input.setAttribute("aria-expanded", "true");
     this.currentIndex = -1;
@@ -271,8 +288,29 @@ class PredictiveSearch extends HTMLElement {
   }
 
   clearFooter() {
-    this.footer.replaceChildren();
     this.footer.hidden = true;
+  }
+
+  updateFooter(query) {
+    this.footerLabel.textContent = this.dataset.textViewAll.replace(
+      "__TERMS__",
+      () => query,
+    );
+    this.footer.hidden = false;
+  }
+
+  cancelPendingSearch() {
+    window.clearTimeout(this.inputTimer);
+    this.requestController?.abort();
+    this.searchVersion += 1;
+  }
+
+  isCurrentSearch(query, searchVersion) {
+    return (
+      this.dialog.open &&
+      this.searchVersion === searchVersion &&
+      this.input.value.trim() === query
+    );
   }
 
   setLoading(isLoading) {

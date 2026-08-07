@@ -1,17 +1,15 @@
 {% if predictive_search.performed %}
   {% liquid
-    assign result_count = predictive_search.resources.queries.size
-    assign result_count = result_count | plus: predictive_search.resources.products.size
+    assign result_count = predictive_search.resources.products.size
     assign result_count = result_count | plus: predictive_search.resources.collections.size
     assign result_count = result_count | plus: predictive_search.resources.articles.size
     assign result_count = result_count | plus: predictive_search.resources.pages.size
-    assign encoded_terms = predictive_search.terms | url_encode
+    assign option_count = result_count | plus: predictive_search.resources.queries.size
     assign escaped_terms = predictive_search.terms | escape
-    assign search_url = routes.search_url | append: '?q=' | append: encoded_terms | append: '&type=product%2Carticle%2Cpage&options%5Bprefix%5D=last'
   %}
 
   <div class="predictive-search-content">
-    {% if result_count > 0 %}
+    {% if option_count > 0 %}
       {% if predictive_search.resources.queries.size > 0 %}
         <div class="predictive-search-group">
           <h3 id="PredictiveSearchQueries" class="predictive-search-heading fs-sm">
@@ -72,12 +70,18 @@
                       </a>
                     </h4>
                     <p class="predictive-search-product-price fs-sm">
+                      {% if product.compare_at_price > product.price %}
+                        <span class="visually-hidden">{{ 'products.price.sale_price' | t }}</span>
+                      {% else %}
+                        <span class="visually-hidden">{{ 'products.price.regular_price' | t }}</span>
+                      {% endif %}
                       {% if product.price_varies %}
                         {{ 'products.price.from_price' | t: price: product_price }}
                       {% else %}
                         {{ product.price | money }}
                       {% endif %}
                       {% if product.compare_at_price > product.price %}
+                        <span class="visually-hidden">{{ 'products.price.regular_price' | t }}</span>
                         <s>{{ product.compare_at_price | money }}</s>
                       {% endif %}
                     </p>
@@ -157,14 +161,6 @@
           </ul>
         </div>
       {% endif %}
-
-      <a
-        id="PredictiveSearchViewAll"
-        class="btn btn-accent-outline predictive-search-view-all"
-        href="{{ search_url | escape }}"
-      >
-        {{ 'search.view_all' | t: terms: escaped_terms }}
-      </a>
     {% else %}
       <p class="predictive-search-empty">
         {{ 'search.no_results' | t: terms: escaped_terms }}

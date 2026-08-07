@@ -61,6 +61,9 @@
   assign encoded_sort_by = sort_by | url_encode
   assign encoded_search_types = search_types | url_encode
   assign filters_clear_url = routes.search_url | append: '?q=' | append: encoded_search_terms | append: '&type=' | append: encoded_search_types | append: '&options%5Bprefix%5D=last&sort_by=' | append: encoded_sort_by
+  assign mobile_article_image_width = 100 | divided_by: section.settings.mobile_columns | append: 'vw'
+  assign desktop_article_image_width = 100 | divided_by: section.settings.desktop_columns | append: 'vw'
+  assign article_image_sizes = '(min-width: 1200px) ' | append: desktop_article_image_width | append: ', (min-width: 600px) 50vw, ' | append: mobile_article_image_width
 %}
 
 <faceted-results
@@ -177,11 +180,11 @@
                       <article class="search-result-card">
                         {% if result.image != blank %}
                           {{ result.image
-                            | image_url: width: 960
+                            | image_url: width: 2400
                             | image_tag:
                               class: 'search-result-card-image',
-                              widths: '320, 640, 960',
-                              sizes: '(min-width: 1200px) 25vw, (min-width: 600px) 50vw, 100vw',
+                              widths: '320, 640, 960, 1280, 1600, 2000, 2400',
+                              sizes: article_image_sizes,
                               loading: 'lazy'
                           }}
                         {% endif %}
