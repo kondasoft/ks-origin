@@ -442,12 +442,19 @@ class FacetSort extends HTMLElement {
     if (!input || !input.checked) return;
 
     const view = this.closest("faceted-results");
-    const url = new URL(window.location.href);
+    const form = input.form;
+    const url = new URL(form.action, window.location.origin);
+    const formData = new FormData(form);
     const keepDropdownOpen = this.keepDropdownOpen === true;
 
     this.keepDropdownOpen = false;
 
-    url.searchParams.set("sort_by", input.value);
+    for (const [name, value] of formData.entries()) {
+      if (typeof value !== "string" || value.trim() === "") continue;
+
+      url.searchParams.append(name, value);
+    }
+
     url.searchParams.delete("page");
 
     if (view) {

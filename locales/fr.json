@@ -97,14 +97,18 @@
   },
   "search": {
     "title": "Rechercher",
-    "label": "Rechercher des produits",
-    "placeholder": "Rechercher des produits",
+    "label": "Rechercher dans la boutique",
+    "placeholder": "Rechercher dans la boutique",
     "submit": "Rechercher",
     "results_count": {
       "one": "{{ count }} résultat",
       "other": "{{ count }} résultats"
     },
-    "no_results": "Aucun produit trouvé pour « {{ terms }} »",
+    "no_results": "Aucun résultat trouvé pour « {{ terms }} »",
+    "types": {
+      "article": "Article",
+      "page": "Page"
+    },
     "show_results": {
       "one": "Afficher {{ count }} résultat",
       "other": "Afficher {{ count }} résultats"

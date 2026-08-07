@@ -2,10 +2,8 @@
   assign load_footer_css = false
   assign show_country_selector = false
   assign show_follow_on_shop = false
-  assign show_footer_bottom = false
   assign show_language_selector = false
   assign show_payment_icons = false
-  assign show_social_links = false
 
   if request.page_type == '404' or template.suffix == 'contact' or template.suffix == 'faq'
     assign load_footer_css = true
@@ -25,38 +23,6 @@
 
   if section.settings.show_payment_icons and shop.enabled_payment_types != empty
     assign show_payment_icons = true
-  endif
-
-  if section.settings.show_social_links
-    if settings.social_facebook != blank
-      assign show_social_links = true
-    elsif settings.social_instagram != blank
-      assign show_social_links = true
-    elsif settings.social_threads != blank
-      assign show_social_links = true
-    elsif settings.social_x != blank
-      assign show_social_links = true
-    elsif settings.social_tiktok != blank
-      assign show_social_links = true
-    elsif settings.social_pinterest != blank
-      assign show_social_links = true
-    elsif settings.social_snapchat != blank
-      assign show_social_links = true
-    elsif settings.social_youtube != blank
-      assign show_social_links = true
-    elsif settings.social_linkedin != blank
-      assign show_social_links = true
-    endif
-  endif
-
-  if section.settings.show_copyright or section.settings.show_theme_credits or section.settings.show_powered_by_shopify
-    assign show_footer_bottom = true
-  elsif show_country_selector or show_language_selector or show_payment_icons or show_social_links
-    assign show_footer_bottom = true
-  elsif show_follow_on_shop
-    assign show_footer_bottom = true
-  elsif section.settings.show_policy_links and shop.policies.size > 0
-    assign show_footer_bottom = true
   endif
 
   assign shop_name = shop.name | escape | split: '(' | first | strip
@@ -224,109 +190,105 @@
       </div>
     {% endif %}
 
-    {% if show_footer_bottom %}
-      <div class="footer-bottom">
-        {% if section.settings.show_copyright %}
-          <p class="footer-copyright">
-            &copy; {{ 'now' | date: '%Y' }}
-            <a href="{{ routes.root_url }}">{{ shop_name }}</a>.
-            {{ 'general.footer.all_rights_reserved' | t }}
-          </p>
-        {% endif %}
+    <div class="footer-bottom">
+      <p class="footer-copyright">
+        &copy; {{ 'now' | date: '%Y' }}
+        <a href="{{ routes.root_url }}">{{ shop_name }}</a>.
+        {{ 'general.footer.all_rights_reserved' | t }}
+      </p>
 
-        {% if section.settings.show_policy_links and shop.policies.size > 0 %}
-          <ul class="footer-policy-list" role="list">
-            {% for policy in shop.policies %}
-              <li>
-                <a href="{{ policy.url }}">{{ policy.title | escape }}</a>
-              </li>
-            {% endfor %}
-          </ul>
-        {% endif %}
+      {% if section.settings.show_policy_links and shop.policies.size > 0 %}
+        <ul class="footer-policy-list" role="list">
+          {% for policy in shop.policies %}
+            <li>
+              <a href="{{ policy.url }}">{{ policy.title | escape }}</a>
+            </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
 
-        {% if show_country_selector or show_language_selector %}
-          <div class="footer-localization">
-            {% if show_language_selector %}
-              <button
-                class="footer-localization-button"
-                type="button"
-                data-toggle="languages-dialog"
-                aria-controls="languages-dialog"
-                aria-haspopup="dialog"
-                aria-label="{{ 'general.localization.language' | t }}: {{ localization.language.endonym_name | capitalize | escape }}"
-              >
-                {% render 'svg-icons', icon: 'translate', icon_size: 18 %}
-                <span>
-                  {{ localization.language.endonym_name | capitalize }}
-                  <small>({{ localization.language.iso_code }})</small>
-                </span>
-              </button>
-            {% endif %}
-
-            {% if show_country_selector %}
-              <button
-                class="footer-localization-button"
-                type="button"
-                data-toggle="countries-dialog"
-                aria-controls="countries-dialog"
-                aria-haspopup="dialog"
-                aria-label="{{ 'general.localization.country' | t }}: {{ localization.country.name | escape }}"
-              >
-                <span class="footer-localization-image" aria-hidden="true">
-                  {{ localization.country | image_url: width: 18, height: 18 | image_tag: loading: 'lazy' }}
-                </span>
-                <span>
-                  {{ localization.country.name }}
-                  <small>
-                    ({{ localization.country.currency.iso_code }}
-                    {{ localization.country.currency.symbol }})
-                  </small>
-                </span>
-              </button>
-            {% endif %}
-          </div>
-        {% endif %}
-
-        {% if show_social_links %}
-          {% render 'social-icons',
-            icon_size: section.settings.social_icon_size,
-            wrapper_class: 'footer-social'
-          %}
-        {% endif %}
-
-        {% if show_payment_icons %}
-          {% render 'payment-icons', icon_size: 18, wrapper_class: 'footer-payment-icons' %}
-        {% endif %}
-
-        {% if show_follow_on_shop %}
-          <div class="footer-follow-on-shop">
-            {{ shop | login_button: action: 'follow' }}
-          </div>
-        {% endif %}
-
-        {% if section.settings.show_theme_credits or section.settings.show_powered_by_shopify %}
-          <p class="footer-credits">
-            {% if section.settings.show_theme_credits %}
+      {% if show_country_selector or show_language_selector %}
+        <div class="footer-localization">
+          {% if show_language_selector %}
+            <button
+              class="footer-localization-button"
+              type="button"
+              data-toggle="languages-dialog"
+              aria-controls="languages-dialog"
+              aria-haspopup="dialog"
+              aria-label="{{ 'general.localization.language' | t }}: {{ localization.language.endonym_name | capitalize | escape }}"
+            >
+              {% render 'svg-icons', icon: 'translate', icon_size: 18 %}
               <span>
-                {{ 'general.footer.designed_with' | t }}
-                <span class="footer-heart" aria-hidden="true">&hearts;</span><span class="visually-hidden">{{ 'accessibility.love' | t }}</span>
-                {{ 'general.footer.by' | t }}
-                <a href="https://kondasoft.com" target="_blank" rel="nofollow noopener">KondaSoft</a>
+                {{ localization.language.endonym_name | capitalize }}
+                <small>({{ localization.language.iso_code }})</small>
               </span>
-            {% endif %}
+            </button>
+          {% endif %}
 
-            {% if section.settings.show_powered_by_shopify %}
-              <span class="footer-powered-by">
-                {% if section.settings.show_theme_credits %}
-                  <span class="footer-credit-separator" aria-hidden="true">&middot;&nbsp;</span>
-                {% endif %}
-                {{ powered_by_link }}
+          {% if show_country_selector %}
+            <button
+              class="footer-localization-button"
+              type="button"
+              data-toggle="countries-dialog"
+              aria-controls="countries-dialog"
+              aria-haspopup="dialog"
+              aria-label="{{ 'general.localization.country' | t }}: {{ localization.country.name | escape }}"
+            >
+              <span class="footer-localization-image" aria-hidden="true">
+                {{ localization.country | image_url: width: 18, height: 18 | image_tag: loading: 'lazy' }}
               </span>
-            {% endif %}
-          </p>
-        {% endif %}
-      </div>
-    {% endif %}
+              <span>
+                {{ localization.country.name }}
+                <small>
+                  ({{ localization.country.currency.iso_code }}
+                  {{ localization.country.currency.symbol }})
+                </small>
+              </span>
+            </button>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      {% if section.settings.show_social_links %}
+        {% render 'social-icons',
+          icon_size: section.settings.social_icon_size,
+          wrapper_class: 'footer-social'
+        %}
+      {% endif %}
+
+      {% if show_payment_icons %}
+        {% render 'payment-icons', icon_size: 18, wrapper_class: 'footer-payment-icons' %}
+      {% endif %}
+
+      {% if show_follow_on_shop %}
+        <div class="footer-follow-on-shop">
+          {{ shop | login_button: action: 'follow' }}
+        </div>
+      {% endif %}
+
+      {% if section.settings.show_theme_credits or section.settings.show_powered_by_shopify %}
+        <p class="footer-credits">
+          {% if section.settings.show_theme_credits %}
+            <span>
+              {{ 'general.footer.designed_with' | t }}
+              <span class="footer-heart" aria-hidden="true">&hearts;</span><span class="visually-hidden">{{ 'accessibility.love' | t }}</span>
+              {{ 'general.footer.by' | t }}
+              <a href="https://kondasoft.com" target="_blank" rel="nofollow noopener">KondaSoft</a>
+            </span>
+          {% endif %}
+
+          {% if section.settings.show_powered_by_shopify %}
+            <span class="footer-powered-by">
+              {% if section.settings.show_theme_credits %}
+                <span class="footer-credit-separator" aria-hidden="true">&middot;&nbsp;</span>
+              {% endif %}
+              {{ powered_by_link }}
+            </span>
+          {% endif %}
+        </p>
+      {% endif %}
+    </div>
   </div>
 </div>
 
@@ -407,16 +369,17 @@
     },
     {
       "type": "checkbox",
-      "id": "show_copyright",
-      "label": "Show copyright information",
-      "default": true
-    },
-    {
-      "type": "checkbox",
       "id": "show_policy_links",
       "label": "Show policy links",
       "default": true,
       "info": "Displays the legal policies configured in Shopify admin."
+    },
+      {
+      "type": "checkbox",
+      "id": "enable_follow_on_shop",
+      "label": "Enable Follow on Shop",
+      "default": true,
+      "info": "Displays the Follow on Shop button when it is available for the store."
     },
     {
       "type": "checkbox",
@@ -430,13 +393,6 @@
       "id": "show_powered_by_shopify",
       "label": "Show Powered by Shopify",
       "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "enable_follow_on_shop",
-      "label": "Enable Follow on Shop",
-      "default": true,
-      "info": "Displays the Follow on Shop button when it is available for the store."
     },
     {
       "type": "header",

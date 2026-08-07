@@ -83,12 +83,15 @@
         "mobile_text_alignment": "left",
         "desktop_text_alignment": "left",
         "heading_size": "h1",
+        "search_products": true,
+        "search_articles": true,
+        "search_pages": true,
         "show_result_count": true,
         "show_filters": true,
         "show_sort": true,
         "mobile_columns": 2,
         "desktop_columns": 4,
-        "products_per_page": 24,
+        "results_per_page": 24,
         "pt": 52,
         "pb": 60
       }

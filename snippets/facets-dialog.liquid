@@ -9,7 +9,8 @@
   @param {number} active_filter_count - The number of active filters.
   @param {number} result_count - The number of matching products or results.
   @param {string} section_id - The owning section ID used for dialog relationships.
-  @param {string} [search_terms] - The current product-search terms.
+  @param {string} [search_terms] - The current search terms.
+  @param {string} [search_types] - The comma-separated resource types included in search.
 {% enddoc %}
 
 {% liquid
@@ -57,7 +58,7 @@
       >
         {% if context == 'search' %}
           <input type="hidden" name="q" value="{{ search_terms | escape }}">
-          <input type="hidden" name="type" value="product">
+          <input type="hidden" name="type" value="{{ search_types }}">
           <input type="hidden" name="options[prefix]" value="last">
         {% endif %}
         <input type="hidden" name="sort_by" value="{{ sort_by }}">

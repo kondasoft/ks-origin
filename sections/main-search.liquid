@@ -1,8 +1,31 @@
 {% liquid
-  assign products_per_page = section.settings.products_per_page | default: 24
+  assign results_per_page = section.settings.results_per_page | default: 24
+  assign search_types = ''
 
   if shop.permanent_domain contains 'ks-'
-    assign products_per_page = 12
+    assign results_per_page = 12
+  endif
+
+  if section.settings.search_products
+    assign search_types = 'product'
+  endif
+
+  if section.settings.search_articles
+    if search_types != blank
+      assign search_types = search_types | append: ','
+    endif
+    assign search_types = search_types | append: 'article'
+  endif
+
+  if section.settings.search_pages
+    if search_types != blank
+      assign search_types = search_types | append: ','
+    endif
+    assign search_types = search_types | append: 'page'
+  endif
+
+  if search_types == blank
+    assign search_types = 'product'
   endif
 
   assign pagination_previous = 'general.pagination.previous' | t
@@ -36,7 +59,8 @@
   assign encoded_search_terms = search.terms | url_encode
   assign escaped_search_terms = search.terms | escape
   assign encoded_sort_by = sort_by | url_encode
-  assign filters_clear_url = routes.search_url | append: '?type=product&q=' | append: encoded_search_terms | append: '&options%5Bprefix%5D=last&sort_by=' | append: encoded_sort_by
+  assign encoded_search_types = search_types | url_encode
+  assign filters_clear_url = routes.search_url | append: '?q=' | append: encoded_search_terms | append: '&type=' | append: encoded_search_types | append: '&options%5Bprefix%5D=last&sort_by=' | append: encoded_sort_by
 %}
 
 <faceted-results
@@ -78,7 +102,7 @@
           placeholder="{{ 'search.placeholder' | t }}"
           required
         >
-        <input type="hidden" name="type" value="product">
+        <input type="hidden" name="type" value="{{ search_types }}">
         <input type="hidden" name="options[prefix]" value="last">
         <button class="btn btn-accent-solid" type="submit">
           {{ 'search.submit' | t }}
@@ -127,7 +151,8 @@
                     form_action: routes.search_url,
                     sort_by: sort_by,
                     sort_options: search.sort_options,
-                    search_terms: search.terms
+                    search_terms: search.terms,
+                    search_types: search_types
                   %}
                 {% endif %}
               </div>
@@ -135,15 +160,56 @@
           </div>
         {% endif %}
 
-        {% paginate search.results by products_per_page %}
+        {% paginate search.results by results_per_page %}
           {% if search.results_count > 0 %}
             <ul class="product-grid" role="list">
-              {% for product in search.results %}
-                {% if product.object_type == 'product' %}
-                  <li class="product-grid-item">
-                    {% content_for 'block', type: 'product-card', id: 'product-card', closest.product: product %}
-                  </li>
-                {% endif %}
+              {% for result in search.results %}
+                <li class="product-grid-item">
+                  {% case result.object_type %}
+                    {% when 'product' %}
+                      {% content_for 'block', type: 'product-card', id: 'product-card', closest.product: result %}
+
+                    {% when 'article' %}
+                      <article class="search-result-card">
+                        {% if result.image != blank %}
+                          {{ result.image
+                            | image_url: width: 960
+                            | image_tag:
+                              class: 'search-result-card-image',
+                              widths: '320, 640, 960',
+                              sizes: '(min-width: 1200px) 25vw, (min-width: 600px) 50vw, 100vw',
+                              loading: 'lazy'
+                          }}
+                        {% endif %}
+                        <p class="search-result-card-type fs-sm">
+                          {{ 'search.types.article' | t }}
+                        </p>
+                        <h3 class="search-result-card-title fs-md">
+                          <a class="search-result-card-title-link" href="{{ result.url }}">
+                            {{ result.title | escape }}
+                          </a>
+                        </h3>
+                        <p class="search-result-card-excerpt fs-sm">
+                          {{ result.excerpt_or_content | strip_html | truncatewords: 24 }}
+                        </p>
+                      </article>
+
+                    {% when 'page' %}
+                      <article class="search-result-card">
+                        <p class="search-result-card-type fs-sm">
+                          {{ 'search.types.page' | t }}
+                        </p>
+                        <h3 class="search-result-card-title fs-md">
+                          <a class="search-result-card-title-link" href="{{ result.url }}">
+                            {{ result.title | escape }}
+                          </a>
+                        </h3>
+                        <p class="search-result-card-excerpt fs-sm">
+                          {{ result.content | strip_html | truncatewords: 24 }}
+                        </p>
+                      </article>
+                  {% endcase %}
+                </li>
               {% endfor %}
             </ul>
 
@@ -176,7 +242,8 @@
       active_filter_count: active_filter_count,
       result_count: search.results_count,
       section_id: section.id,
-      search_terms: search.terms
+      search_terms: search.terms,
+      search_types: search_types
     %}
   {% endif %}
 </faceted-results>
@@ -241,6 +308,32 @@
     },
     {
       "type": "header",
+      "content": "Search sources"
+    },
+    {
+      "type": "paragraph",
+      "content": "Select at least one source. Products are used if every source is disabled."
+    },
+    {
+      "type": "checkbox",
+      "id": "search_products",
+      "label": "Search products",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "search_articles",
+      "label": "Search articles",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "search_pages",
+      "label": "Search pages",
+      "default": true
+    },
+    {
+      "type": "header",
       "content": "Search utilities"
     },
     {
@@ -254,7 +347,8 @@
       "id": "show_filters",
       "label": "Show filters",
       "info": "Manage available filters with Shopify's [Search & Discovery app](https://apps.shopify.com/search-and-discovery).",
-      "default": true
+      "default": true,
+      "visible_if": "{{ section.settings.search_products }}"
     },
     {
       "type": "checkbox",
@@ -264,7 +358,7 @@
     },
     {
       "type": "header",
-      "content": "Product grid"
+      "content": "Results grid"
     },
     {
       "type": "range",
@@ -287,8 +381,8 @@
     },
     {
       "type": "range",
-      "id": "products_per_page",
-      "label": "Products per page",
+      "id": "results_per_page",
+      "label": "Results per page",
       "min": 8,
       "max": 48,
       "step": 4,

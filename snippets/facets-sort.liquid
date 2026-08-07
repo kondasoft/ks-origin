@@ -6,7 +6,8 @@
   @param {string} form_action - The URL submitted by the sort form.
   @param {string} sort_by - The currently selected sort value.
   @param {object} sort_options - The available sort options.
-  @param {string} [search_terms] - The current product-search terms.
+  @param {string} [search_terms] - The current search terms.
+  @param {string} [search_types] - The comma-separated resource types included in search.
 {% enddoc %}
 
 {% assign sort_label = 'general.facets.sort' | t %}
@@ -36,7 +37,7 @@
       >
         {% if context == 'search' %}
           <input type="hidden" name="q" value="{{ search_terms | escape }}">
-          <input type="hidden" name="type" value="product">
+          <input type="hidden" name="type" value="{{ search_types }}">
           <input type="hidden" name="options[prefix]" value="last">
         {% endif %}
 

@@ -1,7 +1,7 @@
 /*
   Main search stylesheet
 
-  This file owns the search page header and product-search form presentation.
+  This file owns the search page header, search form, and non-product result-card presentation.
 */
 
 
@@ -42,6 +42,60 @@
 
 .main-search[data-mobile-text-alignment="right"] .main-search-form {
   margin-left: auto;
+}
+
+
+/*
+  Search result cards
+*/
+.search-result-card {
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: 0.5em;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+.search-result-card:has(.search-result-card-title-link:focus-visible) {
+  outline-color: currentcolor;
+}
+
+.search-result-card-image {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: var(--border-radius);
+}
+
+.search-result-card-type {
+  margin: 0;
+  color: rgb(var(--color-text) / 0.65);
+}
+
+.search-result-card-title {
+  margin: 0;
+}
+
+.search-result-card-title-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.search-result-card-title-link::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+}
+
+.search-result-card-title-link:focus-visible {
+  outline: none;
+}
+
+.search-result-card-excerpt {
+  margin: 0;
+  color: rgb(var(--color-text) / 0.8);
 }
 
 @media (min-width: 1200px) {
