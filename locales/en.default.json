@@ -22,6 +22,10 @@
     "cart": "Cart",
     "breadcrumbs": "Breadcrumbs",
     "pagination": "Pagination",
+    "carousel": "Carousel",
+    "products_carousel": "Products",
+    "previous": "Previous",
+    "next": "Next",
     "play_video": "Play video",
     "clear_search": "Clear search",
     "love": "love"

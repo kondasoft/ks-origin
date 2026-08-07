@@ -699,6 +699,152 @@ textarea.input {
 
 
 /*
+  Carousels
+*/
+.theme-carousel {
+  display: block;
+  position: relative;
+}
+
+.theme-carousel-track-wrapper {
+  position: relative;
+}
+
+.theme-carousel-track {
+  --carousel-columns: var(--carousel-columns-mobile, 1);
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: calc((100% - (var(--carousel-gap, 1rem) * (var(--carousel-columns) - 1))) / var(--carousel-columns));
+  gap: var(--carousel-gap, 1rem);
+  padding: 0;
+  margin: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-inline: contain;
+  list-style: none;
+  scroll-behavior: smooth;
+  scroll-snap-type: inline mandatory;
+  scrollbar-width: none;
+}
+
+.theme-carousel-track::-webkit-scrollbar {
+  display: none;
+}
+
+.theme-carousel-track:focus-visible {
+  outline: 2px solid currentcolor;
+  outline-offset: 4px;
+}
+
+.theme-carousel-item {
+  min-width: 0;
+  scroll-snap-align: start;
+}
+
+.theme-carousel-control {
+  position: absolute;
+  top: 50%;
+  z-index: 2;
+  color: rgb(var(--color-text));
+  background-color: rgb(var(--color-background));
+  border: 1px solid rgb(var(--color-text) / var(--border-opacity));
+  transform: translateY(-50%);
+}
+
+.theme-carousel-control-previous {
+  left: 0.75rem;
+}
+
+.theme-carousel-control-next {
+  right: 0.75rem;
+}
+
+.theme-carousel-progress {
+  position: relative;
+  width: min(100%, 400px, 70vw);
+  height: 2px;
+  margin: 2rem auto 0;
+  overflow: hidden;
+  background-color: rgb(var(--color-surface));
+  border-radius: 50rem;
+}
+
+.theme-carousel-progress-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 100%;
+  background-color: rgb(var(--color-text));
+  border-radius: 50rem;
+  transform: translateX(0);
+  transition: width 200ms ease-out, transform 200ms ease-out;
+  will-change: width, transform;
+}
+
+.theme-carousel[data-scrollable="false"] .theme-carousel-controls {
+  display: none;
+}
+
+.theme-carousel[data-scrollable="false"] .theme-carousel-progress {
+  display: none;
+}
+
+@media (max-width: 599px) {
+  .theme-carousel[data-partial-slide-mobile="true"] .theme-carousel-track {
+    --carousel-columns: calc(var(--carousel-columns-mobile, 1) + 0.18);
+  }
+
+  .theme-carousel-track {
+    margin-right: -1rem;
+    margin-left: -1rem;
+    padding-right: 1rem;
+    padding-left: 1rem;
+    scroll-padding-right: 1rem;
+    scroll-padding-left: 1rem;
+  }
+
+  .theme-carousel-control {
+    display: none;
+  }
+}
+
+@media (min-width: 600px) {
+  .theme-carousel-track {
+    --carousel-columns: var(--carousel-columns-tablet, 2);
+  }
+}
+
+@media (min-width: 1200px) {
+  .theme-carousel-track {
+    --carousel-columns: var(--carousel-columns-desktop, 4);
+  }
+
+  .theme-carousel-control-previous {
+    left: -22px;
+  }
+
+  .theme-carousel-control-next {
+    right: -22px;
+  }
+
+  .theme-carousel-progress {
+    margin-top: 2.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .theme-carousel-track {
+    scroll-behavior: auto;
+  }
+
+  .theme-carousel-progress-bar {
+    transition: none;
+  }
+}
+
+
+/*
   Headings
 */
 h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {

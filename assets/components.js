@@ -803,6 +803,264 @@ if (!customElements.get("theme-collapse")) {
 }
 
 
+class ThemeCarousel extends HTMLElement {
+  connectedCallback() {
+    if (this.isInitialized) return;
+
+    this.track = this.querySelector("[data-carousel-track]");
+    this.items = Array.from(this.querySelectorAll("[data-carousel-item]"));
+    this.previousButton = this.querySelector("[data-carousel-previous]");
+    this.nextButton = this.querySelector("[data-carousel-next]");
+    this.progressBar = this.querySelector("[data-carousel-progress-bar]");
+    this.trackWrapper = this.querySelector(".theme-carousel-track-wrapper");
+    this.controlAlignmentElement = this.items[0]?.querySelector(
+      "[data-carousel-control-alignment]",
+    );
+
+    if (!this.track || !this.items.length) return;
+
+    this.listenerController = new AbortController();
+    this.reduceMotionQuery = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    );
+
+    this.addEventListener("click", this.onClick.bind(this), {
+      signal: this.listenerController.signal,
+    });
+    this.addEventListener("shopify:block:select", this.onBlockSelect.bind(this), {
+      signal: this.listenerController.signal,
+    });
+    this.track.addEventListener("scroll", this.onScroll.bind(this), {
+      passive: true,
+      signal: this.listenerController.signal,
+    });
+    this.track.addEventListener("keydown", this.onKeydown.bind(this), {
+      signal: this.listenerController.signal,
+    });
+    window.addEventListener("resize", this.scheduleUpdate.bind(this), {
+      signal: this.listenerController.signal,
+    });
+
+    if (this.controlAlignmentElement instanceof HTMLImageElement) {
+      this.controlAlignmentElement.addEventListener(
+        "load",
+        this.scheduleUpdate.bind(this),
+        { once: true, signal: this.listenerController.signal },
+      );
+    }
+
+    if ("ResizeObserver" in window) {
+      this.resizeObserver = new ResizeObserver(() => this.scheduleUpdate());
+      this.resizeObserver.observe(this.track);
+
+      if (this.controlAlignmentElement) {
+        this.resizeObserver.observe(this.controlAlignmentElement);
+      }
+    }
+
+    this.isInitialized = true;
+    this.scheduleUpdate();
+  }
+
+  disconnectedCallback() {
+    this.listenerController?.abort();
+    this.resizeObserver?.disconnect();
+    window.cancelAnimationFrame(this.scrollFrame);
+    window.cancelAnimationFrame(this.updateFrame);
+    this.isInitialized = false;
+  }
+
+  onClick(event) {
+    if (event.target.closest("[data-carousel-previous]")) {
+      this.goPrevious();
+    }
+
+    if (event.target.closest("[data-carousel-next]")) {
+      this.goNext();
+    }
+  }
+
+  onScroll() {
+    window.cancelAnimationFrame(this.scrollFrame);
+    this.scrollFrame = window.requestAnimationFrame(() => this.update());
+  }
+
+  onKeydown(event) {
+    if (event.target !== this.track) return;
+    if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+
+    event.preventDefault();
+
+    if (event.key === "ArrowRight") {
+      this.goNext();
+    } else {
+      this.goPrevious();
+    }
+  }
+
+  onBlockSelect(event) {
+    const item = event.target.closest("[data-carousel-item]");
+    const index = this.items.indexOf(item);
+
+    if (index >= 0) {
+      this.goTo(index, false);
+    }
+  }
+
+  getCurrentIndex() {
+    let closestIndex = 0;
+    let closestDistance = Number.POSITIVE_INFINITY;
+
+    this.items.forEach((item, index) => {
+      const itemPosition = item.offsetLeft - this.track.offsetLeft;
+      const distance = Math.abs(itemPosition - this.track.scrollLeft);
+
+      if (distance < closestDistance) {
+        closestIndex = index;
+        closestDistance = distance;
+      }
+    });
+
+    return closestIndex;
+  }
+
+  goPrevious() {
+    if (this.track.scrollLeft <= 1) {
+      this.scrollToPosition(this.getMaxScroll());
+      return;
+    }
+
+    this.goTo(this.getCurrentIndex() - 1);
+  }
+
+  goNext() {
+    if (this.track.scrollLeft >= this.getMaxScroll() - 1) {
+      this.scrollToPosition(0);
+      return;
+    }
+
+    this.goTo(this.getCurrentIndex() + 1);
+  }
+
+  goTo(index, smooth = true) {
+    const nextIndex = Math.max(0, Math.min(index, this.items.length - 1));
+    const item = this.items[nextIndex];
+
+    if (!item) return;
+
+    this.scrollToPosition(item.offsetLeft - this.track.offsetLeft, smooth);
+  }
+
+  getMaxScroll() {
+    return Math.max(0, this.track.scrollWidth - this.track.clientWidth);
+  }
+
+  scrollToPosition(left, smooth = true) {
+    const designMode = window.Shopify?.designMode === true;
+
+    this.track.scrollTo({
+      left,
+      behavior: smooth && !designMode && !this.reduceMotionQuery.matches
+        ? "smooth"
+        : "auto",
+    });
+  }
+
+  scheduleUpdate() {
+    if (this.updateFrame) return;
+
+    this.updateFrame = window.requestAnimationFrame(() => {
+      this.updateFrame = null;
+      this.update();
+    });
+  }
+
+  positionControls() {
+    if (
+      !this.controlAlignmentElement ||
+      !this.previousButton ||
+      !this.nextButton ||
+      !this.trackWrapper
+    ) {
+      return;
+    }
+
+    let offsetTop = 0;
+    let offsetElement = this.controlAlignmentElement;
+
+    while (offsetElement && offsetElement !== this.trackWrapper) {
+      offsetTop += offsetElement.offsetTop;
+      offsetElement = offsetElement.offsetParent;
+    }
+
+    if (offsetElement !== this.trackWrapper) return;
+
+    const controlTop = offsetTop + (this.controlAlignmentElement.offsetHeight / 2);
+
+    if (controlTop <= 0) return;
+
+    this.previousButton.style.top = `${controlTop}px`;
+    this.nextButton.style.top = `${controlTop}px`;
+  }
+
+  updateItemAccessibility() {
+    const firstItem = this.items[0];
+
+    if (!firstItem) return;
+
+    const gap = Number.parseFloat(getComputedStyle(this.track).columnGap) || 0;
+    const itemWidth = firstItem.getBoundingClientRect().width;
+
+    if (itemWidth <= 0 || this.track.clientWidth <= 0) return;
+
+    const visibleItemCount = Math.max(
+      1,
+      Math.round((this.track.clientWidth + gap) / (itemWidth + gap)),
+    );
+    const maxStartIndex = Math.max(0, this.items.length - visibleItemCount);
+    const startIndex = Math.min(this.getCurrentIndex(), maxStartIndex);
+    const endIndex = startIndex + visibleItemCount;
+
+    this.items.forEach((item, index) => {
+      const isVisible = index >= startIndex && index < endIndex;
+
+      if (!isVisible && item.contains(document.activeElement)) {
+        this.track.focus({ preventScroll: true });
+      }
+
+      item.toggleAttribute("inert", !isVisible);
+      item.setAttribute("aria-hidden", String(!isVisible));
+    });
+  }
+
+  updateProgress() {
+    if (!this.progressBar || this.track.scrollWidth <= 0) return;
+
+    const maxScroll = this.getMaxScroll();
+    const scrollLeft = Math.min(Math.max(this.track.scrollLeft, 0), maxScroll);
+    const progressWidth = (this.track.clientWidth / this.track.scrollWidth) * 100;
+    const progressTrackWidth = this.progressBar.parentElement?.clientWidth || 0;
+    const progressOffset = progressTrackWidth * (scrollLeft / this.track.scrollWidth);
+
+    this.progressBar.style.width = `${progressWidth}%`;
+    this.progressBar.style.transform = `translateX(${progressOffset}px)`;
+  }
+
+  update() {
+    const isScrollable = this.getMaxScroll() > 1;
+
+    this.dataset.scrollable = String(isScrollable);
+    this.positionControls();
+    this.updateItemAccessibility();
+    this.updateProgress();
+  }
+}
+
+if (!customElements.get("theme-carousel")) {
+  customElements.define("theme-carousel", ThemeCarousel);
+}
+
+
 class MobileMenuDialog extends HTMLElement {
   static closeDurationMs = 180;
   static submenuBackDelayMs = 200;

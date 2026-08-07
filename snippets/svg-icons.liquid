@@ -42,6 +42,14 @@
     <svg aria-hidden="true" class="svg-icon svg-icon-chevron-down" width="{{ scaled_icon_size }}" height="{{ scaled_icon_size }}" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="m5.5 7.5 4.5 4.5 4.5-4.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="{{ stroke_width }}"></path>
     </svg>
+  {% when 'chevron-left' %}
+    <svg aria-hidden="true" class="svg-icon svg-icon-chevron-left" width="{{ scaled_icon_size }}" height="{{ scaled_icon_size }}" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="m12.5 5.5-4.5 4.5 4.5 4.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="{{ stroke_width }}"></path>
+    </svg>
+  {% when 'chevron-right' %}
+    <svg aria-hidden="true" class="svg-icon svg-icon-chevron-right" width="{{ scaled_icon_size }}" height="{{ scaled_icon_size }}" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="m7.5 5.5 4.5 4.5-4.5 4.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="{{ stroke_width }}"></path>
+    </svg>
   {% when 'play' %}
     <svg aria-hidden="true" class="svg-icon svg-icon-play" width="{{ scaled_icon_size }}" height="{{ scaled_icon_size }}" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="m7 5 7 5-7 5z" fill="currentColor"></path>

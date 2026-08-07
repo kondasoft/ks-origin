@@ -10,7 +10,7 @@
   assign product_image_placeholder_class = product_image_class | append: ' placeholder-svg'
 %}
 
-<div class="product-card-image-block" {{ block.shopify_attributes }}>
+<div class="product-card-image-block" data-carousel-control-alignment {{ block.shopify_attributes }}>
   {% if product.featured_image != blank %}
     {{ product.featured_image
       | image_url: width: 2400

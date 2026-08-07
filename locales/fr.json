@@ -22,6 +22,10 @@
     "cart": "Panier",
     "breadcrumbs": "Fil d’Ariane",
     "pagination": "Pagination",
+    "carousel": "Carrousel",
+    "products_carousel": "Produits",
+    "previous": "Précédent",
+    "next": "Suivant",
     "play_video": "Lire la vidéo",
     "clear_search": "Effacer la recherche",
     "love": "amour"

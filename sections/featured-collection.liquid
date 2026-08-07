@@ -1,5 +1,11 @@
 {% liquid
   assign products_to_show = section.settings.products_to_show | default: 4
+  assign layout = section.settings.layout | default: 'carousel'
+  assign carousel_label = section.settings.collection.title
+
+  if carousel_label == blank
+    assign carousel_label = 'accessibility.products_carousel' | t
+  endif
 
   capture header_content
     content_for 'blocks'
@@ -21,9 +27,14 @@
     --desktop-text-alignment: {{ section.settings.desktop_text_alignment }};
     --mobile-columns: {{ section.settings.mobile_columns }};
     --desktop-columns: {{ section.settings.desktop_columns }};
+    --carousel-columns-mobile: {{ section.settings.mobile_columns }};
+    --carousel-columns-tablet: 2;
+    --carousel-columns-desktop: {{ section.settings.desktop_columns }};
+    --carousel-gap: 1rem;
     --pt: {{ section.settings.pt | divided_by: 16.0 | append: 'em' }};
     --pb: {{ section.settings.pb | divided_by: 16.0 | append: 'em' }};
   "
+  data-layout="{{ layout }}"
   data-section-css="{{ 'featured-collection.css' | asset_url }}, {{ 'product-card.css' | asset_url }}"
 >
   <div class="container {{ settings.container_width }}">
@@ -37,21 +48,80 @@
       </div>
     {% endif %}
 
-    <ul class="featured-collection-grid" role="list">
-      {% if section.settings.collection != blank and section.settings.collection.products_count > 0 %}
+    {% if layout == 'carousel' %}
+      <theme-carousel
+        class="theme-carousel"
+        data-partial-slide-mobile="{{ section.settings.carousel_partial_slide_mobile }}"
+        role="region"
+        aria-roledescription="{{ 'accessibility.carousel' | t }}"
+        aria-label="{{ carousel_label | escape }}"
+      >
+        <div class="theme-carousel-track-wrapper">
+          <ul
+            id="featured-collection-track-{{ section.id }}"
+            class="theme-carousel-track"
+            role="list"
+            tabindex="0"
+            data-carousel-track
+          >
+            {% for product in section.settings.collection.products limit: products_to_show %}
+              <li class="featured-collection-item theme-carousel-item" data-carousel-item>
+                {% content_for 'block', type: 'product-card', id: 'product-card', closest.product: product %}
+              </li>
+            {% else %}
+              {% for index in (1..products_to_show) %}
+                <li class="featured-collection-item theme-carousel-item" data-carousel-item>
+                  {% content_for 'block', type: 'product-card', id: 'product-card', closest.product: null %}
+                </li>
+              {% endfor %}
+            {% endfor %}
+          </ul>
+
+          {% if section.settings.carousel_show_navigation %}
+            <div class="theme-carousel-controls">
+              <button
+                class="icon-button theme-carousel-control theme-carousel-control-previous"
+                type="button"
+                aria-label="{{ 'accessibility.previous' | t }}"
+                aria-controls="featured-collection-track-{{ section.id }}"
+                data-carousel-previous
+              >
+                {% render 'svg-icons', icon: 'chevron-left', icon_size: 20 %}
+              </button>
+              <button
+                class="icon-button theme-carousel-control theme-carousel-control-next"
+                type="button"
+                aria-label="{{ 'accessibility.next' | t }}"
+                aria-controls="featured-collection-track-{{ section.id }}"
+                data-carousel-next
+              >
+                {% render 'svg-icons', icon: 'chevron-right', icon_size: 20 %}
+              </button>
+            </div>
+          {% endif %}
+        </div>
+
+        {% if section.settings.carousel_show_progress %}
+          <div class="theme-carousel-progress" aria-hidden="true">
+            <div class="theme-carousel-progress-bar" data-carousel-progress-bar></div>
+          </div>
+        {% endif %}
+      </theme-carousel>
+    {% else %}
+      <ul class="featured-collection-grid" role="list">
         {% for product in section.settings.collection.products limit: products_to_show %}
-          <li class="featured-collection-grid-item">
+          <li class="featured-collection-item">
             {% content_for 'block', type: 'product-card', id: 'product-card', closest.product: product %}
           </li>
+        {% else %}
+          {% for index in (1..products_to_show) %}
+            <li class="featured-collection-item">
+              {% content_for 'block', type: 'product-card', id: 'product-card', closest.product: null %}
+            </li>
+          {% endfor %}
         {% endfor %}
-      {% else %}
-        {% for index in (1..products_to_show) %}
-          <li class="featured-collection-grid-item">
-            {% content_for 'block', type: 'product-card', id: 'product-card', closest.product: null %}
-          </li>
-        {% endfor %}
-      {% endif %}
-    </ul>
+      </ul>
+    {% endif %}
 
     {% if section.settings.show_view_all
       and section.settings.collection != blank
@@ -125,6 +195,41 @@
       "id": "desktop_text_alignment",
       "label": "Desktop text alignment",
       "default": "left"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        { "value": "carousel", "label": "Carousel" },
+        { "value": "grid", "label": "Grid" }
+      ],
+      "default": "carousel"
+    },
+    {
+      "type": "checkbox",
+      "id": "carousel_partial_slide_mobile",
+      "label": "Show part of the next product on mobile",
+      "default": true,
+      "visible_if": "{{ section.settings.layout == 'carousel' }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "carousel_show_navigation",
+      "label": "Show navigation buttons",
+      "default": true,
+      "visible_if": "{{ section.settings.layout == 'carousel' }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "carousel_show_progress",
+      "label": "Show progress bar",
+      "default": true,
+      "visible_if": "{{ section.settings.layout == 'carousel' }}"
     },
     {
       "type": "header",

@@ -83,6 +83,10 @@
   outline-offset: 2px;
 }
 
+.theme-carousel .product-card-title-link::after {
+  outline-offset: -2px;
+}
+
 .product-card-title-link:hover {
 }
 
