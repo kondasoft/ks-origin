@@ -25,6 +25,16 @@
     {% else %}
       {{ 'lifestyle-1' | placeholder_svg_tag: article_image_placeholder_class }}
     {% endif %}
+
+    {% if block.settings.show_tags and article.tags.size > 0 %}
+      <ul class="article-card-tags" role="list">
+        {% for tag in article.tags limit: 3 %}
+          <li class="article-card-tag badge">
+            {{ tag | escape }}
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
   </div>
 {% endif %}
 
@@ -46,6 +56,13 @@
         { "group": "Vertical", "value": "vertical", "label": "Vertical (9:16)" }
       ],
       "default": "landscape"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_tags",
+      "label": "Show tags",
+      "default": true,
+      "info": "Shows up to three article tags over the image."
     }
   ],
   "presets": [

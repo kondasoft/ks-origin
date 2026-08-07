@@ -1,0 +1,79 @@
+{% assign article = closest.article %}
+
+{% if article.tags.size > 0 %}
+  <div
+    class="article-tags-block block-spacing"
+    style="
+      --pt: {{ block.settings.pt | divided_by: 16.0 | append: 'em' }};
+      --pb: {{ block.settings.pb | divided_by: 16.0 | append: 'em' }};
+    "
+    {{ block.shopify_attributes }}
+  >
+    <p class="article-tags-title {{ block.settings.text_size }}">
+      {{ 'blogs.tags' | t }}
+    </p>
+    <ul class="article-tags-list" role="list">
+      {% for tag in article.tags %}
+        {% assign tag_handle = tag | handle %}
+        {% assign tag_url = blog.url | append: '/tagged/' | append: tag_handle %}
+        <li>
+          <a class="article-tag fs-sm" href="{{ tag_url }}">
+            {{ tag | escape }}
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Article tags",
+  "tag": null,
+  "settings": [
+    {
+      "type": "select",
+      "id": "text_size",
+      "label": "Heading size",
+      "options": [
+        { "value": "fs-xs", "label": "Extra small" },
+        { "value": "fs-sm", "label": "Small" },
+        { "value": "fs-md", "label": "Medium" },
+        { "value": "fs-lg", "label": "Large" },
+        { "value": "fs-xl", "label": "Extra large" }
+      ],
+      "default": "fs-md"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pt",
+      "label": "Top",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "pb",
+      "label": "Bottom",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Article tags",
+      "category": "Blog"
+    }
+  ]
+}
+{% endschema %}

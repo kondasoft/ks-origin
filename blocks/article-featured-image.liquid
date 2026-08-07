@@ -1,0 +1,83 @@
+{% liquid
+  assign article = closest.article
+  assign image_class = 'article-featured-image'
+
+  unless block.settings.image_ratio == 'adapt'
+    assign image_class = image_class | append: ' aspect-ratio aspect-ratio-' | append: block.settings.image_ratio
+  endunless
+%}
+
+{% if article.image != blank %}
+  <div
+    class="article-featured-image-block block-spacing"
+    style="
+      --pt: {{ block.settings.pt | divided_by: 16.0 | append: 'em' }};
+      --pb: {{ block.settings.pb | divided_by: 16.0 | append: 'em' }};
+    "
+    {{ block.shopify_attributes }}
+  >
+    {{ article.image
+      | image_url: width: 2400
+      | image_tag:
+        class: image_class,
+        widths: '320, 640, 960, 1280, 1600, 2000, 2400',
+        sizes: '100vw',
+        loading: 'eager',
+        fetchpriority: 'high'
+    }}
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Article image",
+  "tag": null,
+  "settings": [
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "Aspect ratio",
+      "options": [
+        { "group": "Adapt", "value": "adapt", "label": "Adapt to image" },
+        { "group": "Square", "value": "square", "label": "Square (1:1)" },
+        { "group": "Horizontal", "value": "landscape", "label": "Landscape (4:3)" },
+        { "group": "Horizontal", "value": "widescreen", "label": "Widescreen (16:9)" },
+        { "group": "Vertical", "value": "portrait", "label": "Portrait (3:4)" },
+        { "group": "Vertical", "value": "vertical", "label": "Vertical (9:16)" }
+      ],
+      "default": "landscape",
+      "info": "Uses the image assigned to this article."
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pt",
+      "label": "Top",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "pb",
+      "label": "Bottom",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 26
+    }
+  ],
+  "presets": [
+    {
+      "name": "Article image",
+      "category": "Blog"
+    }
+  ]
+}
+{% endschema %}

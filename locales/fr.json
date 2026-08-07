@@ -104,6 +104,7 @@
     },
     "filter_by_tag": "Filtrer par étiquette",
     "all_articles": "Tous les articles",
+    "tags": "Étiqueté avec",
     "by_author": "Par {{ author }}",
     "read_more": "Lire la suite",
     "placeholders": {

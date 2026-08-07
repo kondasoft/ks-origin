@@ -1,0 +1,93 @@
+{% liquid
+  assign article = closest.article
+  assign article_author = article.author | default: shop.name
+%}
+
+{% if block.settings.show_date or block.settings.show_author %}
+  <div
+    class="article-meta-block block-spacing"
+    style="
+      --pt: {{ block.settings.pt | divided_by: 16.0 | append: 'em' }};
+      --pb: {{ block.settings.pb | divided_by: 16.0 | append: 'em' }};
+    "
+    {{ block.shopify_attributes }}
+  >
+    <p class="article-meta {{ block.settings.text_size }}">
+      {% if block.settings.show_date %}
+        {{ article.published_at | time_tag: format: 'date' }}
+      {% endif %}
+
+      {% if block.settings.show_date and block.settings.show_author %}
+        <span aria-hidden="true">·</span>
+      {% endif %}
+
+      {% if block.settings.show_author %}
+        {{ 'blogs.by_author' | t: author: article_author }}
+      {% endif %}
+    </p>
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Article meta",
+  "tag": null,
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_date",
+      "label": "Show date",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_author",
+      "label": "Show author",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "text_size",
+      "label": "Text size",
+      "options": [
+        { "value": "fs-xs", "label": "Extra small" },
+        { "value": "fs-sm", "label": "Small" },
+        { "value": "fs-md", "label": "Medium" },
+        { "value": "fs-lg", "label": "Large" },
+        { "value": "fs-xl", "label": "Extra large" }
+      ],
+      "default": "fs-md"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pt",
+      "label": "Top",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "pb",
+      "label": "Bottom",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 6
+    }
+  ],
+  "presets": [
+    {
+      "name": "Article meta",
+      "category": "Blog"
+    }
+  ]
+}
+{% endschema %}

@@ -21,6 +21,7 @@
 }
 
 .article-card-image-block {
+  position: relative;
   margin-bottom: 0.25rem;
 }
 
@@ -30,6 +31,28 @@
   height: auto;
   border-radius: var(--border-radius);
   transition: opacity 200ms ease-out;
+}
+
+.article-card-tags {
+  position: absolute;
+  top: 0.75em;
+  right: 0.75em;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  max-width: calc(100% - 1.5em);
+  gap: 0.35em;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  pointer-events: none;
+}
+
+.article-card-tag {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .article-card-heading {

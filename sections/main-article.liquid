@@ -1,0 +1,189 @@
+<article
+  class="main-article responsive-text-alignment section-spacing"
+  data-content-width="{{ section.settings.content_width }}"
+  data-mobile-text-alignment="{{ section.settings.mobile_text_alignment }}"
+  data-desktop-text-alignment="{{ section.settings.desktop_text_alignment }}"
+  style="
+    --color-background: {{ section.settings.background_color.red }} {{ section.settings.background_color.green }} {{ section.settings.background_color.blue }};
+    --color-text: {{ section.settings.text_color.red }} {{ section.settings.text_color.green }} {{ section.settings.text_color.blue }};
+    --color-accent: {{ section.settings.accent_color.red }} {{ section.settings.accent_color.green }} {{ section.settings.accent_color.blue }};
+    --mobile-text-alignment: {{ section.settings.mobile_text_alignment }};
+    --desktop-text-alignment: {{ section.settings.desktop_text_alignment }};
+    --pt: {{ section.settings.pt | divided_by: 16.0 | append: 'em' }};
+    --pb: {{ section.settings.pb | divided_by: 16.0 | append: 'em' }};
+  "
+>
+  <div class="container {{ settings.container_width }}">
+    <div class="main-article-blocks">
+      {% content_for 'blocks', closest.article: article %}
+    </div>
+  </div>
+</article>
+
+<script type="application/ld+json">
+  {{ article | structured_data }}
+</script>
+
+{% schema %}
+{
+  "name": "Article",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "{{ settings.colors.background }}"
+    },
+    {
+      "type": "color",
+      "id": "text_color", 
+      "label": "Text color",
+      "default": "{{ settings.colors.text }}"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent color",
+      "default": "{{ settings.colors.accent }}"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "content_width",
+      "label": "Content width",
+      "options": [
+        { "value": "narrow", "label": "Narrow" },
+        { "value": "site", "label": "Site container" }
+      ],
+      "default": "narrow",
+      "info": "Applies to all article blocks except the article image."
+    },
+    {
+      "type": "text_alignment",
+      "id": "mobile_text_alignment",
+      "label": "Mobile text alignment",
+      "default": "left"
+    },
+    {
+      "type": "text_alignment",
+      "id": "desktop_text_alignment",
+      "label": "Desktop text alignment",
+      "default": "left"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pt",
+      "label": "Top",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "pb",
+      "label": "Bottom",
+      "min": 0,
+      "max": 160,
+      "step": 2, 
+      "unit": "px",
+      "default": 60
+    }
+  ],
+  "blocks": [
+    {
+      "type": "article-featured-image"
+    },
+    {
+      "type": "article-breadcrumb"
+    },
+    {
+      "type": "article-heading"
+    },
+    {
+      "type": "article-meta"
+    },
+    {
+      "type": "article-content"
+    },
+    {
+      "type": "article-tags"
+    },
+    {
+      "type": "@app"
+    }
+  ],
+  "enabled_on": {
+    "templates": ["article"]
+  },
+  "presets": [
+    {
+      "name": "Article",
+      "category": "Blog",
+      "blocks": [
+        {
+          "type": "article-featured-image",
+          "settings": {
+            "image_ratio": "landscape",
+            "pt": 0,
+            "pb": 26
+          }
+        },
+        {
+          "type": "article-breadcrumb",
+          "settings": {
+            "pt": 0,
+            "pb": 10
+          }
+        },
+        {
+          "type": "article-heading",
+          "settings": {
+            "heading_size": "h1",
+            "pt": 0,
+            "pb": 0
+          }
+        },
+        {
+          "type": "article-meta",
+          "settings": {
+            "show_date": true,
+            "show_author": true,
+            "text_size": "fs-md",
+            "pt": 10,
+            "pb": 6
+          }
+        },
+        {
+          "type": "article-content",
+          "settings": {
+            "pt": 16,
+            "pb": 30
+          }
+        },
+        {
+          "type": "article-tags",
+          "settings": {
+            "text_size": "fs-md",
+            "pt": 24,
+            "pb": 0
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
