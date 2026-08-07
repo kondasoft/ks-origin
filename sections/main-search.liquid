@@ -61,9 +61,6 @@
   assign encoded_sort_by = sort_by | url_encode
   assign encoded_search_types = search_types | url_encode
   assign filters_clear_url = routes.search_url | append: '?q=' | append: encoded_search_terms | append: '&type=' | append: encoded_search_types | append: '&options%5Bprefix%5D=last&sort_by=' | append: encoded_sort_by
-  assign mobile_article_image_width = 100 | divided_by: section.settings.mobile_columns | append: 'vw'
-  assign desktop_article_image_width = 100 | divided_by: section.settings.desktop_columns | append: 'vw'
-  assign article_image_sizes = '(min-width: 1200px) ' | append: desktop_article_image_width | append: ', (min-width: 600px) 50vw, ' | append: mobile_article_image_width
 %}
 
 <faceted-results
@@ -186,43 +183,20 @@
                       {% content_for 'block', type: 'product-card', id: 'product-card', closest.product: result %}
 
                     {% when 'article' %}
-                      <article class="search-result-card">
-                        {% if result.image != blank %}
-                          {{ result.image
-                            | image_url: width: 2400
-                            | image_tag:
-                              class: 'search-result-card-image',
-                              widths: '320, 640, 960, 1280, 1600, 2000, 2400',
-                              sizes: article_image_sizes,
-                              loading: 'lazy'
-                          }}
-                        {% endif %}
-                        <p class="search-result-card-type fs-sm">
-                          {{ 'search.types.article' | t }}
-                        </p>
-                        <h3 class="search-result-card-title fs-md">
-                          <a class="search-result-card-title-link" href="{{ result.url }}">
-                            {{ result.title | escape }}
-                          </a>
-                        </h3>
-                        <p class="search-result-card-excerpt fs-sm">
-                          {{ result.excerpt_or_content | strip_html | truncatewords: 24 }}
-                        </p>
-                      </article>
+                      {% content_for 'block', type: 'article-card', id: 'article-card', closest.article: result %}
 
                     {% when 'page' %}
                       <article class="search-result-card">
-                        <p class="search-result-card-type fs-sm">
-                          {{ 'search.types.page' | t }}
-                        </p>
+                        <div class="search-result-card-placeholder">
+                          <span class="badge search-result-card-badge">
+                            {{ 'search.types.page' | t }}
+                          </span>
+                        </div>
                         <h3 class="search-result-card-title fs-md">
                           <a class="search-result-card-title-link" href="{{ result.url }}">
                             {{ result.title | escape }}
                           </a>
                         </h3>
-                        <p class="search-result-card-excerpt fs-sm">
-                          {{ result.content | strip_html | truncatewords: 24 }}
-                        </p>
                       </article>
                   {% endcase %}
                 </li>
@@ -476,6 +450,38 @@
               "settings": {
                 "button_style": "btn-accent-solid",
                 "button_size": "btn-sm"
+              }
+            }
+          ]
+        },
+        {
+          "type": "article-card",
+          "id": "article-card",
+          "static": true,
+          "settings": {
+            "text_alignment": "left"
+          },
+          "blocks": [
+            {
+              "type": "article-card-image",
+              "settings": {
+                "image_ratio": "landscape",
+                "show_tags": false
+              }
+            },
+            {
+              "type": "article-card-heading",
+              "settings": {
+                "font_family": "heading",
+                "heading_size": "fs-md"
+              }
+            },
+            {
+              "type": "article-card-meta",
+              "settings": {
+                "show_date": true,
+                "show_author": true,
+                "text_size": "fs-sm"
               }
             }
           ]

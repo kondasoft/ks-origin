@@ -61,17 +61,19 @@
   outline-color: currentcolor;
 }
 
-.search-result-card-image {
+.search-result-card-placeholder {
+  position: relative;
   width: 100%;
-  height: auto;
-  aspect-ratio: 1;
-  object-fit: cover;
+  aspect-ratio: 4 / 3;
+  background-color: rgb(var(--color-surface));
   border-radius: var(--border-radius);
+  margin-bottom: 0.25rem;
 }
 
-.search-result-card-type {
-  margin: 0;
-  color: rgb(var(--color-text) / 0.65);
+.search-result-card-badge {
+  position: absolute;
+  top: 0.75em;
+  right: 0.75em;
 }
 
 .search-result-card-title {
@@ -91,11 +93,6 @@
 
 .search-result-card-title-link:focus-visible {
   outline: none;
-}
-
-.search-result-card-excerpt {
-  margin: 0;
-  color: rgb(var(--color-text) / 0.8);
 }
 
 @media (min-width: 1200px) {

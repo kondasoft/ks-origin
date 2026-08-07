@@ -1310,23 +1310,35 @@ class ShareComponent extends HTMLElement {
   async onCopyClick() {
     if (!this.urlInput || !this.copyButton) return;
 
-    try {
-      if (navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(this.urlInput.value);
-      } else {
-        this.urlInput.select();
+    let copied;
 
-        if (!document.execCommand("copy")) return;
+    if (navigator.clipboard?.writeText) {
+      try {
+        await navigator.clipboard.writeText(this.urlInput.value);
+        copied = true;
+      } catch {
+        copied = this.copyWithLegacyCommand();
       }
-    } catch {
-      return;
+    } else {
+      copied = this.copyWithLegacyCommand();
     }
+
+    if (!copied) return;
 
     this.copyButton.textContent = this.copyButton.dataset.textCopied;
     window.clearTimeout(this.copyResetTimer);
     this.copyResetTimer = window.setTimeout(() => {
       this.copyButton.textContent = this.copyButton.dataset.textCopy;
     }, 2000);
+  }
+
+  copyWithLegacyCommand() {
+    try {
+      this.urlInput.select();
+      return document.execCommand("copy");
+    } catch {
+      return false;
+    }
   }
 }
 

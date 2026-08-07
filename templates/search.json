@@ -74,6 +74,45 @@
             "product-card-price",
             "product-card-form"
           ]
+        },
+        "article-card": {
+          "type": "article-card",
+          "static": true,
+          "settings": {
+            "text_alignment": "left"
+          },
+          "blocks": {
+            "article-card-image": {
+              "type": "article-card-image",
+              "settings": {
+                "image_ratio": "landscape",
+                "show_tags": false
+              },
+              "blocks": {}
+            },
+            "article-card-heading": {
+              "type": "article-card-heading",
+              "settings": {
+                "font_family": "heading",
+                "heading_size": "fs-md"
+              },
+              "blocks": {}
+            },
+            "article-card-meta": {
+              "type": "article-card-meta",
+              "settings": {
+                "show_date": true,
+                "show_author": true,
+                "text_size": "fs-sm"
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "article-card-image",
+            "article-card-heading",
+            "article-card-meta"
+          ]
         }
       },
       "settings": {
