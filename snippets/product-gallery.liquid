@@ -1,0 +1,130 @@
+{% doc %}
+Renders the main product image gallery with selectable transitions, controls, a counter, and thumbnails.
+
+@param {section} [section] - A section override, otherwise the current section context is used.
+@param {product} [product] - A product override, otherwise the current or section-selected product is used.
+
+@example
+{% render 'product-gallery' %}
+{% enddoc %}
+
+{% liquid
+  assign gallery_product = product | default: section.settings.product
+  assign gallery_images = gallery_product.images
+  assign gallery_count = gallery_images.size
+  assign gallery_aspect_ratio = '1 / 1'
+
+  if gallery_product.featured_image != blank
+    assign gallery_aspect_ratio = gallery_product.featured_image.width | append: ' / ' | append: gallery_product.featured_image.height
+  endif
+%}
+
+<product-gallery
+  class="product-gallery"
+  data-transition="{{ section.settings.gallery_transition }}"
+  style="--product-gallery-aspect-ratio: {{ gallery_aspect_ratio }};"
+>
+  <div
+    class="product-gallery-stage"
+    role="region"
+    aria-label="{{ 'accessibility.product_gallery' | t }}"
+    tabindex="0"
+    data-product-gallery-stage
+  >
+    <ul class="product-gallery-track" role="list" data-product-gallery-track>
+      {% for image in gallery_images %}
+        {% liquid
+          assign image_alt = image.alt | default: gallery_product.title
+          assign image_loading = 'lazy'
+          assign image_fetchpriority = 'auto'
+
+          if forloop.first
+            assign image_loading = 'eager'
+            assign image_fetchpriority = 'high'
+          endif
+        %}
+        <li
+          class="product-gallery-slide{% if forloop.first %} is-active{% endif %}"
+          data-product-gallery-slide
+          aria-hidden="{% if forloop.first %}false{% else %}true{% endif %}"
+        >
+          {{ image
+            | image_url: width: 2400
+            | image_tag:
+              alt: image_alt,
+              class: 'product-gallery-image',
+              widths: '320, 640, 960, 1280, 1600, 2000, 2400',
+              sizes: '(min-width: 1200px) 50vw, 100vw',
+              loading: image_loading,
+              fetchpriority: image_fetchpriority
+          }}
+        </li>
+      {% else %}
+        <li class="product-gallery-slide is-active" data-product-gallery-slide aria-hidden="false">
+          {{ 'product-apparel-1' | placeholder_svg_tag: 'product-gallery-image placeholder-svg' }}
+        </li>
+      {% endfor %}
+    </ul>
+
+    {% if gallery_count > 1 and section.settings.gallery_show_navigation %}
+      <div class="product-gallery-controls">
+        <button
+          class="icon-button"
+          type="button"
+          aria-label="{{ 'accessibility.previous_image' | t }}"
+          data-product-gallery-previous
+        >
+          {% render 'svg-icons', icon: 'chevron-left', icon_size: 20 %}
+        </button>
+        <button
+          class="icon-button"
+          type="button"
+          aria-label="{{ 'accessibility.next_image' | t }}"
+          data-product-gallery-next
+        >
+          {% render 'svg-icons', icon: 'chevron-right', icon_size: 20 %}
+        </button>
+      </div>
+    {% endif %}
+
+    {% if gallery_count > 1 and section.settings.gallery_show_counter %}
+      <span class="product-gallery-counter" aria-hidden="true" data-product-gallery-counter>
+        1 / {{ gallery_count }}
+      </span>
+    {% endif %}
+  </div>
+
+  <span
+    class="visually-hidden"
+    aria-live="polite"
+    data-product-gallery-status
+    data-template="{{ 'accessibility.image_status' | t: index: '[index]', count: '[count]' | escape }}"
+  ></span>
+
+  {% if gallery_count > 1 and section.settings.gallery_show_thumbnails %}
+    <ul class="product-gallery-thumbnails" role="list" data-product-gallery-thumbnails>
+      {% for image in gallery_images %}
+        <li>
+          <button
+            class="product-gallery-thumbnail"
+            type="button"
+            data-product-gallery-thumbnail
+            data-index="{{ forloop.index0 }}"
+            aria-label="{{ 'accessibility.view_image' | t: index: forloop.index }}"
+            {% if forloop.first %}aria-current="true"{% endif %}
+          >
+            {{ image
+              | image_url: width: 240
+              | image_tag:
+                alt: '',
+                class: 'product-gallery-thumbnail-image',
+                widths: '80, 120, 160, 200, 240',
+                sizes: '120px',
+                loading: 'lazy'
+            }}
+          </button>
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+</product-gallery>

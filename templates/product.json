@@ -11,11 +11,59 @@
   "sections": {
     "main": {
       "type": "main-product",
+      "blocks": {
+        "product-main-vendor": {
+          "type": "_product-main-vendor",
+          "settings": {
+            "text_size": "fs-sm",
+            "pt": 0,
+            "pb": 6
+          },
+          "blocks": {}
+        },
+        "product-main-title": {
+          "type": "_product-main-title",
+          "settings": {
+            "heading_size": "h2",
+            "pt": 0,
+            "pb": 6
+          },
+          "blocks": {}
+        },
+        "product-main-price": {
+          "type": "_product-main-price",
+          "settings": {
+            "price_size": "fs-xl",
+            "pt": 0,
+            "pb": 0
+          },
+          "blocks": {}
+        },
+        "product-main-sku": {
+          "type": "_product-main-sku",
+          "settings": {
+            "text_size": "fs-sm",
+            "pt": 0,
+            "pb": 0
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "product-main-vendor",
+        "product-main-title",
+        "product-main-price",
+        "product-main-sku"
+      ],
       "settings": {
         "background_color": "{{ settings.colors.background }}",
         "text_color": "{{ settings.colors.text }}",
         "accent_color": "{{ settings.colors.accent }}",
-        "pt": 60,
+        "gallery_transition": "slide",
+        "gallery_show_navigation": true,
+        "gallery_show_counter": true,
+        "gallery_show_thumbnails": true,
+        "pt": 44,
         "pb": 60
       }
     },

@@ -6,12 +6,18 @@
     --color-accent: {{ section.settings.accent_color.red }} {{ section.settings.accent_color.green }} {{ section.settings.accent_color.blue }};
     --pt: {{ section.settings.pt | divided_by: 16.0 | append: 'em' }};
     --pb: {{ section.settings.pb | divided_by: 16.0 | append: 'em' }};
-    color: rgb(var(--color-text));
-    background-color: rgb(var(--color-background));
   "
 >
   <div class="container {{ settings.container_width }}">
-    <div class="main-product-layout"></div>
+    <div class="main-product-layout">
+      <div class="main-product-media">
+        {% render 'product-gallery' %}
+      </div>
+
+      <div class="main-product-details">
+        {% content_for 'blocks', closest.product: product %}
+      </div>
+    </div>
   </div>
 </div>
 
@@ -44,6 +50,38 @@
     },
     {
       "type": "header",
+      "content": "Gallery"
+    },
+    {
+      "type": "select",
+      "id": "gallery_transition",
+      "label": "Transition",
+      "options": [
+        { "value": "slide", "label": "Slide" },
+        { "value": "fade", "label": "Fade" }
+      ],
+      "default": "slide"
+    },
+    {
+      "type": "checkbox",
+      "id": "gallery_show_navigation",
+      "label": "Show navigation buttons",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "gallery_show_counter",
+      "label": "Show image counter",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "gallery_show_thumbnails",
+      "label": "Show thumbnails",
+      "default": true
+    },
+    {
+      "type": "header",
       "content": "Spacing"
     },
     {
@@ -67,13 +105,61 @@
       "default": 60
     }
   ],
+  "blocks": [
+    {
+      "type": "_product-main-vendor"
+    },
+    {
+      "type": "_product-main-title"
+    },
+    {
+      "type": "_product-main-price"
+    },
+    {
+      "type": "_product-main-sku"
+    }
+  ],
   "enabled_on": {
     "templates": ["product"]
   },
   "presets": [
     {
       "name": "Product",
-      "category": "Product"
+      "category": "Product",
+      "blocks": [
+        {
+          "type": "_product-main-vendor",
+          "settings": {
+            "text_size": "fs-sm",
+            "pt": 0,
+            "pb": 6
+          }
+        },
+        {
+          "type": "_product-main-title",
+          "settings": {
+            "heading_size": "h1",
+            "pt": 0,
+            "pb": 6
+          }
+        },
+        {
+          "type": "_product-main-price",
+          "settings": {
+            "price_size": "fs-xl",
+            "pt": 0,
+            "pb": 0
+          }
+        },
+        {
+          "type": "_product-main-sku",
+          "settings": {
+            "text_size": "fs-sm",
+            "pt": 0,
+            "pb": 0
+          }
+        }
+      ]
     }
   ]
 }

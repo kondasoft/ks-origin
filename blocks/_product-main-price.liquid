@@ -1,0 +1,87 @@
+{% liquid
+  assign product = closest.product
+  assign selected_variant = product.selected_or_first_available_variant
+
+  if product == blank
+    assign current_price_value = 1999
+    assign compare_price = null
+  else
+    assign current_price_value = selected_variant.price
+    assign compare_price = selected_variant.compare_at_price
+  endif
+
+  assign current_price = current_price_value | money
+%}
+
+<div
+  class="product-main-price-block block-spacing"
+  style="
+    --pt: {{ block.settings.pt | divided_by: 16.0 | append: 'em' }};
+    --pb: {{ block.settings.pb | divided_by: 16.0 | append: 'em' }};
+  "
+  {{ block.shopify_attributes }}
+>
+  <p class="product-main-price {{ block.settings.price_size }}">
+    {% if compare_price > current_price_value %}
+      <span class="visually-hidden">{{ 'products.price.sale_price' | t }}</span>
+      <span class="product-main-price-current product-main-price-sale">{{ current_price }}</span>
+      <span class="visually-hidden">{{ 'products.price.regular_price' | t }}</span>
+      <s class="product-main-price-compare">{{ compare_price | money }}</s>
+    {% else %}
+      <span class="visually-hidden">{{ 'products.price.regular_price' | t }}</span>
+      <span class="product-main-price-current">{{ current_price }}</span>
+    {% endif %}
+  </p>
+</div>
+
+{% schema %}
+{
+  "name": "Product price",
+  "tag": null,
+  "settings": [
+    {
+      "type": "select",
+      "id": "price_size",
+      "label": "Price size",
+      "options": [
+        { "value": "fs-xs", "label": "Extra small" },
+        { "value": "fs-sm", "label": "Small" },
+        { "value": "fs-md", "label": "Medium" },
+        { "value": "fs-lg", "label": "Large" },
+        { "value": "fs-xl", "label": "Extra large" }
+      ],
+      "default": "fs-xl"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pt",
+      "label": "Top",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "pb",
+      "label": "Bottom",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product price",
+      "category": "Product"
+    }
+  ]
+}
+{% endschema %}
