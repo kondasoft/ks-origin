@@ -114,6 +114,16 @@ class ProductGallery extends HTMLElement {
     this.showImage(distanceX < 0 ? this.currentIndex + 1 : this.currentIndex - 1);
   }
 
+  showMedia(mediaId, announce = true) {
+    if (!mediaId) return;
+
+    const mediaIndex = this.slides.findIndex((slide) => slide.dataset.mediaId === String(mediaId));
+
+    if (mediaIndex === -1) return;
+
+    this.showImage(mediaIndex, announce);
+  }
+
   showImage(index, announce = true) {
     const nextIndex = (index + this.slides.length) % this.slides.length;
     const hasChanged = nextIndex !== this.currentIndex;

@@ -11,6 +11,9 @@
 
 <div
   class="product-main-buy-buttons block-spacing"
+  data-product-buy-buttons
+  data-add-to-cart-text="{{ 'products.form.add_to_cart' | t | escape }}"
+  data-sold-out-text="{{ 'products.form.sold_out' | t | escape }}"
   style="
     --pt: {{ block.settings.pt | divided_by: 16.0 | append: 'em' }};
     --pb: {{ block.settings.pb | divided_by: 16.0 | append: 'em' }};
@@ -98,13 +101,16 @@
           type="submit"
           name="add"
           class="btn {{ block.settings.add_to_cart_size }} {{ block.settings.button_style }}"
+          data-add-to-cart-button
           {% unless selected_variant.available %}disabled{% endunless %}
         >
-          {% if selected_variant.available %}
-            {{ 'products.form.add_to_cart' | t }}
-          {% else %}
-            {{ 'products.form.sold_out' | t }}
-          {% endif %}
+          <span data-add-to-cart-text>
+            {% if selected_variant.available %}
+              {{ 'products.form.add_to_cart' | t }}
+            {% else %}
+              {{ 'products.form.sold_out' | t }}
+            {% endif %}
+          </span>
         </button>
       </div>
 

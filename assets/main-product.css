@@ -81,7 +81,7 @@
 }
 
 .product-main-price-tax-information {
-  margin: 0.5em 0 0;
+  margin: 0.25em 0 0;
   color: rgb(var(--color-text) / 0.7);
 }
 
@@ -101,6 +101,10 @@
 /*
   Product variant picker
 */
+.product-main-variant-picker {
+  display: block;
+}
+
 .product-main-variant-picker-options {
   display: grid;
   gap: 1rem;
@@ -145,7 +149,7 @@
   box-sizing: border-box;
 }
 
-.product-main-variant-picker-radio:hover:not(:has(input:disabled)) {
+.product-main-variant-picker-radio:hover:not(:has(input.disabled)) {
   border-color: rgb(var(--color-text));
 }
 
@@ -187,7 +191,7 @@
   outline-offset: 0;
 }
 
-.product-main-variant-picker-radio-swatch:hover:not(:has(input:disabled)) {
+.product-main-variant-picker-radio-swatch:hover:not(:has(input.disabled)) {
   border-color: rgb(var(--color-text) / 0.6);
 }
 
@@ -202,10 +206,28 @@
   height: var(--swatch-size);
 }
 
-.product-main-variant-picker-radio:has(input:disabled) {
+.product-main-variant-picker-radio:has(input.disabled) {
+  position: relative;
+  overflow: hidden;
   color: rgb(var(--color-text) / 0.6);
-  cursor: not-allowed;
   opacity: 0.6;
+}
+
+.product-main-variant-picker-radio:has(input.disabled:checked) {
+  color: rgb(var(--color-background));
+}
+
+.product-main-variant-picker-radio:has(input.disabled)::before {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 1;
+  width: 1px;
+  height: 150%;
+  background-color: currentcolor;
+  content: "";
+  transform: translate(-50%, -50%) rotate(-45deg);
+  pointer-events: none;
 }
 
 @media (prefers-reduced-motion: reduce) {

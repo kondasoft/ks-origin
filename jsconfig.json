@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "checkJs": false,
+    "paths": {
+      "@shopify/standard-events": [
+        "./types/shopify-standard-events.d.ts"
+      ]
+    }
+  },
+  "include": ["assets/**/*.js", "types/**/*.d.ts"]
+}

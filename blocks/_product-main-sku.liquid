@@ -7,16 +7,22 @@
   endif
 %}
 
-{% if sku != blank %}
+{% if product != blank or sku != blank %}
   <div
     class="product-main-sku-block block-spacing"
     style="
       --pt: {{ block.settings.pt | divided_by: 16.0 | append: 'em' }};
       --pb: {{ block.settings.pb | divided_by: 16.0 | append: 'em' }};
     "
+    data-product-sku-block
+    {% if sku == blank %}hidden{% endif %}
     {{ block.shopify_attributes }}
   >
-    <p class="product-sku {{ block.settings.text_size }}">
+    <p
+      class="product-sku {{ block.settings.text_size }}"
+      data-product-sku
+      data-template="{{ 'products.sku' | t: sku: '[sku]' | escape }}"
+    >
       {{ 'products.sku' | t: sku: sku }}
     </p>
   </div>

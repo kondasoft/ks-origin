@@ -14,12 +14,28 @@ Renders the main product media gallery with images, Shopify-hosted videos, contr
   assign gallery_videos = gallery_product.media | where: 'media_type', 'video'
   assign gallery_count = gallery_images.size | plus: gallery_videos.size
   assign gallery_media_ratio = section.settings.gallery_media_ratio | default: 'adapt'
+  assign gallery_selected_variant = gallery_product.selected_or_first_available_variant
+  assign gallery_initial_media_id = gallery_selected_variant.featured_media.id | default: gallery_product.featured_media.id
+  assign gallery_initial_media = gallery_product.media | where: 'id', gallery_initial_media_id | first
+  assign gallery_initial_preview_image = gallery_initial_media.preview_image | default: gallery_product.featured_image
+  assign gallery_initial_index = 0
+  assign gallery_media_index = 0
   assign gallery_aspect_ratio = '1 / 1'
   assign gallery_stage_class = 'product-gallery-stage'
 
+  for media in gallery_product.media
+    if media.media_type == 'image' or media.media_type == 'video'
+      if media.id == gallery_initial_media_id
+        assign gallery_initial_index = gallery_media_index
+      endif
+
+      assign gallery_media_index = gallery_media_index | plus: 1
+    endif
+  endfor
+
   if gallery_media_ratio == 'adapt'
-    if gallery_product.featured_image != blank
-      assign gallery_aspect_ratio = gallery_product.featured_image.width | append: ' / ' | append: gallery_product.featured_image.height
+    if gallery_initial_preview_image != blank
+      assign gallery_aspect_ratio = gallery_initial_preview_image.width | append: ' / ' | append: gallery_initial_preview_image.height
     endif
   else
     assign gallery_stage_class = gallery_stage_class | append: ' aspect-ratio-' | append: gallery_media_ratio
@@ -40,7 +56,12 @@ Renders the main product media gallery with images, Shopify-hosted videos, contr
     tabindex="0"
     data-product-gallery-stage
   >
-    <ul class="product-gallery-track" role="list" data-product-gallery-track>
+    <ul
+      class="product-gallery-track"
+      role="list"
+      data-product-gallery-track
+      style="transform: translateX(-{{ gallery_initial_index | times: 100 }}%);"
+    >
       {% assign gallery_index = 0 %}
       {% for media in gallery_product.media %}
         {% if media.media_type == 'image' or media.media_type == 'video' %}
@@ -49,17 +70,18 @@ Renders the main product media gallery with images, Shopify-hosted videos, contr
             assign media_loading = 'lazy'
             assign media_fetchpriority = 'auto'
 
-            if gallery_index == 0
+            if gallery_index == gallery_initial_index
               assign media_loading = 'eager'
               assign media_fetchpriority = 'high'
             endif
           %}
           <li
-            class="product-gallery-slide{% if gallery_index == 0 %} is-active{% endif %}"
+            class="product-gallery-slide{% if gallery_index == gallery_initial_index %} is-active{% endif %}"
             data-product-gallery-slide
+            data-media-id="{{ media.id }}"
             data-media-type="{{ media.media_type }}"
-            aria-hidden="{% if gallery_index == 0 %}false{% else %}true{% endif %}"
-            {% unless gallery_index == 0 %}inert{% endunless %}
+            aria-hidden="{% if gallery_index == gallery_initial_index %}false{% else %}true{% endif %}"
+            {% unless gallery_index == gallery_initial_index %}inert{% endunless %}
           >
             {% if media.media_type == 'image' %}
               {{ media
@@ -121,7 +143,7 @@ Renders the main product media gallery with images, Shopify-hosted videos, contr
 
     {% if gallery_count > 1 and section.settings.gallery_show_counter %}
       <span class="product-gallery-counter" aria-hidden="true" data-product-gallery-counter>
-        1 / {{ gallery_count }}
+        {{ gallery_initial_index | plus: 1 }} / {{ gallery_count }}
       </span>
     {% endif %}
   </div>
@@ -144,9 +166,10 @@ Renders the main product media gallery with images, Shopify-hosted videos, contr
               class="product-gallery-thumbnail"
               type="button"
               data-product-gallery-thumbnail
+              data-media-id="{{ media.id }}"
               data-index="{{ gallery_index }}"
               aria-label="{% if media.media_type == 'video' %}{{ 'accessibility.view_video' | t: index: thumbnail_index }}{% else %}{{ 'accessibility.view_image' | t: index: thumbnail_index }}{% endif %}"
-              {% if gallery_index == 0 %}aria-current="true"{% endif %}
+              {% if gallery_index == gallery_initial_index %}aria-current="true"{% endif %}
             >
               {{ media.preview_image
                 | image_url: width: 240

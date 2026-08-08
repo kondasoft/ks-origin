@@ -11,6 +11,11 @@
   endif
 
   assign current_price = current_price_value | money
+  assign on_sale = false
+
+  if compare_price > current_price_value
+    assign on_sale = true
+  endif
 
   capture tax_information
     if cart.duties_included and cart.taxes_included
@@ -36,16 +41,24 @@
   "
   {{ block.shopify_attributes }}
 >
-  <p class="product-main-price {{ block.settings.price_size }}">
-    {% if compare_price > current_price_value %}
-      <span class="visually-hidden">{{ 'products.price.sale_price' | t }}</span>
-      <span class="product-main-price-current product-main-price-sale">{{ current_price }}</span>
-      <span class="visually-hidden">{{ 'products.price.regular_price' | t }}</span>
-      <s class="product-main-price-compare">{{ compare_price | money }}</s>
-    {% else %}
-      <span class="visually-hidden">{{ 'products.price.regular_price' | t }}</span>
-      <span class="product-main-price-current">{{ current_price }}</span>
-    {% endif %}
+  <p
+    class="product-main-price {{ block.settings.price_size }}"
+    data-product-price
+    data-regular-price-label="{{ 'products.price.regular_price' | t | escape }}"
+    data-sale-price-label="{{ 'products.price.sale_price' | t | escape }}"
+  >
+    <span class="visually-hidden" data-product-current-price-label>
+      {% if on_sale %}{{ 'products.price.sale_price' | t }}{% else %}{{ 'products.price.regular_price' | t }}{% endif %}
+    </span>
+    <span class="product-main-price-current{% if on_sale %} product-main-price-sale{% endif %}" data-product-current-price>
+      {{ current_price }}
+    </span>
+    <span class="visually-hidden" data-product-compare-price-label{% unless on_sale %} hidden{% endunless %}>
+      {{ 'products.price.regular_price' | t }}
+    </span>
+    <s class="product-main-price-compare" data-product-compare-price{% unless on_sale %} hidden{% endunless %}>
+      {% if on_sale %}{{ compare_price | money }}{% endif %}
+    </s>
   </p>
 
   {% if block.settings.show_tax_information and tax_information != blank %}
@@ -56,7 +69,7 @@
     <div class="product-main-price-installments fs-sm">
       {% assign installment_form_id = 'product-main-installments-' | append: block.id %}
       {% form 'product', product, id: installment_form_id, class: 'product-main-price-payment-terms' %}
-        <input type="hidden" name="id" value="{{ selected_variant.id }}">
+        <input type="hidden" name="id" value="{{ selected_variant.id }}" data-product-variant-input>
         {{ form | payment_terms }}
       {% endform %}
     </div>

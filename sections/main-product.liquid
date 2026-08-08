@@ -175,21 +175,32 @@
     {
       "name": "Product",
       "category": "Product",
+      "settings": {
+        "gallery_media_ratio": "adapt",
+        "gallery_transition": "slide",
+        "gallery_show_navigation": true,
+        "gallery_show_counter": true,
+        "gallery_show_thumbnails": true,
+        "gallery_video_autoplay": true,
+        "gallery_video_show_controls": false,
+        "pt": 44,
+        "pb": 60
+      },
       "blocks": [
         {
           "type": "_product-main-vendor",
           "settings": {
             "text_size": "fs-sm",
-            "pt": 0,
+            "pt": 6,
             "pb": 6
           }
         },
         {
           "type": "_product-main-title",
           "settings": {
-            "heading_size": "h1",
+            "heading_size": "h2",
             "pt": 0,
-            "pb": 6
+            "pb": 8
           }
         },
         {
@@ -197,25 +208,28 @@
           "settings": {
             "show_count": true,
             "count_style": "detailed",
-            "rating_size": "fs-sm",
+            "rating_size": "fs-md",
             "pt": 0,
-            "pb": 6
+            "pb": 16
           }
         },
         {
           "type": "_product-main-price",
           "settings": {
             "price_size": "fs-xl",
+            "show_installments": true,
+            "show_tax_information": true,
             "pt": 0,
-            "pb": 0
+            "pb": 24
           }
         },
         {
           "type": "_product-main-variant-picker",
           "settings": {
             "option_style": "radio",
-            "pt": 16,
-            "pb": 0
+            "swatch_size": 32,
+            "pt": 0,
+            "pb": 30
           }
         },
         {
@@ -233,26 +247,31 @@
           }
         },
         {
-          "type": "_product-main-sku",
+          "type": "collapse",
           "settings": {
-            "text_size": "fs-sm",
+            "heading": "Product details",
+            "text": "{{ closest.product.description }}",
+            "open_by_default": false,
             "pt": 0,
             "pb": 0
           }
         },
         {
-          "type": "divider",
+          "type": "collapse",
           "settings": {
-            "custom_line_opacity": false,
-            "line_opacity": 20,
-            "pt": 16,
-            "pb": 16
+            "heading": "What would you like to know?",
+            "text": "<p>Add the answer or supporting information here.</p>",
+            "open_by_default": false,
+            "pt": 0,
+            "pb": 0
           }
         },
         {
-          "type": "_product-main-description",
+          "type": "collapse",
           "settings": {
-            "text_size": "fs-md",
+            "heading": "What would you like to know?",
+            "text": "<p>Add the answer or supporting information here.</p>",
+            "open_by_default": false,
             "pt": 0,
             "pb": 0
           }

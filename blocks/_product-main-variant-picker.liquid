@@ -1,12 +1,17 @@
 {% liquid
   assign product = closest.product
+  assign product_gid = 'gid://shopify/Product/' | append: product.id
   assign swatch_size = block.settings.swatch_size | default: 32
   assign swatch_image_size = swatch_size | times: 2
 %}
 
 {% unless product == blank or product.has_only_default_variant %}
-  <div
+  <product-variant-picker
     class="product-main-variant-picker block-spacing"
+    data-product-id="{{ product_gid }}"
+    data-product-title="{{ product.title | escape }}"
+    data-product-handle="{{ product.handle | escape }}"
+    data-currency-code="{{ cart.currency.iso_code }}"
     style="
       --pt: {{ block.settings.pt | divided_by: 16.0 | append: 'em' }};
       --pb: {{ block.settings.pb | divided_by: 16.0 | append: 'em' }};
@@ -28,7 +33,11 @@
           endfor
         %}
         {% if block.settings.option_style == 'select' and option_has_swatches == false %}
-          <div class="product-main-variant-picker-option" data-variant-option-group>
+          <div
+            class="product-main-variant-picker-option"
+            data-variant-option-group
+            data-option-name="{{ product_option.name | escape }}"
+          >
             <label for="ProductOption-{{ block.id }}-{{ product_option.position }}">
               {{ product_option.name | escape }}
             </label>
@@ -43,9 +52,8 @@
                   <option
                     value="{{ option_value | escape }}"
                     {% if option_value.selected %}selected{% endif %}
-                    {% unless option_value.available %}disabled{% endunless %}
                   >
-                    {{ option_value | escape }}{% unless option_value.available %} – {{ 'products.variants.unavailable' | t }}{% endunless %}
+                    {{ option_value | escape }}
                   </option>
                 {% endfor %}
               </select>
@@ -53,9 +61,13 @@
             </div>
           </div>
         {% else %}
-          <fieldset class="product-main-variant-picker-option" data-variant-option-group>
+          <fieldset
+            class="product-main-variant-picker-option"
+            data-variant-option-group
+            data-option-name="{{ product_option.name | escape }}"
+          >
             <legend>
-              {{ product_option.name | escape }}{% if option_has_swatches %}: <span class="product-main-variant-picker-selected-value">{{ selected_option_value | escape }}</span>{% endif %}
+              {{ product_option.name | escape }}{% if option_has_swatches %}: <span class="product-main-variant-picker-selected-value" data-selected-option-value>{{ selected_option_value | escape }}</span>{% endif %}
             </legend>
             <div class="product-main-variant-picker-radio-list">
               {% for option_value in product_option.values %}
@@ -67,13 +79,12 @@
                 >
                   <input
                     id="{{ option_id }}"
-                    class="visually-hidden"
+                    class="visually-hidden{% unless option_value.available %} disabled{% endunless %}"
                     type="radio"
                     name="options[{{ product_option.name | escape }}]"
                     value="{{ option_value | escape }}"
                     data-variant-option
                     {% if option_value.selected %}checked{% endif %}
-                    {% unless option_value.available %}disabled{% endunless %}
                   >
                   {% if option_value.swatch != blank %}
                     <span
@@ -95,7 +106,7 @@
                     </span>
                   {% endif %}
                   <span{% if option_value.swatch != blank %} class="visually-hidden"{% endif %}>
-                    {{ option_value | escape }}{% unless option_value.available %} – {{ 'products.variants.unavailable' | t }}{% endunless %}
+                    {{ option_value | escape }}
                   </span>
                 </label>
               {% endfor %}
@@ -105,7 +116,31 @@
       {% endfor %}
     </div>
 
-  </div>
+    <script type="application/json" data-product-variants>
+      [
+        {% for variant in product.variants %}
+          {% assign variant_gid = 'gid://shopify/ProductVariant/' | append: variant.id %}
+          {
+            "id": {{ variant.id | json }},
+            "gid": {{ variant_gid | json }},
+            "title": {{ variant.title | json }},
+            "available": {{ variant.available | json }},
+            "price": {{ variant.price | json }},
+            "priceAmount": {{ variant.price | money_amount | json }},
+            "priceMoney": {{ variant.price | money | json }},
+            "compareAtPrice": {{ variant.compare_at_price | json }},
+            "compareAtPriceMoney": {{ variant.compare_at_price | money | json }},
+            "options": {{ variant.options | json }},
+            "featuredMediaId": {{ variant.featured_media.id | json }},
+            "sku": {{ variant.sku | json }},
+            "inventoryManagement": {{ variant.inventory_management | json }},
+            "inventoryPolicy": {{ variant.inventory_policy | json }},
+            "inventoryQuantity": {{ variant.inventory_quantity | json }}
+          }{% unless forloop.last %},{% endunless %}
+        {% endfor %}
+      ]
+    </script>
+  </product-variant-picker>
 {% endunless %}
 
 {% schema %}
