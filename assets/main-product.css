@@ -213,3 +213,36 @@
     transition: none;
   }
 }
+
+
+/*
+  Product buy buttons
+*/
+.product-main-buy-buttons {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.product-main-buy-buttons-form {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.product-main-buy-buttons-primary {
+  display: flex;
+  align-items: stretch;
+  gap: 0.75rem;
+}
+
+.product-main-buy-buttons .btn {
+  width: 100%;
+}
+
+.product-main-buy-buttons-primary .btn {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.product-main-buy-buttons .shopify-payment-button__button {
+  border-radius: var(--border-radius);
+}

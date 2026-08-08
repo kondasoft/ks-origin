@@ -1,0 +1,248 @@
+{% liquid
+  assign product = closest.product
+  assign selected_variant = product.selected_or_first_available_variant
+  assign product_form_id = 'product-main-form-' | append: block.id | append: '-' | append: product.id
+  assign quantity_max = blank
+
+  if selected_variant.inventory_management != blank and selected_variant.inventory_policy == 'deny' and selected_variant.inventory_quantity > 0
+    assign quantity_max = selected_variant.inventory_quantity
+  endif
+%}
+
+<div
+  class="product-main-buy-buttons block-spacing"
+  style="
+    --pt: {{ block.settings.pt | divided_by: 16.0 | append: 'em' }};
+    --pb: {{ block.settings.pb | divided_by: 16.0 | append: 'em' }};
+  "
+  {{ block.shopify_attributes }}
+>
+  {% if product == blank %}
+    <div class="product-main-buy-buttons-primary">
+      {% if block.settings.show_quantity %}
+        <div class="quantity-input" role="group" aria-label="{{ 'products.quantity.label' | t }}">
+          <button
+            type="button"
+            class="quantity-input-button quantity-input-button-decrease"
+            aria-label="{{ 'products.quantity.decrease' | t }}"
+            data-quantity-decrease
+            disabled
+          >
+            {% render 'svg-icons', icon: 'minus', icon_size: 16 %}
+          </button>
+          <input class="input" type="number" name="quantity" value="1" min="1" step="1" aria-label="{{ 'products.quantity.label' | t }}" data-quantity-input>
+          <button
+            type="button"
+            class="quantity-input-button quantity-input-button-increase"
+            aria-label="{{ 'products.quantity.increase' | t }}"
+            data-quantity-increase
+          >
+            {% render 'svg-icons', icon: 'plus', icon_size: 16 %}
+          </button>
+        </div>
+      {% endif %}
+
+      <button
+        type="button"
+        class="btn {{ block.settings.add_to_cart_size }} {{ block.settings.button_style }}"
+      >
+        {{ 'products.form.add_to_cart' | t }}
+      </button>
+    </div>
+
+    {% if block.settings.show_buy_it_now %}
+      <button type="button" class="btn {{ block.settings.buy_it_now_size }} {{ block.settings.buy_it_now_style }}">
+        {{ 'products.form.buy_it_now' | t }}
+      </button>
+    {% endif %}
+  {% else %}
+    {% form 'product', product, id: product_form_id, class: 'product-main-buy-buttons-form' %}
+      <input type="hidden" name="id" value="{{ selected_variant.id }}" data-product-variant-input>
+
+      <div class="product-main-buy-buttons-primary">
+        {% if block.settings.show_quantity %}
+          <div class="quantity-input" role="group" aria-label="{{ 'products.quantity.label' | t }}">
+            <button
+              type="button"
+              class="quantity-input-button quantity-input-button-decrease"
+              aria-label="{{ 'products.quantity.decrease' | t }}"
+              data-quantity-decrease
+              disabled
+            >
+              {% render 'svg-icons', icon: 'minus', icon_size: 16 %}
+            </button>
+            <input
+              class="input"
+              type="number"
+              name="quantity"
+              value="1"
+              min="1"
+              step="1"
+              {% if quantity_max != blank %}max="{{ quantity_max }}"{% endif %}
+              aria-label="{{ 'products.quantity.label' | t }}"
+              data-quantity-input
+            >
+            <button
+              type="button"
+              class="quantity-input-button quantity-input-button-increase"
+              aria-label="{{ 'products.quantity.increase' | t }}"
+              data-quantity-increase
+              {% if quantity_max == 1 %}disabled{% endif %}
+            >
+              {% render 'svg-icons', icon: 'plus', icon_size: 16 %}
+            </button>
+          </div>
+        {% endif %}
+
+        <button
+          type="submit"
+          name="add"
+          class="btn {{ block.settings.add_to_cart_size }} {{ block.settings.button_style }}"
+          {% unless selected_variant.available %}disabled{% endunless %}
+        >
+          {% if selected_variant.available %}
+            {{ 'products.form.add_to_cart' | t }}
+          {% else %}
+            {{ 'products.form.sold_out' | t }}
+          {% endif %}
+        </button>
+      </div>
+
+      {% if block.settings.show_buy_it_now %}
+        <button
+          type="button"
+          class="btn {{ block.settings.buy_it_now_size }} {{ block.settings.buy_it_now_style }}"
+          data-buy-it-now
+          {% unless selected_variant.available %}disabled{% endunless %}
+        >
+          {{ 'products.form.buy_it_now' | t }}
+        </button>
+      {% endif %}
+
+      {% if block.settings.show_dynamic_checkout and selected_variant.available %}
+        {{ form | payment_button }}
+      {% endif %}
+    {% endform %}
+  {% endif %}
+</div>
+
+{% schema %}
+{
+  "name": "Buy buttons",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Quantity selector"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_quantity",
+      "label": "Show quantity selector",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Add to cart"
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "Style",
+      "options": [
+        { "value": "btn-accent-solid", "label": "Accent solid" },
+        { "value": "btn-accent-outline", "label": "Accent outline" },
+        { "value": "btn-text-solid", "label": "Text solid" },
+        { "value": "btn-text-outline", "label": "Text outline" }
+      ],
+      "default": "btn-accent-solid"
+    },
+    {
+      "type": "select",
+      "id": "add_to_cart_size",
+      "label": "Size",
+      "options": [
+        { "value": "btn-sm", "label": "Small" },
+        { "value": "btn-md", "label": "Medium" },
+        { "value": "btn-lg", "label": "Large" }
+      ],
+      "default": "btn-lg"
+    },
+    {
+      "type": "header",
+      "content": "Buy it now"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_buy_it_now",
+      "label": "Show button",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "buy_it_now_style",
+      "label": "Style",
+      "options": [
+        { "value": "btn-accent-solid", "label": "Accent solid" },
+        { "value": "btn-accent-outline", "label": "Accent outline" },
+        { "value": "btn-text-solid", "label": "Text solid" },
+        { "value": "btn-text-outline", "label": "Text outline" }
+      ],
+      "default": "btn-text-outline",
+      "visible_if": "{{ block.settings.show_buy_it_now }}"
+    },
+    {
+      "type": "select",
+      "id": "buy_it_now_size",
+      "label": "Size",
+      "options": [
+        { "value": "btn-sm", "label": "Small" },
+        { "value": "btn-md", "label": "Medium" },
+        { "value": "btn-lg", "label": "Large" }
+      ],
+      "default": "btn-lg",
+      "visible_if": "{{ block.settings.show_buy_it_now }}"
+    },
+    {
+      "type": "header",
+      "content": "Dynamic checkout"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_dynamic_checkout",
+      "label": "Show dynamic checkout button",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pt",
+      "label": "Top",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "pb",
+      "label": "Bottom",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Buy buttons",
+      "category": "Product"
+    }
+  ]
+}
+{% endschema %}

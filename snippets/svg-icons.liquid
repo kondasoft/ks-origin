@@ -38,6 +38,14 @@
     <svg aria-hidden="true" class="svg-icon svg-icon-arrow-right" width="{{ scaled_icon_size }}" height="{{ scaled_icon_size }}" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M4 10h11m-4-4 4 4-4 4" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="{{ stroke_width }}"></path>
     </svg>
+  {% when 'minus' %}
+    <svg aria-hidden="true" class="svg-icon svg-icon-minus" width="{{ scaled_icon_size }}" height="{{ scaled_icon_size }}" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M4 10h12" stroke="currentColor" stroke-linecap="round" stroke-width="{{ stroke_width }}"></path>
+    </svg>
+  {% when 'plus' %}
+    <svg aria-hidden="true" class="svg-icon svg-icon-plus" width="{{ scaled_icon_size }}" height="{{ scaled_icon_size }}" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M10 4v12M4 10h12" stroke="currentColor" stroke-linecap="round" stroke-width="{{ stroke_width }}"></path>
+    </svg>
   {% when 'chevron-down' %}
     <svg aria-hidden="true" class="svg-icon svg-icon-chevron-down" width="{{ scaled_icon_size }}" height="{{ scaled_icon_size }}" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="m5.5 7.5 4.5 4.5 4.5-4.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="{{ stroke_width }}"></path>

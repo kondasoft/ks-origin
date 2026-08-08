@@ -196,6 +196,11 @@
     "variants": {
       "unavailable": "Indisponible"
     },
+    "quantity": {
+      "label": "Quantité",
+      "decrease": "Diminuer la quantité",
+      "increase": "Augmenter la quantité"
+    },
     "rating": {
       "value": "Noté {{ rating }} sur {{ scale_max }}",
       "detailed": {
@@ -218,6 +223,7 @@
     },
     "form": {
       "add_to_cart": "Ajouter au panier",
+      "buy_it_now": "Acheter maintenant",
       "select_options": "Choisir les options",
       "sold_out": "Épuisé"
     }

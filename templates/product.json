@@ -62,12 +62,18 @@
           },
           "blocks": {}
         },
-        "product-main-sku": {
-          "type": "_product-main-sku",
+        "product-main-buy-buttons": {
+          "type": "_product-main-buy-buttons",
           "settings": {
-            "text_size": "fs-sm",
+            "show_quantity": true,
+            "show_buy_it_now": true,
+            "button_style": "btn-accent-solid",
+            "add_to_cart_size": "btn-md",
+            "buy_it_now_style": "btn-text-outline",
+            "buy_it_now_size": "btn-md",
+            "show_dynamic_checkout": false,
             "pt": 0,
-            "pb": 0
+            "pb": 30
           },
           "blocks": {}
         },
@@ -136,7 +142,7 @@
         "product-main-rating",
         "product-main-price",
         "product-main-variant-picker",
-        "product-main-sku",
+        "product-main-buy-buttons",
         "divider_6jkQPj",
         "product-main-description",
         "collapse_FENgDc",
