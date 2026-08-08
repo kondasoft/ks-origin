@@ -24,6 +24,7 @@
     "pagination": "Pagination",
     "carousel": "Carrousel",
     "products_carousel": "Produits",
+    "loading_product_recommendations": "Chargement des recommandations de produits",
     "collections_carousel": "Collections",
     "articles_carousel": "Articles",
     "previous": "Précédent",

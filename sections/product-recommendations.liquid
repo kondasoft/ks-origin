@@ -1,0 +1,388 @@
+{% liquid
+  assign products_to_show = section.settings.products_to_show | default: 8
+  assign layout = section.settings.layout | default: 'carousel'
+  assign recommended_products = recommendations.products
+  assign has_recommendations = false
+
+  if recommendations.performed and recommendations.products_count == 0
+    if section.settings.recommendation_type == 'related'
+      assign recommended_products = collections.all.products | reject: 'id', product.id
+    else
+      assign recommended_products = null
+    endif
+  endif
+
+  if recommendations.performed and recommended_products.size > 0
+    assign has_recommendations = true
+  endif
+
+  capture header_content
+    content_for 'blocks'
+  endcapture
+%}
+
+<script src="{{ 'product-recommendations.js' | asset_url }}" type="module" fetchpriority="low"></script>
+
+{% if section.index <= 3 or request.design_mode %}
+  <link href="{{ 'product-recommendations.css' | asset_url }}" rel="stylesheet" fetchpriority="high">
+  <link href="{{ 'product-card.css' | asset_url }}" rel="stylesheet" fetchpriority="high">
+{% endif %}
+
+<product-recommendations
+  id="ProductRecommendations-{{ section.id }}"
+  class="product-recommendations section-spacing"
+  data-url="{{ routes.product_recommendations_url }}?limit={{ products_to_show }}"
+  data-product-id="{{ product.id }}"
+  data-section-id="{{ section.id }}"
+  data-intent="{{ section.settings.recommendation_type }}"
+  data-recommendations-performed="{{ recommendations.performed }}"
+  data-has-recommendations="{{ has_recommendations }}"
+  data-intersection-observer
+  data-intersection-root-margin="0px 0px 400px 0px"
+  data-section-css="{{ 'product-recommendations.css' | asset_url }}, {{ 'product-card.css' | asset_url }}"
+  style="
+    --color-background: {{ section.settings.background_color.red }} {{ section.settings.background_color.green }} {{ section.settings.background_color.blue }};
+    --color-text: {{ section.settings.text_color.red }} {{ section.settings.text_color.green }} {{ section.settings.text_color.blue }};
+    --color-accent: {{ section.settings.accent_color.red }} {{ section.settings.accent_color.green }} {{ section.settings.accent_color.blue }};
+    --pt: {{ section.settings.pt | divided_by: 16.0 | append: 'em' }};
+    --pb: {{ section.settings.pb | divided_by: 16.0 | append: 'em' }};
+  "
+  {% if recommendations.performed and has_recommendations == false %}hidden{% endif %}
+>
+  <div class="container {{ settings.container_width }}">
+    {% if header_content != blank %}
+      <div
+        class="product-recommendations-header responsive-text-alignment"
+        data-mobile-text-alignment="{{ section.settings.header_mobile_text_alignment }}"
+        data-desktop-text-alignment="{{ section.settings.header_desktop_text_alignment }}"
+        style="
+          --mobile-text-alignment: {{ section.settings.header_mobile_text_alignment }};
+          --desktop-text-alignment: {{ section.settings.header_desktop_text_alignment }};
+        "
+      >
+        {{ header_content }}
+      </div>
+    {% endif %}
+
+    {% if recommendations.performed %}
+      {% if layout == 'carousel' %}
+        <theme-carousel
+          class="theme-carousel"
+          data-partial-slide-mobile="{{ section.settings.carousel_partial_slide_mobile }}"
+          role="region"
+          aria-roledescription="{{ 'accessibility.carousel' | t }}"
+          aria-label="{{ 'accessibility.products_carousel' | t }}"
+          style="
+            --carousel-columns-mobile: {{ section.settings.mobile_columns }};
+            --carousel-columns-tablet: 2;
+            --carousel-columns-desktop: {{ section.settings.desktop_columns }};
+            --carousel-gap: 1rem;
+          "
+        >
+          <div class="theme-carousel-track-wrapper">
+            <ul
+              id="product-recommendations-track-{{ section.id }}"
+              class="theme-carousel-track"
+              role="list"
+              tabindex="0"
+              data-carousel-track
+            >
+              {% for recommended_product in recommended_products limit: products_to_show %}
+                <li class="product-recommendations-item theme-carousel-item" data-carousel-item>
+                  {% content_for 'block', type: 'product-card', id: 'product-card', closest.product: recommended_product %}
+                </li>
+              {% endfor %}
+            </ul>
+
+            {% if section.settings.carousel_show_navigation %}
+              <div class="theme-carousel-controls">
+                <button
+                  class="icon-button theme-carousel-control theme-carousel-control-previous"
+                  type="button"
+                  aria-label="{{ 'accessibility.previous' | t }}"
+                  aria-controls="product-recommendations-track-{{ section.id }}"
+                  data-carousel-previous
+                >
+                  {% render 'svg-icons', icon: 'chevron-left', icon_size: 20 %}
+                </button>
+                <button
+                  class="icon-button theme-carousel-control theme-carousel-control-next"
+                  type="button"
+                  aria-label="{{ 'accessibility.next' | t }}"
+                  aria-controls="product-recommendations-track-{{ section.id }}"
+                  data-carousel-next
+                >
+                  {% render 'svg-icons', icon: 'chevron-right', icon_size: 20 %}
+                </button>
+              </div>
+            {% endif %}
+          </div>
+
+          {% if section.settings.carousel_show_progress %}
+            <div class="theme-carousel-progress" aria-hidden="true">
+              <div class="theme-carousel-progress-bar" data-carousel-progress-bar></div>
+            </div>
+          {% endif %}
+        </theme-carousel>
+      {% else %}
+        <ul
+          class="product-recommendations-grid"
+          role="list"
+          style="
+            --mobile-columns: {{ section.settings.mobile_columns }};
+            --desktop-columns: {{ section.settings.desktop_columns }};
+          "
+        >
+          {% for recommended_product in recommended_products limit: products_to_show %}
+            <li class="product-recommendations-item">
+              {% content_for 'block', type: 'product-card', id: 'product-card', closest.product: recommended_product %}
+            </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% else %}
+      <ul
+        class="product-recommendations-loading-grid"
+        role="list"
+        aria-label="{{ 'accessibility.loading_product_recommendations' | t }}"
+        style="
+          --mobile-columns: {{ section.settings.mobile_columns }};
+          --desktop-columns: {{ section.settings.desktop_columns }};
+        "
+        inert
+      >
+        {% for index in (1..4) %}
+          <li class="product-recommendations-loading-item">
+            <span class="product-recommendations-loading-media"></span>
+            <span class="product-recommendations-loading-line"></span>
+            <span class="product-recommendations-loading-line product-recommendations-loading-line-short"></span>
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  </div>
+</product-recommendations>
+
+{% schema %}
+{
+  "name": "Product recommendations",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "select",
+      "id": "recommendation_type",
+      "label": "Recommendation type",
+      "options": [
+        { "value": "related", "label": "Related" },
+        { "value": "complementary", "label": "Complementary" }
+      ],
+      "default": "related"
+    },
+    {
+      "type": "paragraph",
+      "content": "Complementary products must be configured with Shopify's [Search & Discovery app](https://apps.shopify.com/search-and-discovery)."
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "Products to show",
+      "min": 2,
+      "max": 10,
+      "step": 1,
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "{{ settings.colors.background }}"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "{{ settings.colors.text }}"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent color",
+      "default": "{{ settings.colors.accent }}"
+    },
+    {
+      "type": "header",
+      "content": "Header"
+    },
+    {
+      "type": "text_alignment",
+      "id": "header_mobile_text_alignment",
+      "label": "Mobile text alignment",
+      "default": "left"
+    },
+    {
+      "type": "text_alignment",
+      "id": "header_desktop_text_alignment",
+      "label": "Desktop text alignment",
+      "default": "left"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        { "value": "carousel", "label": "Carousel" },
+        { "value": "grid", "label": "Grid" }
+      ],
+      "default": "carousel"
+    },
+    {
+      "type": "checkbox",
+      "id": "carousel_partial_slide_mobile",
+      "label": "Show part of the next product on mobile",
+      "default": true,
+      "visible_if": "{{ section.settings.layout == 'carousel' }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "carousel_show_navigation",
+      "label": "Show navigation buttons",
+      "default": true,
+      "visible_if": "{{ section.settings.layout == 'carousel' }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "carousel_show_progress",
+      "label": "Show progress bar",
+      "default": true,
+      "visible_if": "{{ section.settings.layout == 'carousel' }}"
+    },
+    {
+      "type": "header",
+      "content": "Columns"
+    },
+    {
+      "type": "range",
+      "id": "mobile_columns",
+      "label": "Mobile columns",
+      "info": "Tablet layouts always use two columns.",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "desktop_columns",
+      "label": "Desktop columns",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pt",
+      "label": "Top",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "pb",
+      "label": "Bottom",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 60
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@theme"
+    },
+    {
+      "type": "@app"
+    }
+  ],
+  "enabled_on": {
+    "templates": ["product"]
+  },
+  "presets": [
+    {
+      "name": "Product recommendations",
+      "category": "Products",
+      "blocks": [
+        {
+          "type": "heading",
+          "settings": {
+            "heading": "You may also like",
+            "heading_tag": "2",
+            "heading_size": "h2",
+            "pt": 0,
+            "pb": 0
+          }
+        },
+        {
+          "type": "product-card",
+          "id": "product-card",
+          "static": true,
+          "settings": {
+            "text_alignment": "left"
+          },
+          "blocks": [
+            {
+              "type": "_product-card-image",
+              "settings": {
+                "image_ratio": "square"
+              }
+            },
+            {
+              "type": "_product-card-title",
+              "settings": {
+                "font_family": "heading",
+                "heading_size": "fs-md"
+              }
+            },
+            {
+              "type": "_product-rating",
+              "settings": {
+                "show_count": true,
+                "rating_size": "fs-sm"
+              }
+            },
+            {
+              "type": "_product-card-price",
+              "settings": {
+                "price_size": "fs-md"
+              }
+            },
+            {
+              "type": "_product-card-form",
+              "settings": {
+                "button_style": "btn-accent-solid",
+                "button_size": "btn-sm"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
