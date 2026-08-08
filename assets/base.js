@@ -54,6 +54,86 @@ loadSectionScripts();
 
 
 /*
+  Inline SVG images
+*/
+async function transformSvgImages() {
+  const images = document.querySelectorAll("img[data-transform-svg-inline]");
+
+  await Promise.all(
+    Array.from(images).map(async (image) => {
+      const source = image.currentSrc || image.getAttribute("src") || "";
+
+      if (
+        image.dataset.inlineSvgProcessed === "true" ||
+        !source.split("?")[0].toLowerCase().endsWith(".svg")
+      ) {
+        return;
+      }
+
+      image.dataset.inlineSvgProcessed = "true";
+
+      try {
+        const response = await fetch(source, { credentials: "same-origin" });
+
+        if (!response.ok) {
+          delete image.dataset.inlineSvgProcessed;
+          return;
+        }
+
+        const markup = await response.text();
+        const svgDocument = new DOMParser().parseFromString(
+          markup,
+          "image/svg+xml",
+        );
+        const svg = svgDocument.querySelector("svg");
+
+        if (!svg) {
+          delete image.dataset.inlineSvgProcessed;
+          return;
+        }
+
+        const copiedAttributes = ["class", "height", "id", "style", "width"];
+
+        copiedAttributes.forEach((attribute) => {
+          const value = image.getAttribute(attribute);
+
+          if (value) svg.setAttribute(attribute, value);
+        });
+
+        const alt = image.getAttribute("alt");
+
+        if (alt) {
+          svg.setAttribute("role", "img");
+          svg.setAttribute("aria-label", alt);
+        } else {
+          svg.setAttribute("aria-hidden", "true");
+        }
+
+        ["fill", "stroke"].forEach((attribute) => {
+          [svg, ...svg.querySelectorAll(`[${attribute}]`)].forEach((element) => {
+            const color = (element.getAttribute(attribute) || "")
+              .trim()
+              .toLowerCase();
+
+            if (color && color !== "none") {
+              element.setAttribute(attribute, "currentColor");
+            }
+          });
+        });
+
+        image.replaceWith(svg);
+      } catch {
+        delete image.dataset.inlineSvgProcessed;
+      }
+    }),
+  );
+}
+
+transformSvgImages();
+document.addEventListener("shopify:section:load", transformSvgImages);
+
+
+/*
   Reveal header on scroll
 */
 function syncHeaderGroupBehavior() {

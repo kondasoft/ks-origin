@@ -273,6 +273,7 @@
             "collection_card_title_dDKALW": {
               "type": "_collection-card-title",
               "settings": {
+                "show_product_count": false,
                 "font_family": "heading",
                 "heading_size": "fs-md"
               },
@@ -1536,6 +1537,191 @@
         "pt": 60,
         "pb": 60
       }
+    },
+    "columns_4nFedD": {
+      "type": "columns",
+      "blocks": {
+        "group_jhmFUk": {
+          "type": "group",
+          "name": "Column 1",
+          "settings": {
+            "custom_colors": false,
+            "background_color": "{{ settings.colors.background }}",
+            "text_color": "{{ settings.colors.text }}",
+            "accent_color": "{{ settings.colors.accent }}",
+            "mobile_content_direction": "column",
+            "mobile_gap": 0,
+            "desktop_content_direction": "column",
+            "desktop_gap": 0,
+            "pt": 24,
+            "pb": 24,
+            "pl": 24,
+            "pr": 24
+          },
+          "blocks": {
+            "icon_G3c3kt": {
+              "type": "icon",
+              "name": "Icon",
+              "settings": {
+                "icon": "shopify://shop_images/hat.png",
+                "icon_size": 32,
+                "pt": 0,
+                "pb": 18
+              },
+              "blocks": {}
+            },
+            "heading_pa8U9B": {
+              "type": "heading",
+              "settings": {
+                "heading": "Intentional design",
+                "heading_tag": "2",
+                "heading_size": "h4",
+                "pt": 0,
+                "pb": 6
+              },
+              "blocks": {}
+            },
+            "text_3Hzei4": {
+              "type": "text",
+              "settings": {
+                "text": "<p>Thoughtful products designed to solve real needs with clarity and purpose.</p>",
+                "text_size": "fs-md",
+                "pt": 0,
+                "pb": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "icon_G3c3kt",
+            "heading_pa8U9B",
+            "text_3Hzei4"
+          ]
+        },
+        "group_7idWUc": {
+          "type": "group",
+          "name": "Column 2",
+          "settings": {
+            "custom_colors": true,
+            "background_color": "{{ settings.colors.background }}",
+            "text_color": "{{ settings.colors.text }}",
+            "accent_color": "{{ settings.colors.accent }}",
+            "mobile_content_direction": "column",
+            "mobile_gap": 0,
+            "desktop_content_direction": "column",
+            "desktop_gap": 0,
+            "pt": 24,
+            "pb": 24,
+            "pl": 24,
+            "pr": 24
+          },
+          "blocks": {
+            "icon_wqHDMh": {
+              "type": "icon",
+              "name": "Icon",
+              "settings": {
+                "icon": "shopify://shop_images/icon-bag.svg",
+                "icon_size": 32,
+                "pt": 0,
+                "pb": 18
+              },
+              "blocks": {}
+            },
+            "heading_dPYzJF": {
+              "type": "heading",
+              "settings": {
+                "heading": "Quality first",
+                "heading_tag": "2",
+                "heading_size": "h4",
+                "pt": 0,
+                "pb": 6
+              },
+              "blocks": {}
+            },
+            "text_LGMLpt": {
+              "type": "text",
+              "settings": {
+                "text": "<p>Carefully selected materials and close attention to every detail.</p>",
+                "text_size": "fs-md",
+                "pt": 0,
+                "pb": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "icon_wqHDMh",
+            "heading_dPYzJF",
+            "text_LGMLpt"
+          ]
+        },
+        "group_Rwjkzf": {
+          "type": "group",
+          "name": "Column 3",
+          "settings": {
+            "custom_colors": false,
+            "background_color": "{{ settings.colors.background }}",
+            "text_color": "{{ settings.colors.text }}",
+            "accent_color": "{{ settings.colors.accent }}",
+            "mobile_content_direction": "column",
+            "mobile_gap": 0,
+            "desktop_content_direction": "column",
+            "desktop_gap": 0,
+            "pt": 24,
+            "pb": 24,
+            "pl": 24,
+            "pr": 24
+          },
+          "blocks": {
+            "heading_Rxxwg3": {
+              "type": "heading",
+              "settings": {
+                "heading": "Customer care",
+                "heading_tag": "2",
+                "heading_size": "h4",
+                "pt": 0,
+                "pb": 6
+              },
+              "blocks": {}
+            },
+            "text_PQKjxb": {
+              "type": "text",
+              "settings": {
+                "text": "<p>Helpful support before, during, and after every purchase.</p>",
+                "text_size": "fs-md",
+                "pt": 0,
+                "pb": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "heading_Rxxwg3",
+            "text_PQKjxb"
+          ]
+        }
+      },
+      "block_order": [
+        "group_jhmFUk",
+        "group_7idWUc",
+        "group_Rwjkzf"
+      ],
+      "name": "Columns",
+      "settings": {
+        "background_color": "{{ settings.colors.surface }}",
+        "column_background_color": "{{ settings.colors.background }}",
+        "text_color": "{{ settings.colors.text }}",
+        "accent_color": "{{ settings.colors.accent }}",
+        "mobile_columns": 1,
+        "mobile_scroll": false,
+        "mobile_text_alignment": "center",
+        "mobile_gap": 24,
+        "desktop_columns": 3,
+        "desktop_text_alignment": "center",
+        "desktop_gap": 24,
+        "pt": 60,
+        "pb": 60
+      }
     }
   },
   "order": [
@@ -1557,6 +1743,7 @@
     "video_TetJLA",
     "video_with_text_mUK9FU",
     "columns_xVQnwK",
-    "email_signup_bC6B3d"
+    "email_signup_bC6B3d",
+    "columns_4nFedD"
   ]
 }

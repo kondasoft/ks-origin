@@ -1,0 +1,108 @@
+{% liquid
+  assign icon = block.settings.icon
+  assign icon_render_width = block.settings.icon_size | times: 2
+  assign icon_render_height = block.settings.icon_size
+
+  if icon != blank and icon.aspect_ratio != blank
+    assign icon_render_height = block.settings.icon_size | divided_by: icon.aspect_ratio | round
+  endif
+%}
+
+<div
+  class="icon-block block-spacing"
+  style="
+    --icon-size: {{ block.settings.icon_size | append: 'px' }};
+    --pt: {{ block.settings.pt | divided_by: 16.0 | append: 'em' }};
+    --pb: {{ block.settings.pb | divided_by: 16.0 | append: 'em' }};
+  "
+  {{ block.shopify_attributes }}
+>
+  {% if icon != blank %}
+    <span class="icon-block-media">
+      <img
+        class="icon-block-image"
+        src="{{ icon | image_url: width: icon_render_width }}"
+        alt="{{ icon.alt | escape }}"
+        width="{{ block.settings.icon_size }}"
+        height="{{ icon_render_height }}"
+        loading="lazy"
+        data-transform-svg-inline
+      >
+    </span>
+  {% endif %}
+</div>
+
+{% stylesheet %}
+  .icon-block {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .icon-block-media {
+    display: inline-flex;
+    width: min(100%, var(--icon-size));
+    color: inherit;
+    vertical-align: middle;
+  }
+
+  .icon-block-image {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Icon",
+  "tag": null,
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "icon",
+      "label": "Icon",
+      "info": "For best results, upload an SVG. SVG icons inherit the parent section's text color."
+    },
+    {
+      "type": "range",
+      "id": "icon_size",
+      "label": "Size",
+      "min": 16,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pt",
+      "label": "Top",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "pb",
+      "label": "Bottom",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Icon",
+      "category": "Media"
+    }
+  ]
+}
+{% endschema %}
