@@ -1,7 +1,7 @@
 /*
   Product gallery script
 
-  This file owns image selection, navigation, and transition state for the main product gallery.
+  This file owns media selection, navigation, and transition state for the main product gallery.
   Keep product variant and media-type behavior in their respective product scripts.
 */
 
@@ -22,6 +22,7 @@ class ProductGallery extends HTMLElement {
     );
     this.status = this.querySelector("[data-product-gallery-status]");
     this.counter = this.querySelector("[data-product-gallery-counter]");
+    this.videoAutoplay = this.dataset.videoAutoplay === "true";
 
     if (!this.stage || !this.track || !this.slides.length) return;
 
@@ -107,6 +108,19 @@ class ProductGallery extends HTMLElement {
 
       slide.classList.toggle("is-active", isActive);
       slide.setAttribute("aria-hidden", String(!isActive));
+      slide.inert = !isActive;
+
+      if (!isActive) {
+        slide.querySelector("video")?.pause();
+      } else if (this.videoAutoplay) {
+        const video = slide.querySelector("video");
+
+        if (video) {
+          video.play().catch(() => {});
+        } else {
+          slide.querySelector("deferred-video")?.showVideo();
+        }
+      }
     });
 
     this.thumbnails.forEach((thumbnail, thumbnailIndex) => {
@@ -182,7 +196,7 @@ class ProductGallery extends HTMLElement {
       this.thumbnails.length - this.visibleThumbnailCount,
     );
 
-    if (this.currentIndex <= this.thumbnailWindowStart && this.currentIndex > 0) {
+    if (this.currentIndex <= this.thumbnailWindowStart) {
       this.thumbnailWindowStart = this.currentIndex - 1;
     } else if (
       this.currentIndex >=

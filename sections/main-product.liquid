@@ -54,6 +54,20 @@
     },
     {
       "type": "select",
+      "id": "gallery_media_ratio",
+      "label": "Media aspect ratio",
+      "options": [
+        { "group": "Adapt", "value": "adapt", "label": "Adapt to media" },
+        { "group": "Square", "value": "square", "label": "Square (1:1)" },
+        { "group": "Horizontal", "value": "landscape", "label": "Landscape (4:3)" },
+        { "group": "Horizontal", "value": "widescreen", "label": "Widescreen (16:9)" },
+        { "group": "Vertical", "value": "portrait", "label": "Portrait (3:4)" },
+        { "group": "Vertical", "value": "vertical", "label": "Vertical (9:16)" }
+      ],
+      "default": "adapt"
+    },
+    {
+      "type": "select",
       "id": "gallery_transition",
       "label": "Transition",
       "options": [
@@ -71,13 +85,30 @@
     {
       "type": "checkbox",
       "id": "gallery_show_counter",
-      "label": "Show image counter",
+      "label": "Show media counter",
       "default": true
     },
     {
       "type": "checkbox",
       "id": "gallery_show_thumbnails",
       "label": "Show thumbnails",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Videos"
+    },
+    {
+      "type": "checkbox",
+      "id": "gallery_video_autoplay",
+      "label": "Autoplay",
+      "info": "Autoplay videos are muted.",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "gallery_video_show_controls",
+      "label": "Show controls",
       "default": true
     },
     {

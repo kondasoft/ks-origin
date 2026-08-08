@@ -1,5 +1,5 @@
 {% doc %}
-Renders the main product image gallery with selectable transitions, controls, a counter, and thumbnails.
+Renders the main product media gallery with images, Shopify-hosted videos, controls, a counter, and thumbnails.
 
 @param {section} [section] - A section override, otherwise the current section context is used.
 @param {product} [product] - A product override, otherwise the current or section-selected product is used.
@@ -10,60 +10,92 @@ Renders the main product image gallery with selectable transitions, controls, a 
 
 {% liquid
   assign gallery_product = product | default: section.settings.product
-  assign gallery_images = gallery_product.images
-  assign gallery_count = gallery_images.size
+  assign gallery_images = gallery_product.media | where: 'media_type', 'image'
+  assign gallery_videos = gallery_product.media | where: 'media_type', 'video'
+  assign gallery_count = gallery_images.size | plus: gallery_videos.size
+  assign gallery_media_ratio = section.settings.gallery_media_ratio | default: 'adapt'
   assign gallery_aspect_ratio = '1 / 1'
+  assign gallery_stage_class = 'product-gallery-stage'
 
-  if gallery_product.featured_image != blank
-    assign gallery_aspect_ratio = gallery_product.featured_image.width | append: ' / ' | append: gallery_product.featured_image.height
+  if gallery_media_ratio == 'adapt'
+    if gallery_product.featured_image != blank
+      assign gallery_aspect_ratio = gallery_product.featured_image.width | append: ' / ' | append: gallery_product.featured_image.height
+    endif
+  else
+    assign gallery_stage_class = gallery_stage_class | append: ' aspect-ratio-' | append: gallery_media_ratio
   endif
 %}
 
 <product-gallery
   class="product-gallery"
   data-transition="{{ section.settings.gallery_transition }}"
+  data-media-ratio="{{ gallery_media_ratio }}"
+  data-video-autoplay="{{ section.settings.gallery_video_autoplay }}"
   style="--product-gallery-aspect-ratio: {{ gallery_aspect_ratio }};"
 >
   <div
-    class="product-gallery-stage"
+    class="{{ gallery_stage_class }}"
     role="region"
     aria-label="{{ 'accessibility.product_gallery' | t }}"
     tabindex="0"
     data-product-gallery-stage
   >
     <ul class="product-gallery-track" role="list" data-product-gallery-track>
-      {% for image in gallery_images %}
-        {% liquid
-          assign image_alt = image.alt | default: gallery_product.title
-          assign image_loading = 'lazy'
-          assign image_fetchpriority = 'auto'
+      {% assign gallery_index = 0 %}
+      {% for media in gallery_product.media %}
+        {% if media.media_type == 'image' or media.media_type == 'video' %}
+          {% liquid
+            assign media_alt = media.alt | default: gallery_product.title
+            assign media_loading = 'lazy'
+            assign media_fetchpriority = 'auto'
 
-          if forloop.first
-            assign image_loading = 'eager'
-            assign image_fetchpriority = 'high'
-          endif
-        %}
-        <li
-          class="product-gallery-slide{% if forloop.first %} is-active{% endif %}"
-          data-product-gallery-slide
-          aria-hidden="{% if forloop.first %}false{% else %}true{% endif %}"
-        >
-          {{ image
-            | image_url: width: 2400
-            | image_tag:
-              alt: image_alt,
-              class: 'product-gallery-image',
-              widths: '320, 640, 960, 1280, 1600, 2000, 2400',
-              sizes: '(min-width: 1200px) 50vw, 100vw',
-              loading: image_loading,
-              fetchpriority: image_fetchpriority
-          }}
-        </li>
-      {% else %}
+            if gallery_index == 0
+              assign media_loading = 'eager'
+              assign media_fetchpriority = 'high'
+            endif
+          %}
+          <li
+            class="product-gallery-slide{% if gallery_index == 0 %} is-active{% endif %}"
+            data-product-gallery-slide
+            data-media-type="{{ media.media_type }}"
+            aria-hidden="{% if gallery_index == 0 %}false{% else %}true{% endif %}"
+            {% unless gallery_index == 0 %}inert{% endunless %}
+          >
+            {% if media.media_type == 'image' %}
+              {{ media
+                | image_url: width: 2400
+                | image_tag:
+                  alt: media_alt,
+                  class: 'product-gallery-image',
+                  widths: '320, 640, 960, 1280, 1600, 2000, 2400',
+                  sizes: '(min-width: 1200px) 50vw, 100vw',
+                  loading: media_loading,
+                  fetchpriority: media_fetchpriority
+              }}
+            {% else %}
+              {% render 'video-media',
+                source: 'uploaded',
+                uploaded_video: media,
+                autoplay: section.settings.gallery_video_autoplay,
+                muted: false,
+                loop: true,
+                show_controls: section.settings.gallery_video_show_controls,
+                defer_loading: true,
+                media_width: 1200,
+                sizes: '(min-width: 1200px) 50vw, 100vw',
+                loading: media_loading
+              %}
+            {% endif %}
+          </li>
+          {% assign gallery_index = gallery_index | plus: 1 %}
+        {% endif %}
+      {% endfor %}
+
+      {% if gallery_count == 0 %}
         <li class="product-gallery-slide is-active" data-product-gallery-slide aria-hidden="false">
           {{ 'product-apparel-1' | placeholder_svg_tag: 'product-gallery-image placeholder-svg' }}
         </li>
-      {% endfor %}
+      {% endif %}
     </ul>
 
     {% if gallery_count > 1 and section.settings.gallery_show_navigation %}
@@ -71,7 +103,7 @@ Renders the main product image gallery with selectable transitions, controls, a 
         <button
           class="icon-button"
           type="button"
-          aria-label="{{ 'accessibility.previous_image' | t }}"
+          aria-label="{{ 'accessibility.previous_media' | t }}"
           data-product-gallery-previous
         >
           {% render 'svg-icons', icon: 'chevron-left', icon_size: 20 %}
@@ -79,7 +111,7 @@ Renders the main product image gallery with selectable transitions, controls, a 
         <button
           class="icon-button"
           type="button"
-          aria-label="{{ 'accessibility.next_image' | t }}"
+          aria-label="{{ 'accessibility.next_media' | t }}"
           data-product-gallery-next
         >
           {% render 'svg-icons', icon: 'chevron-right', icon_size: 20 %}
@@ -98,32 +130,42 @@ Renders the main product image gallery with selectable transitions, controls, a 
     class="visually-hidden"
     aria-live="polite"
     data-product-gallery-status
-    data-template="{{ 'accessibility.image_status' | t: index: '[index]', count: '[count]' | escape }}"
+    data-template="{{ 'accessibility.media_status' | t: index: '[index]', count: '[count]' | escape }}"
   ></span>
 
   {% if gallery_count > 1 and section.settings.gallery_show_thumbnails %}
     <ul class="product-gallery-thumbnails" role="list" data-product-gallery-thumbnails>
-      {% for image in gallery_images %}
-        <li>
-          <button
-            class="product-gallery-thumbnail"
-            type="button"
-            data-product-gallery-thumbnail
-            data-index="{{ forloop.index0 }}"
-            aria-label="{{ 'accessibility.view_image' | t: index: forloop.index }}"
-            {% if forloop.first %}aria-current="true"{% endif %}
-          >
-            {{ image
-              | image_url: width: 240
-              | image_tag:
-                alt: '',
-                class: 'product-gallery-thumbnail-image',
-                widths: '80, 120, 160, 200, 240',
-                sizes: '120px',
-                loading: 'lazy'
-            }}
-          </button>
-        </li>
+      {% assign gallery_index = 0 %}
+      {% for media in gallery_product.media %}
+        {% if media.media_type == 'image' or media.media_type == 'video' %}
+          {% assign thumbnail_index = gallery_index | plus: 1 %}
+          <li>
+            <button
+              class="product-gallery-thumbnail"
+              type="button"
+              data-product-gallery-thumbnail
+              data-index="{{ gallery_index }}"
+              aria-label="{% if media.media_type == 'video' %}{{ 'accessibility.view_video' | t: index: thumbnail_index }}{% else %}{{ 'accessibility.view_image' | t: index: thumbnail_index }}{% endif %}"
+              {% if gallery_index == 0 %}aria-current="true"{% endif %}
+            >
+              {{ media.preview_image
+                | image_url: width: 240
+                | image_tag:
+                  alt: '',
+                  class: 'product-gallery-thumbnail-image',
+                  widths: '80, 120, 160, 200, 240',
+                  sizes: '120px',
+                  loading: 'lazy'
+              }}
+              {% if media.media_type == 'video' %}
+                <span class="video-play-button product-gallery-thumbnail-play" aria-hidden="true">
+                  {% render 'svg-icons', icon: 'play', icon_size: 16 %}
+                </span>
+              {% endif %}
+            </button>
+          </li>
+          {% assign gallery_index = gallery_index | plus: 1 %}
+        {% endif %}
       {% endfor %}
     </ul>
   {% endif %}

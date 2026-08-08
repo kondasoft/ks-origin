@@ -59,10 +59,13 @@
         "background_color": "{{ settings.colors.background }}",
         "text_color": "{{ settings.colors.text }}",
         "accent_color": "{{ settings.colors.accent }}",
+        "gallery_media_ratio": "adapt",
         "gallery_transition": "slide",
         "gallery_show_navigation": true,
         "gallery_show_counter": true,
         "gallery_show_thumbnails": true,
+        "gallery_video_autoplay": true,
+        "gallery_video_show_controls": false,
         "pt": 44,
         "pb": 60
       }

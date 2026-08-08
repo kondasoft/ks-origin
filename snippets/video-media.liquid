@@ -10,6 +10,7 @@ Renders uploaded or external video media with poster and deferred-loading behavi
 @param {boolean} [muted] - Whether an uploaded video should be muted.
 @param {boolean} [loop] - Whether the video should loop.
 @param {boolean} [show_controls] - Whether video controls should be shown.
+@param {boolean} [defer_loading] - Whether media loading should wait for an explicit component request.
 @param {number} [media_width] - The target media width used for image generation and intrinsic sizing.
 @param {string} [sizes] - The responsive image sizes value for the poster.
 @param {string} [loading] - The media loading behavior: eager or lazy.
@@ -72,6 +73,11 @@ Renders uploaded or external video media with poster and deferred-loading behavi
     endif
   elsif video_preview_image != blank
     assign defer_video = true
+  endif
+
+  if defer_loading and has_video
+    assign defer_video = true
+    assign observe_video = false
   endif
 
   assign video_tag_autoplay = autoplay

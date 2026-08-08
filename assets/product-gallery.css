@@ -1,0 +1,255 @@
+/*
+  Product gallery stylesheet
+
+  This file owns the product media gallery, its transitions, controls, thumbnails, and embedded video presentation.
+  Keep the surrounding product page layout and product-detail block styles in the main product stylesheet.
+*/
+
+
+/*
+  Gallery layout
+*/
+.product-gallery {
+  display: block;
+  width: 100%;
+  min-width: 0;
+}
+
+.product-gallery-stage {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--border-radius);
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+.product-gallery[data-media-ratio="adapt"] .product-gallery-stage {
+  aspect-ratio: var(--product-gallery-aspect-ratio);
+}
+
+.product-gallery-stage:focus-visible {
+  outline-color: currentcolor;
+}
+
+.product-gallery-track {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  transition: transform var(--product-gallery-slide-duration, 250ms) ease-out;
+}
+
+.product-gallery-slide {
+  flex: 0 0 100%;
+  min-width: 0;
+  height: 100%;
+}
+
+.product-gallery-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.product-gallery-slide .video-media {
+  width: 100%;
+  height: 100%;
+}
+
+.product-gallery-slide .video-media-deferred {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: auto;
+}
+
+.product-gallery-slide .video-media-video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.product-gallery-slide .video-media-poster-image {
+  object-fit: contain;
+}
+
+.product-gallery:not([data-media-ratio="adapt"]) .product-gallery-image {
+  object-fit: cover;
+}
+
+.product-gallery:not([data-media-ratio="adapt"]) .video-media-video {
+  object-fit: cover;
+}
+
+.product-gallery:not([data-media-ratio="adapt"]) .video-media-poster-image {
+  object-fit: cover;
+}
+
+.product-gallery[data-transition="fade"] .product-gallery-track {
+  display: grid;
+  transform: none !important;
+}
+
+.product-gallery[data-transition="fade"] .product-gallery-slide {
+  grid-area: 1 / 1;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 250ms ease-out;
+}
+
+.product-gallery[data-transition="fade"] .product-gallery-slide.is-active {
+  z-index: 1;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+
+/*
+  Gallery controls
+*/
+.product-gallery-controls {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  right: 0.75rem;
+  left: 0.75rem;
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+  transform: translateY(-50%);
+}
+
+.product-gallery-controls .icon-button {
+  color: rgb(var(--color-text));
+  background-color: rgb(var(--color-background) / 0.85);
+  backdrop-filter: blur(4px);
+  pointer-events: auto;
+}
+
+.product-gallery-counter {
+  position: absolute;
+  z-index: 2;
+  bottom: 0.75rem;
+  left: 50%;
+  padding: 0.375em 0.75em;
+  color: rgb(var(--color-text));
+  background-color: rgb(var(--color-background) / 0.85);
+  backdrop-filter: blur(4px);
+  border-radius: var(--border-radius);
+  font-size: var(--fs-sm);
+  line-height: 1;
+  transform: translateX(-50%);
+}
+
+
+/*
+  Gallery thumbnails
+*/
+.product-gallery-thumbnails {
+  --product-gallery-thumbnail-gap: 0.5rem;
+  --product-gallery-thumbnail-min: 40px;
+  --product-gallery-thumbnail-max: 140px;
+  --product-gallery-thumbnail-size: var(--product-gallery-thumbnail-min);
+
+  display: flex;
+  gap: var(--product-gallery-thumbnail-gap);
+  padding: 0.25rem 0;
+  margin: 0.25rem 0 0;
+  overflow-x: auto;
+  list-style: none;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.product-gallery-thumbnails::-webkit-scrollbar {
+  display: none;
+}
+
+.product-gallery-thumbnails > li {
+  flex: 0 0 var(--product-gallery-thumbnail-size);
+  scroll-snap-align: start;
+}
+
+.product-gallery-thumbnail {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  padding: 0;
+  overflow: hidden;
+  color: inherit;
+  cursor: pointer;
+  background: transparent;
+  border: 1px solid rgb(var(--color-text) / var(--border-opacity));
+  border-radius: var(--border-radius);
+  outline: 2px solid transparent;
+  outline-offset: 0;
+}
+
+.product-gallery-thumbnail[aria-current="true"] {
+  border-color: rgb(var(--color-accent));
+}
+
+.product-gallery-thumbnail:focus-visible {
+  outline-color: currentcolor;
+}
+
+.product-gallery-thumbnail-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 200ms ease-out;
+}
+
+.product-gallery-thumbnail-play {
+  width: 28px;
+  pointer-events: none;
+  transition: none;
+}
+
+@media (min-width: 1200px) {
+  .product-gallery-thumbnails {
+    --product-gallery-thumbnail-min: 80px;
+    margin-top: 0.5rem;
+  }
+}
+
+@media (hover: hover) {
+  .product-gallery-thumbnail:hover .product-gallery-thumbnail-image {
+    opacity: 0.85;
+  }
+
+  .product-gallery-thumbnail:hover .product-gallery-thumbnail-play {
+    transform: translate(-50%, -50%);
+  }
+}
+
+.product-gallery-thumbnail:focus-visible .product-gallery-thumbnail-play {
+  transform: translate(-50%, -50%);
+}
+
+.product-gallery-thumbnail:active .product-gallery-thumbnail-image {
+  opacity: 0.7;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .product-gallery-track {
+    transition: none;
+  }
+
+  .product-gallery[data-transition="fade"] .product-gallery-slide {
+    transition: none;
+  }
+
+  .product-gallery-thumbnails {
+    scroll-behavior: auto;
+  }
+
+  .product-gallery-thumbnail-image {
+    transition: none;
+  }
+}

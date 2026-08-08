@@ -71,6 +71,7 @@
 
 {% if request.page_type == 'product' %}
   {{ 'main-product.css' | asset_url | stylesheet_tag: preload: true }}
+  {{ 'product-gallery.css' | asset_url | stylesheet_tag: preload: true }}
 {% elsif request.page_type == 'collection' %}
   {{ 'main-collection.css' | asset_url | stylesheet_tag: preload: true }}
   {{ 'facets.css' | asset_url | stylesheet_tag: preload: true }}
