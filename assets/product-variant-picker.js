@@ -188,15 +188,18 @@ class ProductVariantPicker extends HTMLElement {
       addToCartText.textContent = available ? buyButtons.dataset.addToCartText : buyButtons.dataset.soldOutText;
     }
     if (buyItNow) buyItNow.disabled = !available;
-    if (!quantity) return;
 
-    quantity.disabled = !available;
+    if (quantity) {
+      quantity.disabled = !available;
 
-    if (maximum === null || maximum < 1) {
-      quantity.removeAttribute("max");
-    } else {
-      quantity.max = String(maximum);
-      quantity.value = String(Math.min(Number(quantity.value) || 1, maximum));
+      if (maximum === null || maximum < 1) {
+        quantity.removeAttribute("max");
+      } else {
+        quantity.max = String(maximum);
+        quantity.value = String(Math.min(Number(quantity.value) || 1, maximum));
+      }
+
+      quantity.closest("quantity-input")?.sync();
     }
   }
 

@@ -736,6 +736,88 @@ if (!customElements.get("theme-collapse")) {
   customElements.define("theme-collapse", ThemeCollapse);
 }
 
+/*
+  Quantity input
+*/
+class QuantityInput extends HTMLElement {
+  connectedCallback() {
+    if (this.isInitialized) return;
+
+    this.input = this.querySelector("[data-quantity-input]");
+    this.decreaseButton = this.querySelector("[data-quantity-decrease]");
+    this.increaseButton = this.querySelector("[data-quantity-increase]");
+
+    if (!this.input || !this.decreaseButton || !this.increaseButton) return;
+
+    this.listenerController = new AbortController();
+    const listenerOptions = { signal: this.listenerController.signal };
+
+    this.decreaseButton.addEventListener("click", () => this.changeQuantity("decrease"), listenerOptions);
+    this.increaseButton.addEventListener("click", () => this.changeQuantity("increase"), listenerOptions);
+    this.input.addEventListener("input", this.sync.bind(this), listenerOptions);
+    this.input.addEventListener("change", this.onInputChange.bind(this), listenerOptions);
+
+    this.sync();
+    this.isInitialized = true;
+  }
+
+  disconnectedCallback() {
+    this.listenerController?.abort();
+    this.isInitialized = false;
+  }
+
+  changeQuantity(direction) {
+    const previousValue = this.input.value;
+
+    if (direction === "decrease") {
+      this.input.stepDown();
+    } else {
+      this.input.stepUp();
+    }
+
+    this.sync();
+
+    if (this.input.value === previousValue) return;
+
+    this.input.dispatchEvent(new Event("input", { bubbles: true }));
+    this.input.dispatchEvent(new Event("change", { bubbles: true }));
+  }
+
+  onInputChange() {
+    const minimum = Number.parseFloat(this.input.min);
+    const maximum = Number.parseFloat(this.input.max);
+    let value = this.input.valueAsNumber;
+
+    if (!Number.isFinite(value)) {
+      value = Number.isFinite(minimum) ? minimum : 1;
+    }
+
+    if (Number.isFinite(minimum)) value = Math.max(value, minimum);
+    if (Number.isFinite(maximum)) value = Math.min(value, maximum);
+
+    this.input.value = String(value);
+    this.sync();
+  }
+
+  sync() {
+    if (!this.input || !this.decreaseButton || !this.increaseButton) return;
+
+    const value = this.input.valueAsNumber;
+    const minimum = Number.parseFloat(this.input.min);
+    const maximum = Number.parseFloat(this.input.max);
+    const inputDisabled = this.input.disabled;
+
+    this.decreaseButton.disabled =
+      inputDisabled || (Number.isFinite(value) && Number.isFinite(minimum) && value <= minimum);
+    this.increaseButton.disabled =
+      inputDisabled || (Number.isFinite(value) && Number.isFinite(maximum) && value >= maximum);
+  }
+}
+
+if (!customElements.get("quantity-input")) {
+  customElements.define("quantity-input", QuantityInput);
+}
+
 class ThemeCarousel extends HTMLElement {
   connectedCallback() {
     if (this.isInitialized) return;

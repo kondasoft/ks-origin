@@ -23,7 +23,7 @@
   {% if product == blank %}
     <div class="product-main-buy-buttons-primary">
       {% if block.settings.show_quantity %}
-        <div class="quantity-input" role="group" aria-label="{{ 'products.quantity.label' | t }}">
+        <quantity-input class="quantity-input" role="group" aria-label="{{ 'products.quantity.label' | t }}">
           <button
             type="button"
             class="quantity-input-button quantity-input-button-decrease"
@@ -42,7 +42,7 @@
           >
             {% render 'svg-icons', icon: 'plus', icon_size: 16 %}
           </button>
-        </div>
+        </quantity-input>
       {% endif %}
 
       <button
@@ -64,7 +64,7 @@
 
       <div class="product-main-buy-buttons-primary">
         {% if block.settings.show_quantity %}
-          <div class="quantity-input" role="group" aria-label="{{ 'products.quantity.label' | t }}">
+          <quantity-input class="quantity-input" role="group" aria-label="{{ 'products.quantity.label' | t }}">
             <button
               type="button"
               class="quantity-input-button quantity-input-button-decrease"
@@ -82,6 +82,7 @@
               min="1"
               step="1"
               {% if quantity_max != blank %}max="{{ quantity_max }}"{% endif %}
+              {% unless selected_variant.available %}disabled{% endunless %}
               aria-label="{{ 'products.quantity.label' | t }}"
               data-quantity-input
             >
@@ -94,7 +95,7 @@
             >
               {% render 'svg-icons', icon: 'plus', icon_size: 16 %}
             </button>
-          </div>
+          </quantity-input>
         {% endif %}
 
         <button
