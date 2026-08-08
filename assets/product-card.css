@@ -135,6 +135,10 @@
   }
 }
 
+.product-card:has(.product-card-title-link:active) .product-card-image {
+  opacity: 0.7;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .product-card-image {
     transition: none;

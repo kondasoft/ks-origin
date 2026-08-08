@@ -11,7 +11,7 @@
 %}
 
 {% if article.image != blank or article == blank %}
-  <div class="article-card-image-block" {{ block.shopify_attributes }}>
+  <div class="article-card-image-block" data-carousel-control-alignment {{ block.shopify_attributes }}>
     {% if article.image != blank %}
       {{ article.image
         | image_url: width: 2400

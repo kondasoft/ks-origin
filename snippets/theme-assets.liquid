@@ -73,6 +73,9 @@
   {{ 'main-collection.css' | asset_url | stylesheet_tag: preload: true }}
   {{ 'facets.css' | asset_url | stylesheet_tag: preload: true }}
   {{ 'product-card.css' | asset_url | stylesheet_tag: preload: true }}
+{% elsif request.page_type == 'list-collections' %}
+  {{ 'main-list-collections.css' | asset_url | stylesheet_tag: preload: true }}
+  {{ 'collection-card.css' | asset_url | stylesheet_tag: preload: true }}
 {% elsif request.page_type == 'blog' %}
   {{ 'main-blog.css' | asset_url | stylesheet_tag: preload: true }}
   {{ 'article-card.css' | asset_url | stylesheet_tag: preload: true }}

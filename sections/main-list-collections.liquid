@@ -1,0 +1,234 @@
+{% liquid
+  assign collections_per_page = section.settings.collections_per_page | default: 24
+  assign pagination_previous = 'general.pagination.previous' | t
+  assign pagination_next = 'general.pagination.next' | t
+  assign collection_list_title = 'collections.title' | t
+%}
+
+<div
+  class="main-list-collections section-spacing"
+  style="
+    --color-background: {{ section.settings.background_color.red }} {{ section.settings.background_color.green }} {{ section.settings.background_color.blue }};
+    --color-text: {{ section.settings.text_color.red }} {{ section.settings.text_color.green }} {{ section.settings.text_color.blue }};
+    --color-accent: {{ section.settings.accent_color.red }} {{ section.settings.accent_color.green }} {{ section.settings.accent_color.blue }};
+    --pt: {{ section.settings.pt | divided_by: 16.0 | append: 'em' }};
+    --pb: {{ section.settings.pb | divided_by: 16.0 | append: 'em' }};
+  "
+>
+  <div class="container {{ settings.container_width }}">
+    <header
+      class="main-list-collections-header responsive-text-alignment"
+      data-mobile-text-alignment="{{ section.settings.header_mobile_text_alignment }}"
+      data-desktop-text-alignment="{{ section.settings.header_desktop_text_alignment }}"
+      style="
+        --mobile-text-alignment: {{ section.settings.header_mobile_text_alignment }};
+        --desktop-text-alignment: {{ section.settings.header_desktop_text_alignment }};
+      "
+    >
+      {% if section.settings.show_breadcrumbs %}
+        {% render 'breadcrumb', current_title: collection_list_title %}
+      {% endif %}
+
+      <h1 class="main-list-collections-title {{ section.settings.heading_size }}">
+        {{ collection_list_title }}
+      </h1>
+    </header>
+
+    {% paginate collections by collections_per_page %}
+      {% if collections.size > 0 %}
+        <ul
+          class="main-list-collections-grid"
+          role="list"
+          style="
+            --mobile-columns: {{ section.settings.mobile_columns }};
+            --desktop-columns: {{ section.settings.desktop_columns }};
+          "
+        >
+          {% for collection in collections %}
+            <li class="main-list-collections-item">
+              {% content_for 'block', type: 'collection-card', id: 'collection-card', closest.collection: collection %}
+            </li>
+          {% endfor %}
+        </ul>
+
+        {% if paginate.pages > 1 %}
+          <nav class="pagination" aria-label="{{ 'accessibility.pagination' | t }}">
+            {{ paginate
+              | default_pagination:
+                previous: pagination_previous,
+                next: pagination_next
+            }}
+          </nav>
+        {% endif %}
+      {% else %}
+        <p class="main-list-collections-empty">
+          {{ 'collections.no_collections' | t }}
+        </p>
+      {% endif %}
+    {% endpaginate %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Collection list",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "{{ settings.colors.background }}"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "{{ settings.colors.text }}"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent color",
+      "default": "{{ settings.colors.accent }}"
+    },
+    {
+      "type": "header",
+      "content": "Header"
+    },
+    {
+      "type": "text_alignment",
+      "id": "header_mobile_text_alignment",
+      "label": "Mobile text alignment",
+      "default": "left"
+    },
+    {
+      "type": "text_alignment",
+      "id": "header_desktop_text_alignment",
+      "label": "Desktop text alignment",
+      "default": "left"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_breadcrumbs",
+      "label": "Show breadcrumbs",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "options": [
+        { "value": "h1", "label": "H1" },
+        { "value": "h2", "label": "H2" },
+        { "value": "h3", "label": "H3" },
+        { "value": "h4", "label": "H4" },
+        { "value": "h5", "label": "H5" },
+        { "value": "h6", "label": "H6" }
+      ],
+      "default": "h1",
+      "info": "Changes the visual size only. The HTML heading remains H1."
+    },
+    {
+      "type": "header",
+      "content": "Collection grid"
+    },
+    {
+      "type": "range",
+      "id": "mobile_columns",
+      "label": "Mobile columns",
+      "info": "Tablet layouts always use two columns.",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "desktop_columns",
+      "label": "Desktop columns",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "collections_per_page",
+      "label": "Collections per page",
+      "min": 4,
+      "max": 48,
+      "step": 2,
+      "default": 24
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pt",
+      "label": "Top",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "pb",
+      "label": "Bottom",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 60
+    }
+  ],
+  "blocks": [
+    {
+      "type": "collection-card"
+    }
+  ],
+  "enabled_on": {
+    "templates": ["list-collections"]
+  },
+  "presets": [
+    {
+      "name": "Collection list",
+      "category": "Collections",
+      "blocks": [
+        {
+          "type": "collection-card",
+          "id": "collection-card",
+          "static": true,
+          "settings": {
+            "text_alignment": "left"
+          },
+          "blocks": [
+            {
+              "type": "_collection-card-image",
+              "settings": {
+                "image_ratio": "landscape"
+              }
+            },
+            {
+              "type": "_collection-card-title",
+              "settings": {
+                "show_product_count": true,
+                "font_family": "heading",
+                "heading_size": "fs-md"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

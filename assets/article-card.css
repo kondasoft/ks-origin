@@ -78,6 +78,10 @@
   outline-offset: 2px;
 }
 
+.theme-carousel .article-card-heading-link::after {
+  outline-offset: -2px;
+}
+
 .article-card-heading-link:focus-visible {
   outline-color: transparent;
 }
@@ -117,6 +121,10 @@
   .article-card:has(.article-card-heading-link:hover) .article-card-image {
     opacity: 0.85;
   }
+}
+
+.article-card:has(.article-card-heading-link:active) .article-card-image {
+  opacity: 0.7;
 }
 
 @media (prefers-reduced-motion: reduce) {

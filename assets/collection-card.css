@@ -74,6 +74,10 @@
   }
 }
 
+.collection-card:has(.collection-card-title-link:active) .collection-card-image {
+  opacity: 0.7;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .collection-card-image {
     transition: none;

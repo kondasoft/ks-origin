@@ -25,6 +25,7 @@
     "carousel": "Carousel",
     "products_carousel": "Products",
     "collections_carousel": "Collections",
+    "articles_carousel": "Articles",
     "previous": "Previous",
     "next": "Next",
     "play_video": "Play video",
@@ -106,7 +107,9 @@
     "test_modal": "Test modal"
   },
   "collections": {
+    "title": "Collections",
     "empty": "No products found.",
+    "no_collections": "No collections found.",
     "placeholders": {
       "title": "Example collection"
     },

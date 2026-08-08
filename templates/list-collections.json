@@ -1,0 +1,64 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-list-collections",
+      "blocks": {
+        "collection-card": {
+          "type": "collection-card",
+          "static": true,
+          "settings": {
+            "text_alignment": "left"
+          },
+          "blocks": {
+            "collection-card-image": {
+              "type": "_collection-card-image",
+              "settings": {
+                "image_ratio": "landscape"
+              },
+              "blocks": {}
+            },
+            "collection-card-title": {
+              "type": "_collection-card-title",
+              "settings": {
+                "show_product_count": true,
+                "font_family": "heading",
+                "heading_size": "fs-md"
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "collection-card-image",
+            "collection-card-title"
+          ]
+        }
+      },
+      "settings": {
+        "background_color": "{{ settings.colors.background }}",
+        "text_color": "{{ settings.colors.text }}",
+        "accent_color": "{{ settings.colors.accent }}",
+        "header_mobile_text_alignment": "left",
+        "header_desktop_text_alignment": "left",
+        "show_breadcrumbs": true,
+        "heading_size": "h1",
+        "mobile_columns": 1,
+        "desktop_columns": 3,
+        "collections_per_page": 24,
+        "pt": 60,
+        "pb": 60
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

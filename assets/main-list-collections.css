@@ -1,0 +1,74 @@
+/*
+  Main collection list stylesheet
+
+  This file owns the /collections page header and collection-grid layout.
+  Keep reusable collection-card presentation in the collection-card stylesheet.
+*/
+
+
+/*
+  Collection list header
+*/
+.main-list-collections {
+  color: rgb(var(--color-text));
+  background-color: rgb(var(--color-background));
+}
+
+.main-list-collections-header {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.main-list-collections-title {
+  margin: 0;
+}
+
+.main-list-collections-header .breadcrumb-list {
+  justify-content: var(--mobile-text-alignment);
+}
+
+@media (min-width: 1200px) {
+  .main-list-collections-header {
+    gap: 0.75rem;
+  }
+
+  .main-list-collections-header .breadcrumb-list {
+    justify-content: var(--desktop-text-alignment);
+  }
+}
+
+
+/*
+  Collection grid
+*/
+.main-list-collections-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--mobile-columns), minmax(0, 1fr));
+  gap: 2rem 1rem;
+  padding: 0;
+  margin: calc(2.5em * var(--spacing-scale)) 0 0;
+  list-style: none;
+}
+
+.main-list-collections-item {
+  min-width: 0;
+}
+
+.main-list-collections-empty {
+  margin: calc(3em * var(--spacing-scale)) 0 0;
+  padding: 5rem 0;
+  text-align: center;
+}
+
+@media (min-width: 600px) {
+  .main-list-collections-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1200px) {
+  .main-list-collections-grid {
+    grid-template-columns: repeat(var(--desktop-columns), minmax(0, 1fr));
+    gap: 2.5rem 1.5rem;
+  }
+}

@@ -394,6 +394,10 @@ predictive-search {
   }
 }
 
+.predictive-search-product-option:active .predictive-search-product-image {
+  opacity: 0.7;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .predictive-search-product-image {
     transition: none;
