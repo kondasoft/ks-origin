@@ -10,6 +10,7 @@
 {
   "accessibility": {
     "skip_to_content": "Aller au contenu",
+    "skip_to_product_information": "Passer aux informations sur le produit",
     "close": "Fermer",
     "menu": "Ouvrir le menu",
     "navigation": "Navigation principale",
@@ -185,14 +186,22 @@
     "placeholders": {
       "title": "Exemple de titre de produit",
       "vendor": "Exemple de fournisseur",
-      "sku": "DEMO-001"
+      "sku": "DEMO-001",
+      "description": "Présentez les matériaux, les caractéristiques et les conseils d’entretien de ce produit."
     },
     "badges": {
       "sale": "Promotion",
       "sold_out": "Épuisé"
     },
+    "variants": {
+      "unavailable": "Indisponible"
+    },
     "rating": {
       "value": "Noté {{ rating }} sur {{ scale_max }}",
+      "detailed": {
+        "one": "{{ rating }}/{{ scale_max }} étoiles selon {{ count }} avis",
+        "other": "{{ rating }}/{{ scale_max }} étoiles selon {{ count }} avis"
+      },
       "reviews": {
         "one": "{{ count }} avis",
         "other": "{{ count }} avis"
@@ -201,7 +210,11 @@
     "price": {
       "regular_price": "Prix normal",
       "sale_price": "Prix promotionnel",
-      "from_price": "À partir de {{ price }}"
+      "from_price": "À partir de {{ price }}",
+      "duties_and_taxes_included": "Droits et taxes inclus.",
+      "taxes_included": "Taxes incluses.",
+      "duties_included": "Droits inclus.",
+      "shipping_policy_html": "<a href=\"{{ link }}\">Livraison</a> calculée lors du paiement."
     },
     "form": {
       "add_to_cart": "Ajouter au panier",

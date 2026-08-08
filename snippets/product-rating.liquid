@@ -1,0 +1,74 @@
+{% doc %}
+Renders a product rating from Shopify's standard rating metafields with editor placeholder values.
+
+@param {product} product - The product whose rating should be rendered.
+@param {string} rating_size - The font-size utility class applied to the rating.
+@param {boolean} show_count - Whether the review count should be shown.
+@param {string} count_style - Whether the review count uses simple or detailed text.
+@param {string} [classes] - Additional classes applied to the rating wrapper.
+@param {string} [custom_style] - Additional inline custom properties applied to the rating wrapper.
+@param {block} [block] - The block used for Shopify editor attributes.
+
+@example
+{% render 'product-rating', product: product, rating_size: 'fs-sm', show_count: true %}
+{% enddoc %}
+
+{% liquid
+  assign product_rating = product.metafields.reviews.rating.value
+  assign rating = product_rating.rating
+  assign scale_max = product_rating.scale_max | default: 5
+  assign rating_count = product.metafields.reviews.rating_count.value | default: 0
+
+  if product == blank
+    assign rating = 4.5
+    assign scale_max = 5
+    assign rating_count = 12
+  endif
+
+  assign rating_value = rating | round: 1 | remove: '.0'
+  assign scale_max_value = scale_max | round: 1 | remove: '.0'
+  assign rating_percentage = rating | times: 100.0 | divided_by: scale_max
+%}
+
+{% if rating != blank %}
+  <div
+    class="product-rating {{ classes }} {{ rating_size }}"
+    style="
+      --product-rating-percentage: {{ rating_percentage }}%;
+      {{ custom_style }}
+    "
+    {{ block.shopify_attributes }}
+  >
+    <span class="product-rating-stars" aria-hidden="true">
+      <span class="product-rating-stars-background">
+        {% for index in (1..5) %}
+          {% render 'svg-icons', icon: 'star', icon_size: 16 %}
+        {% endfor %}
+      </span>
+      <span class="product-rating-stars-foreground">
+        {% for index in (1..5) %}
+          {% render 'svg-icons', icon: 'star', icon_size: 16 %}
+        {% endfor %}
+      </span>
+    </span>
+
+    {% if show_count and count_style == 'detailed' %}
+      <span class="product-rating-count">
+        {{ 'products.rating.detailed' | t: rating: rating_value, scale_max: scale_max_value, count: rating_count }}
+      </span>
+    {% else %}
+      <span class="visually-hidden">
+        {{ 'products.rating.value' | t: rating: rating_value, scale_max: scale_max_value }}
+      </span>
+    {% endif %}
+
+    {% if show_count and count_style != 'detailed' %}
+      <span
+        class="product-rating-count"
+        aria-label="{{ 'products.rating.reviews' | t: count: rating_count }}"
+      >
+        ({{ rating_count }})
+      </span>
+    {% endif %}
+  </div>
+{% endif %}

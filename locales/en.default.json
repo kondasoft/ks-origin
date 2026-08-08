@@ -10,6 +10,7 @@
 {
   "accessibility": {
     "skip_to_content": "Skip to content",
+    "skip_to_product_information": "Skip to product information",
     "close": "Close",
     "menu": "Open menu",
     "navigation": "Main navigation",
@@ -185,14 +186,22 @@
     "placeholders": {
       "title": "Example product title",
       "vendor": "Example vendor",
-      "sku": "DEMO-001"
+      "sku": "DEMO-001",
+      "description": "Share details about this product's materials, features, and care instructions."
     },
     "badges": {
       "sale": "Sale",
       "sold_out": "Sold out"
     },
+    "variants": {
+      "unavailable": "Unavailable"
+    },
     "rating": {
       "value": "Rated {{ rating }} out of {{ scale_max }}",
+      "detailed": {
+        "one": "{{ rating }}/{{ scale_max }} stars from {{ count }} review",
+        "other": "{{ rating }}/{{ scale_max }} stars from {{ count }} reviews"
+      },
       "reviews": {
         "one": "{{ count }} review",
         "other": "{{ count }} reviews"
@@ -201,7 +210,11 @@
     "price": {
       "regular_price": "Regular price",
       "sale_price": "Sale price",
-      "from_price": "From {{ price }}"
+      "from_price": "From {{ price }}",
+      "duties_and_taxes_included": "Duties and taxes included.",
+      "taxes_included": "Taxes included.",
+      "duties_included": "Duties included.",
+      "shipping_policy_html": "<a href=\"{{ link }}\">Shipping</a> calculated at checkout."
     },
     "form": {
       "add_to_cart": "Add to cart",

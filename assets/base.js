@@ -5,7 +5,6 @@
   Keep component-specific custom elements and behavior in their respective scripts.
 */
 
-
 /*
   Section styles loading on demand
 */
@@ -16,8 +15,7 @@ function loadSectionStyles() {
     hrefs.forEach((href) => {
       const assetUrl = href.trim();
 
-      if (!assetUrl || document.querySelector(`link[href="${assetUrl}"]`))
-        return;
+      if (!assetUrl || document.querySelector(`link[href="${assetUrl}"]`)) return;
 
       const link = document.createElement("link");
       link.href = assetUrl;
@@ -27,7 +25,6 @@ function loadSectionStyles() {
   });
 }
 loadSectionStyles();
-
 
 /*
   Section scripts loading on demand
@@ -39,8 +36,7 @@ function loadSectionScripts() {
     srcs.forEach((src) => {
       const assetUrl = src.trim();
 
-      if (!assetUrl || document.querySelector(`script[src="${assetUrl}"]`))
-        return;
+      if (!assetUrl || document.querySelector(`script[src="${assetUrl}"]`)) return;
 
       const script = document.createElement("script");
       script.src = assetUrl;
@@ -52,7 +48,6 @@ function loadSectionScripts() {
 
 loadSectionScripts();
 
-
 /*
   Inline SVG images
 */
@@ -63,10 +58,7 @@ async function transformSvgImages() {
     Array.from(images).map(async (image) => {
       const source = image.currentSrc || image.getAttribute("src") || "";
 
-      if (
-        image.dataset.inlineSvgProcessed === "true" ||
-        !source.split("?")[0].toLowerCase().endsWith(".svg")
-      ) {
+      if (image.dataset.inlineSvgProcessed === "true" || !source.split("?")[0].toLowerCase().endsWith(".svg")) {
         return;
       }
 
@@ -81,10 +73,7 @@ async function transformSvgImages() {
         }
 
         const markup = await response.text();
-        const svgDocument = new DOMParser().parseFromString(
-          markup,
-          "image/svg+xml",
-        );
+        const svgDocument = new DOMParser().parseFromString(markup, "image/svg+xml");
         const svg = svgDocument.querySelector("svg");
 
         if (!svg) {
@@ -111,9 +100,7 @@ async function transformSvgImages() {
 
         ["fill", "stroke"].forEach((attribute) => {
           [svg, ...svg.querySelectorAll(`[${attribute}]`)].forEach((element) => {
-            const color = (element.getAttribute(attribute) || "")
-              .trim()
-              .toLowerCase();
+            const color = (element.getAttribute(attribute) || "").trim().toLowerCase();
 
             if (color && color !== "none") {
               element.setAttribute(attribute, "currentColor");
@@ -131,7 +118,6 @@ async function transformSvgImages() {
 
 transformSvgImages();
 document.addEventListener("shopify:section:load", transformSvgImages);
-
 
 /*
   Reveal header on scroll
@@ -153,9 +139,7 @@ let headerScrollFrame;
 
 function updateRevealHeaders() {
   const currentScrollY = window.scrollY;
-  const lockedScrollY = Number(
-    document.body.dataset.scrollLockTop || currentScrollY,
-  );
+  const lockedScrollY = Number(document.body.dataset.scrollLockTop || currentScrollY);
 
   if (document.body.dataset.scrollLocked === "true") {
     previousScrollY = lockedScrollY;
@@ -165,16 +149,12 @@ function updateRevealHeaders() {
 
   const isScrollingDown = currentScrollY > previousScrollY;
 
-  document
-    .querySelectorAll('#header-group[data-header-behavior="reveal"]')
-    .forEach((header) => {
-      const shouldHide =
-        isScrollingDown &&
-        currentScrollY > header.offsetHeight &&
-        !header.contains(document.activeElement);
+  document.querySelectorAll('#header-group[data-header-behavior="reveal"]').forEach((header) => {
+    const shouldHide =
+      isScrollingDown && currentScrollY > header.offsetHeight && !header.contains(document.activeElement);
 
-      header.classList.toggle("header-hidden", shouldHide);
-    });
+    header.classList.toggle("header-hidden", shouldHide);
+  });
 
   previousScrollY = currentScrollY;
   headerScrollFrame = null;
@@ -189,7 +169,6 @@ window.addEventListener(
   },
   { passive: true },
 );
-
 
 /*
   Desktop header menu
@@ -215,11 +194,7 @@ function initHeaderDesktopMenu() {
   const hoverQuery = window.matchMedia("(hover: hover) and (pointer: fine)");
 
   function updateBackdrop() {
-    const hasOpenMenu = Boolean(
-      desktopMenu.querySelector(
-        '[data-menu-toggle][aria-expanded="true"]',
-      ),
-    );
+    const hasOpenMenu = Boolean(desktopMenu.querySelector('[data-menu-toggle][aria-expanded="true"]'));
 
     if (hasOpenMenu) {
       document.body.style.setProperty(
@@ -234,9 +209,7 @@ function initHeaderDesktopMenu() {
   }
 
   function setMenuState(toggle, expanded) {
-    const panel = document.getElementById(
-      toggle.getAttribute("aria-controls"),
-    );
+    const panel = document.getElementById(toggle.getAttribute("aria-controls"));
 
     toggle.setAttribute("aria-expanded", String(expanded));
     toggle.closest(".header-nav-item")?.classList.toggle("menu-open", expanded);
@@ -323,10 +296,7 @@ function initHeaderDesktopMenu() {
         if (event.key === "ArrowDown") {
           event.preventDefault();
           openMenu();
-          document
-            .getElementById(toggle.getAttribute("aria-controls"))
-            ?.querySelector("a, button")
-            ?.focus();
+          document.getElementById(toggle.getAttribute("aria-controls"))?.querySelector("a, button")?.focus();
         }
 
         if (event.key === "Escape") {
@@ -344,9 +314,7 @@ function initHeaderDesktopMenu() {
       if (event.key !== "Escape") return;
 
       const panel = event.target.closest("[data-menu-panel]");
-      const toggle = panel
-        ?.closest(".header-nav-item")
-        ?.querySelector("[data-menu-toggle]");
+      const toggle = panel?.closest(".header-nav-item")?.querySelector("[data-menu-toggle]");
 
       if (toggle?.matches("[data-menu-toggle]")) {
         setMenuState(toggle, false);

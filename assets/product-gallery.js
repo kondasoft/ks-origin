@@ -11,15 +11,9 @@ class ProductGallery extends HTMLElement {
 
     this.stage = this.querySelector("[data-product-gallery-stage]");
     this.track = this.querySelector("[data-product-gallery-track]");
-    this.slides = Array.from(
-      this.querySelectorAll("[data-product-gallery-slide]"),
-    );
-    this.thumbnails = Array.from(
-      this.querySelectorAll("[data-product-gallery-thumbnail]"),
-    );
-    this.thumbnailList = this.querySelector(
-      "[data-product-gallery-thumbnails]",
-    );
+    this.slides = Array.from(this.querySelectorAll("[data-product-gallery-slide]"));
+    this.thumbnails = Array.from(this.querySelectorAll("[data-product-gallery-thumbnail]"));
+    this.thumbnailList = this.querySelector("[data-product-gallery-thumbnails]");
     this.status = this.querySelector("[data-product-gallery-status]");
     this.counter = this.querySelector("[data-product-gallery-counter]");
     this.videoAutoplay = this.dataset.videoAutoplay === "true";
@@ -33,6 +27,15 @@ class ProductGallery extends HTMLElement {
     this.stage.addEventListener("keydown", this.onKeydown.bind(this), {
       signal: this.listenerController.signal,
     });
+    this.stage.addEventListener("pointerdown", this.onPointerDown.bind(this), {
+      signal: this.listenerController.signal,
+    });
+    this.stage.addEventListener("pointerup", this.onPointerEnd.bind(this), {
+      signal: this.listenerController.signal,
+    });
+    this.stage.addEventListener("pointercancel", this.onPointerEnd.bind(this), {
+      signal: this.listenerController.signal,
+    });
 
     this.currentIndex = Math.max(
       0,
@@ -40,8 +43,12 @@ class ProductGallery extends HTMLElement {
     );
     this.thumbnailWindowStart = 0;
 
-    if (this.thumbnailList && this.thumbnailResizeObserver) {
-      this.thumbnailResizeObserver.observe(this.thumbnailList);
+    if (this.thumbnailList && this.thumbnails.length) {
+      this.updateThumbnailLayout();
+      this.resizeObserver = new ResizeObserver(() => {
+        this.updateThumbnailLayout();
+      });
+      this.resizeObserver.observe(this.thumbnailList);
     }
 
     this.isInitialized = true;
@@ -50,7 +57,7 @@ class ProductGallery extends HTMLElement {
 
   disconnectedCallback() {
     this.listenerController?.abort();
-    this.thumbnailResizeObserver?.disconnect();
+    this.resizeObserver?.disconnect();
     cancelAnimationFrame(this.thumbnailScrollFrame);
     this.isInitialized = false;
   }
@@ -78,25 +85,43 @@ class ProductGallery extends HTMLElement {
     if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
 
     event.preventDefault();
-    this.showImage(
-      event.key === "ArrowRight" ? this.currentIndex + 1 : this.currentIndex - 1,
-    );
+    this.showImage(event.key === "ArrowRight" ? this.currentIndex + 1 : this.currentIndex - 1);
+  }
+
+  onPointerDown(event) {
+    if (!event.isPrimary || event.pointerType === "mouse") return;
+    if (event.target.closest("button, a, input, select, textarea, video[controls]")) return;
+
+    this.swipePointerId = event.pointerId;
+    this.swipeStartX = event.clientX;
+    this.swipeStartY = event.clientY;
+    this.stage.setPointerCapture(event.pointerId);
+  }
+
+  onPointerEnd(event) {
+    if (event.pointerId !== this.swipePointerId) return;
+
+    const distanceX = event.clientX - this.swipeStartX;
+    const distanceY = event.clientY - this.swipeStartY;
+    const isCancelled = event.type === "pointercancel";
+
+    this.swipePointerId = null;
+
+    if (isCancelled || Math.abs(distanceX) < 40 || Math.abs(distanceX) <= Math.abs(distanceY)) {
+      return;
+    }
+
+    this.showImage(distanceX < 0 ? this.currentIndex + 1 : this.currentIndex - 1);
   }
 
   showImage(index, announce = true) {
     const nextIndex = (index + this.slides.length) % this.slides.length;
     const hasChanged = nextIndex !== this.currentIndex;
     const indexDistance = Math.abs(nextIndex - this.currentIndex);
-    const slideDuration = Math.min(
-      800,
-      250 + Math.max(0, indexDistance - 1) * 100,
-    );
+    const slideDuration = Math.min(800, 250 + Math.max(0, indexDistance - 1) * 100);
 
     this.currentIndex = nextIndex;
-    this.style.setProperty(
-      "--product-gallery-slide-duration",
-      `${slideDuration}ms`,
-    );
+    this.style.setProperty("--product-gallery-slide-duration", `${slideDuration}ms`);
     this.track.style.transform = `translateX(-${nextIndex * 100}%)`;
 
     this.slides.forEach((slide, slideIndex) => {
@@ -142,37 +167,50 @@ class ProductGallery extends HTMLElement {
     }
   }
 
+  updateThumbnailLayout() {
+    const styles = getComputedStyle(this.thumbnailList);
+    const gap = Number.parseFloat(styles.columnGap) || 0;
+    const padding = (Number.parseFloat(styles.paddingLeft) || 0) + (Number.parseFloat(styles.paddingRight) || 0);
+    const minimumSize = Number.parseFloat(styles.getPropertyValue("--product-gallery-thumbnail-min")) || 50;
+    const maximumSize = Number.parseFloat(styles.getPropertyValue("--product-gallery-thumbnail-max")) || 140;
+    const availableWidth = this.thumbnailList.clientWidth - padding;
+    const maximumVisible = Math.max(1, Math.floor((availableWidth + gap) / (minimumSize + gap)));
+    const visibleCount = Math.min(this.thumbnails.length, maximumVisible);
+    const thumbnailSize = Math.max(
+      minimumSize,
+      Math.min(maximumSize, (availableWidth - gap * (visibleCount - 1)) / visibleCount),
+    );
+
+    this.thumbnailList.style.setProperty("--product-gallery-thumbnail-size", `${thumbnailSize}px`);
+    this.visibleThumbnailCount = visibleCount;
+
+    cancelAnimationFrame(this.thumbnailScrollFrame);
+    this.thumbnailScrollFrame = requestAnimationFrame(() => {
+      this.scrollActiveThumbnail(false);
+    });
+  }
+
   scrollActiveThumbnail(animate = true) {
     if (!this.thumbnailList || !this.visibleThumbnailCount) return;
 
     const previousWindowStart = this.thumbnailWindowStart;
     const lastIndex = this.thumbnails.length - 1;
-    const maxWindowStart = Math.max(
-      0,
-      this.thumbnails.length - this.visibleThumbnailCount,
-    );
+    const maxWindowStart = Math.max(0, this.thumbnails.length - this.visibleThumbnailCount);
 
     if (this.currentIndex <= this.thumbnailWindowStart) {
       this.thumbnailWindowStart = this.currentIndex - 1;
-    } else if (
-      this.currentIndex >=
-      this.thumbnailWindowStart + this.visibleThumbnailCount - 1
-    ) {
+    } else if (this.currentIndex >= this.thumbnailWindowStart + this.visibleThumbnailCount - 1) {
       this.thumbnailWindowStart =
         this.currentIndex < lastIndex
           ? this.currentIndex - this.visibleThumbnailCount + 2
           : this.currentIndex - this.visibleThumbnailCount + 1;
     }
 
-    this.thumbnailWindowStart = Math.max(
-      0,
-      Math.min(this.thumbnailWindowStart, maxWindowStart),
-    );
+    this.thumbnailWindowStart = Math.max(0, Math.min(this.thumbnailWindowStart, maxWindowStart));
 
     if (animate && this.thumbnailWindowStart === previousWindowStart) return;
 
-    const firstVisibleThumbnail =
-      this.thumbnails[this.thumbnailWindowStart];
+    const firstVisibleThumbnail = this.thumbnails[this.thumbnailWindowStart];
 
     if (!firstVisibleThumbnail) return;
 
@@ -180,11 +218,7 @@ class ProductGallery extends HTMLElement {
     const listBounds = this.thumbnailList.getBoundingClientRect();
     const thumbnailBounds = firstVisibleThumbnail.getBoundingClientRect();
     const paddingLeft = Number.parseFloat(listStyles.paddingLeft) || 0;
-    const left =
-      this.thumbnailList.scrollLeft +
-      thumbnailBounds.left -
-      listBounds.left -
-      paddingLeft;
+    const left = this.thumbnailList.scrollLeft + thumbnailBounds.left - listBounds.left - paddingLeft;
 
     this.thumbnailList.scrollTo({
       left,

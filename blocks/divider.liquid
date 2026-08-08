@@ -1,0 +1,76 @@
+{% liquid
+  assign line_opacity = 'var(--border-opacity)'
+
+  if block.settings.custom_line_opacity
+    assign line_opacity = block.settings.line_opacity | divided_by: 100.0
+  endif
+%}
+
+<div
+  class="divider-block block-spacing"
+  style="
+    --divider-line-opacity: {{ line_opacity }};
+    --pt: {{ block.settings.pt | divided_by: 16.0 | append: 'em' }};
+    --pb: {{ block.settings.pb | divided_by: 16.0 | append: 'em' }};
+  "
+  {{ block.shopify_attributes }}
+>
+  <hr style="border-top-color: rgb(var(--color-text) / var(--divider-line-opacity));">
+</div>
+
+{% schema %}
+{
+  "name": "Divider",
+  "tag": null,
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "custom_line_opacity",
+      "label": "Custom line opacity",
+      "info": "Enable to override the theme's global border opacity for this divider.",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "line_opacity",
+      "label": "Line opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 20,
+      "visible_if": "{{ block.settings.custom_line_opacity }}"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pt",
+      "label": "Top",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "pb",
+      "label": "Bottom",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    }
+  ],
+  "presets": [
+    {
+      "name": "Divider",
+      "category": "Layout"
+    }
+  ]
+}
+{% endschema %}

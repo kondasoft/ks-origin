@@ -10,11 +10,9 @@ class ProductRecommendations extends HTMLElement {
     if (this.isInitialized) return;
 
     this.listenerController = new AbortController();
-    this.addEventListener(
-      "theme:intersection",
-      this.onIntersection.bind(this),
-      { signal: this.listenerController.signal },
-    );
+    this.addEventListener("theme:intersection", this.onIntersection.bind(this), {
+      signal: this.listenerController.signal,
+    });
 
     this.isInitialized = true;
 
@@ -36,10 +34,7 @@ class ProductRecommendations extends HTMLElement {
   }
 
   async loadRecommendations() {
-    if (
-      this.dataset.recommendationsLoading === "true" ||
-      this.dataset.recommendationsPerformed === "true"
-    ) {
+    if (this.dataset.recommendationsLoading === "true" || this.dataset.recommendationsPerformed === "true") {
       return;
     }
 
@@ -65,10 +60,7 @@ class ProductRecommendations extends HTMLElement {
       if (!response.ok) throw new Error();
 
       const html = await response.text();
-      const responseDocument = new DOMParser().parseFromString(
-        html,
-        "text/html",
-      );
+      const responseDocument = new DOMParser().parseFromString(html, "text/html");
       const recommendations = responseDocument.getElementById(this.id);
 
       if (!recommendations || recommendations.hidden) {

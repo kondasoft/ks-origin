@@ -5,15 +5,13 @@
   Keep section-specific behavior in the section's dedicated script.
 */
 
-
 /*
   Intersection observer
 */
 const intersectionObservers = new Map();
 const elementObservers = new WeakMap();
 const intersectionObserverSelector = "[data-intersection-observer]";
-const initializedIntersectionObserverSelector =
-  "[data-intersection-initialized]";
+const initializedIntersectionObserverSelector = "[data-intersection-initialized]";
 
 function getMatchingElements(root, selector) {
   const elements = Array.from(root.querySelectorAll(selector));
@@ -48,9 +46,7 @@ function getIntersectionObserver(rootMargin, threshold) {
         const element = entry.target;
         const observeOnce = element.dataset.intersectionOnce !== "false";
 
-        element.dataset.intersectionState = entry.isIntersecting
-          ? "entered"
-          : "exited";
+        element.dataset.intersectionState = entry.isIntersecting ? "entered" : "exited";
         element.dispatchEvent(
           new CustomEvent("theme:intersection", {
             detail: entry,
@@ -71,10 +67,7 @@ function getIntersectionObserver(rootMargin, threshold) {
 }
 
 function initIntersectionObservers(root = document) {
-  const elements = getMatchingElements(
-    root,
-    `${intersectionObserverSelector}:not([data-intersection-initialized])`,
-  );
+  const elements = getMatchingElements(root, `${intersectionObserverSelector}:not([data-intersection-initialized])`);
 
   elements.forEach((element) => {
     if (!("IntersectionObserver" in window)) {
@@ -83,13 +76,8 @@ function initIntersectionObservers(root = document) {
     }
 
     const rootMargin = element.dataset.intersectionRootMargin || "0px";
-    const parsedThreshold = Number.parseFloat(
-      element.dataset.intersectionThreshold || "0",
-    );
-    const threshold = Math.min(
-      1,
-      Math.max(0, Number.isFinite(parsedThreshold) ? parsedThreshold : 0),
-    );
+    const parsedThreshold = Number.parseFloat(element.dataset.intersectionThreshold || "0");
+    const threshold = Math.min(1, Math.max(0, Number.isFinite(parsedThreshold) ? parsedThreshold : 0));
     let observer;
 
     try {
@@ -111,14 +99,12 @@ function initIntersectionObservers(root = document) {
 }
 
 function cleanupIntersectionObservers(root) {
-  getMatchingElements(root, initializedIntersectionObserverSelector).forEach(
-    (element) => {
-      elementObservers.get(element)?.unobserve(element);
-      elementObservers.delete(element);
-      delete element.dataset.intersectionInitialized;
-      delete element.dataset.intersectionState;
-    },
-  );
+  getMatchingElements(root, initializedIntersectionObserverSelector).forEach((element) => {
+    elementObservers.get(element)?.unobserve(element);
+    elementObservers.delete(element);
+    delete element.dataset.intersectionInitialized;
+    delete element.dataset.intersectionState;
+  });
 }
 
 initIntersectionObservers();
@@ -128,7 +114,6 @@ document.addEventListener("shopify:section:load", (event) => {
 document.addEventListener("shopify:section:unload", (event) => {
   cleanupIntersectionObservers(event.target);
 });
-
 
 /*
   Deferred video
@@ -143,18 +128,14 @@ class DeferredVideo extends HTMLElement {
     if (!this.posterButton || !this.videoTemplate) return;
 
     this.listenerController = new AbortController();
-    this.posterButton.addEventListener(
-      "click",
-      this.onPosterClick.bind(this),
-      { signal: this.listenerController.signal },
-    );
+    this.posterButton.addEventListener("click", this.onPosterClick.bind(this), {
+      signal: this.listenerController.signal,
+    });
 
     if (this.hasAttribute("autoplay")) {
-      this.addEventListener(
-        "theme:intersection",
-        this.onIntersection.bind(this),
-        { signal: this.listenerController.signal },
-      );
+      this.addEventListener("theme:intersection", this.onIntersection.bind(this), {
+        signal: this.listenerController.signal,
+      });
 
       if (this.dataset.intersectionState === "entered") {
         this.showVideo();
@@ -191,10 +172,7 @@ class DeferredVideo extends HTMLElement {
   }
 
   showVideo() {
-    if (
-      this.dataset.mediaLoading === "true" ||
-      this.dataset.mediaLoaded === "true"
-    ) {
+    if (this.dataset.mediaLoading === "true" || this.dataset.mediaLoaded === "true") {
       return;
     }
 
@@ -209,23 +187,14 @@ class DeferredVideo extends HTMLElement {
     this.mediaController = new AbortController();
     this.activeMedia = media;
 
-    const readyEvent =
-      media instanceof HTMLVideoElement ? "playing" : "load";
+    const readyEvent = media instanceof HTMLVideoElement ? "playing" : "load";
     const listenerOptions = {
       once: true,
       signal: this.mediaController.signal,
     };
 
-    media.addEventListener(
-      readyEvent,
-      () => this.onMediaReady(media),
-      listenerOptions,
-    );
-    media.addEventListener(
-      "error",
-      () => this.onMediaError(media),
-      listenerOptions,
-    );
+    media.addEventListener(readyEvent, () => this.onMediaReady(media), listenerOptions);
+    media.addEventListener("error", () => this.onMediaError(media), listenerOptions);
     this.videoTemplate.before(content);
 
     if (media instanceof HTMLVideoElement) {
@@ -234,15 +203,11 @@ class DeferredVideo extends HTMLElement {
   }
 
   onMediaReady(media) {
-    if (
-      this.activeMedia !== media ||
-      this.dataset.mediaLoading !== "true"
-    ) {
+    if (this.activeMedia !== media || this.dataset.mediaLoading !== "true") {
       return;
     }
 
-    const shouldMoveMediaFocus =
-      this.shouldMoveMediaFocus && document.activeElement === this.posterButton;
+    const shouldMoveMediaFocus = this.shouldMoveMediaFocus && document.activeElement === this.posterButton;
 
     this.mediaController?.abort();
     delete this.dataset.mediaLoading;
@@ -263,10 +228,7 @@ class DeferredVideo extends HTMLElement {
   }
 
   onMediaError(media) {
-    if (
-      this.activeMedia !== media ||
-      this.dataset.mediaLoading !== "true"
-    ) {
+    if (this.activeMedia !== media || this.dataset.mediaLoading !== "true") {
       return;
     }
 
@@ -284,7 +246,6 @@ class DeferredVideo extends HTMLElement {
 if (!customElements.get("deferred-video")) {
   customElements.define("deferred-video", DeferredVideo);
 }
-
 
 /*
   Dialogs
@@ -357,11 +318,9 @@ class ThemeDialog extends HTMLElement {
       trigger.setAttribute("aria-controls", this.dialog.id);
       trigger.setAttribute("aria-expanded", "false");
       trigger.setAttribute("aria-haspopup", "dialog");
-      trigger.addEventListener(
-        "click",
-        this.onTriggerClick.bind(this, trigger),
-        { signal: this.listenerController.signal },
-      );
+      trigger.addEventListener("click", this.onTriggerClick.bind(this, trigger), {
+        signal: this.listenerController.signal,
+      });
       this.triggers.push(trigger);
     });
   }
@@ -393,9 +352,7 @@ class ThemeDialog extends HTMLElement {
     this.closeOtherOpenDialogs();
     this.dialog.classList.remove("is-closing");
     this.isClosing = false;
-    this.dialog.dataset.openedBy = this.openedByPointer
-      ? "pointer"
-      : "keyboard";
+    this.dialog.dataset.openedBy = this.openedByPointer ? "pointer" : "keyboard";
     this.dialog.showModal();
     this.setExpandedState(true);
     this.lockPageScroll();
@@ -462,24 +419,16 @@ class ThemeDialog extends HTMLElement {
     }
 
     window.clearTimeout(this.closeTimer);
-    this.closeTimer = window.setTimeout(
-      () => this.dialog.close(),
-      closeDurationMs,
-    );
+    this.closeTimer = window.setTimeout(() => this.dialog.close(), closeDurationMs);
   }
 
   getCloseDurationMs() {
-    const reduceMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const designMode = document.documentElement.dataset.designMode === "true";
 
     if (reduceMotion || designMode) return 0;
 
-    const duration = window
-      .getComputedStyle(this.dialog)
-      .getPropertyValue("--dialog-transition-duration")
-      .trim();
+    const duration = window.getComputedStyle(this.dialog).getPropertyValue("--dialog-transition-duration").trim();
     const parsedDuration = Number.parseFloat(duration);
 
     if (!Number.isFinite(parsedDuration) || parsedDuration < 0) {
@@ -543,7 +492,6 @@ class ThemeDialog extends HTMLElement {
 if (!customElements.get("theme-dialog")) {
   customElements.define("theme-dialog", ThemeDialog);
 }
-
 
 class ThemeDropdown extends HTMLElement {
   static instanceCount = 0;
@@ -689,7 +637,6 @@ if (!customElements.get("theme-dropdown")) {
   customElements.define("theme-dropdown", ThemeDropdown);
 }
 
-
 class ThemeCollapse extends HTMLElement {
   connectedCallback() {
     if (this.isInitialized) return;
@@ -700,22 +647,14 @@ class ThemeCollapse extends HTMLElement {
     if (!this.details || !this.summary) return;
 
     this.listenerController = new AbortController();
-    this.reduceMotionQuery = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    );
+    this.reduceMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
     this.desktopQuery = window.matchMedia("(min-width: 1200px)");
-    this.summary.addEventListener(
-      "click",
-      this.onSummaryClick.bind(this),
-      { signal: this.listenerController.signal },
-    );
+    this.summary.addEventListener("click", this.onSummaryClick.bind(this), { signal: this.listenerController.signal });
 
     if (this.hasAttribute("data-collapse-mobile")) {
-      this.desktopQuery.addEventListener(
-        "change",
-        this.onDesktopQueryChange.bind(this),
-        { signal: this.listenerController.signal },
-      );
+      this.desktopQuery.addEventListener("change", this.onDesktopQueryChange.bind(this), {
+        signal: this.listenerController.signal,
+      });
       this.syncResponsiveState();
     }
 
@@ -747,9 +686,7 @@ class ThemeCollapse extends HTMLElement {
       this.details.open = true;
     }
 
-    const endHeight = isOpen
-      ? this.summary.offsetHeight
-      : this.details.scrollHeight;
+    const endHeight = isOpen ? this.summary.offsetHeight : this.details.scrollHeight;
 
     this.details.dataset.animating = "true";
     this.details.style.height = `${startHeight}px`;
@@ -773,10 +710,7 @@ class ThemeCollapse extends HTMLElement {
     };
 
     const onTransitionEnd = (transitionEvent) => {
-      if (
-        transitionEvent.target !== this.details ||
-        transitionEvent.propertyName !== "height"
-      ) {
+      if (transitionEvent.target !== this.details || transitionEvent.propertyName !== "height") {
         return;
       }
 
@@ -802,7 +736,6 @@ if (!customElements.get("theme-collapse")) {
   customElements.define("theme-collapse", ThemeCollapse);
 }
 
-
 class ThemeCarousel extends HTMLElement {
   connectedCallback() {
     if (this.isInitialized) return;
@@ -813,16 +746,12 @@ class ThemeCarousel extends HTMLElement {
     this.nextButton = this.querySelector("[data-carousel-next]");
     this.progressBar = this.querySelector("[data-carousel-progress-bar]");
     this.trackWrapper = this.querySelector(".theme-carousel-track-wrapper");
-    this.controlAlignmentElement = this.items[0]?.querySelector(
-      "[data-carousel-control-alignment]",
-    );
+    this.controlAlignmentElement = this.items[0]?.querySelector("[data-carousel-control-alignment]");
 
     if (!this.track || !this.items.length) return;
 
     this.listenerController = new AbortController();
-    this.reduceMotionQuery = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    );
+    this.reduceMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
 
     this.addEventListener("click", this.onClick.bind(this), {
       signal: this.listenerController.signal,
@@ -842,11 +771,10 @@ class ThemeCarousel extends HTMLElement {
     });
 
     if (this.controlAlignmentElement instanceof HTMLImageElement) {
-      this.controlAlignmentElement.addEventListener(
-        "load",
-        this.scheduleUpdate.bind(this),
-        { once: true, signal: this.listenerController.signal },
-      );
+      this.controlAlignmentElement.addEventListener("load", this.scheduleUpdate.bind(this), {
+        once: true,
+        signal: this.listenerController.signal,
+      });
     }
 
     if ("ResizeObserver" in window) {
@@ -960,9 +888,7 @@ class ThemeCarousel extends HTMLElement {
 
     this.track.scrollTo({
       left,
-      behavior: smooth && !designMode && !this.reduceMotionQuery.matches
-        ? "smooth"
-        : "auto",
+      behavior: smooth && !designMode && !this.reduceMotionQuery.matches ? "smooth" : "auto",
     });
   }
 
@@ -976,12 +902,7 @@ class ThemeCarousel extends HTMLElement {
   }
 
   positionControls() {
-    if (
-      !this.controlAlignmentElement ||
-      !this.previousButton ||
-      !this.nextButton ||
-      !this.trackWrapper
-    ) {
+    if (!this.controlAlignmentElement || !this.previousButton || !this.nextButton || !this.trackWrapper) {
       return;
     }
 
@@ -995,7 +916,7 @@ class ThemeCarousel extends HTMLElement {
 
     if (offsetElement !== this.trackWrapper) return;
 
-    const controlTop = offsetTop + (this.controlAlignmentElement.offsetHeight / 2);
+    const controlTop = offsetTop + this.controlAlignmentElement.offsetHeight / 2;
 
     if (controlTop <= 0) return;
 
@@ -1013,10 +934,7 @@ class ThemeCarousel extends HTMLElement {
 
     if (itemWidth <= 0 || this.track.clientWidth <= 0) return;
 
-    const visibleItemCount = Math.max(
-      1,
-      Math.round((this.track.clientWidth + gap) / (itemWidth + gap)),
-    );
+    const visibleItemCount = Math.max(1, Math.round((this.track.clientWidth + gap) / (itemWidth + gap)));
     const maxStartIndex = Math.max(0, this.items.length - visibleItemCount);
     const startIndex = Math.min(this.getCurrentIndex(), maxStartIndex);
     const endIndex = startIndex + visibleItemCount;
@@ -1060,7 +978,6 @@ if (!customElements.get("theme-carousel")) {
   customElements.define("theme-carousel", ThemeCarousel);
 }
 
-
 class MobileMenuDialog extends HTMLElement {
   static closeDurationMs = 180;
   static submenuBackDelayMs = 200;
@@ -1070,9 +987,7 @@ class MobileMenuDialog extends HTMLElement {
 
     this.panel = this.querySelector("[data-mobile-menu-panel]");
     this.backdrop = this.querySelector("[data-mobile-menu-backdrop]");
-    this.trigger = document.querySelector(
-      `[data-toggle="${this.panel?.id}"]`,
-    );
+    this.trigger = document.querySelector(`[data-toggle="${this.panel?.id}"]`);
 
     if (!this.panel || !this.backdrop || !this.trigger) return;
 
@@ -1085,21 +1000,13 @@ class MobileMenuDialog extends HTMLElement {
     this.trigger.addEventListener("click", this.onTriggerClick.bind(this), {
       signal: this.listenerController.signal,
     });
-    this.panel.addEventListener(
-      "click",
-      this.onMobileMenuClick.bind(this),
-      { signal: this.listenerController.signal },
-    );
-    this.panel.addEventListener(
-      "keydown",
-      this.onMobileMenuKeydown.bind(this),
-      { signal: this.listenerController.signal },
-    );
-    this.panel.addEventListener(
-      "transitionend",
-      this.onPanelTransitionEnd.bind(this),
-      { signal: this.listenerController.signal },
-    );
+    this.panel.addEventListener("click", this.onMobileMenuClick.bind(this), { signal: this.listenerController.signal });
+    this.panel.addEventListener("keydown", this.onMobileMenuKeydown.bind(this), {
+      signal: this.listenerController.signal,
+    });
+    this.panel.addEventListener("transitionend", this.onPanelTransitionEnd.bind(this), {
+      signal: this.listenerController.signal,
+    });
     this.backdrop.addEventListener("click", this.onBackdropClick.bind(this), {
       signal: this.listenerController.signal,
     });
@@ -1109,11 +1016,9 @@ class MobileMenuDialog extends HTMLElement {
     window.addEventListener("resize", this.updatePanelTop.bind(this), {
       signal: this.listenerController.signal,
     });
-    this.desktopQuery.addEventListener(
-      "change",
-      this.onDesktopQueryChange.bind(this),
-      { signal: this.listenerController.signal },
-    );
+    this.desktopQuery.addEventListener("change", this.onDesktopQueryChange.bind(this), {
+      signal: this.listenerController.signal,
+    });
     this.isInitialized = true;
   }
 
@@ -1140,9 +1045,7 @@ class MobileMenuDialog extends HTMLElement {
 
     window.clearTimeout(this.closeTimer);
     this.closeTimer = null;
-    document
-      .querySelector("#header-group")
-      ?.classList.remove("header-hidden");
+    document.querySelector("#header-group")?.classList.remove("header-hidden");
     this.updatePanelTop();
     this.panel.hidden = false;
     this.backdrop.hidden = false;
@@ -1168,9 +1071,7 @@ class MobileMenuDialog extends HTMLElement {
       this.trigger?.focus();
     }
 
-    const reduceMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     if (immediate || reduceMotion) {
       this.hidePanel();
@@ -1178,10 +1079,7 @@ class MobileMenuDialog extends HTMLElement {
     }
 
     window.clearTimeout(this.closeTimer);
-    this.closeTimer = window.setTimeout(
-      () => this.hidePanel(),
-      this.getCloseDurationMs(),
-    );
+    this.closeTimer = window.setTimeout(() => this.hidePanel(), this.getCloseDurationMs());
   }
 
   get isOpen() {
@@ -1202,8 +1100,7 @@ class MobileMenuDialog extends HTMLElement {
   onDocumentClick(event) {
     if (!this.isOpen) return;
     if (event.target.closest("dialog[open]")) return;
-    if (this.panel.contains(event.target) || this.trigger.contains(event.target))
-      return;
+    if (this.panel.contains(event.target) || this.trigger.contains(event.target)) return;
 
     this.closeMenu(false);
   }
@@ -1218,10 +1115,7 @@ class MobileMenuDialog extends HTMLElement {
   }
 
   getCloseDurationMs() {
-    const duration = window
-      .getComputedStyle(this)
-      .getPropertyValue("--mobile-menu-close-duration")
-      .trim();
+    const duration = window.getComputedStyle(this).getPropertyValue("--mobile-menu-close-duration").trim();
     const parsedDuration = Number.parseFloat(duration);
 
     if (!Number.isFinite(parsedDuration) || parsedDuration < 0) {
@@ -1233,10 +1127,7 @@ class MobileMenuDialog extends HTMLElement {
 
   updatePanelTop() {
     const headerGroup = document.querySelector("#header-group");
-    const headerBottom = Math.max(
-      headerGroup?.getBoundingClientRect().bottom || 0,
-      0,
-    );
+    const headerBottom = Math.max(headerGroup?.getBoundingClientRect().bottom || 0, 0);
 
     this.style.setProperty("--mobile-menu-top", `${headerBottom}px`);
   }
@@ -1259,10 +1150,7 @@ class MobileMenuDialog extends HTMLElement {
       );
 
       this.backgroundControlStates = Array.from(controls)
-        .filter(
-          (control) =>
-            control !== this.trigger && !this.panel.contains(control),
-        )
+        .filter((control) => control !== this.trigger && !this.panel.contains(control))
         .map((control) => ({
           control,
           wasInert: control.inert,
@@ -1300,9 +1188,7 @@ class MobileMenuDialog extends HTMLElement {
     const toggle = event.target.closest("[data-submenu-toggle]");
 
     if (toggle && this.panel.contains(toggle)) {
-      const submenu = document.getElementById(
-        toggle.getAttribute("aria-controls"),
-      );
+      const submenu = document.getElementById(toggle.getAttribute("aria-controls"));
       const isExpanded = toggle.getAttribute("aria-expanded") === "true";
 
       if (!submenu) return;
@@ -1332,10 +1218,7 @@ class MobileMenuDialog extends HTMLElement {
     const backButton = event.target.closest("[data-submenu-back]");
 
     if (backButton && this.panel.contains(backButton)) {
-      this.closeSubmenu(
-        backButton.closest(".mobile-menu-submenu"),
-        MobileMenuDialog.submenuBackDelayMs,
-      );
+      this.closeSubmenu(backButton.closest(".mobile-menu-submenu"), MobileMenuDialog.submenuBackDelayMs);
     }
   }
 
@@ -1399,9 +1282,7 @@ class MobileMenuDialog extends HTMLElement {
     });
 
     if (list.matches(".mobile-menu-list")) {
-      const secondaryList = this.panel.querySelector(
-        ".mobile-menu-secondary-list",
-      );
+      const secondaryList = this.panel.querySelector(".mobile-menu-secondary-list");
 
       if (secondaryList) {
         secondaryList.inert = !isInteractive;
@@ -1418,18 +1299,14 @@ class MobileMenuDialog extends HTMLElement {
   }
 
   resetSubmenus() {
-    this.panel
-      .querySelectorAll("[data-submenu-toggle]")
-      .forEach((toggle) => {
-        toggle.setAttribute("aria-expanded", "false");
-        toggle.removeAttribute("aria-hidden");
-        toggle.removeAttribute("tabindex");
-      });
-    this.panel
-      .querySelectorAll(".mobile-menu-submenu")
-      .forEach((submenu) => {
-        submenu.hidden = true;
-      });
+    this.panel.querySelectorAll("[data-submenu-toggle]").forEach((toggle) => {
+      toggle.setAttribute("aria-expanded", "false");
+      toggle.removeAttribute("aria-hidden");
+      toggle.removeAttribute("tabindex");
+    });
+    this.panel.querySelectorAll(".mobile-menu-submenu").forEach((submenu) => {
+      submenu.hidden = true;
+    });
     this.panel.querySelectorAll("[inert]").forEach((element) => {
       element.inert = false;
     });
@@ -1440,21 +1317,14 @@ if (!customElements.get("mobile-menu-dialog")) {
   customElements.define("mobile-menu-dialog", MobileMenuDialog);
 }
 
-
 class LocalizationCountryFilter extends HTMLElement {
   connectedCallback() {
     if (this.isInitialized) return;
 
-    this.input = this.querySelector(
-      "[data-localization-country-filter-input]",
-    );
-    this.items = Array.from(
-      this.querySelectorAll("[data-localization-country-item]"),
-    );
+    this.input = this.querySelector("[data-localization-country-filter-input]");
+    this.items = Array.from(this.querySelectorAll("[data-localization-country-item]"));
     this.emptyMessage = this.querySelector(".localization-filter-empty");
-    this.status = this.querySelector(
-      "[data-localization-country-filter-status]",
-    );
+    this.status = this.querySelector("[data-localization-country-filter-status]");
 
     if (!this.input) return;
 
@@ -1501,23 +1371,15 @@ class LocalizationCountryFilter extends HTMLElement {
       return;
     }
 
-    const statusText =
-      visibleCount === 1
-        ? this.status.dataset.textResultsOne
-        : this.status.dataset.textResultsOther;
+    const statusText = visibleCount === 1 ? this.status.dataset.textResultsOne : this.status.dataset.textResultsOther;
 
-    this.status.textContent =
-      statusText?.replace("[count]", visibleCount) || "";
+    this.status.textContent = statusText?.replace("[count]", visibleCount) || "";
   }
 }
 
 if (!customElements.get("localization-country-filter")) {
-  customElements.define(
-    "localization-country-filter",
-    LocalizationCountryFilter,
-  );
+  customElements.define("localization-country-filter", LocalizationCountryFilter);
 }
-
 
 /*
   Share

@@ -4,7 +4,6 @@
   This file owns shared AJAX filtering, sorting, pagination, history, and interaction state for product-result pages.
 */
 
-
 class FacetedResults extends HTMLElement {
   connectedCallback() {
     if (this.isInitialized) return;
@@ -51,19 +50,10 @@ class FacetedResults extends HTMLElement {
     this.update(new URL(paginationLink.href), { focusResultsGrid: true });
   }
 
-  async update(
-    url,
-    {
-      focusResultsGrid = false,
-      scrollToResultsGrid = true,
-      updateHistory = true,
-    } = {},
-  ) {
+  async update(url, { focusResultsGrid = false, scrollToResultsGrid = true, updateHistory = true } = {}) {
     const navigationUrl = new URL(url, window.location.origin);
     const requestUrl = new URL(navigationUrl);
-    const currentResultsGrid = this.querySelector(
-      "[data-faceted-results-grid]",
-    );
+    const currentResultsGrid = this.querySelector("[data-faceted-results-grid]");
     const filterState = this.captureFilterState();
 
     this.requestController?.abort();
@@ -84,14 +74,9 @@ class FacetedResults extends HTMLElement {
       }
 
       const html = await response.text();
-      const documentFragment = new DOMParser().parseFromString(
-        html,
-        "text/html",
-      );
+      const documentFragment = new DOMParser().parseFromString(html, "text/html");
       const nextView = documentFragment.querySelector("faceted-results");
-      const nextResultsGrid = nextView?.querySelector(
-        "[data-faceted-results-grid]",
-      );
+      const nextResultsGrid = nextView?.querySelector("[data-faceted-results-grid]");
 
       if (!currentResultsGrid || !nextView || !nextResultsGrid) {
         throw new Error("Failed to find the updated results markup");
@@ -122,9 +107,7 @@ class FacetedResults extends HTMLElement {
       return false;
     } finally {
       if (this.requestController === requestController) {
-        this.querySelector("[data-faceted-results-grid]")?.removeAttribute(
-          "aria-busy",
-        );
+        this.querySelector("[data-faceted-results-grid]")?.removeAttribute("aria-busy");
       }
     }
   }
@@ -135,17 +118,12 @@ class FacetedResults extends HTMLElement {
     if (!filters) return null;
 
     const dialogBody = filters.querySelector(".dialog-body");
-    const activeElement = filters.contains(document.activeElement)
-      ? document.activeElement
-      : null;
+    const activeElement = filters.contains(document.activeElement) ? document.activeElement : null;
 
     return {
       activeName: activeElement?.name || "",
       activeValue: activeElement?.value || "",
-      openGroups: Array.from(
-        filters.querySelectorAll(".theme-collapse-details"),
-        (details) => details.open,
-      ),
+      openGroups: Array.from(filters.querySelectorAll(".theme-collapse-details"), (details) => details.open),
       scrollTop: dialogBody?.scrollTop || 0,
     };
   }
@@ -176,13 +154,11 @@ class FacetedResults extends HTMLElement {
 
     if (!filterState) return;
 
-    nextFilters
-      .querySelectorAll(".theme-collapse-details")
-      .forEach((details, index) => {
-        if (typeof filterState.openGroups[index] === "boolean") {
-          details.open = filterState.openGroups[index];
-        }
-      });
+    nextFilters.querySelectorAll(".theme-collapse-details").forEach((details, index) => {
+      if (typeof filterState.openGroups[index] === "boolean") {
+        details.open = filterState.openGroups[index];
+      }
+    });
 
     const dialogBody = nextFilters.querySelector(".dialog-body");
 
@@ -190,21 +166,14 @@ class FacetedResults extends HTMLElement {
 
     if (!filterState.activeName) return;
 
-    const matchingInputs = nextFilters.querySelectorAll(
-      `[name="${CSS.escape(filterState.activeName)}"]`,
-    );
+    const matchingInputs = nextFilters.querySelectorAll(`[name="${CSS.escape(filterState.activeName)}"]`);
     const matchingInput =
-      Array.from(matchingInputs).find(
-        (input) => input.value === filterState.activeValue,
-      ) || matchingInputs[0];
+      Array.from(matchingInputs).find((input) => input.value === filterState.activeValue) || matchingInputs[0];
 
     matchingInput?.focus({ preventScroll: true });
 
     if (matchingInput?.type === "text") {
-      matchingInput.setSelectionRange(
-        matchingInput.value.length,
-        matchingInput.value.length,
-      );
+      matchingInput.setSelectionRange(matchingInput.value.length, matchingInput.value.length);
     }
   }
 
@@ -228,26 +197,14 @@ class FacetedResults extends HTMLElement {
 
     const headerGroup = document.querySelector("#header-group");
     const headerBehavior = headerGroup?.dataset.headerBehavior;
-    const isPageScrollLocked =
-      document.body.dataset.scrollLocked === "true";
-    const currentScrollY = isPageScrollLocked
-      ? Number(document.body.dataset.scrollLockTop || 0)
-      : window.scrollY;
-    const resultsGridTop =
-      resultsGrid.getBoundingClientRect().top + currentScrollY;
-    const scrollMarginTop = Number.parseFloat(
-      window.getComputedStyle(resultsGrid).scrollMarginTop,
-    );
-    const isScrollingUp =
-      resultsGridTop - (scrollMarginTop || 0) < currentScrollY;
-    const shouldOffsetHeader =
-      headerBehavior === "sticky" ||
-      (headerBehavior === "reveal" && isScrollingUp);
+    const isPageScrollLocked = document.body.dataset.scrollLocked === "true";
+    const currentScrollY = isPageScrollLocked ? Number(document.body.dataset.scrollLockTop || 0) : window.scrollY;
+    const resultsGridTop = resultsGrid.getBoundingClientRect().top + currentScrollY;
+    const scrollMarginTop = Number.parseFloat(window.getComputedStyle(resultsGrid).scrollMarginTop);
+    const isScrollingUp = resultsGridTop - (scrollMarginTop || 0) < currentScrollY;
+    const shouldOffsetHeader = headerBehavior === "sticky" || (headerBehavior === "reveal" && isScrollingUp);
     const headerOffset = shouldOffsetHeader ? headerGroup.offsetHeight : 0;
-    const targetScrollY = Math.max(
-      resultsGridTop - headerOffset - (scrollMarginTop || 0),
-      0,
-    );
+    const targetScrollY = Math.max(resultsGridTop - headerOffset - (scrollMarginTop || 0), 0);
 
     if (isPageScrollLocked) {
       document.body.dataset.scrollLockTop = String(targetScrollY);
@@ -255,9 +212,7 @@ class FacetedResults extends HTMLElement {
     } else {
       window.scrollTo({
         top: targetScrollY,
-        behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
-          ? "auto"
-          : "smooth",
+        behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
       });
     }
 
@@ -268,7 +223,6 @@ class FacetedResults extends HTMLElement {
 if (!customElements.get("faceted-results")) {
   customElements.define("faceted-results", FacetedResults);
 }
-
 
 class FacetFilters extends HTMLElement {
   connectedCallback() {
@@ -389,11 +343,7 @@ class FacetFilters extends HTMLElement {
       return;
     }
 
-    dialog.dialog.addEventListener(
-      "close",
-      () => view.scrollToResultsGrid(),
-      { once: true },
-    );
+    dialog.dialog.addEventListener("close", () => view.scrollToResultsGrid(), { once: true });
     dialog.requestClose?.();
   }
 }
@@ -401,7 +351,6 @@ class FacetFilters extends HTMLElement {
 if (!customElements.get("facet-filters")) {
   customElements.define("facet-filters", FacetFilters);
 }
-
 
 class FacetSort extends HTMLElement {
   connectedCallback() {
@@ -461,15 +410,11 @@ class FacetSort extends HTMLElement {
       const updated = await view.update(url);
 
       if (updated) {
-        const nextDropdown = view
-          .querySelector("facet-sort")
-          ?.closest("theme-dropdown");
+        const nextDropdown = view.querySelector("facet-sort")?.closest("theme-dropdown");
 
         if (keepDropdownOpen) {
           nextDropdown?.open?.();
-          nextDropdown
-            ?.querySelector('input[name="sort_by"]:checked')
-            ?.focus();
+          nextDropdown?.querySelector('input[name="sort_by"]:checked')?.focus();
         } else {
           nextDropdown?.querySelector(".theme-dropdown-btn")?.focus();
         }

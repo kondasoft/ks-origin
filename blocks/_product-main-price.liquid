@@ -11,6 +11,21 @@
   endif
 
   assign current_price = current_price_value | money
+
+  capture tax_information
+    if cart.duties_included and cart.taxes_included
+      echo 'products.price.duties_and_taxes_included' | t
+    elsif cart.taxes_included
+      echo 'products.price.taxes_included' | t
+    elsif cart.duties_included
+      echo 'products.price.duties_included' | t
+    endif
+
+    if shop.shipping_policy.body != blank
+      echo ' '
+      echo 'products.price.shipping_policy_html' | t: link: shop.shipping_policy.url
+    endif
+  endcapture
 %}
 
 <div
@@ -32,6 +47,20 @@
       <span class="product-main-price-current">{{ current_price }}</span>
     {% endif %}
   </p>
+
+  {% if block.settings.show_tax_information and tax_information != blank %}
+    <p class="product-main-price-tax-information fs-sm">{{ tax_information }}</p>
+  {% endif %}
+
+  {% if block.settings.show_installments and selected_variant != blank %}
+    <div class="product-main-price-installments fs-sm">
+      {% assign installment_form_id = 'product-main-installments-' | append: block.id %}
+      {% form 'product', product, id: installment_form_id, class: 'product-main-price-payment-terms' %}
+        <input type="hidden" name="id" value="{{ selected_variant.id }}">
+        {{ form | payment_terms }}
+      {% endform %}
+    </div>
+  {% endif %}
 </div>
 
 {% schema %}
@@ -44,13 +73,25 @@
       "id": "price_size",
       "label": "Price size",
       "options": [
-        { "value": "fs-xs", "label": "Extra small" },
-        { "value": "fs-sm", "label": "Small" },
         { "value": "fs-md", "label": "Medium" },
         { "value": "fs-lg", "label": "Large" },
-        { "value": "fs-xl", "label": "Extra large" }
+        { "value": "fs-xl", "label": "Extra large" },
+        { "value": "fs-2xl", "label": "2XL" },
+        { "value": "fs-3xl", "label": "3XL" }
       ],
       "default": "fs-xl"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_installments",
+      "label": "Installments",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_tax_information",
+      "label": "Tax information",
+      "default": false
     },
     {
       "type": "header",

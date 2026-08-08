@@ -20,6 +20,9 @@ export default [
       sourceType: 'script',
       globals: globals.browser,
     },
+    rules: {
+      'max-len': ['error', { code: 120 }],
+    },
   },
   pluginJs.configs.recommended,
   {

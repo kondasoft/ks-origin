@@ -4,7 +4,6 @@
   This file owns predictive-search requests, result rendering, loading state, and combobox keyboard interaction.
 */
 
-
 class PredictiveSearch extends HTMLElement {
   connectedCallback() {
     if (this.isInitialized) return;
@@ -13,19 +12,13 @@ class PredictiveSearch extends HTMLElement {
     this.input = this.querySelector(".predictive-search-input");
     this.resetButton = this.querySelector(".predictive-search-reset");
     this.submitButton = this.querySelector(".predictive-search-submit");
-    this.submitIcon = this.querySelector(
-      "[data-predictive-search-submit-icon]",
-    );
+    this.submitIcon = this.querySelector("[data-predictive-search-submit-icon]");
     this.spinner = this.querySelector(".predictive-search-spinner-wrapper");
     this.results = this.querySelector(".predictive-search-results");
     this.status = this.querySelector("[data-predictive-search-status]");
     this.dialog = this.closest("dialog");
-    this.footer = this.dialog?.querySelector(
-      "[data-predictive-search-footer]",
-    );
-    this.footerLabel = this.footer?.querySelector(
-      "[data-predictive-search-footer-label]",
-    );
+    this.footer = this.dialog?.querySelector("[data-predictive-search-footer]");
+    this.footerLabel = this.footer?.querySelector("[data-predictive-search-footer-label]");
 
     if (
       !this.form ||
@@ -55,9 +48,7 @@ class PredictiveSearch extends HTMLElement {
     this.form.addEventListener("reset", this.onReset.bind(this), { signal });
 
     if (this.dialog) {
-      this.dialogObserver = new MutationObserver(
-        this.onDialogStateChange.bind(this),
-      );
+      this.dialogObserver = new MutationObserver(this.onDialogStateChange.bind(this));
       this.dialogObserver.observe(this.dialog, {
         attributes: true,
         attributeFilter: ["open"],
@@ -101,10 +92,7 @@ class PredictiveSearch extends HTMLElement {
     this.updateFooter(query);
     const searchVersion = this.searchVersion;
 
-    this.inputTimer = window.setTimeout(
-      () => this.fetchResults(query, searchVersion),
-      250,
-    );
+    this.inputTimer = window.setTimeout(() => this.fetchResults(query, searchVersion), 250);
   }
 
   onReset() {
@@ -121,8 +109,7 @@ class PredictiveSearch extends HTMLElement {
   onKeydown(event) {
     const options = this.getOptions();
 
-    const hasSearchState =
-      !this.results.hidden || !this.footer.hidden || !this.spinner.hidden;
+    const hasSearchState = !this.results.hidden || !this.footer.hidden || !this.spinner.hidden;
 
     if (event.key === "Escape" && hasSearchState) {
       event.preventDefault();
@@ -145,8 +132,7 @@ class PredictiveSearch extends HTMLElement {
 
     if (event.key === "ArrowUp") {
       event.preventDefault();
-      this.currentIndex =
-        this.currentIndex <= 0 ? options.length - 1 : this.currentIndex - 1;
+      this.currentIndex = this.currentIndex <= 0 ? options.length - 1 : this.currentIndex - 1;
       this.setActiveOption(options);
       return;
     }
@@ -163,17 +149,12 @@ class PredictiveSearch extends HTMLElement {
   }
 
   getOptions() {
-    return Array.from(
-      this.results.querySelectorAll("[data-predictive-search-option]"),
-    );
+    return Array.from(this.results.querySelectorAll("[data-predictive-search-option]"));
   }
 
   setActiveOption(options) {
     options.forEach((option, index) => {
-      option.setAttribute(
-        "aria-selected",
-        String(index === this.currentIndex),
-      );
+      option.setAttribute("aria-selected", String(index === this.currentIndex));
     });
 
     const activeOption = options[this.currentIndex];
@@ -182,9 +163,7 @@ class PredictiveSearch extends HTMLElement {
 
     this.input.setAttribute("aria-activedescendant", activeOption.id);
     activeOption.scrollIntoView({
-      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
-        ? "auto"
-        : "smooth",
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
       block: "nearest",
     });
   }
@@ -226,22 +205,14 @@ class PredictiveSearch extends HTMLElement {
       }
 
       const html = await response.text();
-      const documentFragment = new DOMParser().parseFromString(
-        html,
-        "text/html",
-      );
-      const section = documentFragment.querySelector(
-        "#shopify-section-predictive-search",
-      );
+      const documentFragment = new DOMParser().parseFromString(html, "text/html");
+      const section = documentFragment.querySelector("#shopify-section-predictive-search");
 
       if (!section) {
         throw new Error("Failed to find predictive search markup");
       }
 
-      if (
-        this.requestController !== requestController ||
-        !this.isCurrentSearch(query, searchVersion)
-      ) {
+      if (this.requestController !== requestController || !this.isCurrentSearch(query, searchVersion)) {
         return;
       }
 
@@ -255,10 +226,7 @@ class PredictiveSearch extends HTMLElement {
       this.clearResults();
       this.updateFooter(query);
     } finally {
-      if (
-        this.requestController === requestController &&
-        this.searchVersion === searchVersion
-      ) {
+      if (this.requestController === requestController && this.searchVersion === searchVersion) {
         this.setLoading(false);
       }
     }
@@ -292,10 +260,7 @@ class PredictiveSearch extends HTMLElement {
   }
 
   updateFooter(query) {
-    this.footerLabel.textContent = this.dataset.textViewAll.replace(
-      "__TERMS__",
-      () => query,
-    );
+    this.footerLabel.textContent = this.dataset.textViewAll.replace("__TERMS__", () => query);
     this.footer.hidden = false;
   }
 
@@ -306,11 +271,7 @@ class PredictiveSearch extends HTMLElement {
   }
 
   isCurrentSearch(query, searchVersion) {
-    return (
-      this.dialog.open &&
-      this.searchVersion === searchVersion &&
-      this.input.value.trim() === query
-    );
+    return this.dialog.open && this.searchVersion === searchVersion && this.input.value.trim() === query;
   }
 
   setLoading(isLoading) {

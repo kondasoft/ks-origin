@@ -54,6 +54,10 @@
     <svg aria-hidden="true" class="svg-icon svg-icon-play" width="{{ scaled_icon_size }}" height="{{ scaled_icon_size }}" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="m7 5 7 5-7 5z" fill="currentColor"></path>
     </svg>
+  {% when 'star' %}
+    <svg aria-hidden="true" class="svg-icon svg-icon-star" width="{{ scaled_icon_size }}" height="{{ scaled_icon_size }}" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="currentColor"></polygon>
+    </svg>
   {% when 'filter' %}
     <svg aria-hidden="true" class="svg-icon svg-icon-filter" width="{{ scaled_icon_size }}" height="{{ scaled_icon_size }}" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
       <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="{{ stroke_width }}"></polygon>

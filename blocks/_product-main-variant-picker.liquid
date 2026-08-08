@@ -1,0 +1,169 @@
+{% liquid
+  assign product = closest.product
+  assign swatch_size = block.settings.swatch_size | default: 32
+  assign swatch_image_size = swatch_size | times: 2
+%}
+
+{% unless product == blank or product.has_only_default_variant %}
+  <div
+    class="product-main-variant-picker block-spacing"
+    style="
+      --pt: {{ block.settings.pt | divided_by: 16.0 | append: 'em' }};
+      --pb: {{ block.settings.pb | divided_by: 16.0 | append: 'em' }};
+      --swatch-size: {{ swatch_size }}px;
+    "
+    {{ block.shopify_attributes }}
+  >
+    <div class="product-main-variant-picker-options">
+      {% for product_option in product.options_with_values %}
+        {% liquid
+          assign option_has_swatches = false
+          assign selected_option_value = product_option.selected_value | default: product_option.values.first
+
+          for option_value in product_option.values
+            if option_value.swatch != blank
+              assign option_has_swatches = true
+              break
+            endif
+          endfor
+        %}
+        {% if block.settings.option_style == 'select' and option_has_swatches == false %}
+          <div class="product-main-variant-picker-option" data-variant-option-group>
+            <label for="ProductOption-{{ block.id }}-{{ product_option.position }}">
+              {{ product_option.name | escape }}
+            </label>
+            <div class="input-wrapper">
+              <select
+                id="ProductOption-{{ block.id }}-{{ product_option.position }}"
+                class="input"
+                name="options[{{ product_option.name | escape }}]"
+                data-variant-option
+              >
+                {% for option_value in product_option.values %}
+                  <option
+                    value="{{ option_value | escape }}"
+                    {% if option_value.selected %}selected{% endif %}
+                    {% unless option_value.available %}disabled{% endunless %}
+                  >
+                    {{ option_value | escape }}{% unless option_value.available %} – {{ 'products.variants.unavailable' | t }}{% endunless %}
+                  </option>
+                {% endfor %}
+              </select>
+              {% render 'svg-icons', icon: 'chevron-down', icon_size: 18 %}
+            </div>
+          </div>
+        {% else %}
+          <fieldset class="product-main-variant-picker-option" data-variant-option-group>
+            <legend>
+              {{ product_option.name | escape }}{% if option_has_swatches %}: <span class="product-main-variant-picker-selected-value">{{ selected_option_value | escape }}</span>{% endif %}
+            </legend>
+            <div class="product-main-variant-picker-radio-list">
+              {% for option_value in product_option.values %}
+                {% assign option_id = 'ProductOption-' | append: block.id | append: '-' | append: product_option.position | append: '-' | append: forloop.index %}
+                <label
+                  class="product-main-variant-picker-radio{% if option_value.swatch != blank %} product-main-variant-picker-radio-swatch{% endif %}"
+                  for="{{ option_id }}"
+                  {% if option_value.swatch != blank %}title="{{ option_value | escape }}"{% endif %}
+                >
+                  <input
+                    id="{{ option_id }}"
+                    class="visually-hidden"
+                    type="radio"
+                    name="options[{{ product_option.name | escape }}]"
+                    value="{{ option_value | escape }}"
+                    data-variant-option
+                    {% if option_value.selected %}checked{% endif %}
+                    {% unless option_value.available %}disabled{% endunless %}
+                  >
+                  {% if option_value.swatch != blank %}
+                    <span
+                      class="product-main-variant-picker-swatch"
+                      style="--swatch-color: {% if option_value.swatch.color %}rgb({{ option_value.swatch.color.rgb }}){% else %}transparent{% endif %};"
+                      aria-hidden="true"
+                    >
+                      {% if option_value.swatch.image %}
+                        {{
+                          option_value.swatch.image
+                          | image_url: width: swatch_image_size, height: swatch_image_size, crop: 'center'
+                          | image_tag:
+                            loading: 'lazy',
+                            width: swatch_size,
+                            height: swatch_size,
+                            alt: ''
+                        }}
+                      {% endif %}
+                    </span>
+                  {% endif %}
+                  <span{% if option_value.swatch != blank %} class="visually-hidden"{% endif %}>
+                    {{ option_value | escape }}{% unless option_value.available %} – {{ 'products.variants.unavailable' | t }}{% endunless %}
+                  </span>
+                </label>
+              {% endfor %}
+            </div>
+          </fieldset>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+  </div>
+{% endunless %}
+
+{% schema %}
+{
+  "name": "Variant picker",
+  "tag": null,
+  "settings": [
+    {
+      "type": "select",
+      "id": "option_style",
+      "label": "Option style",
+      "options": [
+        { "value": "select", "label": "Select fields" },
+        { "value": "radio", "label": "Radio buttons" }
+      ],
+      "default": "radio",
+      "info": "Options with Shopify swatches always display as swatches."
+    },
+    {
+      "type": "range",
+      "id": "swatch_size",
+      "label": "Swatch size",
+      "min": 20,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pt",
+      "label": "Top",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "pb",
+      "label": "Bottom",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Variant picker",
+      "category": "Product"
+    }
+  ]
+}
+{% endschema %}

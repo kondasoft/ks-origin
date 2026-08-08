@@ -1,0 +1,87 @@
+{% capture rating_style %}
+  --pt: {{ block.settings.pt | divided_by: 16.0 | append: 'em' }};
+  --pb: {{ block.settings.pb | divided_by: 16.0 | append: 'em' }};
+{% endcapture %}
+
+{% render 'product-rating',
+  product: closest.product,
+  rating_size: block.settings.rating_size,
+  show_count: block.settings.show_count,
+  count_style: block.settings.count_style,
+  classes: 'product-main-rating block-spacing',
+  custom_style: rating_style,
+  block: block
+%}
+
+{% schema %}
+{
+  "name": "Product rating",
+  "tag": null,
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Requires a reviews app that writes to Shopify's standard product rating metafields."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_count",
+      "label": "Show review count",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "count_style",
+      "label": "Review count style",
+      "options": [
+        { "value": "simple", "label": "Simple" },
+        { "value": "detailed", "label": "Detailed" }
+      ],
+      "default": "detailed",
+      "visible_if": "{{ block.settings.show_count }}"
+    },
+    {
+      "type": "select",
+      "id": "rating_size",
+      "label": "Rating size",
+      "options": [
+        { "value": "fs-xs", "label": "Extra small" },
+        { "value": "fs-sm", "label": "Small" },
+        { "value": "fs-md", "label": "Medium" },
+        { "value": "fs-lg", "label": "Large" },
+        { "value": "fs-xl", "label": "Extra large" }
+      ],
+      "default": "fs-sm"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pt",
+      "label": "Top",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "pb",
+      "label": "Bottom",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 6
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product rating",
+      "category": "Product"
+    }
+  ]
+}
+{% endschema %}

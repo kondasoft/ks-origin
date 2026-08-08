@@ -16,7 +16,7 @@
           "type": "_product-main-vendor",
           "settings": {
             "text_size": "fs-sm",
-            "pt": 0,
+            "pt": 6,
             "pb": 6
           },
           "blocks": {}
@@ -26,7 +26,18 @@
           "settings": {
             "heading_size": "h2",
             "pt": 0,
-            "pb": 6
+            "pb": 8
+          },
+          "blocks": {}
+        },
+        "product-main-rating": {
+          "type": "_product-main-rating",
+          "settings": {
+            "show_count": true,
+            "count_style": "detailed",
+            "rating_size": "fs-md",
+            "pt": 0,
+            "pb": 16
           },
           "blocks": {}
         },
@@ -34,8 +45,20 @@
           "type": "_product-main-price",
           "settings": {
             "price_size": "fs-xl",
+            "show_installments": true,
+            "show_tax_information": true,
             "pt": 0,
-            "pb": 0
+            "pb": 24
+          },
+          "blocks": {}
+        },
+        "product-main-variant-picker": {
+          "type": "_product-main-variant-picker",
+          "settings": {
+            "option_style": "radio",
+            "swatch_size": 32,
+            "pt": 0,
+            "pb": 30
           },
           "blocks": {}
         },
@@ -47,13 +70,78 @@
             "pb": 0
           },
           "blocks": {}
+        },
+        "divider_6jkQPj": {
+          "type": "divider",
+          "name": "Divider",
+          "disabled": true,
+          "settings": {
+            "custom_line_opacity": false,
+            "line_opacity": 20,
+            "pt": 30,
+            "pb": 30
+          },
+          "blocks": {}
+        },
+        "product-main-description": {
+          "type": "_product-main-description",
+          "disabled": true,
+          "settings": {
+            "text_size": "fs-md",
+            "pt": 0,
+            "pb": 0
+          },
+          "blocks": {}
+        },
+        "collapse_FENgDc": {
+          "type": "collapse",
+          "name": "Collapse",
+          "settings": {
+            "heading": "Product details",
+            "text": "{{ closest.product.description }}",
+            "open_by_default": false,
+            "pt": 0,
+            "pb": 0
+          },
+          "blocks": {}
+        },
+        "collapse_YdpkQT": {
+          "type": "collapse",
+          "name": "Collapse",
+          "settings": {
+            "heading": "What would you like to know?",
+            "text": "<p>Add the answer or supporting information here.</p>",
+            "open_by_default": false,
+            "pt": 0,
+            "pb": 0
+          },
+          "blocks": {}
+        },
+        "collapse_HbkRVr": {
+          "type": "collapse",
+          "name": "Collapse",
+          "settings": {
+            "heading": "What would you like to know?",
+            "text": "<p>Add the answer or supporting information here.</p>",
+            "open_by_default": false,
+            "pt": 0,
+            "pb": 0
+          },
+          "blocks": {}
         }
       },
       "block_order": [
         "product-main-vendor",
         "product-main-title",
+        "product-main-rating",
         "product-main-price",
-        "product-main-sku"
+        "product-main-variant-picker",
+        "product-main-sku",
+        "divider_6jkQPj",
+        "product-main-description",
+        "collapse_FENgDc",
+        "collapse_YdpkQT",
+        "collapse_HbkRVr"
       ],
       "settings": {
         "background_color": "{{ settings.colors.background }}",
@@ -129,9 +217,10 @@
               "blocks": {}
             },
             "product-rating": {
-              "type": "_product-rating",
+              "type": "_product-card-rating",
               "settings": {
                 "show_count": true,
+                "count_style": "simple",
                 "rating_size": "fs-sm"
               },
               "blocks": {}

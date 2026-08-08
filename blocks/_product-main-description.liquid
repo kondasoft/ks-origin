@@ -1,30 +1,30 @@
 {% liquid
   assign product = closest.product
-  assign vendor = product.vendor
+  assign description = product.description
 
   if product == blank
-    assign vendor = 'products.placeholders.vendor' | t
+    assign description = 'products.placeholders.description' | t
   endif
 %}
 
-{% if vendor != blank %}
+{% if description != blank %}
   <div
-    class="product-main-vendor-block block-spacing"
+    class="product-main-description block-spacing"
     style="
       --pt: {{ block.settings.pt | divided_by: 16.0 | append: 'em' }};
       --pb: {{ block.settings.pb | divided_by: 16.0 | append: 'em' }};
     "
     {{ block.shopify_attributes }}
   >
-    <p class="product-vendor {{ block.settings.text_size }}">
-      {{ vendor | escape }}
-    </p>
+    <div class="rte {{ block.settings.text_size }}">
+      {{ description }}
+    </div>
   </div>
 {% endif %}
 
 {% schema %}
 {
-  "name": "Product vendor",
+  "name": "Product description",
   "tag": null,
   "settings": [
     {
@@ -38,7 +38,7 @@
         { "value": "fs-lg", "label": "Large" },
         { "value": "fs-xl", "label": "Extra large" }
       ],
-      "default": "fs-sm"
+      "default": "fs-md"
     },
     {
       "type": "header",
@@ -62,12 +62,12 @@
       "max": 80,
       "step": 2,
       "unit": "px",
-      "default": 6
+      "default": 0
     }
   ],
   "presets": [
     {
-      "name": "Product vendor",
+      "name": "Product description",
       "category": "Product"
     }
   ]

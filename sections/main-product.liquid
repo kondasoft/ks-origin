@@ -10,11 +10,15 @@
 >
   <div class="container {{ settings.container_width }}">
     <div class="main-product-layout">
+      <a class="skip-link main-product-skip-link" href="#product-details-{{ section.id }}">
+        {{ 'accessibility.skip_to_product_information' | t }}
+      </a>
+
       <div class="main-product-media">
         {% render 'product-gallery' %}
       </div>
 
-      <div class="main-product-details">
+      <div id="product-details-{{ section.id }}" class="main-product-details" tabindex="-1">
         {% content_for 'blocks', closest.product: product %}
       </div>
     </div>
@@ -95,20 +99,16 @@
       "default": true
     },
     {
-      "type": "header",
-      "content": "Videos"
-    },
-    {
       "type": "checkbox",
       "id": "gallery_video_autoplay",
-      "label": "Autoplay",
+      "label": "Autoplay videos",
       "info": "Autoplay videos are muted.",
       "default": false
     },
     {
       "type": "checkbox",
       "id": "gallery_video_show_controls",
-      "label": "Show controls",
+      "label": "Show video controls",
       "default": true
     },
     {
@@ -144,10 +144,25 @@
       "type": "_product-main-title"
     },
     {
+      "type": "_product-main-description"
+    },
+    {
+      "type": "_product-main-rating"
+    },
+    {
       "type": "_product-main-price"
     },
     {
+      "type": "_product-main-variant-picker"
+    },
+    {
       "type": "_product-main-sku"
+    },
+    {
+      "type": "@theme"
+    },
+    {
+      "type": "@app"
     }
   ],
   "enabled_on": {
@@ -175,6 +190,16 @@
           }
         },
         {
+          "type": "_product-main-rating",
+          "settings": {
+            "show_count": true,
+            "count_style": "detailed",
+            "rating_size": "fs-sm",
+            "pt": 0,
+            "pb": 6
+          }
+        },
+        {
           "type": "_product-main-price",
           "settings": {
             "price_size": "fs-xl",
@@ -183,9 +208,34 @@
           }
         },
         {
+          "type": "_product-main-variant-picker",
+          "settings": {
+            "option_style": "radio",
+            "pt": 16,
+            "pb": 0
+          }
+        },
+        {
           "type": "_product-main-sku",
           "settings": {
             "text_size": "fs-sm",
+            "pt": 0,
+            "pb": 0
+          }
+        },
+        {
+          "type": "divider",
+          "settings": {
+            "custom_line_opacity": false,
+            "line_opacity": 20,
+            "pt": 16,
+            "pb": 16
+          }
+        },
+        {
+          "type": "_product-main-description",
+          "settings": {
+            "text_size": "fs-md",
             "pt": 0,
             "pb": 0
           }
