@@ -203,8 +203,8 @@
         "background_color": "{{ settings.colors.background }}",
         "text_color": "{{ settings.colors.text }}",
         "accent_color": "{{ settings.colors.accent }}",
-        "mobile_text_alignment": "left",
-        "desktop_text_alignment": "left",
+        "header_mobile_text_alignment": "left",
+        "header_desktop_text_alignment": "left",
         "layout": "carousel",
         "carousel_partial_slide_mobile": true,
         "carousel_show_navigation": true,
@@ -230,6 +230,86 @@
         "container_width": "site",
         "pt": 0,
         "pb": 0
+      }
+    },
+    "collection_list_6dLrBL": {
+      "type": "collection-list",
+      "blocks": {
+        "heading_PBqBaJ": {
+          "type": "heading",
+          "settings": {
+            "heading": "Shop by collection",
+            "heading_tag": "2",
+            "heading_size": "h2",
+            "pt": 0,
+            "pb": 6
+          },
+          "blocks": {}
+        },
+        "text_9XXnKh": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Explore collections created to help customers find the products that suit them best.</p>",
+            "text_size": "fs-md",
+            "pt": 0,
+            "pb": 0
+          },
+          "blocks": {}
+        },
+        "collection-card": {
+          "type": "collection-card",
+          "static": true,
+          "settings": {
+            "text_alignment": "left"
+          },
+          "blocks": {
+            "collection_card_image_JGTnK8": {
+              "type": "_collection-card-image",
+              "settings": {
+                "image_ratio": "landscape"
+              },
+              "blocks": {}
+            },
+            "collection_card_title_dDKALW": {
+              "type": "_collection-card-title",
+              "settings": {
+                "font_family": "heading",
+                "heading_size": "fs-md"
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "collection_card_image_JGTnK8",
+            "collection_card_title_dDKALW"
+          ]
+        }
+      },
+      "block_order": [
+        "heading_PBqBaJ",
+        "text_9XXnKh"
+      ],
+      "name": "Collection list",
+      "settings": {
+        "collections": [
+          "all",
+          "lateset-arrivals-copy",
+          "automated-collection",
+          "men"
+        ],
+        "background_color": "{{ settings.colors.background }}",
+        "text_color": "{{ settings.colors.text }}",
+        "accent_color": "{{ settings.colors.accent }}",
+        "header_mobile_text_alignment": "left",
+        "header_desktop_text_alignment": "left",
+        "layout": "grid",
+        "carousel_partial_slide_mobile": true,
+        "carousel_show_navigation": true,
+        "carousel_show_progress": true,
+        "mobile_columns": 1,
+        "desktop_columns": 3,
+        "pt": 60,
+        "pb": 60
       }
     },
     "contact_form_jN7QXd": {
@@ -1340,6 +1420,7 @@
     "hero_epRUea",
     "featured_collection_zBQiyp",
     "divider_mhqKLJ",
+    "collection_list_6dLrBL",
     "contact_form_jN7QXd",
     "liquid_html_6ttYfG",
     "image_4hw3MC",

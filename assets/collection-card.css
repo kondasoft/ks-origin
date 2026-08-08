@@ -1,0 +1,81 @@
+/*
+  Collection card stylesheet
+
+  This file owns the reusable layout and presentation of collection cards and their inner content blocks.
+*/
+
+.collection-card {
+  position: relative;
+  display: grid;
+  min-width: 0;
+  gap: 0.5rem;
+  text-align: left;
+}
+
+.collection-card[data-text-alignment="center"] {
+  text-align: center;
+}
+
+.collection-card[data-text-alignment="right"] {
+  text-align: right;
+}
+
+.collection-card-image-block {
+  position: relative;
+  margin-bottom: 0.25rem;
+}
+
+.collection-card-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--border-radius);
+  transition: opacity 200ms ease-out;
+}
+
+.collection-card-title {
+  margin: 0;
+}
+
+.collection-card-title[data-font-family="body"] {
+  font-family: var(--font-body-family);
+  font-style: var(--font-body-style);
+  font-weight: var(--font-body-weight);
+}
+
+.collection-card-title-link {
+  text-decoration: none;
+}
+
+.collection-card-title-link::after {
+  position: absolute;
+  inset: 0;
+  content: '';
+  border-radius: var(--border-radius);
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+.theme-carousel .collection-card-title-link::after {
+  outline-offset: -2px;
+}
+
+.collection-card-title-link:focus-visible {
+  outline-color: transparent;
+}
+
+.collection-card-title-link:focus-visible::after {
+  outline-color: currentcolor;
+}
+
+@media (hover: hover) {
+  .collection-card:has(.collection-card-title-link:hover) .collection-card-image {
+    opacity: 0.85;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .collection-card-image {
+    transition: none;
+  }
+}

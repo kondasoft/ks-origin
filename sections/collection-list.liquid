@@ -1,11 +1,6 @@
 {% liquid
-  assign products_to_show = section.settings.products_to_show | default: 4
-  assign layout = section.settings.layout | default: 'carousel'
-  assign carousel_label = section.settings.collection.title
-
-  if carousel_label == blank
-    assign carousel_label = 'accessibility.products_carousel' | t
-  endif
+  assign layout = section.settings.layout | default: 'grid'
+  assign placeholder_count = 6
 
   capture header_content
     content_for 'blocks'
@@ -13,12 +8,12 @@
 %}
 
 {% if section.index <= 3 or request.design_mode %}
-  <link href="{{ 'featured-collection.css' | asset_url }}" rel="stylesheet" fetchpriority="high">
-  <link href="{{ 'product-card.css' | asset_url }}" rel="stylesheet" fetchpriority="high">
+  <link href="{{ 'collection-list.css' | asset_url }}" rel="stylesheet" fetchpriority="high">
+  <link href="{{ 'collection-card.css' | asset_url }}" rel="stylesheet" fetchpriority="high">
 {% endif %}
 
 <div
-  class="featured-collection section-spacing"
+  class="collection-list section-spacing"
   style="
     --color-background: {{ section.settings.background_color.red }} {{ section.settings.background_color.green }} {{ section.settings.background_color.blue }};
     --color-text: {{ section.settings.text_color.red }} {{ section.settings.text_color.green }} {{ section.settings.text_color.blue }};
@@ -26,12 +21,12 @@
     --pt: {{ section.settings.pt | divided_by: 16.0 | append: 'em' }};
     --pb: {{ section.settings.pb | divided_by: 16.0 | append: 'em' }};
   "
-  data-section-css="{{ 'featured-collection.css' | asset_url }}, {{ 'product-card.css' | asset_url }}"
+  data-section-css="{{ 'collection-list.css' | asset_url }}, {{ 'collection-card.css' | asset_url }}"
 >
   <div class="container {{ settings.container_width }}">
     {% if header_content != blank %}
       <div
-        class="featured-collection-header responsive-text-alignment"
+        class="collection-list-header responsive-text-alignment"
         data-mobile-text-alignment="{{ section.settings.header_mobile_text_alignment }}"
         data-desktop-text-alignment="{{ section.settings.header_desktop_text_alignment }}"
         style="
@@ -49,7 +44,7 @@
         data-partial-slide-mobile="{{ section.settings.carousel_partial_slide_mobile }}"
         role="region"
         aria-roledescription="{{ 'accessibility.carousel' | t }}"
-        aria-label="{{ carousel_label | escape }}"
+        aria-label="{{ 'accessibility.collections_carousel' | t }}"
         style="
           --carousel-columns-mobile: {{ section.settings.mobile_columns }};
           --carousel-columns-tablet: 2;
@@ -59,20 +54,20 @@
       >
         <div class="theme-carousel-track-wrapper">
           <ul
-            id="featured-collection-track-{{ section.id }}"
+            id="collection-list-track-{{ section.id }}"
             class="theme-carousel-track"
             role="list"
             tabindex="0"
             data-carousel-track
           >
-            {% for product in section.settings.collection.products limit: products_to_show %}
-              <li class="featured-collection-item theme-carousel-item" data-carousel-item>
-                {% content_for 'block', type: 'product-card', id: 'product-card', closest.product: product %}
+            {% for collection in section.settings.collections %}
+              <li class="collection-list-item theme-carousel-item" data-carousel-item>
+                {% content_for 'block', type: 'collection-card', id: 'collection-card', closest.collection: collection %}
               </li>
             {% else %}
-              {% for index in (1..products_to_show) %}
-                <li class="featured-collection-item theme-carousel-item" data-carousel-item>
-                  {% content_for 'block', type: 'product-card', id: 'product-card', closest.product: null %}
+              {% for index in (1..placeholder_count) %}
+                <li class="collection-list-item theme-carousel-item" data-carousel-item>
+                  {% content_for 'block', type: 'collection-card', id: 'collection-card', closest.collection: null %}
                 </li>
               {% endfor %}
             {% endfor %}
@@ -84,7 +79,7 @@
                 class="icon-button theme-carousel-control theme-carousel-control-previous"
                 type="button"
                 aria-label="{{ 'accessibility.previous' | t }}"
-                aria-controls="featured-collection-track-{{ section.id }}"
+                aria-controls="collection-list-track-{{ section.id }}"
                 data-carousel-previous
               >
                 {% render 'svg-icons', icon: 'chevron-left', icon_size: 20 %}
@@ -93,7 +88,7 @@
                 class="icon-button theme-carousel-control theme-carousel-control-next"
                 type="button"
                 aria-label="{{ 'accessibility.next' | t }}"
-                aria-controls="featured-collection-track-{{ section.id }}"
+                aria-controls="collection-list-track-{{ section.id }}"
                 data-carousel-next
               >
                 {% render 'svg-icons', icon: 'chevron-right', icon_size: 20 %}
@@ -110,61 +105,39 @@
       </theme-carousel>
     {% else %}
       <ul
-        class="featured-collection-grid"
+        class="collection-list-grid"
         role="list"
         style="
           --mobile-columns: {{ section.settings.mobile_columns }};
           --desktop-columns: {{ section.settings.desktop_columns }};
         "
       >
-        {% for product in section.settings.collection.products limit: products_to_show %}
-          <li class="featured-collection-item">
-            {% content_for 'block', type: 'product-card', id: 'product-card', closest.product: product %}
+        {% for collection in section.settings.collections %}
+          <li class="collection-list-item">
+            {% content_for 'block', type: 'collection-card', id: 'collection-card', closest.collection: collection %}
           </li>
         {% else %}
-          {% for index in (1..products_to_show) %}
-            <li class="featured-collection-item">
-              {% content_for 'block', type: 'product-card', id: 'product-card', closest.product: null %}
+          {% for index in (1..placeholder_count) %}
+            <li class="collection-list-item">
+              {% content_for 'block', type: 'collection-card', id: 'collection-card', closest.collection: null %}
             </li>
           {% endfor %}
         {% endfor %}
       </ul>
-    {% endif %}
-
-    {% if section.settings.show_view_all
-      and section.settings.collection != blank
-      and section.settings.view_all_label != blank
-    %}
-      <div class="featured-collection-view-all">
-        <a
-          class="btn {{ section.settings.view_all_size }} {{ section.settings.view_all_style }}"
-          href="{{ section.settings.collection.url }}"
-        >
-          {{ section.settings.view_all_label }}
-        </a>
-      </div>
     {% endif %}
   </div>
 </div>
 
 {% schema %}
 {
-  "name": "Featured collection",
+  "name": "Collection list",
   "tag": "section",
   "settings": [
     {
-      "type": "collection",
-      "id": "collection",
-      "label": "Collection"
-    },
-    {
-      "type": "range",
-      "id": "products_to_show",
-      "label": "Products to show",
-      "min": 2,
-      "max": 24,
-      "step": 1,
-      "default": 8
+      "type": "collection_list",
+      "id": "collections",
+      "label": "Collections",
+      "limit": 24
     },
     {
       "type": "header",
@@ -216,12 +189,12 @@
         { "value": "carousel", "label": "Carousel" },
         { "value": "grid", "label": "Grid" }
       ],
-      "default": "carousel"
+      "default": "grid"
     },
     {
       "type": "checkbox",
       "id": "carousel_partial_slide_mobile",
-      "label": "Show part of the next product on mobile",
+      "label": "Show part of the next collection on mobile",
       "default": true,
       "visible_if": "{{ section.settings.layout == 'carousel' }}"
     },
@@ -251,7 +224,7 @@
       "min": 1,
       "max": 3,
       "step": 1,
-      "default": 2
+      "default": 1
     },
     {
       "type": "range",
@@ -260,49 +233,7 @@
       "min": 2,
       "max": 6,
       "step": 1,
-      "default": 4
-    },
-    {
-      "type": "header",
-      "content": "View all button"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_view_all",
-      "label": "Show button",
-      "default": true
-    },
-    {
-      "type": "text",
-      "id": "view_all_label",
-      "label": "Button label",
-      "default": "View all",
-      "visible_if": "{{ section.settings.show_view_all }}"
-    },
-    {
-      "type": "select",
-      "id": "view_all_style",
-      "label": "Button style",
-      "options": [
-        { "value": "btn-accent-solid", "label": "Accent solid" },
-        { "value": "btn-accent-outline", "label": "Accent outline" },
-        { "value": "btn-text-solid", "label": "Text solid" },
-        { "value": "btn-text-outline", "label": "Text outline" }
-      ],
-      "default": "btn-text-outline",
-      "visible_if": "{{ section.settings.show_view_all }}"
-    },
-    {
-      "type": "select",
-      "id": "view_all_size",
-      "label": "Button size",
-      "options": [
-        { "value": "btn-sm", "label": "Small" },
-        { "value": "btn-md", "label": "Medium" },
-        { "value": "btn-lg", "label": "Large" }
-      ],
-      "default": "btn-md",
-      "visible_if": "{{ section.settings.show_view_all }}"
+      "default": 3
     },
     {
       "type": "header",
@@ -342,13 +273,13 @@
   },
   "presets": [
     {
-      "name": "Featured collection",
-      "category": "Products",
+      "name": "Collection list",
+      "category": "Collections",
       "blocks": [
         {
           "type": "heading",
           "settings": {
-            "heading": "Featured collection",
+            "heading": "Shop by collection",
             "heading_tag": "2",
             "heading_size": "h2",
             "pt": 0,
@@ -358,51 +289,31 @@
         {
           "type": "text",
           "settings": {
-            "text": "<p>Explore featured new arrivals, customer favorites, and everyday essentials.</p>",
+            "text": "<p>Explore collections created to help customers find the products that suit them best.</p>",
             "text_size": "fs-md",
             "pt": 0,
             "pb": 0
           }
         },
         {
-          "type": "product-card",
-          "id": "product-card",
+          "type": "collection-card",
+          "id": "collection-card",
           "static": true,
           "settings": {
             "text_alignment": "left"
           },
           "blocks": [
             {
-              "type": "_product-card-image",
+              "type": "_collection-card-image",
               "settings": {
                 "image_ratio": "square"
               }
             },
             {
-              "type": "_product-card-title",
+              "type": "_collection-card-title",
               "settings": {
                 "font_family": "heading",
                 "heading_size": "fs-md"
-              }
-            },
-            {
-              "type": "_product-rating",
-              "settings": {
-                "show_count": true,
-                "rating_size": "fs-sm"
-              }
-            },
-            {
-              "type": "_product-card-price",
-              "settings": {
-                "price_size": "fs-md"
-              }
-            },
-            {
-              "type": "_product-card-form",
-              "settings": {
-                "button_style": "btn-accent-solid",
-                "button_size": "btn-sm"
               }
             }
           ]

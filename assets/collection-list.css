@@ -1,0 +1,45 @@
+/*
+  Collection list stylesheet
+
+  This file owns the Collection list section layout and collection-grid presentation.
+  Keep reusable collection-card presentation in the collection-card stylesheet.
+*/
+
+.collection-list {
+  color: rgb(var(--color-text));
+  background-color: rgb(var(--color-background));
+}
+
+.collection-list-header {
+  margin-bottom: 1.75rem;
+}
+
+.collection-list-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--mobile-columns), minmax(0, 1fr));
+  gap: 2rem 1rem;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.collection-list-item {
+  min-width: 0;
+}
+
+@media (min-width: 600px) {
+  .collection-list-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1200px) {
+  .collection-list-header {
+    margin-bottom: 2rem;
+  }
+
+  .collection-list-grid {
+    grid-template-columns: repeat(var(--desktop-columns), minmax(0, 1fr));
+    gap: 2.5rem 1.5rem;
+  }
+}

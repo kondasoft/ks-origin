@@ -1,0 +1,40 @@
+{% doc %}
+Renders the ordered inner blocks shared by every collection card in a collection list.
+
+@example
+{% content_for 'block', type: 'collection-card', id: 'collection-card', closest.collection: collection %}
+{% enddoc %}
+
+<article
+  class="collection-card"
+  data-text-alignment="{{ block.settings.text_alignment }}"
+  {{ block.shopify_attributes }}
+>
+  {% content_for 'blocks', closest.collection: closest.collection %}
+</article>
+
+{% schema %}
+{
+  "name": "Collection card",
+  "tag": null,
+  "settings": [
+    {
+      "type": "text_alignment",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "default": "left"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "_collection-card-image"
+    },
+    {
+      "type": "_collection-card-title"
+    },
+    {
+      "type": "@app"
+    }
+  ]
+}
+{% endschema %}

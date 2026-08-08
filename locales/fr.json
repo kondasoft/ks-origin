@@ -24,6 +24,7 @@
     "pagination": "Pagination",
     "carousel": "Carrousel",
     "products_carousel": "Produits",
+    "collections_carousel": "Collections",
     "previous": "Précédent",
     "next": "Suivant",
     "play_video": "Lire la vidéo",
@@ -106,6 +107,9 @@
   },
   "collections": {
     "empty": "Aucun produit trouvé.",
+    "placeholders": {
+      "title": "Exemple de collection"
+    },
     "products_count": {
       "one": "{{ count }} produit",
       "other": "{{ count }} produits"

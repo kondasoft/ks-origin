@@ -17,8 +17,6 @@
   class="divider section-spacing"
   style="
     --color-background: {{ section.settings.background_color.red }} {{ section.settings.background_color.green }} {{ section.settings.background_color.blue }};
-    --color-line: {{ section.settings.line_color.red }} {{ section.settings.line_color.green }} {{ section.settings.line_color.blue }};
-    --line-opacity: {{ line_opacity }};
     --pt: {{ section.settings.pt | divided_by: 16.0 | append: 'em' }};
     --pb: {{ section.settings.pb | divided_by: 16.0 | append: 'em' }};
     background-color: rgb(var(--color-background));
@@ -27,7 +25,12 @@
   <div class="{{ container_class }}">
     <hr
       class="divider-line"
-      style="border-top-color: rgb(var(--color-line) / var(--line-opacity));">
+      style="
+        --color-line: {{ section.settings.line_color.red }} {{ section.settings.line_color.green }} {{ section.settings.line_color.blue }};
+        --line-opacity: {{ line_opacity }};
+        border-top-color: rgb(var(--color-line) / var(--line-opacity));
+      "
+    >
   </div>
 </div>
 

@@ -25,15 +25,19 @@
     --color-accent: {{ section.settings.accent_color.red }} {{ section.settings.accent_color.green }} {{ section.settings.accent_color.blue }};
     --mobile-text-alignment: {{ section.settings.mobile_text_alignment }};
     --desktop-text-alignment: {{ section.settings.desktop_text_alignment }};
-    --mobile-gap: {{ section.settings.mobile_gap | divided_by: 16.0 | append: 'em' }};
-    --desktop-gap: {{ section.settings.desktop_gap | divided_by: 16.0 | append: 'em' }};
     --pt: {{ section.settings.pt | divided_by: 16.0 | append: 'em' }};
     --pb: {{ section.settings.pb | divided_by: 16.0 | append: 'em' }};
   "
   data-section-css="{{ 'video-with-text.css' | asset_url }}"
 >
   <div class="container {{ settings.container_width }}">
-    <div class="video-with-text-layout">
+    <div
+      class="video-with-text-layout"
+      style="
+        --mobile-gap: {{ section.settings.mobile_gap | divided_by: 16.0 | append: 'em' }};
+        --desktop-gap: {{ section.settings.desktop_gap | divided_by: 16.0 | append: 'em' }};
+      "
+    >
       <div class="video-with-text-media">
         {% render 'video-media',
           source: section.settings.source,

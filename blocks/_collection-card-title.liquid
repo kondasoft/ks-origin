@@ -1,0 +1,63 @@
+{% assign collection = closest.collection %}
+
+<div class="collection-card-title-block" {{ block.shopify_attributes }}>
+  <h3
+    class="collection-card-title {{ block.settings.heading_size }}"
+    data-font-family="{{ block.settings.font_family }}"
+  >
+    {% if collection == blank %}
+      {{ 'collections.placeholders.title' | t }}
+    {% else %}
+      <a class="collection-card-title-link" href="{{ collection.url }}">
+        {{ collection.title | escape }}
+        {% if block.settings.show_product_count %}
+          ({{ collection.products_count }})
+        {% endif %}
+      </a>
+    {% endif %}
+  </h3>
+</div>
+
+{% schema %}
+{
+  "name": "Collection title",
+  "tag": null,
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_product_count",
+      "label": "Show product count",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "font_family",
+      "label": "Font family",
+      "options": [
+        { "value": "heading", "label": "Heading" },
+        { "value": "body", "label": "Body" }
+      ],
+      "default": "heading"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "options": [
+        { "value": "fs-xs", "label": "Extra small" },
+        { "value": "fs-sm", "label": "Small" },
+        { "value": "fs-md", "label": "Medium" },
+        { "value": "fs-lg", "label": "Large" },
+        { "value": "fs-xl", "label": "Extra large" }
+      ],
+      "default": "fs-md"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection title",
+      "category": "Collection"
+    }
+  ]
+}
+{% endschema %}
