@@ -102,7 +102,7 @@
 }
 
 .footer-newsletter-form-button {
-  align-self: flex-start;
+  width: 100%;
 }
 
 .footer-bottom {
@@ -222,6 +222,13 @@
   margin: 0 0.125em;
   color: #ff4d73;
   transform: translateY(2px) scale(1.1);
+}
+
+@media (min-width: 600px) {
+  .footer-newsletter-form-button {
+    width: auto;
+    align-self: flex-start;
+  }
 }
 
 @media (min-width: 1200px) {

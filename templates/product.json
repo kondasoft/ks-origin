@@ -66,12 +66,32 @@
           "type": "_product-main-buy-buttons",
           "settings": {
             "show_quantity": true,
-            "show_buy_it_now": true,
             "button_style": "btn-accent-solid",
             "add_to_cart_size": "btn-md",
+            "show_buy_it_now": true,
             "buy_it_now_style": "btn-text-outline",
             "buy_it_now_size": "btn-md",
             "show_dynamic_checkout": false,
+            "pt": 0,
+            "pb": 30
+          },
+          "blocks": {}
+        },
+        "product-main-trust-badges": {
+          "type": "_product-main-trust-badges",
+          "settings": {
+            "layout": "horizontal",
+            "icon_size": 24,
+            "text_size": "fs-sm",
+            "image_1": "shopify://shop_images/icon-truck.svg",
+            "text_1": "<p>Fast shipping</p>",
+            "image_2": "shopify://shop_images/icon-shield-check.svg",
+            "text_2": "<p>Secure checkout</p>",
+            "image_3": "shopify://shop_images/icon-arrow-counterclockwise.svg",
+            "text_3": "<p>Easy returns</p>",
+            "text_4": "",
+            "text_5": "",
+            "text_6": "",
             "pt": 0,
             "pb": 30
           },
@@ -105,7 +125,7 @@
           "settings": {
             "heading": "Product details",
             "text": "{{ closest.product.description }}",
-            "open_by_default": false,
+            "open_by_default": true,
             "pt": 0,
             "pb": 0
           },
@@ -115,8 +135,8 @@
           "type": "collapse",
           "name": "Collapse",
           "settings": {
-            "heading": "What would you like to know?",
-            "text": "<p>Add the answer or supporting information here.</p>",
+            "heading": "Shipping information",
+            "text": "<p><strong>Fast, reliable delivery.</strong> Orders are processed promptly, and available shipping methods, costs, and estimated delivery times are shown at checkout.</p><p>For more details, view our <a href=\"/policies/shipping-policy\">shipping policy</a>.</p>",
             "open_by_default": false,
             "pt": 0,
             "pb": 0
@@ -127,10 +147,43 @@
           "type": "collapse",
           "name": "Collapse",
           "settings": {
-            "heading": "What would you like to know?",
-            "text": "<p>Add the answer or supporting information here.</p>",
+            "heading": "Returns and refunds",
+            "text": "<p><strong>Changed your mind?</strong> Eligible items can be returned within the stated return period, provided they are unused and in their original condition.</p><p>Review our <a href=\"/policies/refund-policy\">refund policy</a> for full instructions and exclusions.</p>",
             "open_by_default": false,
             "pt": 0,
+            "pb": 0
+          },
+          "blocks": {}
+        },
+        "collapse_payment_information": {
+          "type": "collapse",
+          "name": "Collapse",
+          "settings": {
+            "heading": "Payment information",
+            "text": "<p><strong>Safe and secure checkout.</strong> Payments are encrypted and processed securely using the payment methods available for your location at checkout.</p><p>Learn how we protect your information in our <a href=\"/policies/privacy-policy\">privacy policy</a>.</p>",
+            "open_by_default": false,
+            "pt": 0,
+            "pb": 0
+          },
+          "blocks": {}
+        },
+        "product_main_breadcrumb_DNX9H8": {
+          "type": "_product-main-breadcrumb",
+          "name": "Product breadcrumb",
+          "settings": {
+            "pt": 18,
+            "pb": 10
+          },
+          "blocks": {}
+        },
+        "product_main_share_6EqjYr": {
+          "type": "_product-main-share",
+          "name": "Product share",
+          "settings": {
+            "text_alignment": "right",
+            "button_style": "btn-text-outline",
+            "button_size": "btn-sm",
+            "pt": 12,
             "pb": 0
           },
           "blocks": {}
@@ -143,11 +196,15 @@
         "product-main-price",
         "product-main-variant-picker",
         "product-main-buy-buttons",
+        "product-main-trust-badges",
         "divider_6jkQPj",
         "product-main-description",
         "collapse_FENgDc",
         "collapse_YdpkQT",
-        "collapse_HbkRVr"
+        "collapse_HbkRVr",
+        "collapse_payment_information",
+        "product_main_breadcrumb_DNX9H8",
+        "product_main_share_6EqjYr"
       ],
       "settings": {
         "background_color": "{{ settings.colors.background }}",

@@ -121,7 +121,7 @@
             "text": "<p>Sign up for new arrivals, special offers, and updates.</p>",
             "text_size": "fs-md",
             "button_style": "btn-accent-solid",
-            "button_size": "btn-sm"
+            "button_size": "btn-md"
           }
         }
       },
@@ -135,15 +135,16 @@
       "settings": {
         "background_color": "{{ settings.colors.text }}",
         "text_color": "{{ settings.colors.background }}",
-        "accent_color": "#60A5FA",
+        "accent_color": "#60a5fa",
         "show_social_links": true,
+        "social_icon_size": 18,
         "show_country_selector": true,
         "show_language_selector": true,
         "show_payment_icons": true,
         "show_policy_links": true,
+        "enable_follow_on_shop": true,
         "show_theme_credits": true,
         "show_powered_by_shopify": true,
-        "enable_follow_on_shop": true,
         "pt": 60,
         "pb": 50
       }

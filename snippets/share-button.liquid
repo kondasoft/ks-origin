@@ -14,9 +14,9 @@ Renders a share button that uses the native share sheet when available and a cop
   assign button_size = button_size | default: 'btn-sm'
 %}
 
-<share-component>
+<share-component class="share-component">
   <button
-    class="btn {{ button_size }} {{ button_style }}"
+    class="btn btn-wide {{ button_size }} {{ button_style }}"
     type="button"
     data-share-button
     data-share-title="{{ title | escape }}"
@@ -64,7 +64,7 @@ Renders a share button that uses the native share sheet when available and a cop
 
       <div class="dialog-footer">
         <button
-          class="btn btn-md btn-accent-solid share-dialog-copy"
+          class="btn btn-wide btn-md btn-accent-solid share-dialog-copy"
           type="button"
           data-share-copy
           data-text-copy="{{ 'general.share.copy' | t | escape }}"

@@ -50,6 +50,26 @@
     align-items: start;
     gap: 2rem;
   }
+
+  .main-product-media {
+    position: sticky;
+    top: 1rem;
+    transition: top 300ms ease-out;
+  }
+
+  body:has(#header-group[data-header-behavior="sticky"]) .main-product-media {
+    top: calc(var(--header-group-height, 0px) + 1rem);
+  }
+
+  body:has(#header-group[data-header-behavior="reveal"]:not(.header-hidden)) .main-product-media {
+    top: calc(var(--header-group-height, 0px) + 1rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .main-product-media {
+    transition: none;
+  }
 }
 
 
@@ -186,7 +206,7 @@
   min-height: 0;
   padding: 3px;
   background-color: transparent;
-  border-color: transparent;
+  border-color: rgb(var(--color-text) / 0.2);
   border-radius: 50%;
   outline-offset: 0;
 }
@@ -230,9 +250,99 @@
   pointer-events: none;
 }
 
+.product-main-variant-picker-radio-swatch:has(input.disabled)::before {
+  background-color: rgb(var(--color-text));
+}
+
 @media (prefers-reduced-motion: reduce) {
   .product-main-variant-picker-radio {
     transition: none;
+  }
+}
+
+
+/*
+  Product share
+*/
+.product-main-share {
+  display: flex;
+}
+
+.product-main-share[data-text-alignment="left"] {
+  justify-content: flex-start;
+}
+
+.product-main-share[data-text-alignment="center"] {
+  justify-content: center;
+}
+
+.product-main-share[data-text-alignment="right"] {
+  justify-content: flex-end;
+}
+
+
+/*
+  Product trust badges
+*/
+.product-main-trust-badges-list{
+  display: grid;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.product-main-trust-badges-list[data-layout="horizontal"] {
+  grid-template-columns: repeat(var(--trust-badge-columns), minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.product-main-trust-badges-list[data-layout="vertical"] {
+  gap: 0.75rem;
+}
+
+.product-main-trust-badges-list[data-layout="horizontal"] .product-main-trust-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.375rem;
+  min-width: 0;
+  text-align: center;
+}
+
+.product-main-trust-badges-list[data-layout="vertical"] .product-main-trust-badge {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+  text-align: left;
+}
+
+.product-main-trust-badge-image {
+  display: block;
+  width: var(--trust-badge-icon-size);
+  height: auto;
+  flex-shrink: 0;
+  color: inherit;
+}
+
+.product-main-trust-badge-text {
+  line-height: 1.2;
+}
+
+.product-main-trust-badge-text > :first-child {
+  margin-top: 0;
+}
+
+.product-main-trust-badge-text > :last-child {
+  margin-bottom: 0;
+}
+
+@media (min-width: 1200px) {
+  .product-main-trust-badges-list[data-layout="horizontal"] {
+    max-width: 600px;
+    margin-right: auto;
+    margin-left: auto;
   }
 }
 

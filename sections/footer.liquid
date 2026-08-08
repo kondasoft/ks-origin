@@ -109,7 +109,7 @@
                             %}
 
                             {% if button_label != blank %}
-                              <a class="btn {{ button_size }} {{ button_style }}" href="{{ button_link }}">
+                              <a class="btn btn-wide {{ button_size }} {{ button_style }}" href="{{ button_link }}">
                                 {{ button_label | escape }}
                               </a>
                             {% endif %}
@@ -174,7 +174,7 @@
                             {% endif %}
                           >
                           <button
-                            class="footer-newsletter-form-button btn {{ block.settings.button_size }} {{ block.settings.button_style }}"
+                            class="footer-newsletter-form-button btn btn-wide {{ block.settings.button_size }} {{ block.settings.button_style }}"
                             type="submit"
                           >
                             {{ 'general.email_signup.form.submit' | t }}

@@ -122,13 +122,32 @@ document.addEventListener("shopify:section:load", transformSvgImages);
 /*
   Reveal header on scroll
 */
+let headerGroupResizeObserver;
+
+function updateHeaderGroupHeight(headerGroup) {
+  document.documentElement.style.setProperty("--header-group-height", `${headerGroup.offsetHeight}px`);
+}
+
 function syncHeaderGroupBehavior() {
   const headerGroup = document.querySelector("#header-group");
   const header = headerGroup?.querySelector("[data-header-behavior]");
 
-  if (!headerGroup || !header) return;
+  headerGroupResizeObserver?.disconnect();
+
+  if (!headerGroup || !header) {
+    document.documentElement.style.removeProperty("--header-group-height");
+    return;
+  }
 
   headerGroup.dataset.headerBehavior = header.dataset.headerBehavior;
+  updateHeaderGroupHeight(headerGroup);
+
+  if (typeof ResizeObserver === "undefined") return;
+
+  headerGroupResizeObserver = new ResizeObserver(() => {
+    updateHeaderGroupHeight(headerGroup);
+  });
+  headerGroupResizeObserver.observe(headerGroup);
 }
 
 syncHeaderGroupBehavior();

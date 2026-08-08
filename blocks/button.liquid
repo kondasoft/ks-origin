@@ -1,6 +1,6 @@
 {% if block.settings.label != blank %}
   <a
-    class="button-block btn {{ block.settings.size }} {{ block.settings.style }}"
+    class="button-block btn btn-wide {{ block.settings.size }} {{ block.settings.style }}"
     href="{{ block.settings.link | default: routes.root_url }}"
     {{ block.shopify_attributes }}
   >

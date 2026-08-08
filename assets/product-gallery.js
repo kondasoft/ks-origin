@@ -128,7 +128,12 @@ class ProductGallery extends HTMLElement {
     const nextIndex = (index + this.slides.length) % this.slides.length;
     const hasChanged = nextIndex !== this.currentIndex;
     const indexDistance = Math.abs(nextIndex - this.currentIndex);
-    const slideDuration = Math.min(800, 250 + Math.max(0, indexDistance - 1) * 100);
+    const baseSlideDuration = 250; // Milliseconds
+    const slideDurationIncrease = 150; // Milliseconds per additional slide
+    const slideDuration = Math.min(
+      1000,
+      baseSlideDuration + Math.max(0, indexDistance - 1) * slideDurationIncrease,
+    );
 
     this.currentIndex = nextIndex;
     this.style.setProperty("--product-gallery-slide-duration", `${slideDuration}ms`);

@@ -1,0 +1,58 @@
+{% liquid
+  assign product = closest.product
+  assign product_title = product.title
+
+  if product == blank
+    assign product_title = 'products.placeholders.title' | t
+  endif
+%}
+
+<div
+  class="product-main-breadcrumb-block block-spacing"
+  style="
+    --pt: {{ block.settings.pt | divided_by: 16.0 | append: 'em' }};
+    --pb: {{ block.settings.pb | divided_by: 16.0 | append: 'em' }};
+  "
+  {{ block.shopify_attributes }}
+>
+  {% render 'breadcrumb', current_title: product_title %}
+</div>
+
+{% schema %}
+{
+  "name": "Product breadcrumb",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pt",
+      "label": "Top",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "pb",
+      "label": "Bottom",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 10
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product breadcrumb",
+      "category": "Product"
+    }
+  ]
+}
+{% endschema %}

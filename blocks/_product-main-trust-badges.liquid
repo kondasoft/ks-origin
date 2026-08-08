@@ -1,0 +1,231 @@
+{% liquid
+  assign badge_count = 0
+
+  for index in (1..6)
+    assign image_key = 'image_' | append: index
+    assign text_key = 'text_' | append: index
+
+    if block.settings[image_key] != blank or block.settings[text_key] != blank
+      assign badge_count = badge_count | plus: 1
+    endif
+  endfor
+
+  assign badge_columns = badge_count | at_most: 3
+%}
+
+{% if badge_count > 0 %}
+  <div
+    class="product-main-trust-badges-block block-spacing"
+    style="
+      --trust-badge-columns: {{ badge_columns }};
+      --trust-badge-icon-size: {{ block.settings.icon_size | append: 'px' }};
+      --pt: {{ block.settings.pt | divided_by: 16.0 | append: 'em' }};
+      --pb: {{ block.settings.pb | divided_by: 16.0 | append: 'em' }};
+    "
+    {{ block.shopify_attributes }}
+  >
+    <ul class="product-main-trust-badges-list" data-layout="{{ block.settings.layout }}">
+      {% for index in (1..6) %}
+        {% liquid
+          assign image_key = 'image_' | append: index
+          assign text_key = 'text_' | append: index
+          assign image = block.settings[image_key]
+          assign text = block.settings[text_key]
+          assign image_width = block.settings.icon_size | times: 2
+          assign image_height = block.settings.icon_size
+
+          if image != blank and image.aspect_ratio != blank
+            assign image_height = block.settings.icon_size | divided_by: image.aspect_ratio | round
+          endif
+        %}
+
+        {% if image != blank or text != blank %}
+          <li class="product-main-trust-badge">
+            {% if image != blank %}
+              <img
+                class="product-main-trust-badge-image"
+                src="{{ image | image_url: width: image_width }}"
+                alt="{{ image.alt | escape }}"
+                width="{{ block.settings.icon_size }}"
+                height="{{ image_height }}"
+                loading="lazy"
+                data-transform-svg-inline
+              >
+            {% endif %}
+
+            {% if text != blank %}
+              <div class="product-main-trust-badge-text rte {{ block.settings.text_size }}">
+                {{ text }}
+              </div>
+            {% endif %}
+          </li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Trust badges",
+  "tag": null,
+  "settings": [
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        { "value": "horizontal", "label": "Horizontal" },
+        { "value": "vertical", "label": "Vertical" }
+      ],
+      "default": "horizontal"
+    },
+    {
+      "type": "range",
+      "id": "icon_size",
+      "label": "Icon size",
+      "min": 16,
+      "max": 64,
+      "step": 2,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "select",
+      "id": "text_size",
+      "label": "Text size",
+      "options": [
+        { "value": "fs-xs", "label": "Extra small" },
+        { "value": "fs-sm", "label": "Small" },
+        { "value": "fs-md", "label": "Medium" },
+        { "value": "fs-lg", "label": "Large" },
+        { "value": "fs-xl", "label": "Extra large" }
+      ],
+      "default": "fs-sm"
+    },
+    {
+      "type": "header",
+      "content": "Badge 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_1",
+      "label": "Icon",
+      "info": "For best results, upload an SVG. SVG icons inherit the section's text color."
+    },
+    {
+      "type": "richtext",
+      "id": "text_1",
+      "label": "Text",
+      "default": "<p>Fast shipping</p>"
+    },
+    {
+      "type": "header",
+      "content": "Badge 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_2",
+      "label": "Icon",
+      "info": "For best results, upload an SVG. SVG icons inherit the section's text color."
+    },
+    {
+      "type": "richtext",
+      "id": "text_2",
+      "label": "Text",
+      "default": "<p>Secure checkout</p>"
+    },
+    {
+      "type": "header",
+      "content": "Badge 3"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_3",
+      "label": "Icon",
+      "info": "For best results, upload an SVG. SVG icons inherit the section's text color."
+    },
+    {
+      "type": "richtext",
+      "id": "text_3",
+      "label": "Text",
+      "default": "<p>Easy returns</p>"
+    },
+    {
+      "type": "header",
+      "content": "Badge 4"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_4",
+      "label": "Icon",
+      "info": "For best results, upload an SVG. SVG icons inherit the section's text color."
+    },
+    {
+      "type": "richtext",
+      "id": "text_4",
+      "label": "Text"
+    },
+    {
+      "type": "header",
+      "content": "Badge 5"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_5",
+      "label": "Icon",
+      "info": "For best results, upload an SVG. SVG icons inherit the section's text color."
+    },
+    {
+      "type": "richtext",
+      "id": "text_5",
+      "label": "Text"
+    },
+    {
+      "type": "header",
+      "content": "Badge 6"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_6",
+      "label": "Icon",
+      "info": "For best results, upload an SVG. SVG icons inherit the section's text color."
+    },
+    {
+      "type": "richtext",
+      "id": "text_6",
+      "label": "Text"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pt",
+      "label": "Top",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "pb",
+      "label": "Bottom",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Trust badges",
+      "category": "Product"
+    }
+  ]
+}
+{% endschema %}

@@ -238,7 +238,6 @@ button {
   justify-content: center;
   gap: 0.5em;
   box-sizing: border-box;
-  min-width: 70%;
   padding: 0.75em 1.25em;
   border: 1px solid var(--button-border-color);
   border-radius: var(--border-radius);
@@ -269,7 +268,6 @@ button {
 }
 
 .btn-sm {
-  min-width: 60%;
   padding: 0.625em 1em;
   font-size: var(--fs-sm);
 }
@@ -279,9 +277,12 @@ button {
 }
 
 .btn-lg {
-  min-width: 80%;
   padding: 0.875em 1.5em;
   font-size: var(--fs-lg);
+}
+
+.btn-wide {
+  min-width: 70%;
 }
 
 .btn-accent-solid {
@@ -331,16 +332,8 @@ button {
 }
 
 @media (min-width: 600px) {
-  .btn {
+  .btn-wide {
     min-width: 180px;
-  }
-
-  .btn-sm {
-    min-width: 140px;
-  }
-
-  .btn-lg {
-    min-width: 220px;
   }
 }
 
@@ -1298,6 +1291,19 @@ th {
     transition: none;
   }
 }
+
+
+/*
+  Share component
+*/
+.share-component {
+  display: block;
+}
+
+.share-component .btn-wide {
+  min-width: 180px;
+}
+
 
 
 /*
