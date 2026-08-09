@@ -130,6 +130,14 @@
       "other": "Afficher {{ count }} produits"
     }
   },
+  "cart": {
+    "empty": "Votre panier est vide.",
+    "continue_shopping": "Continuer vos achats",
+    "remove_item": "Supprimer {{ item }}",
+    "applied_discounts": "Réductions appliquées",
+    "view_file": "Voir le fichier",
+    "error": "Impossible de mettre à jour votre panier. Veuillez réessayer."
+  },
   "blogs": {
     "empty": "Aucun article trouvé.",
     "articles_count": {
@@ -225,7 +233,9 @@
       "add_to_cart": "Ajouter au panier",
       "buy_it_now": "Acheter maintenant",
       "select_options": "Choisir les options",
-      "sold_out": "Épuisé"
+      "sold_out": "Épuisé",
+      "all_inventory_in_cart": "Tous les articles disponibles pour cette variante sont déjà dans votre panier.",
+      "error": "Une erreur s'est produite. Veuillez réessayer."
     }
   },
   "gift_cards": {

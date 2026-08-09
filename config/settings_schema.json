@@ -53,30 +53,6 @@
         "id": "color_accent",
         "label": "Accent",
         "default": "{{ settings.colors.accent }}"
-      },
-      {
-        "type": "header",
-        "content": "Borders"
-      },
-      {
-        "type": "range",
-        "id": "border_opacity",
-        "label": "Border opacity",
-        "min": 0,
-        "max": 100,
-        "step": 5,
-        "unit": "%",
-        "default": 20
-      },
-      {
-        "type": "range",
-        "id": "border_radius",
-        "label": "Border radius",
-        "min": 0,
-        "max": 40,
-        "step": 2,
-        "unit": "px",
-        "default": 0
       }
     ]
   },
@@ -131,6 +107,99 @@
         ],
         "default": "container-narrow",
         "info": "Narrow: 1440px, Normal: 1920px, Wide: 2400px"
+      }
+    ]
+  },
+  {
+    "name": "Borders",
+    "settings": [
+      {
+        "type": "range",
+        "id": "border_opacity",
+        "label": "Border opacity",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "%",
+        "default": 20
+      },
+      {
+        "type": "range",
+        "id": "border_radius",
+        "label": "Border radius",
+        "min": 0,
+        "max": 40,
+        "step": 2,
+        "unit": "px",
+        "default": 0
+      }
+    ]
+  },
+  {
+    "name": "Favicon",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon image",
+        "info": "32 x 32 px PNG recommended."
+      }
+    ]
+  },
+  {
+    "name": "Cart",
+    "settings": [
+      {
+        "type": "select",
+        "id": "cart_type",
+        "label": "Cart type",
+        "options": [
+          { "value": "drawer", "label": "Drawer" },
+          { "value": "page", "label": "Page" }
+        ],
+        "default": "drawer",
+        "info": "Choose whether cart links open a drawer or the cart page."
+      },
+      {
+        "type": "header",
+        "content": "Cart items"
+      },
+      {
+        "type": "select",
+        "id": "cart_item_image_ratio",
+        "label": "Image aspect ratio",
+        "options": [
+          { "group": "Adapt", "value": "adapt", "label": "Adapt to image" },
+          { "group": "Square", "value": "square", "label": "Square (1:1)" },
+          { "group": "Horizontal", "value": "landscape", "label": "Landscape (4:3)" },
+          { "group": "Horizontal", "value": "widescreen", "label": "Widescreen (16:9)" },
+          { "group": "Vertical", "value": "portrait", "label": "Portrait (3:4)" },
+          { "group": "Vertical", "value": "vertical", "label": "Vertical (9:16)" }
+        ],
+        "default": "square"
+      },
+      {
+        "type": "select",
+        "id": "cart_item_title_font_family",
+        "label": "Title font family",
+        "options": [
+          { "value": "heading", "label": "Heading" },
+          { "value": "body", "label": "Body" }
+        ],
+        "default": "heading"
+      },
+      {
+        "type": "select",
+        "id": "cart_item_title_size",
+        "label": "Title size",
+        "options": [
+          { "value": "fs-xs", "label": "XS" },
+          { "value": "fs-sm", "label": "SM" },
+          { "value": "fs-md", "label": "MD" },
+          { "value": "fs-lg", "label": "LG" },
+          { "value": "fs-xl", "label": "XL" }
+        ],
+        "default": "fs-md"
       }
     ]
   },
@@ -194,17 +263,6 @@
         "id": "social_linkedin",
         "label": "LinkedIn",
         "default": "https://www.linkedin.com/company/shopify"
-      }
-    ]
-  },
-  {
-    "name": "Favicon",
-    "settings": [
-      {
-        "type": "image_picker",
-        "id": "favicon",
-        "label": "Favicon image",
-        "info": "32 x 32 px PNG recommended."
       }
     ]
   }

@@ -1,0 +1,12 @@
+{% comment %}
+  Provides fresh cart-item markup to the Section Rendering API.
+  This section is requested by the cart script and is not intended for merchants to add in the theme editor.
+{% endcomment %}
+
+{% render 'cart-items', id: 'cart-render-items', context: 'drawer' %}
+
+{% schema %}
+{
+  "name": "Cart items render"
+}
+{% endschema %}

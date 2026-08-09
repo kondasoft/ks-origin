@@ -343,6 +343,10 @@ class ThemeDialog extends HTMLElement {
     this.openDialog();
   }
 
+  setReturnFocus(element) {
+    if (element instanceof HTMLElement) this.lastTrigger = element;
+  }
+
   openDialog() {
     if (this.dialog.open) {
       this.requestClose();
@@ -370,7 +374,10 @@ class ThemeDialog extends HTMLElement {
 
     window.clearTimeout(this.closeTimer);
     this.closeTimer = null;
-    this.lastTrigger?.focus();
+    const returnFocusElement = this.lastTrigger;
+
+    this.lastTrigger = null;
+    returnFocusElement?.focus();
   }
 
   onDialogCancel(event) {

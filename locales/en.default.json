@@ -130,6 +130,14 @@
       "other": "Show {{ count }} products"
     }
   },
+  "cart": {
+    "empty": "Your cart is empty.",
+    "continue_shopping": "Continue shopping",
+    "remove_item": "Remove {{ item }}",
+    "applied_discounts": "Applied discounts",
+    "view_file": "View file",
+    "error": "Unable to update your cart. Please try again."
+  },
   "blogs": {
     "empty": "No articles found.",
     "articles_count": {
@@ -225,7 +233,9 @@
       "add_to_cart": "Add to cart",
       "buy_it_now": "Buy it now",
       "select_options": "Select options",
-      "sold_out": "Sold out"
+      "sold_out": "Sold out",
+      "all_inventory_in_cart": "All available items for this variant are already in your cart.",
+      "error": "Something went wrong. Please try again."
     }
   },
   "gift_cards": {

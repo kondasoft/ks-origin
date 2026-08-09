@@ -4,6 +4,8 @@
   data-page-type="{{ request.page_type }}"
   data-template-name="{{ template.name }}"
   data-template-suffix="{{ template.suffix }}"
+  data-cart-url="{{ routes.cart_url }}"
+  data-cart-error-text="{{ 'cart.error' | t | escape }}"
   data-design-mode="{{ request.design_mode }}">
   <head>
     {% render 'theme-head' %}

@@ -25,7 +25,7 @@
     {% if form.errors and form_matches %}
       <div
         id="{{ form_id }}-error"
-        class="contact-form-status alert alert-error"
+        class="contact-form-status alert alert-with-icon alert-error"
         role="alert"
         tabindex="-1"
         autofocus
@@ -36,7 +36,7 @@
 
     {% if form.posted_successfully? and form_matches %}
       <div
-        class="contact-form-status alert alert-success"
+        class="contact-form-status alert alert-with-icon alert-success"
         role="status"
         tabindex="-1"
         autofocus

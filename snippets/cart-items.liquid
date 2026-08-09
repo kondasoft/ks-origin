@@ -1,0 +1,169 @@
+{% doc %}
+  Renders the shared cart line-item interface for the cart drawer and cart page.
+
+  @param {string} id - Unique ID used when refreshing the component.
+  @param {string} context - Render context: `drawer` or `page`.
+{% enddoc %}
+
+{% liquid
+  assign cart_item_image_class = 'cart-item-image'
+
+  unless settings.cart_item_image_ratio == 'adapt'
+    assign cart_item_image_class = cart_item_image_class | append: ' aspect-ratio aspect-ratio-' | append: settings.cart_item_image_ratio
+  endunless
+%}
+
+<cart-items
+  id="{{ id }}"
+  class="cart-items-component"
+  data-cart-items
+  data-context="{{ context }}"
+  data-cart-error-text="{{ 'cart.error' | t | escape }}"
+>
+  <p class="alert alert-with-icon" role="status" data-cart-message hidden></p>
+
+  <div class="visually-hidden" role="status" aria-live="polite" aria-atomic="true" data-cart-status>
+    {{ 'accessibility.cart' | t }}: {{ cart.item_count }}
+  </div>
+
+  {% if cart.empty? %}
+    <div class="cart-empty">
+      {% render 'svg-icons', icon: 'bag', icon_size: 26 %}
+      <p>{{ 'cart.empty' | t }}</p>
+      <a class="btn btn-wide btn-text-outline" href="{{ routes.all_products_collection_url }}">
+        {{ 'cart.continue_shopping' | t }}
+      </a>
+    </div>
+  {% else %}
+    <ul class="cart-items-list" aria-label="{{ 'accessibility.cart' | t }}">
+      {% for line_item in cart.items %}
+        <li class="cart-item" data-cart-line-id="{{ line_item.key | escape }}">
+          <a class="cart-item-image-link" href="{{ line_item.url }}" tabindex="-1" aria-hidden="true">
+            <span class="{{ cart_item_image_class }}">
+              {% if line_item.image %}
+                {{
+                  line_item.image
+                  | image_url: width: 240
+                  | image_tag:
+                    widths: '90, 180, 240',
+                    sizes: '(min-width: 1200px) 120px, 90px',
+                    loading: 'lazy',
+                    alt: line_item.image.alt
+                }}
+              {% else %}
+                {{ 'product-apparel-1' | placeholder_svg_tag: 'placeholder-svg aspect-ratio aspect-ratio-square' }}
+              {% endif %}
+            </span>
+          </a>
+
+          <div class="cart-item-details">
+            <div class="cart-item-header">
+              <h3
+                class="cart-item-title {{ settings.cart_item_title_size }}"
+                data-font-family="{{ settings.cart_item_title_font_family }}"
+              >
+                <a href="{{ line_item.url }}">{{ line_item.product.title }}</a>
+              </h3>
+
+              <button
+                type="button"
+                class="icon-button cart-item-remove"
+                data-cart-line-remove
+                data-cart-line-id="{{ line_item.key | escape }}"
+                aria-label="{{ 'cart.remove_item' | t: item: line_item.product.title | escape }}"
+              >
+                <span class="cart-item-remove-icon" aria-hidden="true">
+                  <span class="cart-item-remove-icon-lid"></span>
+                  <span class="cart-item-remove-icon-bin"></span>
+                </span>
+              </button>
+            </div>
+
+            {% unless line_item.product.has_only_default_variant %}
+              <p class="cart-item-meta">{{ line_item.variant.title }}</p>
+            {% endunless %}
+
+            {% if line_item.selling_plan_allocation %}
+              <p class="cart-item-meta">{{ line_item.selling_plan_allocation.selling_plan.name }}</p>
+            {% endif %}
+
+            {% unless line_item.properties == empty %}
+              <ul class="cart-item-properties">
+                {% for property in line_item.properties %}
+                  {% assign first_character = property.first | slice: 0 %}
+                  {% unless first_character == '_' or property.last == blank %}
+                    <li>
+                      {{ property.first }}:
+                      {% if property.last contains '/uploads/' %}
+                        <a href="{{ property.last }}" target="_blank" rel="noopener">
+                          {{ 'cart.view_file' | t }}
+                        </a>
+                      {% else %}
+                        {{ property.last }}
+                      {% endif %}
+                    </li>
+                  {% endunless %}
+                {% endfor %}
+              </ul>
+            {% endunless %}
+
+            {% if line_item.line_level_discount_allocations.size > 0 %}
+              <ul class="cart-item-discounts" aria-label="{{ 'cart.applied_discounts' | t }}">
+                {% for discount in line_item.line_level_discount_allocations %}
+                  <li class="badge">{{ discount.discount_application.title }}</li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+
+            <div class="cart-item-actions">
+              <quantity-input
+                class="quantity-input cart-item-quantity"
+                role="group"
+                aria-label="{{ 'products.quantity.label' | t }}"
+              >
+                <button
+                  type="button"
+                  class="quantity-input-button quantity-input-button-decrease"
+                  data-quantity-decrease
+                  aria-label="{{ 'products.quantity.decrease' | t }}"
+                >
+                  {% render 'svg-icons', icon: 'minus', icon_size: 16 %}
+                </button>
+                <input
+                  id="CartQuantity-{{ id }}-{{ forloop.index }}"
+                  class="input"
+                  type="number"
+                  name="updates[]"
+                  value="{{ line_item.quantity }}"
+                  min="0"
+                  step="1"
+                  inputmode="numeric"
+                  aria-label="{{ 'products.quantity.label' | t }}"
+                  data-quantity-input
+                  data-cart-line-quantity
+                  data-cart-line-id="{{ line_item.key | escape }}"
+                  data-cart-focus-id="quantity-{{ line_item.key | escape }}"
+                >
+                <button
+                  type="button"
+                  class="quantity-input-button quantity-input-button-increase"
+                  data-quantity-increase
+                  aria-label="{{ 'products.quantity.increase' | t }}"
+                >
+                  {% render 'svg-icons', icon: 'plus', icon_size: 16 %}
+                </button>
+              </quantity-input>
+
+              <p class="cart-item-price">
+                {% if line_item.original_line_price > line_item.final_line_price %}
+                  <s>{{ line_item.original_line_price | money }}</s>
+                {% endif %}
+                <span>{{ line_item.final_line_price | money }}</span>
+              </p>
+            </div>
+          </div>
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+</cart-items>

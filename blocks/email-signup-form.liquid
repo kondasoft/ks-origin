@@ -19,7 +19,7 @@
     {% if form.errors %}
       <div
         id="{{ form_id }}-error"
-        class="email-signup-form-status alert alert-error"
+        class="email-signup-form-status alert alert-with-icon alert-error"
         role="alert"
         tabindex="-1"
         autofocus
@@ -30,7 +30,7 @@
 
     {% if form.posted_successfully? %}
       <div
-        class="email-signup-form-status alert alert-success"
+        class="email-signup-form-status alert alert-with-icon alert-success"
         role="status"
         tabindex="-1"
         autofocus

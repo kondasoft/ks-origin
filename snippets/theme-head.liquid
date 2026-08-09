@@ -3,23 +3,11 @@
 
 {% # theme-check-disable AssetPreload %}
 {% unless settings.type_heading_font.system? %}
-  <link
-    rel="preload"
-    as="font"
-    href="{{ settings.type_heading_font | font_url }}"
-    type="font/woff2"
-    crossorigin
-  >
+  <link rel="preload" as="font" href="{{ settings.type_heading_font | font_url }}" type="font/woff2" crossorigin >
 {% endunless %}
 
 {% unless settings.type_body_font.system? %}
-  <link
-    rel="preload"
-    as="font"
-    href="{{ settings.type_body_font | font_url }}"
-    type="font/woff2"
-    crossorigin
-  >
+  <link rel="preload" as="font" href="{{ settings.type_body_font | font_url }}" type="font/woff2" crossorigin>
 {% endunless %}
 {% # theme-check-enable AssetPreload %}
 
@@ -73,3 +61,10 @@
 {% endif %}
 
 <meta name="twitter:card" content="summary_large_image">
+
+{% comment %}
+  Registers the theme's standard storefront action overrides before app code initializes.
+  Keep this script before {{ content_for_header }} in the layout.
+  https://shopify.dev/docs/api/storefront-events-and-actions/actions/configure#configuring-an-action
+{% endcomment %}
+<script src="{{ 'standard-actions.js' | asset_url }}" type="module"></script>

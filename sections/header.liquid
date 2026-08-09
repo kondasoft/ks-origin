@@ -77,10 +77,12 @@
       <a
         class="icon-button header-icon-link header-cart-link"
         href="{{ routes.cart_url }}"
-        data-toggle="cart-dialog"
-        aria-controls="cart-dialog"
-        aria-expanded="false"
-        aria-haspopup="dialog"
+        {% if settings.cart_type == 'drawer' %}
+          data-toggle="cart-dialog"
+          aria-controls="cart-dialog"
+          aria-expanded="false"
+          aria-haspopup="dialog"
+        {% endif %}
         aria-label="{{ 'accessibility.cart' | t }}"
       >
         {% render 'svg-icons', icon: 'bag' %}
@@ -165,10 +167,12 @@
       <a
         class="icon-button header-icon-link header-cart-link"
         href="{{ routes.cart_url }}"
-        data-toggle="cart-dialog"
-        aria-controls="cart-dialog"
-        aria-expanded="false"
-        aria-haspopup="dialog"
+        {% if settings.cart_type == 'drawer' %}
+          data-toggle="cart-dialog"
+          aria-controls="cart-dialog"
+          aria-expanded="false"
+          aria-haspopup="dialog"
+        {% endif %}
         aria-label="{{ 'accessibility.cart' | t }}"
       >
         {% render 'svg-icons', icon: 'bag' %}

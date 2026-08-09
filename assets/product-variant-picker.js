@@ -181,13 +181,20 @@ class ProductVariantPicker extends HTMLElement {
     const addToCartText = buyButtons.querySelector("[data-add-to-cart-text]");
     const buyItNow = buyButtons.querySelector("[data-buy-it-now]");
     const quantity = buyButtons.querySelector("[data-quantity-input]");
+    const inventoryMessage = buyButtons.querySelector("[data-cart-inventory-message]");
     const maximum = this.getQuantityMaximum(variant);
+    const allInventoryInCart =
+      variant?.inventoryManagement !== null &&
+      variant?.inventoryPolicy === "deny" &&
+      variant?.inventoryQuantity > 0 &&
+      variant?.cartQuantity >= variant?.inventoryQuantity;
 
     if (addToCart) addToCart.disabled = !available;
     if (addToCartText) {
       addToCartText.textContent = available ? buyButtons.dataset.addToCartText : buyButtons.dataset.soldOutText;
     }
     if (buyItNow) buyItNow.disabled = !available;
+    if (inventoryMessage) inventoryMessage.hidden = !allInventoryInCart;
 
     if (quantity) {
       quantity.disabled = !available;

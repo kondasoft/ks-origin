@@ -1,24 +1,28 @@
-<theme-dialog>
-  <dialog
-    id="cart-dialog"
-    class="dialog drawer drawer-right cart-dialog"
-    aria-labelledby="cart-dialog-title"
-  >
-    <div class="dialog-header">
-      <h2 id="cart-dialog-title" class="dialog-title">
-        {{ 'accessibility.cart' | t }}
-      </h2>
+{% if settings.cart_type == 'drawer' %}
+  <theme-dialog>
+    <dialog
+      id="cart-dialog"
+      class="dialog drawer drawer-right cart-dialog"
+      aria-labelledby="cart-dialog-title"
+    >
+      <div class="dialog-header">
+        <h2 id="cart-dialog-title" class="dialog-title">
+          {{ 'accessibility.cart' | t }}
+        </h2>
 
-      <button
-        class="icon-button dialog-close"
-        type="button"
-        data-dialog-close
-        aria-label="{{ 'accessibility.close' | t }}"
-      >
-        {% render 'svg-icons', icon: 'close' %}
-      </button>
-    </div>
+        <button
+          class="icon-button dialog-close"
+          type="button"
+          data-dialog-close
+          aria-label="{{ 'accessibility.close' | t }}"
+        >
+          {% render 'svg-icons', icon: 'close' %}
+        </button>
+      </div>
 
-    <div class="dialog-body"></div>
-  </dialog>
-</theme-dialog>
+      <div class="dialog-body">
+        {% render 'cart-items', id: 'cart-drawer-items', context: 'drawer' %}
+      </div>
+    </dialog>
+  </theme-dialog>
+{% endif %}

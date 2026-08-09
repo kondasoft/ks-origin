@@ -93,6 +93,17 @@
   {{ 'article-card.css' | asset_url | stylesheet_tag: preload: true }}
 {% endif %}
 
+{% if request.page_type == 'cart' %}
+  {{ 'cart.css' | asset_url | stylesheet_tag: preload: true }}
+{% elsif settings.cart_type == 'drawer' %}
+  <link
+    rel="stylesheet"
+    href="{{ 'cart.css' | asset_url }}"
+    media="print"
+    onload="this.media='all'"
+  >
+{% endif %}
+
 <link 
   id="lazy-styles" 
   rel="stylesheet"
@@ -110,6 +121,7 @@
 
 <script src="{{ 'base.js' | asset_url }}" type="module"></script>
 <script src="{{ 'components.js' | asset_url }}" type="module"></script>
+<script src="{{ 'cart.js' | asset_url }}" type="module"></script>
 
 {% if request.page_type == 'product' %}
   <script src="{{ 'product-gallery.js' | asset_url }}" type="module"></script>

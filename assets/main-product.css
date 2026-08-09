@@ -378,3 +378,7 @@
 .product-main-buy-buttons .shopify-payment-button__button {
   border-radius: var(--border-radius);
 }
+
+.product-main-buy-buttons .alert {
+  margin: 0;
+}
