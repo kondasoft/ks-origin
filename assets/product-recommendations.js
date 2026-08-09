@@ -2,7 +2,6 @@
   Product recommendations script
 
   This file loads related and complementary products through Shopify's Product Recommendations API.
-  Keep product-card and carousel interaction behavior in their respective shared scripts.
 */
 
 class ProductRecommendations extends HTMLElement {

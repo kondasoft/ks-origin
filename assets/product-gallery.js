@@ -2,7 +2,6 @@
   Product gallery script
 
   This file owns media selection, navigation, and transition state for the main product gallery.
-  Keep product variant and media-type behavior in their respective product scripts.
 */
 
 class ProductGallery extends HTMLElement {

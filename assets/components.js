@@ -2,7 +2,6 @@
   Components script
 
   This file defines reusable custom elements shared across theme components.
-  Keep section-specific behavior in the section's dedicated script.
 */
 
 /*

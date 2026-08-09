@@ -2,7 +2,7 @@
   Product variant picker script
 
   This file resolves product option selections, dispatches Shopify's standard product selection event, and synchronizes
-  variant-dependent product details. Keep gallery navigation and cart mutations in their dedicated scripts.
+  variant-dependent product details.
 */
 
 import { ProductSelectEvent } from "@shopify/standard-events";

@@ -2,12 +2,9 @@
   Standard actions script
 
   This file connects Shopify's standard storefront actions to the theme's cart UI.
-  Keep cart rendering, mutations, and line-item behavior in the dedicated cart script.
 */
 
-document.addEventListener(
-  "DOMContentLoaded",
-  () => {
+document.addEventListener("DOMContentLoaded", () => {
     if (!window.Shopify?.actions) return;
 
     window.Shopify.actions.updateCart.configure({
@@ -25,7 +22,8 @@ document.addEventListener(
 
         const cartUrl = document.documentElement.dataset.cartUrl;
 
-        if (cartUrl && window.location.pathname !== cartUrl) window.location.assign(cartUrl);
+        if (cartUrl && window.location.pathname !== cartUrl) 
+          window.location.assign(cartUrl);
       },
     });
   },

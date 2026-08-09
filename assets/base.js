@@ -2,7 +2,6 @@
   Base script
 
   This file initializes global theme behavior and shared page-level interactions.
-  Keep component-specific custom elements and behavior in their respective scripts.
 */
 
 /*

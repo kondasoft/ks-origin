@@ -2,7 +2,6 @@
   Collection list stylesheet
 
   This file owns the Collection list section layout and collection-grid presentation.
-  Keep reusable collection-card presentation in the collection-card stylesheet.
 */
 
 .collection-list {
