@@ -24,7 +24,12 @@
                 aria-selected="false"
                 data-predictive-search-option
               >
-                <a class="predictive-search-link" href="{{ query.url }}" tabindex="-1">
+                <a
+                  class="predictive-search-link"
+                  href="{{ query.url }}"
+                  tabindex="-1"
+                  data-predictive-search-query
+                >
                   {{ query.styled_text }}
                 </a>
               </li>
@@ -48,45 +53,50 @@
                 aria-selected="false"
                 data-predictive-search-option
               >
-                <article class="predictive-search-product-card">
-                  <div class="predictive-search-product-image-wrapper">
-                    {% if product.featured_image != blank %}
-                      {{ product.featured_image
-                        | image_url: width: 160
-                        | image_tag:
-                          class: 'predictive-search-product-image',
-                          widths: '64, 128, 160',
-                          sizes: '64px',
-                          loading: 'lazy'
-                      }}
-                    {% else %}
-                      {{ 'product-apparel-1' | placeholder_svg_tag: 'predictive-search-product-image placeholder-svg' }}
-                    {% endif %}
-                  </div>
-                  <div class="predictive-search-product-content">
-                    <h4 class="predictive-search-product-title fs-md">
-                      <a href="{{ product.url }}" tabindex="-1">
-                        {{ product.title | escape }}
-                      </a>
-                    </h4>
-                    <p class="predictive-search-product-price fs-sm">
-                      {% if product.compare_at_price > product.price %}
-                        <span class="visually-hidden">{{ 'products.price.sale_price' | t }}</span>
+                <s-view-event
+                  view-event-trigger="intersect"
+                  view-event-payload="{{ product | standard_event_data: 'view', context: 'dialog' | escape }}"
+                >
+                  <article class="predictive-search-product-card">
+                    <div class="predictive-search-product-image-wrapper">
+                      {% if product.featured_image != blank %}
+                        {{ product.featured_image
+                          | image_url: width: 160
+                          | image_tag:
+                            class: 'predictive-search-product-image',
+                            widths: '64, 128, 160',
+                            sizes: '64px',
+                            loading: 'lazy'
+                        }}
                       {% else %}
-                        <span class="visually-hidden">{{ 'products.price.regular_price' | t }}</span>
+                        {{ 'product-apparel-1' | placeholder_svg_tag: 'predictive-search-product-image placeholder-svg' }}
                       {% endif %}
-                      {% if product.price_varies %}
-                        {{ 'products.price.from_price' | t: price: product_price }}
-                      {% else %}
-                        {{ product.price | money }}
-                      {% endif %}
-                      {% if product.compare_at_price > product.price %}
-                        <span class="visually-hidden">{{ 'products.price.regular_price' | t }}</span>
-                        <s>{{ product.compare_at_price | money }}</s>
-                      {% endif %}
-                    </p>
-                  </div>
-                </article>
+                    </div>
+                    <div class="predictive-search-product-content">
+                      <h4 class="predictive-search-product-title fs-md">
+                        <a href="{{ product.url }}" tabindex="-1">
+                          {{ product.title | escape }}
+                        </a>
+                      </h4>
+                      <p class="predictive-search-product-price fs-sm">
+                        {% if product.compare_at_price > product.price %}
+                          <span class="visually-hidden">{{ 'products.price.sale_price' | t }}</span>
+                        {% else %}
+                          <span class="visually-hidden">{{ 'products.price.regular_price' | t }}</span>
+                        {% endif %}
+                        {% if product.price_varies %}
+                          {{ 'products.price.from_price' | t: price: product_price }}
+                        {% else %}
+                          {{ product.price | money }}
+                        {% endif %}
+                        {% if product.compare_at_price > product.price %}
+                          <span class="visually-hidden">{{ 'products.price.regular_price' | t }}</span>
+                          <s>{{ product.compare_at_price | money }}</s>
+                        {% endif %}
+                      </p>
+                    </div>
+                  </article>
+                </s-view-event>
               </li>
             {% endfor %}
           </ul>

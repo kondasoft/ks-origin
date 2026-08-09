@@ -4,6 +4,8 @@
   This file owns predictive-search requests, result rendering, loading state, and combobox keyboard interaction.
 */
 
+import { SearchUpdateEvent } from "@shopify/standard-events";
+
 class PredictiveSearch extends HTMLElement {
   connectedCallback() {
     if (this.isInitialized) return;
@@ -46,6 +48,8 @@ class PredictiveSearch extends HTMLElement {
       signal,
     });
     this.form.addEventListener("reset", this.onReset.bind(this), { signal });
+    this.form.addEventListener("submit", this.onSubmit.bind(this), { signal });
+    this.addEventListener("click", this.onClick.bind(this), { signal });
 
     if (this.dialog) {
       this.dialogObserver = new MutationObserver(this.onDialogStateChange.bind(this));
@@ -104,6 +108,99 @@ class PredictiveSearch extends HTMLElement {
       this.clearResults();
       this.input.focus();
     });
+  }
+
+  onSubmit(event) {
+    event.preventDefault();
+    const url = new URL(this.form.action, window.location.origin);
+    const formData = new FormData(this.form);
+
+    for (const [name, value] of formData.entries()) {
+      if (typeof value !== "string" || value.trim() === "") continue;
+
+      url.searchParams.append(name, value);
+    }
+
+    this.submitSearch(url);
+  }
+
+  onClick(event) {
+    const queryLink = event.target.closest("[data-predictive-search-query]");
+
+    if (
+      !queryLink ||
+      event.defaultPrevented ||
+      event.button !== 0 ||
+      event.metaKey ||
+      event.ctrlKey ||
+      event.shiftKey ||
+      event.altKey ||
+      queryLink.target === "_blank" ||
+      queryLink.hasAttribute("download")
+    ) {
+      return;
+    }
+
+    event.preventDefault();
+    this.submitSearch(new URL(queryLink.href));
+  }
+
+  async submitSearch(url) {
+    const searchView = document.querySelector("faceted-results[data-search-query]");
+
+    this.cancelPendingSearch();
+    this.setLoading(true);
+
+    if (searchView) {
+      const updated = await searchView.updateSearch(url, { focusResultsGrid: true }, this.form);
+
+      this.setLoading(false);
+      if (updated) this.closest("theme-dialog")?.requestClose?.();
+      return;
+    }
+
+    const deferred = SearchUpdateEvent.createPromise();
+
+    this.form.dispatchEvent(
+      new SearchUpdateEvent({
+        search: {
+          query: url.searchParams.get("q") || "",
+          productFilters: SearchUpdateEvent.parseProductFilters(url.searchParams),
+          sortKey: SearchUpdateEvent.getSortKey(url.searchParams) || "RELEVANCE",
+        },
+        promise: deferred.promise,
+      }),
+    );
+
+    this.requestController = new AbortController();
+    const requestController = this.requestController;
+
+    try {
+      const response = await fetch(url.toString(), {
+        headers: { "X-Requested-With": "XMLHttpRequest" },
+        signal: requestController.signal,
+      });
+
+      if (!response.ok) throw new Error(`Failed to submit search: ${response.status}`);
+
+      const html = await response.text();
+      const documentFragment = new DOMParser().parseFromString(html, "text/html");
+      const resultsGrid = documentFragment.querySelector("[data-faceted-results-grid]");
+
+      if (!resultsGrid) throw new Error("Failed to find the submitted search results");
+
+      deferred.resolve({ totalCount: Number(resultsGrid.dataset.resultCount) || 0 });
+      window.location.assign(url.toString());
+    } catch (error) {
+      deferred.reject(error);
+
+      if (error.name !== "AbortError") {
+        console.error(error);
+        window.location.assign(url.toString());
+      }
+    } finally {
+      if (this.requestController === requestController) this.setLoading(false);
+    }
   }
 
   onKeydown(event) {

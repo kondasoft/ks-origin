@@ -63,8 +63,16 @@
 <meta name="twitter:card" content="summary_large_image">
 
 {% comment %}
-  Registers the theme's standard storefront action overrides before app code initializes.
-  Keep this script before {{ content_for_header }} in the layout.
+  Initializes the theme's standard storefront actions and events before app code.
+  Keep these scripts before {{ content_for_header }} in the layout.
   https://shopify.dev/docs/api/storefront-events-and-actions/actions/configure#configuring-an-action
 {% endcomment %}
-<script src="{{ 'standard-actions.js' | asset_url }}" type="module"></script>
+ <script type="importmap">
+  { 
+    "imports": { 
+      "@shopify/standard-events": "https://cdn.shopify.com/storefront/standard-events.js" 
+    } 
+  }
+</script>
+<script src="{{ 'storefront-actions.js' | asset_url }}" type="module"></script>
+<script src="{{ 'storefront-events.js' | asset_url }}" type="module"></script>

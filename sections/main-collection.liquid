@@ -48,156 +48,165 @@
   assign filters_clear_url = collection.url | append: '?sort_by=' | append: encoded_sort_by
 %}
 
-<faceted-results
-  class="main-collection section-spacing"
-  data-section-id="{{ section.id }}"
-  data-has-image="{% if section.settings.show_image and collection.image != blank %}true{% else %}false{% endif %}"
-  style="
-    --color-background: {{ section.settings.background_color.red }} {{ section.settings.background_color.green }} {{ section.settings.background_color.blue }};
-    --color-text: {{ section.settings.text_color.red }} {{ section.settings.text_color.green }} {{ section.settings.text_color.blue }};
-    --color-accent: {{ section.settings.accent_color.red }} {{ section.settings.accent_color.green }} {{ section.settings.accent_color.blue }};
-    --pt: {{ section.settings.pt | divided_by: 16.0 | append: 'em' }};
-    --pb: {{ section.settings.pb | divided_by: 16.0 | append: 'em' }};
-  "
+<s-view-event
+  view-event-trigger="connect"
+  view-event-payload="{{ collection | standard_event_data: 'view' | escape }}"
 >
-  <p class="visually-hidden" role="status" aria-live="polite" data-faceted-results-status></p>
+  <faceted-results
+    class="main-collection section-spacing"
+    data-section-id="{{ section.id }}"
+    data-collection-id="{{ collection.id }}"
+    data-collection-handle="{{ collection.handle | escape }}"
+    data-collection-products-count="{{ collection.all_products_count }}"
+    data-has-image="{% if section.settings.show_image and collection.image != blank %}true{% else %}false{% endif %}"
+    style="
+      --color-background: {{ section.settings.background_color.red }} {{ section.settings.background_color.green }} {{ section.settings.background_color.blue }};
+      --color-text: {{ section.settings.text_color.red }} {{ section.settings.text_color.green }} {{ section.settings.text_color.blue }};
+      --color-accent: {{ section.settings.accent_color.red }} {{ section.settings.accent_color.green }} {{ section.settings.accent_color.blue }};
+      --pt: {{ section.settings.pt | divided_by: 16.0 | append: 'em' }};
+      --pb: {{ section.settings.pb | divided_by: 16.0 | append: 'em' }};
+    "
+  >
+    <p class="visually-hidden" role="status" aria-live="polite" data-faceted-results-status></p>
 
-  <div class="container {{ settings.container_width }}">
-    <header
-      class="main-collection-header responsive-text-alignment{% if section.settings.show_image and collection.image != blank %} main-collection-header-with-image{% endif %}"
-      data-mobile-text-alignment="{{ section.settings.header_mobile_text_alignment }}"
-      data-desktop-text-alignment="{{ section.settings.header_desktop_text_alignment }}"
-      data-desktop-image-width="{{ section.settings.desktop_image_width }}"
-      style="
-        --mobile-text-alignment: {{ section.settings.header_mobile_text_alignment }};
-        --desktop-text-alignment: {{ section.settings.header_desktop_text_alignment }};
-      "
-    >
-      {% if section.settings.show_image and collection.image != blank %}
-        {{ collection.image
-          | image_url: width: 2400
-          | image_tag:
-            class: collection_image_class,
-            widths: '320, 640, 960, 1280, 1600, 2000, 2400',
-            sizes: collection_image_sizes,
-            loading: 'eager',
-            fetchpriority: 'high'
-        }}
-      {% endif %}
-
-      <div class="main-collection-header-content">
-        {% if section.settings.show_breadcrumbs %}
-          {% render 'breadcrumb', current_title: collection.title %}
+    <div class="container {{ settings.container_width }}">
+      <header
+        class="main-collection-header responsive-text-alignment{% if section.settings.show_image and collection.image != blank %} main-collection-header-with-image{% endif %}"
+        data-mobile-text-alignment="{{ section.settings.header_mobile_text_alignment }}"
+        data-desktop-text-alignment="{{ section.settings.header_desktop_text_alignment }}"
+        data-desktop-image-width="{{ section.settings.desktop_image_width }}"
+        style="
+          --mobile-text-alignment: {{ section.settings.header_mobile_text_alignment }};
+          --desktop-text-alignment: {{ section.settings.header_desktop_text_alignment }};
+        "
+      >
+        {% if section.settings.show_image and collection.image != blank %}
+          {{ collection.image
+            | image_url: width: 2400
+            | image_tag:
+              class: collection_image_class,
+              widths: '320, 640, 960, 1280, 1600, 2000, 2400',
+              sizes: collection_image_sizes,
+              loading: 'eager',
+              fetchpriority: 'high'
+          }}
         {% endif %}
 
-        <h1 class="main-collection-title {{ section.settings.heading_size }}">
-          {{ collection.title | escape }}
-        </h1>
-
-        {% if section.settings.show_description and collection.description != blank %}
-          <div class="main-collection-description rte {{ section.settings.description_size }}">
-            {{ collection.description }}
-          </div>
-        {% endif %}
-      </div>
-    </header>
-
-    <div
-      class="faceted-results-grid"
-      data-faceted-results-grid
-      data-result-count-text="{{ 'collections.products_count' | t: count: collection.products_count | escape }}"
-      tabindex="-1"
-    >
-      {% if section.settings.show_product_count or show_collection_filters or section.settings.show_sort %}
-        <div class="facets-utilities">
-          {% if section.settings.show_product_count %}
-            <p class="facets-result-count">
-              {{ 'collections.products_count' | t: count: collection.products_count }}
-            </p>
+        <div class="main-collection-header-content">
+          {% if section.settings.show_breadcrumbs %}
+            {% render 'breadcrumb', current_title: collection.title %}
           {% endif %}
 
-          {% if show_collection_filters or section.settings.show_sort %}
-            <div class="btn-group">
-              {% if show_collection_filters %}
-                <button
-                  class="btn btn-sm btn-text-outline"
-                  type="button"
-                  data-toggle="FacetsDialog-{{ section.id }}"
-                >
-                  {% render 'svg-icons', icon: 'filter', icon_size: 16 %}
-                  {{ 'general.facets.filters' | t }}
-                  {% if active_filter_count > 0 %}
-                    <span aria-hidden="true">({{ active_filter_count }})</span>
-                    <span class="visually-hidden">
-                      {{ 'general.facets.active_filters_count' | t: count: active_filter_count }}
-                    </span>
-                  {% endif %}
-                </button>
-              {% endif %}
+          <h1 class="main-collection-title {{ section.settings.heading_size }}">
+            {{ collection.title | escape }}
+          </h1>
 
-              {% if section.settings.show_sort %}
-                {% render 'facets-sort',
-                  context: 'collection',
-                  filters: collection.filters,
-                  form_action: collection.url,
-                  sort_by: sort_by,
-                  sort_options: collection.sort_options
-                %}
-              {% endif %}
+          {% if section.settings.show_description and collection.description != blank %}
+            <div class="main-collection-description rte {{ section.settings.description_size }}">
+              {{ collection.description }}
             </div>
           {% endif %}
         </div>
-      {% endif %}
+      </header>
 
-      {% paginate collection.products by products_per_page %}
-        {% if collection.products.size > 0 %}
-          <ul
-            class="product-grid"
-            role="list"
-            style="
-              --mobile-columns: {{ section.settings.mobile_columns }};
-              --tablet-columns: 2;
-              --desktop-columns: {{ section.settings.desktop_columns }};
-            "
-          >
-            {% for product in collection.products %}
-              <li class="product-grid-item">
-                {% content_for 'block', type: 'product-card', id: 'product-card', closest.product: product %}
-              </li>
-            {% endfor %}
-          </ul>
+      <div
+        class="faceted-results-grid"
+        data-faceted-results-grid
+        data-result-count="{{ collection.products_count }}"
+        data-result-count-text="{{ 'collections.products_count' | t: count: collection.products_count | escape }}"
+        tabindex="-1"
+      >
+        {% if section.settings.show_product_count or show_collection_filters or section.settings.show_sort %}
+          <div class="facets-utilities">
+            {% if section.settings.show_product_count %}
+              <p class="facets-result-count">
+                {{ 'collections.products_count' | t: count: collection.products_count }}
+              </p>
+            {% endif %}
 
-          {% if paginate.pages > 1 %}
-            <nav class="pagination" aria-label="{{ 'accessibility.pagination' | t }}">
-              {{ paginate
-                | default_pagination:
-                  previous: pagination_previous,
-                  next: pagination_next
-              }}
-            </nav>
-          {% endif %}
-        {% else %}
-          <p class="faceted-results-empty">
-            {{ 'collections.empty' | t }}
-          </p>
+            {% if show_collection_filters or section.settings.show_sort %}
+              <div class="btn-group">
+                {% if show_collection_filters %}
+                  <button
+                    class="btn btn-sm btn-text-outline"
+                    type="button"
+                    data-toggle="FacetsDialog-{{ section.id }}"
+                  >
+                    {% render 'svg-icons', icon: 'filter', icon_size: 16 %}
+                    {{ 'general.facets.filters' | t }}
+                    {% if active_filter_count > 0 %}
+                      <span aria-hidden="true">({{ active_filter_count }})</span>
+                      <span class="visually-hidden">
+                        {{ 'general.facets.active_filters_count' | t: count: active_filter_count }}
+                      </span>
+                    {% endif %}
+                  </button>
+                {% endif %}
+
+                {% if section.settings.show_sort %}
+                  {% render 'facets-sort',
+                    context: 'collection',
+                    filters: collection.filters,
+                    form_action: collection.url,
+                    sort_by: sort_by,
+                    sort_options: collection.sort_options
+                  %}
+                {% endif %}
+              </div>
+            {% endif %}
+          </div>
         {% endif %}
-      {% endpaginate %}
-    </div>
-  </div>
 
-  {% if show_collection_filters %}
-    {% render 'facets-dialog',
-      context: 'collection',
-      filters: collection.filters,
-      form_action: collection.url,
-      sort_by: sort_by,
-      clear_url: filters_clear_url,
-      active_filter_count: active_filter_count,
-      result_count: collection.products_count,
-      section_id: section.id
-    %}
-  {% endif %}
-</faceted-results>
+        {% paginate collection.products by products_per_page %}
+          {% if collection.products.size > 0 %}
+            <ul
+              class="product-grid"
+              role="list"
+              style="
+                --mobile-columns: {{ section.settings.mobile_columns }};
+                --tablet-columns: 2;
+                --desktop-columns: {{ section.settings.desktop_columns }};
+              "
+            >
+              {% for product in collection.products %}
+                <li class="product-grid-item">
+                  {% content_for 'block', type: 'product-card', id: 'product-card', closest.product: product %}
+                </li>
+              {% endfor %}
+            </ul>
+
+            {% if paginate.pages > 1 %}
+              <nav class="pagination" aria-label="{{ 'accessibility.pagination' | t }}">
+                {{ paginate
+                  | default_pagination:
+                    previous: pagination_previous,
+                    next: pagination_next
+                }}
+              </nav>
+            {% endif %}
+          {% else %}
+            <p class="faceted-results-empty">
+              {{ 'collections.empty' | t }}
+            </p>
+          {% endif %}
+        {% endpaginate %}
+      </div>
+    </div>
+
+    {% if show_collection_filters %}
+      {% render 'facets-dialog',
+        context: 'collection',
+        filters: collection.filters,
+        form_action: collection.url,
+        sort_by: sort_by,
+        clear_url: filters_clear_url,
+        active_filter_count: active_filter_count,
+        result_count: collection.products_count,
+        section_id: section.id
+      %}
+    {% endif %}
+  </faceted-results>
+</s-view-event>
 
 {% schema %}
 {

@@ -1,5 +1,5 @@
 /*
-  Standard actions script
+  Storefront actions script
 
   This file connects Shopify's standard storefront actions to the theme's cart UI.
 */

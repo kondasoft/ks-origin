@@ -66,6 +66,7 @@
 <faceted-results
   class="main-search section-spacing"
   data-section-id="{{ section.id }}"
+  data-search-query="{{ search.terms | escape }}"
   style="
     --color-background: {{ section.settings.background_color.red }} {{ section.settings.background_color.green }} {{ section.settings.background_color.blue }};
     --color-text: {{ section.settings.text_color.red }} {{ section.settings.text_color.green }} {{ section.settings.text_color.blue }};
@@ -86,7 +87,11 @@
         --desktop-text-alignment: {{ section.settings.header_desktop_text_alignment }};
       "
     >
-      <h1 class="main-search-title {{ section.settings.heading_size }}">
+      <h1
+        class="main-search-title {{ section.settings.heading_size }}"
+        data-search-heading
+        data-results-title="{{ 'search.results_title' | t | escape }}"
+      >
         {% if search.performed %}
           {{ 'search.results_title' | t }}
         {% else %}
@@ -94,7 +99,13 @@
         {% endif %}
       </h1>
 
-      <form class="main-search-form" action="{{ routes.search_url }}" method="get" role="search">
+      <form
+        class="main-search-form"
+        action="{{ routes.search_url }}"
+        method="get"
+        role="search"
+        data-search-submit-form
+      >
         <label class="visually-hidden" for="SearchInput-{{ section.id }}">
           {{ 'search.label' | t }}
         </label>
@@ -115,13 +126,15 @@
       </form>
     </header>
 
-    {% if search.performed %}
-      <div
-        class="faceted-results-grid"
-        data-faceted-results-grid
-        data-result-count-text="{{ 'search.results_count' | t: count: search.results_count | escape }}"
-        tabindex="-1"
-      >
+    <div
+      class="faceted-results-grid"
+      data-faceted-results-grid
+      data-result-count="{{ search.results_count }}"
+      data-result-count-text="{{ 'search.results_count' | t: count: search.results_count | escape }}"
+      tabindex="-1"
+      {% unless search.performed %}hidden{% endunless %}
+    >
+      {% if search.performed %}
         {% if section.settings.show_result_count or show_search_filters or section.settings.show_sort %}
           <div class="facets-utilities">
             {% if section.settings.show_result_count %}
@@ -218,8 +231,8 @@
             </p>
           {% endif %}
         {% endpaginate %}
-      </div>
-    {% endif %}
+      {% endif %}
+    </div>
   </div>
 
   {% if search.performed and show_search_filters %}

@@ -42,7 +42,6 @@ class ProductVariantPicker extends HTMLElement {
     if (!event.target.matches("[data-variant-option]")) return;
 
     const selectedOptions = this.getSelectedOptions();
-    const variant = this.findVariant(selectedOptions);
     const deferred = ProductSelectEvent.createPromise();
 
     this.productElement.dispatchEvent(
@@ -57,12 +56,18 @@ class ProductVariantPicker extends HTMLElement {
       }),
     );
 
-    if (variant) this.updateUrl(variant.id);
-    this.updateProduct(variant, selectedOptions);
+    try {
+      const variant = this.findVariant(selectedOptions);
 
-    deferred.resolve({
-      variant: this.toStandardVariant(variant, selectedOptions),
-    });
+      if (variant) this.updateUrl(variant.id);
+      this.updateProduct(variant, selectedOptions);
+
+      deferred.resolve({
+        variant: this.toStandardVariant(variant, selectedOptions),
+      });
+    } catch (error) {
+      deferred.reject(error);
+    }
   }
 
   getSelectedOptions() {

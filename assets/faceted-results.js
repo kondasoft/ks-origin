@@ -4,6 +4,8 @@
   This file owns shared AJAX filtering, sorting, pagination, history, and interaction state for product-result pages.
 */
 
+import { CollectionUpdateEvent, SearchUpdateEvent } from "@shopify/standard-events";
+
 class FacetedResults extends HTMLElement {
   connectedCallback() {
     if (this.isInitialized) return;
@@ -13,6 +15,9 @@ class FacetedResults extends HTMLElement {
       signal: this.listenerController.signal,
     });
     this.addEventListener("click", this.onClick.bind(this), {
+      signal: this.listenerController.signal,
+    });
+    this.addEventListener("submit", this.onSubmit.bind(this), {
       signal: this.listenerController.signal,
     });
     this.isInitialized = true;
@@ -50,7 +55,28 @@ class FacetedResults extends HTMLElement {
     this.update(new URL(paginationLink.href), { focusResultsGrid: true });
   }
 
-  async update(url, { focusResultsGrid = false, scrollToResultsGrid = true, updateHistory = true } = {}) {
+  onSubmit(event) {
+    const form = event.target.closest("[data-search-submit-form]");
+
+    if (!form || !this.contains(form)) return;
+
+    event.preventDefault();
+    const url = new URL(form.action, window.location.origin);
+    const formData = new FormData(form);
+
+    for (const [name, value] of formData.entries()) {
+      if (typeof value !== "string" || value.trim() === "") continue;
+
+      url.searchParams.append(name, value);
+    }
+
+    this.updateSearch(url, { focusResultsGrid: true }, form);
+  }
+
+  async update(
+    url,
+    { focusResultsGrid = false, scrollToResultsGrid = true, updateHistory = true, throwOnError = false } = {},
+  ) {
     const navigationUrl = new URL(url, window.location.origin);
     const requestUrl = new URL(navigationUrl);
     const currentResultsGrid = this.querySelector("[data-faceted-results-grid]");
@@ -82,11 +108,15 @@ class FacetedResults extends HTMLElement {
         throw new Error("Failed to find the updated results markup");
       }
 
-      if (this.requestController !== requestController) return false;
+      if (this.requestController !== requestController) {
+        if (throwOnError) throw new DOMException("The results update was interrupted", "AbortError");
+
+        return false;
+      }
 
       currentResultsGrid.replaceWith(nextResultsGrid);
-      this.refreshDialogTriggers();
       this.replaceFilters(nextView, filterState);
+      this.refreshDialogTriggers();
 
       if (updateHistory) {
         window.history.pushState({}, "", navigationUrl.toString());
@@ -100,16 +130,96 @@ class FacetedResults extends HTMLElement {
 
       return true;
     } catch (error) {
-      if (error.name === "AbortError") return false;
+      if (error.name === "AbortError") {
+        if (throwOnError) throw error;
+
+        return false;
+      }
 
       console.error(error);
       window.location.assign(navigationUrl.toString());
+
+      if (throwOnError) throw error;
+
       return false;
     } finally {
       if (this.requestController === requestController) {
         this.querySelector("[data-faceted-results-grid]")?.removeAttribute("aria-busy");
       }
     }
+  }
+
+  async updateCollection(url, options = {}, eventTarget = this) {
+    if (!this.dataset.collectionHandle) return this.update(url, options);
+
+    const navigationUrl = new URL(url, window.location.origin);
+    const deferred = CollectionUpdateEvent.createPromise();
+    const collectionId = Number(this.dataset.collectionId) || null;
+
+    eventTarget.dispatchEvent(
+      new CollectionUpdateEvent({
+        collection: {
+          id: collectionId,
+          handle: this.dataset.collectionHandle,
+          productsCount: Number(this.dataset.collectionProductsCount) || 0,
+        },
+        productFilters: CollectionUpdateEvent.parseProductFilters(navigationUrl.searchParams),
+        sortKey: CollectionUpdateEvent.getSortKey(navigationUrl.searchParams),
+        promise: deferred.promise,
+      }),
+    );
+
+    try {
+      await this.update(navigationUrl, { ...options, throwOnError: true });
+
+      const productsCount = Number(this.querySelector("[data-faceted-results-grid]")?.dataset.resultCount) || 0;
+
+      deferred.resolve({ productsCount });
+      return true;
+    } catch (error) {
+      deferred.reject(error);
+      return false;
+    }
+  }
+
+  async updateSearch(url, options = {}, eventTarget = this) {
+    const navigationUrl = new URL(url, window.location.origin);
+    const deferred = SearchUpdateEvent.createPromise();
+
+    eventTarget.dispatchEvent(
+      new SearchUpdateEvent({
+        search: {
+          query: navigationUrl.searchParams.get("q") || this.dataset.searchQuery,
+          productFilters: SearchUpdateEvent.parseProductFilters(navigationUrl.searchParams),
+          sortKey: SearchUpdateEvent.getSortKey(navigationUrl.searchParams) || "RELEVANCE",
+        },
+        promise: deferred.promise,
+      }),
+    );
+
+    try {
+      await this.update(navigationUrl, { ...options, throwOnError: true });
+
+      const totalCount = Number(this.querySelector("[data-faceted-results-grid]")?.dataset.resultCount) || 0;
+
+      this.dataset.searchQuery = navigationUrl.searchParams.get("q") || "";
+      const heading = this.querySelector("[data-search-heading]");
+
+      if (heading?.dataset.resultsTitle) heading.textContent = heading.dataset.resultsTitle;
+
+      deferred.resolve({ totalCount });
+      return true;
+    } catch (error) {
+      deferred.reject(error);
+      return false;
+    }
+  }
+
+  updateFromControls(url, options = {}, eventTarget = this) {
+    if (this.dataset.collectionHandle) return this.updateCollection(url, options, eventTarget);
+    if (this.dataset.searchQuery !== undefined) return this.updateSearch(url, options, eventTarget);
+
+    return this.update(url, options);
   }
 
   captureFilterState() {
@@ -148,7 +258,15 @@ class FacetedResults extends HTMLElement {
     const currentFilters = this.querySelector("facet-filters");
     const nextFilters = nextView.querySelector("facet-filters");
 
-    if (!currentFilters || !nextFilters) return;
+    if (!nextFilters) {
+      currentFilters?.remove();
+      return;
+    }
+
+    if (!currentFilters) {
+      this.append(nextFilters);
+      return;
+    }
 
     currentFilters.replaceWith(nextFilters);
 
@@ -290,9 +408,12 @@ class FacetFilters extends HTMLElement {
     const dialog = this.closest("theme-dialog");
 
     if (view) {
-      view.update(new URL(clearLink.href), {
+      const url = new URL(clearLink.href);
+      const options = {
         scrollToResultsGrid: dialog?.dialog?.open !== true,
-      });
+      };
+
+      view.updateFromControls(url, options, this.form);
     } else {
       window.location.assign(clearLink.href);
     }
@@ -328,9 +449,10 @@ class FacetFilters extends HTMLElement {
       return;
     }
 
-    const updated = await view.update(url, {
+    const options = {
       scrollToResultsGrid: !shouldDeferScroll,
-    });
+    };
+    const updated = await view.updateFromControls(url, options, this.form);
 
     if (updated && closeDialog && shouldDeferScroll) {
       this.closeDialogAndScroll(dialog, view);
@@ -407,7 +529,7 @@ class FacetSort extends HTMLElement {
     url.searchParams.delete("page");
 
     if (view) {
-      const updated = await view.update(url);
+      const updated = await view.updateFromControls(url, {}, form);
 
       if (updated) {
         const nextDropdown = view.querySelector("facet-sort")?.closest("theme-dropdown");

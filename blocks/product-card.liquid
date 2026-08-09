@@ -5,13 +5,32 @@ Renders the ordered inner blocks shared by every product card in a product grid.
 {% content_for 'block', type: 'product-card', id: 'product-card', closest.product: product %}
 {% enddoc %}
 
-<article
-  class="product-card"
-  data-text-alignment="{{ block.settings.text_alignment }}"
-  {{ block.shopify_attributes }}
+{% liquid
+  assign product_view_context = 'page'
+
+  if recommendations.performed
+    assign product_view_context = 'recommendation'
+  elsif request.page_type == 'collection'
+    assign product_view_context = 'collection'
+  elsif request.page_type == 'search'
+    assign product_view_context = 'search'
+  endif
+%}
+
+<s-view-event
+  view-event-trigger="intersect"
+  {% if closest.product != blank %}
+    view-event-payload="{{ closest.product | standard_event_data: 'view', context: product_view_context | escape }}"
+  {% endif %}
 >
-  {% content_for 'blocks', closest.product: closest.product %}
-</article>
+  <article
+    class="product-card"
+    data-text-alignment="{{ block.settings.text_alignment }}"
+    {{ block.shopify_attributes }}
+  >
+    {% content_for 'blocks', closest.product: closest.product %}
+  </article>
+</s-view-event>
 
 {% schema %}
 {

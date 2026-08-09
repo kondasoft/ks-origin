@@ -1,29 +1,34 @@
-<div
-  class="main-product section-spacing"
-  style="
-    --color-background: {{ section.settings.background_color.red }} {{ section.settings.background_color.green }} {{ section.settings.background_color.blue }};
-    --color-text: {{ section.settings.text_color.red }} {{ section.settings.text_color.green }} {{ section.settings.text_color.blue }};
-    --color-accent: {{ section.settings.accent_color.red }} {{ section.settings.accent_color.green }} {{ section.settings.accent_color.blue }};
-    --pt: {{ section.settings.pt | divided_by: 16.0 | append: 'em' }};
-    --pb: {{ section.settings.pb | divided_by: 16.0 | append: 'em' }};
-  "
+<s-view-event
+  view-event-trigger="connect"
+  view-event-payload="{{ product | standard_event_data: 'view', context: 'page' | escape }}"
 >
-  <div class="container {{ settings.container_width }}">
-    <div class="main-product-layout">
-      <a class="skip-link main-product-skip-link" href="#product-details-{{ section.id }}">
-        {{ 'accessibility.skip_to_product_information' | t }}
-      </a>
+  <div
+    class="main-product section-spacing"
+    style="
+      --color-background: {{ section.settings.background_color.red }} {{ section.settings.background_color.green }} {{ section.settings.background_color.blue }};
+      --color-text: {{ section.settings.text_color.red }} {{ section.settings.text_color.green }} {{ section.settings.text_color.blue }};
+      --color-accent: {{ section.settings.accent_color.red }} {{ section.settings.accent_color.green }} {{ section.settings.accent_color.blue }};
+      --pt: {{ section.settings.pt | divided_by: 16.0 | append: 'em' }};
+      --pb: {{ section.settings.pb | divided_by: 16.0 | append: 'em' }};
+    "
+  >
+    <div class="container {{ settings.container_width }}">
+      <div class="main-product-layout">
+        <a class="skip-link main-product-skip-link" href="#product-details-{{ section.id }}">
+          {{ 'accessibility.skip_to_product_information' | t }}
+        </a>
 
-      <div class="main-product-media">
-        {% render 'product-gallery' %}
-      </div>
+        <div class="main-product-media">
+          {% render 'product-gallery' %}
+        </div>
 
-      <div id="product-details-{{ section.id }}" class="main-product-details" tabindex="-1">
-        {% content_for 'blocks', closest.product: product %}
+        <div id="product-details-{{ section.id }}" class="main-product-details" tabindex="-1">
+          {% content_for 'blocks', closest.product: product %}
+        </div>
       </div>
     </div>
   </div>
-</div>
+</s-view-event>
 
 {% schema %}
 {

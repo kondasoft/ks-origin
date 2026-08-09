@@ -27,6 +27,15 @@ body {
 
 
 /*
+  Storefront view events
+*/
+s-view-event {
+  display: block;
+  min-width: 0;
+}
+
+
+/*
   Container
 */
 .container {
