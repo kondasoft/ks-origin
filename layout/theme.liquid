@@ -30,10 +30,23 @@
       {% sections 'footer-group' %}
     </div>
 
-    {% render 'search-dialog' %}
-    {% render 'cart-dialog' %}
-    {% render 'localization-countries-dialog' %}
-    {% render 'localization-languages-dialog' %}
-    {% render 'modal-test-dialog' %}
+    {% liquid
+      render 'search-dialog'
+      render 'cart-dialog'
+      render 'localization-countries-dialog'
+      render 'localization-languages-dialog'
+      render 'modal-test-dialog' 
+    %}
+
+    {% comment %}
+      Announces cart updates to screen readers without moving focus.
+    {% endcomment %}
+    <div
+      class="visually-hidden"
+      role="status"
+      aria-live="polite"
+      aria-atomic="true"
+      data-cart-live-region
+    ></div>
   </body>
 </html>
