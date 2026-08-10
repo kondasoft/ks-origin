@@ -162,7 +162,8 @@
       },
       {
         "type": "header",
-        "content": "Cart items"
+        "content": "Cart items",
+        "info": "These settings apply to both the cart drawer and cart page."
       },
       {
         "type": "select",
@@ -203,7 +204,8 @@
       },
       {
         "type": "header",
-        "content": "Cart footer"
+        "content": "Cart footer",
+        "info": "These settings apply to both the cart drawer and cart page."
       },
       {
         "type": "select",

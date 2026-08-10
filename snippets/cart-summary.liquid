@@ -20,8 +20,19 @@
 {% if cart.cart_level_discount_applications.size > 0 %}
   <ul class="cart-summary-discounts" aria-label="{{ 'cart.applied_discounts' | t }}">
     {% for discount_application in cart.cart_level_discount_applications %}
+      {% assign discount_percentage = discount_application.value | round: 2 %}
+      {% assign discount_percentage_remainder = discount_percentage | modulo: 1 %}
+      {% if discount_percentage_remainder == 0 %}
+        {% assign discount_percentage = discount_percentage | round %}
+      {% endif %}
       <li class="cart-summary-discount">
-        <span>{{ discount_application.title }}</span>
+        <span class="cart-summary-discount-label">
+          {% render 'svg-icons', icon: 'tag', icon_size: 16 %}
+          <span>{{ discount_application.title | escape }}</span>
+          {% if discount_application.value_type == 'percentage' %}
+            <span>({{ 'cart.percentage_off' | t: value: discount_percentage }})</span>
+          {% endif %}
+        </span>
         <span>-{{ discount_application.total_allocated_amount | money }}</span>
       </li>
     {% endfor %}

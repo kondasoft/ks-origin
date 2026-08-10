@@ -135,6 +135,7 @@
     "continue_shopping": "Continuer vos achats",
     "remove_item": "Supprimer {{ item }}",
     "applied_discounts": "Réductions appliquées",
+    "percentage_off": "{{ value }} % de réduction",
     "subtotal": "Sous-total",
     "checkout": "Passer à la caisse",
     "announcements": {

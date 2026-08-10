@@ -86,9 +86,9 @@
         aria-label="{{ 'accessibility.cart' | t }}"
       >
         {% render 'svg-icons', icon: 'bag' %}
-        <span class="cart-count-badge" data-cart-badge data-item-count="{{ cart.item_count }}">
+        <cart-badge class="cart-count-badge" data-item-count="{{ cart.item_count }}">
           {{ cart.item_count }}
-        </span>
+        </cart-badge>
       </a>
     </div>
   </div>
@@ -176,9 +176,9 @@
         aria-label="{{ 'accessibility.cart' | t }}"
       >
         {% render 'svg-icons', icon: 'bag' %}
-        <span class="cart-count-badge" data-cart-badge data-item-count="{{ cart.item_count }}">
+        <cart-badge class="cart-count-badge" data-item-count="{{ cart.item_count }}">
           {{ cart.item_count }}
-        </span>
+        </cart-badge>
       </a>
     </div>
   </div>

@@ -369,7 +369,7 @@ predictive-search {
 
 .predictive-search-product-price s {
   margin-left: 0.25em;
-  color: rgb(var(--color-text) / 0.65);
+  color: rgb(var(--color-text) / 0.6);
 }
 
 .predictive-search-view-all {

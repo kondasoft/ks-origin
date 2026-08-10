@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!window.Shopify?.actions) return;
 
     window.Shopify.actions.updateCart.configure({
-      eventTarget: () => document.querySelector("cart-items"),
+      eventTarget: () => document.querySelector("cart-items") || document.querySelector("theme-toast"),
     });
 
     window.Shopify.actions.openCart.configure({

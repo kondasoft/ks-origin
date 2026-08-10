@@ -32,7 +32,7 @@ class CartController {
     submitButton.focus({ preventScroll: true });
 
     try {
-      await window.Shopify.actions.updateCart(
+      const result = await window.Shopify.actions.updateCart(
         { lines: [line] },
         {
           event: {
@@ -41,8 +41,16 @@ class CartController {
           },
         },
       );
+
+      if (document.documentElement.dataset.cartType === "page") {
+        this.handlePageCartResult(result);
+      }
     } catch (error) {
       console.error("[Cart] Product add failed", error);
+
+      if (document.documentElement.dataset.cartType === "page") {
+        this.showToast(document.documentElement.dataset.cartErrorText, "error");
+      }
     } finally {
       form.removeAttribute("aria-busy");
       submitButton.removeAttribute("aria-busy");
@@ -75,9 +83,58 @@ class CartController {
       ...(attributes.length ? { attributes } : {}),
     };
   }
+
+  handlePageCartResult(result) {
+    const errorMessages = (result.userErrors || []).map(({ message }) => message).filter(Boolean);
+    const warningMessages = (result.warnings || []).map(({ message }) => message).filter(Boolean);
+    const messages = [...errorMessages, ...warningMessages];
+
+    if (messages.length) {
+      this.showToast(messages.join(" "), errorMessages.length ? "error" : "warning");
+    } else {
+      const addedMessage = document.querySelector("[data-cart-live-region]")?.dataset.cartAddedText;
+
+      this.showToast(addedMessage, "success");
+    }
+  }
+
+  showToast(message, type) {
+    document.querySelector("theme-toast")?.show(message, type);
+  }
 }
 
 new CartController();
+
+class CartBadge extends HTMLElement {
+  connectedCallback() {
+    if (this.isInitialized) return;
+
+    this.listenerController = new AbortController();
+    document.addEventListener("shopify:cart:lines-update", this.onCartLinesUpdate.bind(this), {
+      signal: this.listenerController.signal,
+    });
+    this.isInitialized = true;
+  }
+
+  disconnectedCallback() {
+    this.listenerController?.abort();
+    this.isInitialized = false;
+  }
+
+  async onCartLinesUpdate(event) {
+    const result = await event.promise.catch(() => null);
+    const itemCount = result?.cart?.totalQuantity;
+
+    if (!Number.isFinite(itemCount)) return;
+
+    this.dataset.itemCount = itemCount;
+    this.textContent = itemCount;
+  }
+}
+
+if (!customElements.get("cart-badge")) {
+  customElements.define("cart-badge", CartBadge);
+}
 
 class CartItems extends HTMLElement {
   connectedCallback() {
@@ -175,8 +232,6 @@ class CartItems extends HTMLElement {
 
       if (!cart && !messages.length) return;
 
-      if (cart) this.updateCartBadges(cart.totalQuantity);
-
       if (this.dataset.context === "drawer") {
         await window.Shopify.actions.openCart();
       }
@@ -186,6 +241,15 @@ class CartItems extends HTMLElement {
       if (cart && !messages.length) this.announceCartUpdate(announcementType);
     } catch (error) {
       console.error("[Cart] Cart update failed", error);
+
+      if (this.dataset.context === "drawer") {
+        await window.Shopify.actions.openCart();
+      }
+
+      const currentCartItems =
+        document.querySelector(`cart-items[data-context="${CSS.escape(this.dataset.context)}"]`) || this;
+
+      this.showMessage([document.documentElement.dataset.cartErrorText], "error", currentCartItems)?.focus();
     } finally {
       this.pendingAnnouncement = "";
       this.removeAttribute("aria-busy");
@@ -224,15 +288,7 @@ class CartItems extends HTMLElement {
       throw new Error("Rendered cart content was not found");
     }
 
-    const cartMessage = nextCartItems.querySelector("[data-cart-message]");
-
-    if (messages.length && cartMessage) {
-      cartMessage.textContent = messages.join(" ");
-      cartMessage.classList.add(`alert-${messageType}`);
-      cartMessage.setAttribute("role", messageType === "error" ? "alert" : "status");
-      cartMessage.tabIndex = -1;
-      cartMessage.hidden = false;
-    }
+    const cartMessage = this.showMessage(messages, messageType, nextCartItems);
 
     const renderedId = nextCartItems.id;
 
@@ -258,13 +314,6 @@ class CartItems extends HTMLElement {
     }
   }
 
-  updateCartBadges(itemCount) {
-    document.querySelectorAll("[data-cart-badge]").forEach((badge) => {
-      badge.dataset.itemCount = itemCount;
-      badge.textContent = itemCount;
-    });
-  }
-
   announceCartUpdate(type) {
     const liveRegion = document.querySelector("[data-cart-live-region]");
     const announcement = {
@@ -279,6 +328,21 @@ class CartItems extends HTMLElement {
     requestAnimationFrame(() => {
       liveRegion.textContent = announcement;
     });
+  }
+
+  showMessage(messages, type, cartItems = this) {
+    const cartMessage = cartItems.querySelector("[data-cart-message]");
+
+    if (!cartMessage || !messages.length) return null;
+
+    cartMessage.textContent = messages.join(" ");
+    cartMessage.classList.remove("alert-error", "alert-warning");
+    cartMessage.classList.add(`alert-${type}`);
+    cartMessage.setAttribute("role", type === "error" ? "alert" : "status");
+    cartMessage.tabIndex = -1;
+    cartMessage.hidden = false;
+
+    return cartMessage;
   }
 }
 

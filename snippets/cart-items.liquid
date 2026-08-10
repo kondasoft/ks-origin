@@ -106,7 +106,18 @@
             {% if line_item.line_level_discount_allocations.size > 0 %}
               <ul class="cart-item-discounts" aria-label="{{ 'cart.applied_discounts' | t }}">
                 {% for discount in line_item.line_level_discount_allocations %}
-                  <li class="badge">{{ discount.discount_application.title }}</li>
+                  {% assign discount_percentage = discount.discount_application.value | round: 2 %}
+                  {% assign discount_percentage_remainder = discount_percentage | modulo: 1 %}
+                  {% if discount_percentage_remainder == 0 %}
+                    {% assign discount_percentage = discount_percentage | round %}
+                  {% endif %}
+                  <li class="cart-item-discount">
+                    {% render 'svg-icons', icon: 'tag', icon_size: 14 %}
+                    <span>{{ discount.discount_application.title | escape }}</span>
+                    {% if discount.discount_application.value_type == 'percentage' %}
+                      <span>({{ 'cart.percentage_off' | t: value: discount_percentage }})</span>
+                    {% endif %}
+                  </li>
                 {% endfor %}
               </ul>
             {% endif %}
@@ -152,9 +163,16 @@
 
               <p class="cart-item-price">
                 {% if line_item.original_line_price > line_item.final_line_price %}
-                  <s>{{ line_item.original_line_price | money }}</s>
+                  <span class="visually-hidden">{{ 'products.price.sale_price' | t }}</span>
+                  <span class="cart-item-price-current cart-item-price-sale">
+                    {{- line_item.final_line_price | money -}}
+                  </span>
+                  <span class="visually-hidden">{{ 'products.price.regular_price' | t }}</span>
+                  <s class="cart-item-price-compare">{{ line_item.original_line_price | money }}</s>
+                {% else %}
+                  <span class="visually-hidden">{{ 'products.price.regular_price' | t }}</span>
+                  <span class="cart-item-price-current">{{ line_item.final_line_price | money }}</span>
                 {% endif %}
-                <span>{{ line_item.final_line_price | money }}</span>
               </p>
             </div>
           </div>

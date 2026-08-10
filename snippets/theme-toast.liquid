@@ -1,0 +1,31 @@
+{% comment %}
+  Renders the global toast used for brief storefront feedback.
+{% endcomment %}
+<theme-toast class="theme-toast">
+  <div class="theme-toast-alert alert alert-with-icon" data-theme-toast-alert hidden>
+    <span class="theme-toast-message" data-theme-toast-message></span>
+    <button
+      type="button"
+      class="theme-toast-close icon-button"
+      data-theme-toast-close
+      aria-label="{{ 'accessibility.close' | t }}"
+    >
+      {% render 'svg-icons', icon: 'close', icon_size: 16 %}
+    </button>
+  </div>
+
+  <div
+    class="visually-hidden"
+    role="status"
+    aria-live="polite"
+    aria-atomic="true"
+    data-theme-toast-status-region
+  ></div>
+  <div
+    class="visually-hidden"
+    role="alert"
+    aria-live="assertive"
+    aria-atomic="true"
+    data-theme-toast-alert-region
+  ></div>
+</theme-toast>

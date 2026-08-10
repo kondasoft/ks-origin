@@ -4,6 +4,7 @@
   data-page-type="{{ request.page_type }}"
   data-template-name="{{ template.name }}"
   data-template-suffix="{{ template.suffix }}"
+  data-cart-type="{{ settings.cart_type }}"
   data-cart-url="{{ routes.cart_url }}"
   data-cart-error-text="{{ 'cart.error' | t | escape }}"
   data-design-mode="{{ request.design_mode }}">
@@ -36,7 +37,7 @@
       render 'cart-announcer'
       render 'localization-countries-dialog'
       render 'localization-languages-dialog'
-      render 'modal-test-dialog' 
+      render 'theme-toast'
     %}
   </body>
 </html>

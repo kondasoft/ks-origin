@@ -259,7 +259,7 @@ button {
   cursor: pointer;
   outline: 2px solid transparent;
   outline-offset: 2px;
-  transition: color 200ms ease-out, background-color 200ms ease-out;
+  transition: background-color 200ms ease-out, border-color 200ms ease-out;
 }
 
 .btn:hover:not(:disabled):not([aria-disabled='true']) {
@@ -715,6 +715,33 @@ textarea.input {
 
 .alert-success {
   --alert-color: var(--alert-success-color);
+}
+
+
+/*
+  Toast
+*/
+.theme-toast {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: 99;
+  width: min(420px, calc(100vw - 2rem));
+}
+
+.theme-toast-alert {
+  box-shadow: 0 0.5rem 1.5rem rgb(var(--alert-color) / 0.2);
+}
+
+.theme-toast-message {
+  flex: 1;
+  min-width: 0;
+}
+
+.theme-toast-close {
+  --icon-button-color: var(--alert-color);
+  flex: 0 0 auto;
+  margin: -0.5em -0.75em -0.5em auto;
 }
 
 

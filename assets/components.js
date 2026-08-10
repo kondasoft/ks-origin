@@ -1560,3 +1560,73 @@ class ShareComponent extends HTMLElement {
 if (!customElements.get("share-component")) {
   customElements.define("share-component", ShareComponent);
 }
+
+
+/*
+  Toast
+*/
+class ThemeToast extends HTMLElement {
+  connectedCallback() {
+    if (this.isInitialized) return;
+
+    this.alert = this.querySelector(".theme-toast-alert");
+    this.message = this.querySelector("[data-theme-toast-message]");
+    this.closeButton = this.querySelector("[data-theme-toast-close]");
+    this.statusRegion = this.querySelector("[data-theme-toast-status-region]");
+    this.alertRegion = this.querySelector("[data-theme-toast-alert-region]");
+
+    if (!this.alert || !this.message || !this.statusRegion || !this.alertRegion) return;
+
+    this.listenerController = new AbortController();
+    this.closeButton?.addEventListener("click", this.hide.bind(this), {
+      signal: this.listenerController.signal,
+    });
+    this.isInitialized = true;
+  }
+
+  disconnectedCallback() {
+    this.listenerController?.abort();
+    window.clearTimeout(this.hideTimer);
+    cancelAnimationFrame(this.showFrame);
+    this.isInitialized = false;
+  }
+
+  show(message, type = "success") {
+    if (!message || !this.alert || !this.message) return;
+
+    window.clearTimeout(this.hideTimer);
+    cancelAnimationFrame(this.showFrame);
+
+    this.alert.classList.remove("alert-error", "alert-warning", "alert-success");
+    this.alert.classList.add(`alert-${type}`);
+    this.message.textContent = "";
+    this.statusRegion.textContent = "";
+    this.alertRegion.textContent = "";
+    this.alert.hidden = false;
+
+    this.showFrame = requestAnimationFrame(() => {
+      this.message.textContent = message;
+
+      if (type === "error") {
+        this.alertRegion.textContent = message;
+      } else {
+        this.statusRegion.textContent = message;
+      }
+
+      this.hideTimer = window.setTimeout(() => this.hide(), 6000);
+    });
+  }
+
+  hide() {
+    window.clearTimeout(this.hideTimer);
+    cancelAnimationFrame(this.showFrame);
+    this.alert.hidden = true;
+    this.message.textContent = "";
+    this.statusRegion.textContent = "";
+    this.alertRegion.textContent = "";
+  }
+}
+
+if (!customElements.get("theme-toast")) {
+  customElements.define("theme-toast", ThemeToast);
+}

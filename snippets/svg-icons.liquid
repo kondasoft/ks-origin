@@ -85,4 +85,9 @@
       <circle cx="18" cy="19" r="3" stroke="currentColor" stroke-width="{{ stroke_width }}"></circle>
       <path d="m8.59 13.51 6.82 3.98M15.41 6.51 8.59 10.49" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="{{ stroke_width }}"></path>
     </svg>
+  {% when 'tag' %}
+    <svg aria-hidden="true" class="svg-icon svg-icon-tag" width="{{ scaled_icon_size }}" height="{{ scaled_icon_size }}" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M20.59 13.41 13.42 20.58a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="{{ stroke_width }}"></path>
+      <path d="M7 7h.01" stroke="currentColor" stroke-linecap="round" stroke-width="{{ stroke_width }}"></path>
+    </svg>
 {% endcase %}
