@@ -1,4 +1,4 @@
-{% if settings.cart_type == 'drawer' %}
+{% if settings.cart_type == 'drawer' and request.page_type != 'cart' %}
   <theme-dialog>
     <dialog
       id="cart-dialog"

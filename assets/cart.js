@@ -84,6 +84,12 @@ class CartItems extends HTMLElement {
     if (this.isInitialized) return;
 
     this.listenerController = new AbortController();
+    this.addEventListener("click", this.onRemoveClick.bind(this), {
+      signal: this.listenerController.signal,
+    });
+    this.addEventListener("change", this.onQuantityChange.bind(this), {
+      signal: this.listenerController.signal,
+    });
     this.addEventListener("shopify:cart:lines-update", this.onCartLinesUpdate.bind(this), {
       signal: this.listenerController.signal,
     });
@@ -93,6 +99,59 @@ class CartItems extends HTMLElement {
   disconnectedCallback() {
     this.listenerController?.abort();
     this.isInitialized = false;
+  }
+
+  async onRemoveClick(event) {
+    const removeButton = event.target.closest("[data-cart-line-remove]");
+    const lineId = removeButton?.dataset.cartLineId;
+
+    if (!lineId || !window.Shopify?.actions?.updateCart || this.getAttribute("aria-busy") === "true") return;
+
+    try {
+      await window.Shopify.actions.updateCart(
+        { lines: [{ id: lineId, quantity: 0 }] },
+        {
+          event: {
+            context: this.dataset.context === "drawer" ? "dialog" : "cart",
+            detail: { source: "cart-remove" },
+          },
+        },
+      );
+    } catch (error) {
+      console.error("[Cart] Line remove failed", error);
+    }
+  }
+
+  async onQuantityChange(event) {
+    const quantityInput = event.target.closest("[data-cart-line-quantity]");
+    const lineId = quantityInput?.dataset.cartLineId;
+    const quantity = Number.parseInt(quantityInput?.value, 10);
+
+    if (
+      !lineId ||
+      !Number.isFinite(quantity) ||
+      quantity < 0 ||
+      !window.Shopify?.actions?.updateCart ||
+      this.getAttribute("aria-busy") === "true"
+    ) {
+      return;
+    }
+
+    this.pendingFocusId = quantityInput.dataset.cartFocusId;
+
+    try {
+      await window.Shopify.actions.updateCart(
+        { lines: [{ id: lineId, quantity }] },
+        {
+          event: {
+            context: this.dataset.context === "drawer" ? "dialog" : "cart",
+            detail: { source: "cart-quantity" },
+          },
+        },
+      );
+    } catch (error) {
+      console.error("[Cart] Line quantity update failed", error);
+    }
   }
 
   async onCartLinesUpdate(event) {
@@ -155,7 +214,14 @@ class CartItems extends HTMLElement {
     nextCartItems.querySelectorAll("[id]").forEach((element) => {
       element.id = element.id.replace(renderedId, this.id);
     });
+
+    const focusId = this.pendingFocusId;
+
     this.replaceWith(nextCartItems);
+
+    if (focusId) {
+      nextCartItems.querySelector(`[data-cart-focus-id="${CSS.escape(focusId)}"]`)?.focus();
+    }
   }
 
   updateCartBadges(itemCount) {

@@ -13,10 +13,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     window.Shopify.actions.openCart.configure({
       handler() {
-        const cartDialog = document.getElementById("cart-dialog")?.closest("theme-dialog");
+        const cartDialogElement = document.getElementById("cart-dialog");
+        const cartDialog = cartDialogElement?.closest("theme-dialog");
 
         if (cartDialog) {
-          cartDialog.openDialog();
+          if (!cartDialogElement.open) cartDialog.openDialog();
           return;
         }
 
