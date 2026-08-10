@@ -1453,3 +1453,11 @@ th {
   margin: 0;
   line-height: normal;
 }
+
+
+/*
+  Product form
+*/
+theme-product-form {
+  display: block;
+}

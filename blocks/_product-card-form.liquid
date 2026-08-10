@@ -31,20 +31,21 @@
       {{ 'products.form.sold_out' | t }}
     </button>
   {% elsif product.variants.size == 1 and product.requires_selling_plan == false %}
-    {% form 'product', product,
-      id: product_form_id,
-      class: 'product-card-form',
-      data-cart-source: 'product-card'
-    %}
-      <input type="hidden" name="id" value="{{ selected_variant.id }}">
-      <button
-        type="submit"
-        name="add"
-        class="btn {{ block.settings.button_size }} {{ block.settings.button_style }}"
-      >
-        {{ 'products.form.add_to_cart' | t }}
-      </button>
-    {% endform %}
+    <theme-product-form data-source="product-card">
+      {% form 'product', product,
+        id: product_form_id,
+        class: 'product-card-form'
+      %}
+        <input type="hidden" name="id" value="{{ selected_variant.id }}">
+        <button
+          type="submit"
+          name="add"
+          class="btn {{ block.settings.button_size }} {{ block.settings.button_style }}"
+        >
+          {{ 'products.form.add_to_cart' | t }}
+        </button>
+      {% endform %}
+    </theme-product-form>
   {% else %}
     <span
       class="btn {{ block.settings.button_size }} {{ block.settings.button_style }}"

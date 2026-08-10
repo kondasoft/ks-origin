@@ -26,20 +26,20 @@
   "
   {{ block.shopify_attributes }}
 >
-  {% form 'product', product,
-    id: product_form_id,
-    class: 'product-main-buy-buttons-form',
-    data-cart-source: 'product-main'
-  %}
-    <p class="alert alert-with-icon alert-warning" data-cart-inventory-message{% unless all_inventory_in_cart %} hidden{% endunless %}>
-      {{ 'products.form.all_inventory_in_cart' | t }}
-    </p>
+  <theme-product-form data-source="product-main">
+    {% form 'product', product,
+      id: product_form_id,
+      class: 'product-main-buy-buttons-form'
+    %}
+      <p class="alert alert-with-icon alert-warning" data-cart-inventory-message{% unless all_inventory_in_cart %} hidden{% endunless %}>
+        {{ 'products.form.all_inventory_in_cart' | t }}
+      </p>
 
-    <input type="hidden" name="id" value="{{ selected_variant.id }}" data-product-variant-input>
+      <input type="hidden" name="id" value="{{ selected_variant.id }}" data-product-variant-input>
 
-    <div class="product-main-buy-buttons-primary">
-      {% if block.settings.show_quantity %}
-        <quantity-input class="quantity-input" role="group" aria-label="{{ 'products.quantity.label' | t }}">
+      <div class="product-main-buy-buttons-primary">
+        {% if block.settings.show_quantity %}
+          <quantity-input class="quantity-input" role="group" aria-label="{{ 'products.quantity.label' | t }}">
             <button
               type="button"
               class="quantity-input-button quantity-input-button-decrease"
@@ -70,41 +70,42 @@
             >
               {% render 'svg-icons', icon: 'plus', icon_size: 16 %}
             </button>
-        </quantity-input>
+          </quantity-input>
+        {% endif %}
+
+        <button
+          type="submit"
+          name="add"
+          class="btn {{ block.settings.add_to_cart_size }} {{ block.settings.button_style }}"
+          data-add-to-cart-button
+          {% unless selected_variant.available %}disabled{% endunless %}
+        >
+          <span data-add-to-cart-text>
+            {% if selected_variant.available %}
+              {{ 'products.form.add_to_cart' | t }}
+            {% else %}
+              {{ 'products.form.sold_out' | t }}
+            {% endif %}
+          </span>
+        </button>
+      </div>
+
+      {% if block.settings.show_buy_it_now %}
+        <button
+          type="button"
+          class="btn {{ block.settings.buy_it_now_size }} {{ block.settings.buy_it_now_style }}"
+          data-buy-it-now
+          {% unless selected_variant.available %}disabled{% endunless %}
+        >
+          {{ 'products.form.buy_it_now' | t }}
+        </button>
       {% endif %}
 
-      <button
-        type="submit"
-        name="add"
-        class="btn {{ block.settings.add_to_cart_size }} {{ block.settings.button_style }}"
-        data-add-to-cart-button
-        {% unless selected_variant.available %}disabled{% endunless %}
-      >
-        <span data-add-to-cart-text>
-          {% if selected_variant.available %}
-            {{ 'products.form.add_to_cart' | t }}
-          {% else %}
-            {{ 'products.form.sold_out' | t }}
-          {% endif %}
-        </span>
-      </button>
-    </div>
-
-    {% if block.settings.show_buy_it_now %}
-      <button
-        type="button"
-        class="btn {{ block.settings.buy_it_now_size }} {{ block.settings.buy_it_now_style }}"
-        data-buy-it-now
-        {% unless selected_variant.available %}disabled{% endunless %}
-      >
-        {{ 'products.form.buy_it_now' | t }}
-      </button>
-    {% endif %}
-
-    {% if block.settings.show_dynamic_checkout and selected_variant.available %}
-      {{ form | payment_button }}
-    {% endif %}
-  {% endform %}
+      {% if block.settings.show_dynamic_checkout and selected_variant.available %}
+        {{ form | payment_button }}
+      {% endif %}
+    {% endform %}
+  </theme-product-form>
 </div>
 
 {% schema %}

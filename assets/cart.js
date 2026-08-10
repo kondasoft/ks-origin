@@ -1,109 +1,8 @@
 /*
   Cart script
 
-  This file owns product-form and cart-line mutations, standard cart-event synchronization, and shared cart rendering.
+  This file owns cart badges, cart-line mutations, standard cart-event synchronization, and shared cart rendering.
 */
-
-class CartController {
-  constructor() {
-    document.addEventListener("submit", this.onProductFormSubmit.bind(this));
-  }
-
-  async onProductFormSubmit(event) {
-    const form = event.target.closest('form[action*="/cart/add"]');
-    const submitButton = event.submitter || form?.querySelector('[type="submit"][name="add"]');
-
-    if (!form || submitButton?.name !== "add" || !window.Shopify?.actions?.updateCart) return;
-
-    if (form.getAttribute("aria-busy") === "true") {
-      event.preventDefault();
-      return;
-    }
-
-    const line = this.createCartLine(new FormData(form));
-
-    if (!line) return;
-
-    event.preventDefault();
-    form.setAttribute("aria-busy", "true");
-    submitButton.setAttribute("aria-busy", "true");
-    submitButton.setAttribute("aria-disabled", "true");
-    submitButton.classList.add("loading");
-    submitButton.focus({ preventScroll: true });
-
-    try {
-      const result = await window.Shopify.actions.updateCart(
-        { lines: [line] },
-        {
-          event: {
-            context: "product",
-            detail: { source: form.dataset.cartSource || "product-form" },
-          },
-        },
-      );
-
-      if (document.documentElement.dataset.cartType === "page") {
-        this.handlePageCartResult(result);
-      }
-    } catch (error) {
-      console.error("[Cart] Product add failed", error);
-
-      if (document.documentElement.dataset.cartType === "page") {
-        this.showToast(document.documentElement.dataset.cartErrorText, "error");
-      }
-    } finally {
-      form.removeAttribute("aria-busy");
-      submitButton.removeAttribute("aria-busy");
-      submitButton.removeAttribute("aria-disabled");
-      submitButton.classList.remove("loading");
-    }
-  }
-
-  createCartLine(formData) {
-    const merchandiseId = formData.get("id");
-
-    if (!merchandiseId) return null;
-
-    const quantity = Math.max(1, Number.parseInt(formData.get("quantity"), 10) || 1);
-    const sellingPlanId = formData.get("selling_plan");
-    const attributes = [];
-
-    formData.forEach((value, key) => {
-      const property = key.match(/^properties\[(.+)]$/)?.[1];
-
-      if (property && typeof value === "string" && value !== "") {
-        attributes.push({ key: property, value });
-      }
-    });
-
-    return {
-      merchandiseId: String(merchandiseId),
-      quantity,
-      ...(sellingPlanId ? { sellingPlanId: String(sellingPlanId) } : {}),
-      ...(attributes.length ? { attributes } : {}),
-    };
-  }
-
-  handlePageCartResult(result) {
-    const errorMessages = (result.userErrors || []).map(({ message }) => message).filter(Boolean);
-    const warningMessages = (result.warnings || []).map(({ message }) => message).filter(Boolean);
-    const messages = [...errorMessages, ...warningMessages];
-
-    if (messages.length) {
-      this.showToast(messages.join(" "), errorMessages.length ? "error" : "warning");
-    } else {
-      const addedMessage = document.querySelector("[data-cart-live-region]")?.dataset.cartAddedText;
-
-      this.showToast(addedMessage, "success");
-    }
-  }
-
-  showToast(message, type) {
-    document.querySelector("theme-toast")?.show(message, type);
-  }
-}
-
-new CartController();
 
 class CartBadge extends HTMLElement {
   connectedCallback() {
@@ -219,8 +118,6 @@ class CartItems extends HTMLElement {
 
     try {
       const result = await event.promise;
-
-      console.log("[Cart] Cart update completed", result);
 
       const { cart, userErrors = [], warnings = [] } = result;
       const errorMessages = userErrors.map(({ message }) => message).filter(Boolean);

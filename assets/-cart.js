@@ -131,14 +131,10 @@ class CartController {
     this.showCartMessage();
 
     try {
-      console.log("[Cart] Adding product", line);
-
       const { cart, userErrors, warnings } = await window.Shopify.actions.updateCart(
         { lines: [line] },
         { event: { context: "product", detail: { source: "product-form" } } },
       );
-
-      console.log("[Cart] Product add completed", { cart, userErrors, warnings });
 
       if (userErrors?.length) {
         this.setCartItemsLoading(false);
