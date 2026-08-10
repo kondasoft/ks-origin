@@ -22,10 +22,6 @@
 >
   <p class="alert alert-with-icon" role="status" data-cart-message hidden></p>
 
-  <div class="visually-hidden" role="status" aria-live="polite" aria-atomic="true" data-cart-status>
-    {{ 'accessibility.cart' | t }}: {{ cart.item_count }}
-  </div>
-
   {% if cart.empty? %}
     <div class="cart-empty">
       {% render 'svg-icons', icon: 'bag', icon_size: 26 %}

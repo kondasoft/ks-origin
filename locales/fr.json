@@ -137,6 +137,11 @@
     "applied_discounts": "Réductions appliquées",
     "subtotal": "Sous-total",
     "checkout": "Passer à la caisse",
+    "announcements": {
+      "added": "Article ajouté au panier.",
+      "removed": "Article retiré du panier.",
+      "updated": "Quantité du panier mise à jour."
+    },
     "view_file": "Voir le fichier",
     "error": "Impossible de mettre à jour votre panier. Veuillez réessayer."
   },

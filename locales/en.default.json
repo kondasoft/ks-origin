@@ -137,6 +137,11 @@
     "applied_discounts": "Applied discounts",
     "subtotal": "Subtotal",
     "checkout": "Check out",
+    "announcements": {
+      "added": "Item added to cart.",
+      "removed": "Item removed from cart.",
+      "updated": "Cart quantity updated."
+    },
     "view_file": "View file",
     "error": "Unable to update your cart. Please try again."
   },
