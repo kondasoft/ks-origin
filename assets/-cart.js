@@ -323,7 +323,7 @@ class CartController {
 
     if (!submitButton) return;
 
-    submitButton.classList.toggle("btn-loading", isLoading);
+    submitButton.classList.toggle("loading", isLoading);
     submitButton.toggleAttribute("aria-busy", isLoading);
     submitButton.disabled = isLoading || wasDisabled;
   }

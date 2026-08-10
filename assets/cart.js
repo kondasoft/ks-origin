@@ -15,11 +15,21 @@ class CartController {
 
     if (!form || submitButton?.name !== "add" || !window.Shopify?.actions?.updateCart) return;
 
+    if (form.getAttribute("aria-busy") === "true") {
+      event.preventDefault();
+      return;
+    }
+
     const line = this.createCartLine(new FormData(form));
 
     if (!line) return;
 
     event.preventDefault();
+    form.setAttribute("aria-busy", "true");
+    submitButton.setAttribute("aria-busy", "true");
+    submitButton.setAttribute("aria-disabled", "true");
+    submitButton.classList.add("loading");
+    submitButton.focus({ preventScroll: true });
 
     try {
       await window.Shopify.actions.updateCart(
@@ -33,6 +43,11 @@ class CartController {
       );
     } catch (error) {
       console.error("[Cart] Product add failed", error);
+    } finally {
+      form.removeAttribute("aria-busy");
+      submitButton.removeAttribute("aria-busy");
+      submitButton.removeAttribute("aria-disabled");
+      submitButton.classList.remove("loading");
     }
   }
 

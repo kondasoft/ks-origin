@@ -340,18 +340,24 @@ button {
   opacity: 0.5;
 }
 
-.btn-loading {
+.btn.loading {
+  --loading-color: var(--button-color, rgb(var(--color-text)));
+  position: relative;
   color: transparent;
   cursor: wait;
   opacity: 1;
 }
 
-.btn-loading::after {
+.btn.loading::after {
   position: absolute;
+  top: 50%;
+  left: 50%;
   width: 1em;
   height: 1em;
+  margin-top: -0.5em;
+  margin-left: -0.5em;
   content: '';
-  border: 2px solid var(--button-color);
+  border: 2px solid var(--loading-color);
   border-right-color: transparent;
   border-radius: 50%;
   animation: button-loading 700ms linear infinite;
@@ -374,7 +380,7 @@ button {
     transition: none;
   }
 
-  .btn-loading::after {
+  .btn.loading::after {
     animation: none;
   }
 }
