@@ -824,6 +824,51 @@ if (!customElements.get("quantity-input")) {
   customElements.define("quantity-input", QuantityInput);
 }
 
+/*
+  Buy it now
+*/
+class ThemeBuyItNow extends HTMLElement {
+  connectedCallback() {
+    if (this.isInitialized) return;
+
+    this.form = this.closest("form");
+    this.link = this.querySelector("[data-buy-it-now]");
+    this.variantInput = this.form?.elements.namedItem("id");
+    this.quantityInput = this.form?.elements.namedItem("quantity");
+
+    if (!this.form || !this.link || !this.variantInput || !this.dataset.cartUrl) return;
+
+    this.listenerController = new AbortController();
+    const listenerOptions = { signal: this.listenerController.signal };
+
+    this.variantInput.addEventListener("change", this.updateLink.bind(this), listenerOptions);
+    this.quantityInput?.addEventListener("input", this.updateLink.bind(this), listenerOptions);
+    this.link.addEventListener("click", this.onClick.bind(this), listenerOptions);
+    this.updateLink();
+    this.isInitialized = true;
+  }
+
+  disconnectedCallback() {
+    this.listenerController?.abort();
+    this.isInitialized = false;
+  }
+
+  updateLink() {
+    const variantId = this.variantInput.value;
+    const quantity = Math.max(1, Number.parseInt(this.quantityInput?.value, 10) || 1);
+
+    if (variantId) this.link.href = `${this.dataset.cartUrl}/${encodeURIComponent(variantId)}:${quantity}`;
+  }
+
+  onClick(event) {
+    if (this.link.getAttribute("aria-disabled") === "true" || !this.form.reportValidity()) event.preventDefault();
+  }
+}
+
+if (!customElements.get("theme-buy-it-now")) {
+  customElements.define("theme-buy-it-now", ThemeBuyItNow);
+}
+
 class ThemeCarousel extends HTMLElement {
   connectedCallback() {
     if (this.isInitialized) return;

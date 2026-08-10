@@ -198,7 +198,13 @@ class ProductVariantPicker extends HTMLElement {
     if (addToCartText) {
       addToCartText.textContent = available ? buyButtons.dataset.addToCartText : buyButtons.dataset.soldOutText;
     }
-    if (buyItNow) buyItNow.disabled = !available;
+    if (buyItNow && available) {
+      buyItNow.removeAttribute("aria-disabled");
+      buyItNow.removeAttribute("tabindex");
+    } else if (buyItNow) {
+      buyItNow.setAttribute("aria-disabled", "true");
+      buyItNow.tabIndex = -1;
+    }
     if (inventoryMessage) inventoryMessage.hidden = !allInventoryInCart;
 
     if (quantity) {

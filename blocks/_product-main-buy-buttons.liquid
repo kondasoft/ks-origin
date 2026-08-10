@@ -91,14 +91,16 @@
       </div>
 
       {% if block.settings.show_buy_it_now %}
-        <button
-          type="button"
-          class="btn {{ block.settings.buy_it_now_size }} {{ block.settings.buy_it_now_style }}"
-          data-buy-it-now
-          {% unless selected_variant.available %}disabled{% endunless %}
-        >
-          {{ 'products.form.buy_it_now' | t }}
-        </button>
+        <theme-buy-it-now data-cart-url="{{ routes.cart_url }}">
+          <a
+            href="{{ routes.cart_url }}/{{ selected_variant.id }}:1"
+            class="btn {{ block.settings.buy_it_now_size }} {{ block.settings.buy_it_now_style }}"
+            data-buy-it-now
+            {% unless selected_variant.available %}aria-disabled="true" tabindex="-1"{% endunless %}
+          >
+            {{ 'products.form.buy_it_now' | t }}
+          </a>
+        </theme-buy-it-now>
       {% endif %}
 
       {% if block.settings.show_dynamic_checkout and selected_variant.available %}
