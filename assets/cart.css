@@ -11,6 +11,10 @@
   margin-bottom: 1em;
 }
 
+.main-cart-layout {
+  min-width: 0;
+}
+
 .cart-items-component {
   display: block;
   min-width: 0;
@@ -33,6 +37,10 @@
 
 .cart-dialog .cart-items-component {
   flex: 1;
+}
+
+.cart-dialog .dialog-footer {
+  padding-top: 0.75rem;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -61,9 +69,21 @@
 .cart-empty .svg-icon {
   margin-bottom: 1rem;
   color: rgb(var(--color-text) / 0.7);
+  animation: cart-empty-icon 1s linear alternate infinite both;
 }
 
 .cart-empty p {
+}
+
+@keyframes cart-empty-icon {
+  from { transform: translateX(-4px); }
+  to { transform: translateX(4px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cart-empty .svg-icon {
+    animation: none;
+  }
 }
 
 
@@ -292,7 +312,86 @@
   color: rgb(var(--color-text) / 0.55);
 }
 
+
+/*
+  Cart summary
+*/
+.main-cart-summary {
+  padding-top: 1rem;
+  margin-top: 2rem;
+  border-top: 1px solid rgb(var(--color-text) / var(--border-opacity));
+}
+
+.cart-summary-discounts {
+  display: grid;
+  gap: 0.375rem;
+  padding: 0;
+  margin-top: 0;
+  margin-bottom: 1rem;
+  list-style: none;
+}
+
+.cart-summary-discount {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  color: rgb(var(--color-accent));
+  font-size: var(--fs-sm);
+}
+
+.cart-summary-subtotal {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.75em;
+  font-weight: 500;
+}
+
+.cart-summary-subtotal:has(+ .cart-summary-tax-information) {
+  margin-bottom: 0.125em;
+}
+
+.cart-summary-subtotal-label {
+  margin: 0;
+}
+
+.cart-summary-subtotal-price {
+  margin: 0;
+}
+
+.cart-summary-tax-information {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  color: rgb(var(--color-text) / 0.7);
+}
+
+.cart-summary-form {
+  margin: 0;
+}
+
+.cart-summary-checkout {
+  width: 100%;
+}
+
 @media (min-width: 1200px) {
+  .main-cart-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr);
+    align-items: start;
+    gap: 2rem;
+  }
+
+  .main-cart-layout:has(.main-cart-summary[hidden]) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .main-cart-summary {
+    padding-top: 0;
+    margin-top: 0;
+    border-top: 0;
+  }
+
   .cart-items-component[data-context='page'] .cart-item {
     grid-template-columns: 120px minmax(0, 1fr);
   }

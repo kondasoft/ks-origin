@@ -9,11 +9,11 @@
  */
 {
   "current": {
-    "border_radius": 6,
-    "type_heading_font": "source_sans_pro_n5",
+    "type_heading_font": "manrope_n6",
     "heading_size_scale": 100,
     "body_size_scale": 100,
     "container_width": "container-narrow",
+    "border_radius": 6,
     "social_threads": "",
     "social_pinterest": "",
     "social_snapchat": "",

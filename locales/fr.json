@@ -135,6 +135,8 @@
     "continue_shopping": "Continuer vos achats",
     "remove_item": "Supprimer {{ item }}",
     "applied_discounts": "Réductions appliquées",
+    "subtotal": "Sous-total",
+    "checkout": "Passer à la caisse",
     "view_file": "Voir le fichier",
     "error": "Impossible de mettre à jour votre panier. Veuillez réessayer."
   },

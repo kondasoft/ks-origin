@@ -344,7 +344,6 @@ button {
   --loading-color: var(--button-color, rgb(var(--color-text)));
   position: relative;
   color: transparent;
-  cursor: wait;
   opacity: 1;
 }
 
@@ -397,7 +396,7 @@ button {
   color: rgb(var(--color-background));
   background-color: rgb(var(--color-accent));
   font-size: var(--fs-xs);
-  font-weight: 600;
+  font-weight: 500;
   line-height: 1;
   border-radius: var(--border-radius);
   letter-spacing: var(--ls-loose);

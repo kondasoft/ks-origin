@@ -200,6 +200,49 @@
           { "value": "fs-xl", "label": "XL" }
         ],
         "default": "fs-md"
+      },
+      {
+        "type": "header",
+        "content": "Cart footer"
+      },
+      {
+        "type": "select",
+        "id": "cart_subtotal_size",
+        "label": "Subtotal size",
+        "options": [
+          { "value": "fs-md", "label": "Medium" },
+          { "value": "fs-lg", "label": "Large" },
+          { "value": "fs-xl", "label": "Extra large" },
+          { "value": "fs-2xl", "label": "2X large" },
+          { "value": "fs-3xl", "label": "3X large" }
+        ],
+        "default": "fs-lg"
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_show_tax_information",
+        "label": "Show tax and shipping information",
+        "default": true
+      },
+      {
+        "type": "select",
+        "id": "cart_checkout_button_color",
+        "label": "Checkout button color",
+        "options": [
+          { "value": "btn-accent-solid", "label": "Accent" },
+          { "value": "btn-text-solid", "label": "Text" }
+        ],
+        "default": "btn-accent-solid"
+      },
+      {
+        "type": "select",
+        "id": "cart_checkout_button_size",
+        "label": "Checkout button size",
+        "options": [
+          { "value": "btn-md", "label": "Medium" },
+          { "value": "btn-lg", "label": "Large" }
+        ],
+        "default": "btn-md"
       }
     ]
   },

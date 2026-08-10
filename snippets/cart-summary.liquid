@@ -1,0 +1,48 @@
+{% doc %}
+  Renders the cart totals and checkout controls shared by cart summary containers.
+{% enddoc %}
+
+{% capture tax_information %}
+  {% if cart.duties_included and cart.taxes_included %}
+    {{ 'products.price.duties_and_taxes_included' | t }}
+  {% elsif cart.taxes_included %}
+    {{ 'products.price.taxes_included' | t }}
+  {% elsif cart.duties_included %}
+    {{ 'products.price.duties_included' | t }}
+  {% endif %}
+
+  {% if shop.shipping_policy.body != blank %}
+    {{ 'products.price.shipping_policy_html' | t: link: shop.shipping_policy.url }}
+  {% endif %}
+{% endcapture %}
+{% assign tax_information = tax_information | strip %}
+
+{% if cart.cart_level_discount_applications.size > 0 %}
+  <ul class="cart-summary-discounts" aria-label="{{ 'cart.applied_discounts' | t }}">
+    {% for discount_application in cart.cart_level_discount_applications %}
+      <li class="cart-summary-discount">
+        <span>{{ discount_application.title }}</span>
+        <span>-{{ discount_application.total_allocated_amount | money }}</span>
+      </li>
+    {% endfor %}
+  </ul>
+{% endif %}
+
+<div class="cart-summary-subtotal {{ settings.cart_subtotal_size }}">
+  <p class="cart-summary-subtotal-label">{{ 'cart.subtotal' | t }}</p>
+  <p class="cart-summary-subtotal-price">{{ cart.total_price | money_with_currency }}</p>
+</div>
+
+{% if settings.cart_show_tax_information and tax_information != blank %}
+  <p class="cart-summary-tax-information fs-sm">{{ tax_information }}</p>
+{% endif %}
+
+<form class="cart-summary-form" action="{{ routes.cart_url }}" method="post">
+  <button
+    class="cart-summary-checkout btn {{ settings.cart_checkout_button_color }} {{ settings.cart_checkout_button_size }}"
+    type="submit"
+    name="checkout"
+  >
+    {{ 'cart.checkout' | t }}
+  </button>
+</form>

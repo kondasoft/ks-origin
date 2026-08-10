@@ -20,7 +20,21 @@
     >
       {{ 'accessibility.cart' | t }}
     </h1>
-    {% render 'cart-items', id: 'cart-page-items', context: 'page' %}
+
+    <div class="main-cart-layout">
+      {% render 'cart-items', id: 'cart-page-items', context: 'page' %}
+      <div
+        id="cart-page-summary"
+        class="main-cart-summary"
+        data-cart-summary
+        data-context="page"
+        {% if cart.empty? %}
+          hidden
+        {% endif %}
+      >
+        {% render 'cart-summary' %}
+      </div>
+    </div>
   </div>
 </div>
 

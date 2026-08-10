@@ -23,6 +23,18 @@
       <div class="dialog-body">
         {% render 'cart-items', id: 'cart-drawer-items', context: 'drawer' %}
       </div>
+
+      <div
+        id="cart-drawer-summary"
+        class="dialog-footer"
+        data-cart-summary
+        data-context="drawer"
+        {% if cart.empty? %}
+          hidden
+        {% endif %}
+      >
+        {% render 'cart-summary' %}
+      </div>
     </dialog>
   </theme-dialog>
 {% endif %}

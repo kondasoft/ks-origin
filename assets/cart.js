@@ -155,7 +155,7 @@ class CartItems extends HTMLElement {
   }
 
   async onCartLinesUpdate(event) {
-    this.setBusy(true);
+    this.setAttribute("aria-busy", "true");
 
     try {
       const result = await event.promise;
@@ -176,23 +176,14 @@ class CartItems extends HTMLElement {
     } catch (error) {
       console.error("[Cart] Cart update failed", error);
     } finally {
-      this.setBusy(false);
+      this.removeAttribute("aria-busy");
     }
-  }
-
-  setBusy(isBusy) {
-    if (isBusy) {
-      this.setAttribute("aria-busy", "true");
-      return;
-    }
-
-    this.removeAttribute("aria-busy");
   }
 
   async render() {
     const url = new URL(window.location.href);
 
-    url.searchParams.set("section_id", "cart-items-render");
+    url.searchParams.set("sections", "cart-items-render,cart-summary-render");
 
     const response = await fetch(url.toString(), {
       headers: { Accept: "text/html" },
@@ -201,11 +192,25 @@ class CartItems extends HTMLElement {
 
     if (!response.ok) throw new Error(`Unable to refresh cart: ${response.status}`);
 
-    const html = await response.text();
-    const documentFragment = new DOMParser().parseFromString(html, "text/html");
-    const nextCartItems = documentFragment.querySelector("cart-items");
+    const sections = await response.json();
+    const cartItemsHtml = sections["cart-items-render"];
+    const cartSummaryHtml = sections["cart-summary-render"];
 
-    if (!nextCartItems) throw new Error("Rendered cart items were not found");
+    if (!cartItemsHtml) throw new Error("Rendered cart items were not found");
+    if (!cartSummaryHtml) throw new Error("Rendered cart summary was not found");
+
+    const parser = new DOMParser();
+    const cartItemsDocument = parser.parseFromString(cartItemsHtml, "text/html");
+    const cartSummaryDocument = parser.parseFromString(cartSummaryHtml, "text/html");
+    const nextCartItems = cartItemsDocument.querySelector("cart-items");
+    const nextCartSummary = cartSummaryDocument.querySelector("[data-cart-summary]");
+    const currentCartSummary = document.querySelector(
+      `[data-cart-summary][data-context="${CSS.escape(this.dataset.context)}"]`,
+    );
+
+    if (!nextCartItems || !nextCartSummary || !currentCartSummary) {
+      throw new Error("Rendered cart content was not found");
+    }
 
     const renderedId = nextCartItems.id;
 
@@ -215,8 +220,13 @@ class CartItems extends HTMLElement {
       element.id = element.id.replace(renderedId, this.id);
     });
 
+    nextCartSummary.id = currentCartSummary.id;
+    nextCartSummary.className = currentCartSummary.className;
+    nextCartSummary.dataset.context = this.dataset.context;
+
     const focusId = this.pendingFocusId;
 
+    currentCartSummary.replaceWith(nextCartSummary);
     this.replaceWith(nextCartItems);
 
     if (focusId) {

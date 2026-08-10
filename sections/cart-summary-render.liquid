@@ -1,0 +1,21 @@
+{% comment %}
+  Provides fresh cart-summary markup to the Section Rendering API.
+  This section is requested by the cart script and is not intended for merchants to add in the theme editor.
+{% endcomment %}
+
+<div
+  id="cart-render-summary"
+  data-cart-summary
+  data-context="drawer"
+  {% if cart.empty? %}
+    hidden
+  {% endif %}
+>
+  {% render 'cart-summary' %}
+</div>
+
+{% schema %}
+{
+  "name": "Cart summary render"
+}
+{% endschema %}
