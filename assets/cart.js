@@ -10,9 +10,10 @@ class CartController {
   }
 
   async onProductFormSubmit(event) {
-    const form = event.target.closest("form.product-main-buy-buttons-form, form.product-card-form");
+    const form = event.target.closest('form[action*="/cart/add"]');
+    const submitButton = event.submitter || form?.querySelector('[type="submit"][name="add"]');
 
-    if (!form || !window.Shopify?.actions?.updateCart) return;
+    if (!form || submitButton?.name !== "add" || !window.Shopify?.actions?.updateCart) return;
 
     const line = this.createCartLine(new FormData(form));
 
@@ -26,7 +27,7 @@ class CartController {
         {
           event: {
             context: "product",
-            detail: { source: "product-form" },
+            detail: { source: form.dataset.cartSource || "product-form" },
           },
         },
       );
