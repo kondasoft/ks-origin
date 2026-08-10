@@ -245,6 +245,18 @@
           { "value": "btn-lg", "label": "Large" }
         ],
         "default": "btn-md"
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_show_dynamic_checkout_buttons",
+        "label": "Show dynamic checkout buttons",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_show_view_cart_button",
+        "label": "Show View cart button",
+        "default": false
       }
     ]
   },

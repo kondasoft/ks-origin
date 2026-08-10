@@ -41,7 +41,16 @@
 
 <div class="cart-summary-subtotal {{ settings.cart_subtotal_size }}">
   <p class="cart-summary-subtotal-label">{{ 'cart.subtotal' | t }}</p>
-  <p class="cart-summary-subtotal-price">{{ cart.total_price | money_with_currency }}</p>
+  <p class="cart-summary-subtotal-price">
+    {% if cart.cart_level_discount_applications.size > 0 and cart.original_total_price > cart.total_price %}
+      <span class="visually-hidden">{{ 'products.price.sale_price' | t }}</span>
+      <span class="cart-summary-subtotal-price-current">{{ cart.total_price | money_with_currency }}</span>
+      <span class="visually-hidden">{{ 'products.price.regular_price' | t }}</span>
+      <s class="cart-summary-subtotal-price-compare">{{ cart.original_total_price | money_with_currency }}</s>
+    {% else %}
+      {{ cart.total_price | money_with_currency }}
+    {% endif %}
+  </p>
 </div>
 
 {% if settings.cart_show_tax_information and tax_information != blank %}
@@ -57,3 +66,18 @@
     {{ 'cart.checkout' | t }}
   </button>
 </form>
+
+{% if settings.cart_show_dynamic_checkout_buttons and additional_checkout_buttons %}
+  <div class="cart-summary-additional-checkout-buttons additional-checkout-buttons--vertical">
+    {{ content_for_additional_checkout_buttons }}
+  </div>
+{% endif %}
+
+{% if settings.cart_show_view_cart_button and request.page_type != 'cart' %}
+  <a
+    class="cart-summary-view-cart btn btn-text-outline btn-sm"
+    href="{{ routes.cart_url }}"
+  >
+    {{ 'cart.view_cart' | t }}
+  </a>
+{% endif %}

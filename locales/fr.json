@@ -138,6 +138,7 @@
     "percentage_off": "{{ value }} % de réduction",
     "subtotal": "Sous-total",
     "checkout": "Passer à la caisse",
+    "view_cart": "Voir le panier",
     "announcements": {
       "added": "Article ajouté au panier.",
       "removed": "Article retiré du panier.",

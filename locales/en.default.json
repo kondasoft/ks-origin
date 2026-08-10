@@ -138,6 +138,7 @@
     "percentage_off": "{{ value }}% off",
     "subtotal": "Subtotal",
     "checkout": "Check out",
+    "view_cart": "View cart",
     "announcements": {
       "added": "Item added to cart.",
       "removed": "Item removed from cart.",

@@ -396,7 +396,19 @@
 }
 
 .cart-summary-subtotal-price {
+  display: flex;
+  align-items: center;
+  gap: 0.25em;
   margin: 0;
+}
+
+.cart-summary-subtotal-price-current {
+  color: rgb(var(--color-accent));
+}
+
+.cart-summary-subtotal-price-compare {
+  color: rgb(var(--color-text) / 0.6);
+  font-size: var(--fs-sm);
 }
 
 .cart-summary-tax-information {
@@ -411,6 +423,15 @@
 
 .cart-summary-checkout {
   width: 100%;
+}
+
+.cart-summary-additional-checkout-buttons {
+  margin-top: 0.75rem;
+}
+
+.cart-summary-view-cart {
+  width: 100%;
+  margin-top: 0.75rem;
 }
 
 @media (min-width: 1200px) {
