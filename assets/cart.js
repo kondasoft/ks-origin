@@ -21,6 +21,9 @@ class CartFeedback extends HTMLElement {
     document.addEventListener("shopify:cart:discount-update", this.onCartDiscountUpdate.bind(this), {
       signal: this.listenerController.signal,
     });
+    document.addEventListener("shopify:cart:error", this.onCartError.bind(this), {
+      signal: this.listenerController.signal,
+    });
     document.addEventListener("theme:cart:render-error", this.onCartRenderError.bind(this), {
       signal: this.listenerController.signal,
     });
@@ -59,7 +62,7 @@ class CartFeedback extends HTMLElement {
 
       this.announce(announcementType);
     } catch {
-      this.show(this.dataset.cartErrorText, "error");
+      return;
     }
   }
 
@@ -72,7 +75,7 @@ class CartFeedback extends HTMLElement {
 
       this.show(this.dataset.cartNoteUpdatedText, "success");
     } catch {
-      this.show(this.dataset.cartErrorText, "error");
+      return;
     }
   }
 
@@ -93,8 +96,14 @@ class CartFeedback extends HTMLElement {
 
       this.show(this.dataset.cartDiscountUpdatedText, "success");
     } catch {
-      this.show(this.dataset.cartErrorText, "error");
+      return;
     }
+  }
+
+  onCartError(event) {
+    const message = typeof event.error === "string" && event.error ? event.error : this.dataset.cartErrorText;
+
+    this.show(message, "error");
   }
 
   onCartRenderError() {
@@ -173,12 +182,16 @@ class CartNote extends HTMLElement {
     if (this.isInitialized) return;
 
     this.form = this.querySelector("form");
+    this.input = this.form?.querySelector('[name="note"]');
     this.submitButton = this.form?.querySelector('[type="submit"]');
 
-    if (!this.form || !this.submitButton) return;
+    if (!this.form || !this.input || !this.submitButton) return;
 
     this.listenerController = new AbortController();
     this.form.addEventListener("submit", this.onSubmit.bind(this), {
+      signal: this.listenerController.signal,
+    });
+    document.addEventListener("shopify:cart:note-update", this.onCartNoteUpdate.bind(this), {
       signal: this.listenerController.signal,
     });
     this.isInitialized = true;
@@ -219,6 +232,14 @@ class CartNote extends HTMLElement {
       this.submitButton.removeAttribute("aria-disabled");
       this.submitButton.classList.remove("loading");
     }
+  }
+
+  async onCartNoteUpdate(event) {
+    const result = await event.promise.catch(() => null);
+
+    if (!result?.cart || result.userErrors?.length) return;
+
+    this.input.value = typeof event.note === "string" ? event.note : "";
   }
 }
 
@@ -515,7 +536,7 @@ class CartItems extends HTMLElement {
       if (cartHeading) cartHeading.classList.toggle("visually-hidden", cart.totalQuantity === 0);
 
       try {
-        if (this.dataset.context === "drawer" && !hasIssues) {
+        if (this.dataset.context === "drawer" && event.action === "add" && !hasIssues) {
           await window.Shopify.actions.openCart();
         }
 

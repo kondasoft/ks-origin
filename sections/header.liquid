@@ -77,7 +77,7 @@
       <a
         class="icon-button header-icon-link header-cart-link"
         href="{{ routes.cart_url }}"
-        {% if settings.cart_type == 'drawer' %}
+        {% if settings.cart_type == 'drawer' and request.page_type != 'cart' %}
           data-toggle="cart-dialog"
           aria-controls="cart-dialog"
           aria-expanded="false"
@@ -167,7 +167,7 @@
       <a
         class="icon-button header-icon-link header-cart-link"
         href="{{ routes.cart_url }}"
-        {% if settings.cart_type == 'drawer' %}
+        {% if settings.cart_type == 'drawer' and request.page_type != 'cart' %}
           data-toggle="cart-dialog"
           aria-controls="cart-dialog"
           aria-expanded="false"

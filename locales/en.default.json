@@ -136,6 +136,11 @@
     "remove_item": "Remove {{ item }}",
     "applied_discounts": "Applied discounts",
     "percentage_off": "{{ value }}% off",
+    "quantity": {
+      "label": "Quantity for {{ item }}",
+      "decrease": "Decrease quantity for {{ item }}",
+      "increase": "Increase quantity for {{ item }}"
+    },
     "subtotal": "Subtotal",
     "checkout": "Check out",
     "view_cart": "View cart",

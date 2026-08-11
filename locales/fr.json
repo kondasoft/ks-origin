@@ -136,6 +136,11 @@
     "remove_item": "Supprimer {{ item }}",
     "applied_discounts": "Réductions appliquées",
     "percentage_off": "{{ value }} % de réduction",
+    "quantity": {
+      "label": "Quantité pour {{ item }}",
+      "decrease": "Diminuer la quantité de {{ item }}",
+      "increase": "Augmenter la quantité de {{ item }}"
+    },
     "subtotal": "Sous-total",
     "checkout": "Passer à la caisse",
     "view_cart": "Voir le panier",

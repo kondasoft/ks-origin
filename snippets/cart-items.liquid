@@ -127,13 +127,13 @@
               <quantity-input
                 class="quantity-input cart-item-quantity"
                 role="group"
-                aria-label="{{ 'products.quantity.label' | t }}"
+                aria-label="{{ 'cart.quantity.label' | t: item: line_item.title | escape }}"
               >
                 <button
                   type="button"
                   class="quantity-input-button quantity-input-button-decrease"
                   data-quantity-decrease
-                  aria-label="{{ 'products.quantity.decrease' | t }}"
+                  aria-label="{{ 'cart.quantity.decrease' | t: item: line_item.title | escape }}"
                 >
                   {% render 'svg-icons', icon: 'minus', icon_size: 16 %}
                 </button>
@@ -146,7 +146,7 @@
                   min="0"
                   step="1"
                   inputmode="numeric"
-                  aria-label="{{ 'products.quantity.label' | t }}"
+                  aria-label="{{ 'cart.quantity.label' | t: item: line_item.title | escape }}"
                   data-quantity-input
                   data-cart-line-quantity
                   data-cart-line-id="{{ line_item.key | escape }}"
@@ -156,7 +156,7 @@
                   type="button"
                   class="quantity-input-button quantity-input-button-increase"
                   data-quantity-increase
-                  aria-label="{{ 'products.quantity.increase' | t }}"
+                  aria-label="{{ 'cart.quantity.increase' | t: item: line_item.title | escape }}"
                 >
                   {% render 'svg-icons', icon: 'plus', icon_size: 16 %}
                 </button>
