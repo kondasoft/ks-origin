@@ -55,7 +55,7 @@
                 class="cart-item-title {{ settings.cart_item_title_size }}"
                 data-font-family="{{ settings.cart_item_title_font_family }}"
               >
-                <a href="{{ line_item.url }}">{{ line_item.product.title }}</a>
+                <a href="{{ line_item.url }}">{{ line_item.title }}</a>
               </h3>
 
               <button
@@ -63,7 +63,7 @@
                 class="icon-button cart-item-remove"
                 data-cart-line-remove
                 data-cart-line-id="{{ line_item.key | escape }}"
-                aria-label="{{ 'cart.remove_item' | t: item: line_item.product.title | escape }}"
+                aria-label="{{ 'cart.remove_item' | t: item: line_item.title | escape }}"
               >
                 <span class="cart-item-remove-icon" aria-hidden="true">
                   <span class="cart-item-remove-icon-lid"></span>
@@ -73,7 +73,11 @@
             </div>
 
             {% unless line_item.product.has_only_default_variant %}
-              <p class="cart-item-meta">{{ line_item.variant.title }}</p>
+              <ul class="cart-item-options">
+                {% for option in line_item.options_with_values %}
+                  <li>{{ option.name }}: {{ option.value }}</li>
+                {% endfor %}
+              </ul>
             {% endunless %}
 
             {% if line_item.selling_plan_allocation %}
@@ -159,16 +163,16 @@
               </quantity-input>
 
               <p class="cart-item-price">
-                {% if line_item.original_line_price > line_item.final_line_price %}
+                {% if line_item.original_price > line_item.final_price %}
                   <span class="visually-hidden">{{ 'products.price.sale_price' | t }}</span>
                   <span class="cart-item-price-current cart-item-price-sale">
-                    {{- line_item.final_line_price | money -}}
+                    {{- line_item.final_price | money -}}
                   </span>
                   <span class="visually-hidden">{{ 'products.price.regular_price' | t }}</span>
-                  <s class="cart-item-price-compare">{{ line_item.original_line_price | money }}</s>
+                  <s class="cart-item-price-compare">{{ line_item.original_price | money }}</s>
                 {% else %}
                   <span class="visually-hidden">{{ 'products.price.regular_price' | t }}</span>
-                  <span class="cart-item-price-current">{{ line_item.final_line_price | money }}</span>
+                  <span class="cart-item-price-current">{{ line_item.final_price | money }}</span>
                 {% endif %}
               </p>
             </div>

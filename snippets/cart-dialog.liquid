@@ -5,6 +5,11 @@
       class="dialog drawer drawer-right cart-dialog"
       aria-labelledby="cart-dialog-title"
     >
+      <s-view-event
+        view-event-payload="{{ cart | standard_event_data: 'view', context: 'dialog' | escape }}"
+        data-cart-view-event
+      ></s-view-event>
+
       <div class="dialog-header">
         <h2 id="cart-dialog-title" class="dialog-title">
           {{ 'accessibility.cart' | t }}

@@ -399,6 +399,16 @@ if (!customElements.get("cart-badge")) {
   customElements.define("cart-badge", CartBadge);
 }
 
+function updateCartDrawerViewPayload(cart) {
+  const cartViewEvent = document.querySelector("[data-cart-view-event]");
+
+  if (!cartViewEvent) return;
+
+  cartViewEvent.setAttribute("view-event-payload", JSON.stringify({ context: "dialog", cart }));
+}
+
+let cartRenderGeneration = 0;
+
 class CartItems extends HTMLElement {
   connectedCallback() {
     if (this.isInitialized) return;
@@ -494,6 +504,8 @@ class CartItems extends HTMLElement {
 
       if (!cart) return;
 
+      updateCartDrawerViewPayload(cart);
+
       const cartOptions = document.querySelector(
         `[data-cart-options][data-context="${CSS.escape(this.dataset.context)}"]`,
       );
@@ -522,14 +534,18 @@ class CartItems extends HTMLElement {
     this.setAttribute("aria-busy", "true");
 
     try {
+      let result;
+
       try {
-        const result = await event.promise;
+        result = await event.promise;
 
         if (!result.cart) return;
       } catch (error) {
         console.error("[Cart] Discount update failed", error);
         return;
       }
+
+      updateCartDrawerViewPayload(result.cart);
 
       try {
         await this.render();
@@ -544,6 +560,7 @@ class CartItems extends HTMLElement {
   }
 
   async render() {
+    const renderGeneration = ++cartRenderGeneration;
     const url = new URL(window.location.href);
 
     url.searchParams.set("sections", "cart-items-render,cart-summary-render");
@@ -556,6 +573,9 @@ class CartItems extends HTMLElement {
     if (!response.ok) throw new Error(`Unable to refresh cart: ${response.status}`);
 
     const sections = await response.json();
+
+    if (renderGeneration !== cartRenderGeneration) return;
+
     const cartItemsHtml = sections["cart-items-render"];
     const cartSummaryHtml = sections["cart-summary-render"];
 

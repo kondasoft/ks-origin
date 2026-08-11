@@ -74,5 +74,7 @@
     } 
   }
 </script>
-<script src="{{ 'storefront-actions.js' | asset_url }}" type="module"></script>
+{% # theme-check-disable ParserBlockingScript %}
+<script src="{{ 'storefront-actions.js' | asset_url }}"></script>
+{% # theme-check-enable ParserBlockingScript %}
 <script src="{{ 'storefront-events.js' | asset_url }}" type="module"></script>

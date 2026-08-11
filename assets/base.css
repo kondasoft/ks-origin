@@ -247,7 +247,7 @@ button {
   justify-content: center;
   gap: 0.5em;
   box-sizing: border-box;
-  padding: 0.65em 1.25em;
+  padding: 0.6em 1.25em;
   border: 1px solid var(--button-border-color);
   border-radius: var(--border-radius);
   color: var(--button-color);
@@ -286,7 +286,7 @@ button {
 }
 
 .btn-lg {
-  padding: 0.8em 1.5em;
+  padding: 0.7em 1.5em;
   font-size: var(--fs-lg);
 }
 
@@ -538,7 +538,7 @@ input[type='radio']:not(.visually-hidden):disabled {
   display: block;
   width: 100%;
   min-width: 0;
-  padding: 0.65em 1em;
+  padding: 0.6em 1em;
   color: rgb(var(--color-text));
   background-color: rgb(var(--color-background));
   border: 1px solid rgb(var(--color-text) / var(--border-opacity));
@@ -599,7 +599,7 @@ select.input-sm {
 }
 
 .input-lg {
-  padding: 0.8em 1.5em;
+  padding: 0.7em 1.5em;
   font-size: var(--fs-lg);
 }
 
