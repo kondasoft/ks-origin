@@ -57,6 +57,20 @@
   <p class="cart-summary-tax-information fs-sm">{{ tax_information }}</p>
 {% endif %}
 
+{% if request.page_type == 'cart' %}
+  <div
+    class="cart-options"
+    data-cart-options
+    data-context="page"
+    {% if cart.empty? %}
+      hidden
+    {% endif %}
+  >
+    {% render 'cart-note', context: 'page' %}
+    {% render 'cart-discount', context: 'page' %}
+  </div>
+{% endif %}
+
 <form class="cart-summary-form" action="{{ routes.cart_url }}" method="post">
   <button
     class="cart-summary-checkout btn {{ settings.cart_checkout_button_color }} {{ settings.cart_checkout_button_size }}"

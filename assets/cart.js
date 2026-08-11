@@ -497,8 +497,10 @@ class CartItems extends HTMLElement {
       const cartOptions = document.querySelector(
         `[data-cart-options][data-context="${CSS.escape(this.dataset.context)}"]`,
       );
+      const cartHeading = document.querySelector("[data-cart-heading]");
 
       if (cartOptions) cartOptions.hidden = cart.totalQuantity === 0;
+      if (cartHeading) cartHeading.classList.toggle("visually-hidden", cart.totalQuantity === 0);
 
       try {
         if (this.dataset.context === "drawer" && !hasIssues) {

@@ -402,6 +402,12 @@ button {
   letter-spacing: var(--ls-loose);
 }
 
+.badge-light {
+  color: rgb(var(--color-accent));
+  background-color: rgb(var(--color-accent) / 0.1);
+  border: 0;
+}
+
 
 /*
   Form controls

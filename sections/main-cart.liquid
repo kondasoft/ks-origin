@@ -12,11 +12,12 @@
 >
   <div class="container {{ settings.container_width }}">
     <h1
-      class="main-cart-heading responsive-text-alignment {{ section.settings.heading_size }}"
+      class="main-cart-heading responsive-text-alignment {{ section.settings.heading_size }} {% if cart.empty? %}visually-hidden{% endif %}"
       style="
         --mobile-text-alignment: {{ section.settings.mobile_text_alignment }};
         --desktop-text-alignment: {{ section.settings.desktop_text_alignment }};
       "
+      data-cart-heading
     >
       {{ 'accessibility.cart' | t }}
     </h1>
@@ -24,17 +25,6 @@
     <div class="main-cart-layout">
       <div class="main-cart-content">
         {% render 'cart-items', context: 'page' %}
-        <div
-          class="cart-options"
-          data-cart-options
-          data-context="page"
-          {% if cart.empty? %}
-            hidden
-          {% endif %}
-        >
-          {% render 'cart-note', context: 'page' %}
-          {% render 'cart-discount', context: 'page' %}
-        </div>
       </div>
       <div
         id="cart-page-summary"

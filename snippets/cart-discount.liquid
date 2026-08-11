@@ -43,7 +43,7 @@
             </label>
             <input
               id="CartDiscount-{{ context }}"
-              class="input input-sm"
+              class="input"
               type="text"
               name="discount"
               placeholder="{{ 'cart.discount.placeholder' | t | escape }}"
@@ -53,7 +53,7 @@
               required
               data-cart-discount-input
             >
-            <button class="btn btn-sm btn-text-outline cart-discount-button" type="submit">
+            <button class="btn btn-text-outline cart-discount-button" type="submit">
               {{ 'cart.discount.apply' | t }}
             </button>
           </form>
@@ -67,7 +67,7 @@
             {% endif %}
           >
             {% for discount_code in discount_codes %}
-              <li class="badge cart-discount-code" data-cart-discount-code="{{ discount_code | escape }}">
+              <li class="badge badge-light cart-discount-code" data-cart-discount-code="{{ discount_code | escape }}">
                 {% render 'svg-icons', icon: 'tag', icon_size: 14 %}
                 <span data-cart-discount-code-text>{{ discount_code | escape }}</span>
                 <button
@@ -83,7 +83,7 @@
           </ul>
 
           <template data-cart-discount-code-template>
-            <li class="badge cart-discount-code" data-cart-discount-code>
+            <li class="badge badge-light cart-discount-code" data-cart-discount-code>
               {% render 'svg-icons', icon: 'tag', icon_size: 14 %}
               <span data-cart-discount-code-text></span>
               <button class="icon-button cart-discount-remove" type="button" data-cart-discount-remove>
