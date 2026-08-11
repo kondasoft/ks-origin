@@ -9,7 +9,12 @@
     assign discount_codes = cart.discount_applications | where: 'type', 'discount_code' | map: 'title' | uniq
   %}
 
-  <theme-collapse class="theme-collapse cart-option cart-discount-collapse">
+  <theme-collapse
+    class="theme-collapse cart-option cart-discount-collapse"
+    {% if context == 'drawer' %}
+      data-scroll-to-bottom
+    {% endif %}
+  >
     <details
       class="theme-collapse-details"
       {% if discount_codes.size > 0 %}
@@ -32,13 +37,13 @@
           data-context="{{ context }}"
           data-remove-label="{{ 'cart.discount.remove' | t: code: '[code]' | escape }}"
         >
-          <form class="cart-discount-form" action="{{ routes.cart_url }}" method="post">
+          <form class="input-group-horizontal cart-discount-form" action="{{ routes.cart_url }}" method="post">
             <label class="visually-hidden" for="CartDiscount-{{ context }}">
               {{- 'cart.discount.label' | t -}}
             </label>
             <input
               id="CartDiscount-{{ context }}"
-              class="input"
+              class="input input-sm"
               type="text"
               name="discount"
               placeholder="{{ 'cart.discount.placeholder' | t | escape }}"
@@ -57,6 +62,9 @@
             class="cart-discount-codes"
             aria-label="{{ 'cart.applied_discounts' | t | escape }}"
             data-cart-discount-codes
+            {% if discount_codes.size == 0 %}
+              hidden
+            {% endif %}
           >
             {% for discount_code in discount_codes %}
               <li class="badge cart-discount-code" data-cart-discount-code="{{ discount_code | escape }}">

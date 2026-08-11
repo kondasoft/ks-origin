@@ -346,6 +346,7 @@ class CartDiscount extends HTMLElement {
 
   renderCodes(discountCodes) {
     this.codeList.replaceChildren();
+    this.codeList.hidden = discountCodes.length === 0;
 
     discountCodes.forEach((code) => {
       const codeFragment = this.codeTemplate.content.cloneNode(true);

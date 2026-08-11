@@ -683,6 +683,7 @@ class ThemeCollapse extends HTMLElement {
 
     if (this.reduceMotionQuery.matches) {
       this.details.open = !isOpen;
+      if (!isOpen) this.scrollContainerToBottom();
       return;
     }
 
@@ -713,6 +714,7 @@ class ThemeCollapse extends HTMLElement {
       this.details.removeEventListener("transitionend", onTransitionEnd);
       window.clearTimeout(this.animationTimer);
       this.finishAnimation = null;
+      if (!isOpen) this.scrollContainerToBottom();
     };
 
     const onTransitionEnd = (transitionEvent) => {
@@ -726,6 +728,17 @@ class ThemeCollapse extends HTMLElement {
     this.finishAnimation = cleanup;
     this.details.addEventListener("transitionend", onTransitionEnd);
     this.animationTimer = window.setTimeout(cleanup, 350);
+  }
+
+  scrollContainerToBottom() {
+    if (!this.hasAttribute("data-scroll-to-bottom")) return;
+
+    const scrollContainer = this.closest(".dialog-body");
+
+    scrollContainer?.scrollTo({
+      top: scrollContainer.scrollHeight,
+      behavior: this.reduceMotionQuery.matches ? "auto" : "smooth",
+    });
   }
 
   onDesktopQueryChange() {

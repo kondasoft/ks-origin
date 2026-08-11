@@ -5,11 +5,16 @@
 {% enddoc %}
 
 {% if settings.cart_show_note %}
-  <theme-collapse class="theme-collapse cart-option cart-note-collapse">
+  <theme-collapse
+    class="theme-collapse cart-option cart-note-collapse"
+    {% if context == 'drawer' %}
+      data-scroll-to-bottom
+    {% endif %}
+  >
     <details class="theme-collapse-details">
       <summary class="theme-collapse-summary">
         <span class="cart-option-heading">
-          {% render 'svg-icons', icon: 'note', icon_size: 18 %}
+          {% render 'svg-icons', icon: 'edit', icon_size: 18 %}
           <span>{{ 'cart.note.heading' | t }}</span>
         </span>
         <span class="theme-collapse-icon" aria-hidden="true">
@@ -20,7 +25,7 @@
       <div class="theme-collapse-content">
         <cart-note class="cart-note" data-context="{{ context }}">
           <form class="cart-note-form" action="{{ routes.cart_url }}" method="post">
-            <label for="CartNote-{{ context }}">{{ 'cart.note.label' | t }}</label>
+            <label class="visually-hidden" for="CartNote-{{ context }}">{{ 'cart.note.label' | t }}</label>
             <textarea
               id="CartNote-{{ context }}"
               class="input"
