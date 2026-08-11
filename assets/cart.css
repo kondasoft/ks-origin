@@ -1,7 +1,7 @@
 /*
   Cart stylesheet
 
-  This file owns the shared cart line-item, empty-state, and cart-update presentation used by the cart drawer and page.
+  This file owns the shared cart drawer and page presentation.
 */
 
 /*
@@ -15,8 +15,15 @@
   min-width: 0;
 }
 
+.main-cart-content {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+}
+
 .cart-items-component {
   display: block;
+  flex: 1;
   min-width: 0;
   transition: opacity 200ms ease-out;
 }
@@ -26,22 +33,9 @@
   opacity: 0.2;
 }
 
-.cart-items-component > .alert {
-  margin-bottom: 1rem;
-}
-
-.cart-items-component > .alert:focus-visible {
-  outline: 2px solid currentcolor;
-  outline-offset: 2px;
-}
-
 .cart-dialog .dialog-body {
   display: flex;
   flex-direction: column;
-}
-
-.cart-dialog .cart-items-component {
-  flex: 1;
 }
 
 .cart-dialog .dialog-footer {
@@ -69,10 +63,6 @@
 .cart-dialog .cart-empty {
   min-height: 100%;
   box-sizing: border-box;
-}
-
-.cart-dialog .cart-items-component:has(.alert:not([hidden])) .cart-empty {
-  min-height: 0;
 }
 
 .cart-empty .svg-icon {
@@ -339,6 +329,27 @@
 
 .cart-item-price-compare {
   color: rgb(var(--color-text) / 0.6);
+}
+
+
+/*
+  Cart options
+*/
+.cart-options {
+  flex: 0 0 auto;
+  margin-top: 1rem;
+}
+
+.cart-note {
+  display: block;
+}
+
+.cart-note-form {
+  margin: 0;
+}
+
+.cart-note-form .input {
+  margin-bottom: 0.75rem;
 }
 
 

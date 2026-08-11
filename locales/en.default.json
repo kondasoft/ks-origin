@@ -144,6 +144,13 @@
       "removed": "Item removed from cart.",
       "updated": "Cart quantity updated."
     },
+    "note": {
+      "heading": "Order note",
+      "label": "Special instructions",
+      "placeholder": "Add instructions for your order",
+      "save": "Save note",
+      "updated": "Cart note saved."
+    },
     "view_file": "View file",
     "error": "Unable to update your cart. Please try again."
   },

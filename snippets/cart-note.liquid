@@ -1,0 +1,39 @@
+{% doc %}
+  Renders the cart note collapse and progressively enhanced note form.
+
+  @param {string} context - Render context: `drawer` or `page`.
+{% enddoc %}
+
+{% if settings.cart_show_note %}
+  <theme-collapse class="theme-collapse cart-option cart-note-collapse">
+    <details class="theme-collapse-details">
+      <summary class="theme-collapse-summary">
+        <span>{{ 'cart.note.heading' | t }}</span>
+        <span class="theme-collapse-icon" aria-hidden="true">
+          {% render 'svg-icons', icon: 'chevron-down', icon_size: 18 %}
+        </span>
+      </summary>
+
+      <div class="theme-collapse-content">
+        <cart-note class="cart-note" data-context="{{ context }}">
+          <form class="cart-note-form" action="{{ routes.cart_url }}" method="post">
+            <label for="CartNote-{{ context }}">{{ 'cart.note.label' | t }}</label>
+            <textarea
+              id="CartNote-{{ context }}"
+              class="input"
+              name="note"
+              placeholder="{{ 'cart.note.placeholder' | t | escape }}"
+            >{{ cart.note | escape }}</textarea>
+            <button
+              type="submit"
+              name="update"
+              class="btn btn-wide btn-sm btn-text-outline cart-note-button"
+            >
+              {{ 'cart.note.save' | t }}
+            </button>
+          </form>
+        </cart-note>
+      </div>
+    </details>
+  </theme-collapse>
+{% endif %}

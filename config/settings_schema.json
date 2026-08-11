@@ -204,6 +204,17 @@
       },
       {
         "type": "header",
+        "content": "Cart options",
+        "info": "These settings apply to both the cart drawer and cart page."
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_show_note",
+        "label": "Show order note",
+        "default": true
+      },
+      {
+        "type": "header",
         "content": "Cart footer",
         "info": "These settings apply to both the cart drawer and cart page."
       },

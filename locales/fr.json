@@ -144,6 +144,13 @@
       "removed": "Article retiré du panier.",
       "updated": "Quantité du panier mise à jour."
     },
+    "note": {
+      "heading": "Note de commande",
+      "label": "Instructions spéciales",
+      "placeholder": "Ajoutez des instructions pour votre commande",
+      "save": "Enregistrer la note",
+      "updated": "Note de commande enregistrée."
+    },
     "view_file": "Voir le fichier",
     "error": "Impossible de mettre à jour votre panier. Veuillez réessayer."
   },

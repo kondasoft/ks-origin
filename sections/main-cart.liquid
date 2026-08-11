@@ -22,7 +22,19 @@
     </h1>
 
     <div class="main-cart-layout">
-      {% render 'cart-items', id: 'cart-page-items', context: 'page' %}
+      <div class="main-cart-content">
+        {% render 'cart-items', context: 'page' %}
+        <div
+          class="cart-options"
+          data-cart-options
+          data-context="page"
+          {% if cart.empty? %}
+            hidden
+          {% endif %}
+        >
+          {% render 'cart-note', context: 'page' %}
+        </div>
+      </div>
       <div
         id="cart-page-summary"
         class="main-cart-summary"

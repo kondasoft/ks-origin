@@ -1,11 +1,11 @@
 {% doc %}
   Renders the shared cart line-item interface for the cart drawer and cart page.
 
-  @param {string} id - Unique ID used when refreshing the component.
   @param {string} context - Render context: `drawer` or `page`.
 {% enddoc %}
 
 {% liquid
+  assign cart_items_id = 'cart-' | append: context | append: '-items'
   assign cart_item_image_class = 'cart-item-image'
 
   unless settings.cart_item_image_ratio == 'adapt'
@@ -14,7 +14,7 @@
 %}
 
 <cart-items
-  id="{{ id }}"
+  id="{{ cart_items_id }}"
   class="cart-items-component"
   data-cart-items
   data-context="{{ context }}"
@@ -134,7 +134,7 @@
                   {% render 'svg-icons', icon: 'minus', icon_size: 16 %}
                 </button>
                 <input
-                  id="CartQuantity-{{ id }}-{{ forloop.index }}"
+                  id="CartQuantity-{{ cart_items_id }}-{{ forloop.index }}"
                   class="input"
                   type="number"
                   name="updates[]"

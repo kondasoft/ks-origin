@@ -12,6 +12,9 @@ class CartFeedback extends HTMLElement {
     document.addEventListener("shopify:cart:lines-update", this.onCartLinesUpdate.bind(this), {
       signal: this.listenerController.signal,
     });
+    document.addEventListener("shopify:cart:note-update", this.onCartNoteUpdate.bind(this), {
+      signal: this.listenerController.signal,
+    });
     document.addEventListener("theme:cart:render-error", this.onCartRenderError.bind(this), {
       signal: this.listenerController.signal,
     });
@@ -26,18 +29,8 @@ class CartFeedback extends HTMLElement {
   async onCartLinesUpdate(event) {
     try {
       const result = await event.promise;
-      const errorMessages = (result.userErrors || []).map(({ message }) => message).filter(Boolean);
-      const warningMessages = (result.warnings || []).map(({ message }) => message).filter(Boolean);
 
-      if (errorMessages.length) {
-        this.show([...errorMessages, ...warningMessages].join(" "), "error");
-        return;
-      }
-
-      if (warningMessages.length) {
-        this.show(warningMessages.join(" "), "warning");
-        return;
-      }
+      if (this.showResultIssues(result)) return;
 
       if (!result.cart) return;
 
@@ -59,12 +52,41 @@ class CartFeedback extends HTMLElement {
     }
   }
 
+  async onCartNoteUpdate(event) {
+    try {
+      const result = await event.promise;
+
+      if (this.showResultIssues(result)) return;
+
+      this.show(this.dataset.cartNoteUpdatedText, "success");
+    } catch {
+      this.show(this.dataset.cartErrorText, "error");
+    }
+  }
+
   onCartRenderError() {
     this.show(this.dataset.cartErrorText, "error");
   }
 
   show(message, type) {
     document.querySelector("theme-toast")?.show(message, type);
+  }
+
+  showResultIssues(result) {
+    const errorMessages = (result.userErrors || []).map(({ message }) => message).filter(Boolean);
+    const warningMessages = (result.warnings || []).map(({ message }) => message).filter(Boolean);
+
+    if (errorMessages.length) {
+      this.show([...errorMessages, ...warningMessages].join(" "), "error");
+      return true;
+    }
+
+    if (warningMessages.length) {
+      this.show(warningMessages.join(" "), "warning");
+      return true;
+    }
+
+    return false;
   }
 
   announce(type) {
@@ -80,6 +102,64 @@ class CartFeedback extends HTMLElement {
 
 if (!customElements.get("cart-feedback")) {
   customElements.define("cart-feedback", CartFeedback);
+}
+
+class CartNote extends HTMLElement {
+  connectedCallback() {
+    if (this.isInitialized) return;
+
+    this.form = this.querySelector("form");
+    this.submitButton = this.form?.querySelector('[type="submit"]');
+
+    if (!this.form || !this.submitButton) return;
+
+    this.listenerController = new AbortController();
+    this.form.addEventListener("submit", this.onSubmit.bind(this), {
+      signal: this.listenerController.signal,
+    });
+    this.isInitialized = true;
+  }
+
+  disconnectedCallback() {
+    this.listenerController?.abort();
+    this.isInitialized = false;
+  }
+
+  async onSubmit(event) {
+    if (!window.Shopify?.actions?.updateCart) return;
+
+    event.preventDefault();
+
+    if (this.form.getAttribute("aria-busy") === "true") return;
+
+    const note = new FormData(this.form).get("note");
+
+    this.form.setAttribute("aria-busy", "true");
+    this.submitButton.setAttribute("aria-disabled", "true");
+    this.submitButton.classList.add("loading");
+
+    try {
+      await window.Shopify.actions.updateCart(
+        { note: typeof note === "string" ? note : "" },
+        {
+          event: {
+            context: this.dataset.context === "drawer" ? "dialog" : "cart",
+            detail: { source: "cart-note" },
+          },
+        },
+      );
+    } catch (error) {
+      console.error("[Cart] Note update failed", error);
+    } finally {
+      this.form.removeAttribute("aria-busy");
+      this.submitButton.removeAttribute("aria-disabled");
+      this.submitButton.classList.remove("loading");
+    }
+  }
+}
+
+if (!customElements.get("cart-note")) {
+  customElements.define("cart-note", CartNote);
 }
 
 class CartBadge extends HTMLElement {
@@ -204,6 +284,12 @@ class CartItems extends HTMLElement {
       const hasIssues = userErrors.length > 0 || warnings.length > 0;
 
       if (!cart) return;
+
+      const cartOptions = document.querySelector(
+        `[data-cart-options][data-context="${CSS.escape(this.dataset.context)}"]`,
+      );
+
+      if (cartOptions) cartOptions.hidden = cart.totalQuantity === 0;
 
       try {
         if (this.dataset.context === "drawer" && !hasIssues) {

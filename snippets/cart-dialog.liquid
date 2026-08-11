@@ -21,7 +21,17 @@
       </div>
 
       <div class="dialog-body">
-        {% render 'cart-items', id: 'cart-drawer-items', context: 'drawer' %}
+        {% render 'cart-items', context: 'drawer' %}
+        <div
+          class="cart-options"
+          data-cart-options
+          data-context="drawer"
+          {% if cart.empty? %}
+            hidden
+          {% endif %}
+        >
+          {% render 'cart-note', context: 'drawer' %}
+        </div>
       </div>
 
       <div
