@@ -18,10 +18,7 @@
   class="cart-items-component"
   data-cart-items
   data-context="{{ context }}"
-  data-cart-error-text="{{ 'cart.error' | t | escape }}"
 >
-  <p class="alert alert-with-icon" role="status" data-cart-message hidden></p>
-
   {% if cart.empty? %}
     <div class="cart-empty">
       {% render 'svg-icons', icon: 'bag', icon_size: 26 %}

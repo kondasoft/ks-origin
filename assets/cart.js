@@ -1,8 +1,86 @@
 /*
   Cart script
 
-  This file owns cart badges, cart-line mutations, standard cart-event synchronization, and shared cart rendering.
+  This file owns cart feedback, badges, line mutations, standard event synchronization, and shared rendering.
 */
+
+class CartFeedback extends HTMLElement {
+  connectedCallback() {
+    if (this.isInitialized) return;
+
+    this.listenerController = new AbortController();
+    document.addEventListener("shopify:cart:lines-update", this.onCartLinesUpdate.bind(this), {
+      signal: this.listenerController.signal,
+    });
+    document.addEventListener("theme:cart:render-error", this.onCartRenderError.bind(this), {
+      signal: this.listenerController.signal,
+    });
+    this.isInitialized = true;
+  }
+
+  disconnectedCallback() {
+    this.listenerController?.abort();
+    this.isInitialized = false;
+  }
+
+  async onCartLinesUpdate(event) {
+    try {
+      const result = await event.promise;
+      const errorMessages = (result.userErrors || []).map(({ message }) => message).filter(Boolean);
+      const warningMessages = (result.warnings || []).map(({ message }) => message).filter(Boolean);
+
+      if (errorMessages.length) {
+        this.show([...errorMessages, ...warningMessages].join(" "), "error");
+        return;
+      }
+
+      if (warningMessages.length) {
+        this.show(warningMessages.join(" "), "warning");
+        return;
+      }
+
+      if (!result.cart) return;
+
+      const announcementType =
+        {
+          add: "added",
+          remove: "removed",
+          update: "updated",
+        }[event.action] || "updated";
+
+      if (document.documentElement.dataset.cartType === "page" && announcementType === "added") {
+        this.show(this.dataset.cartAddedText, "success");
+        return;
+      }
+
+      this.announce(announcementType);
+    } catch {
+      this.show(this.dataset.cartErrorText, "error");
+    }
+  }
+
+  onCartRenderError() {
+    this.show(this.dataset.cartErrorText, "error");
+  }
+
+  show(message, type) {
+    document.querySelector("theme-toast")?.show(message, type);
+  }
+
+  announce(type) {
+    const announcement = {
+      added: this.dataset.cartAddedText,
+      removed: this.dataset.cartRemovedText,
+      updated: this.dataset.cartUpdatedText,
+    }[type];
+
+    document.querySelector("theme-toast")?.announce(announcement);
+  }
+}
+
+if (!customElements.get("cart-feedback")) {
+  customElements.define("cart-feedback", CartFeedback);
+}
 
 class CartBadge extends HTMLElement {
   connectedCallback() {
@@ -46,7 +124,7 @@ class CartItems extends HTMLElement {
     this.addEventListener("change", this.onQuantityChange.bind(this), {
       signal: this.listenerController.signal,
     });
-    this.addEventListener("shopify:cart:lines-update", this.onCartLinesUpdate.bind(this), {
+    document.addEventListener("shopify:cart:lines-update", this.onCartLinesUpdate.bind(this), {
       signal: this.listenerController.signal,
     });
     this.isInitialized = true;
@@ -62,8 +140,6 @@ class CartItems extends HTMLElement {
     const lineId = removeButton?.dataset.cartLineId;
 
     if (!lineId || !window.Shopify?.actions?.updateCart || this.getAttribute("aria-busy") === "true") return;
-
-    this.pendingAnnouncement = "removed";
 
     try {
       await window.Shopify.actions.updateCart(
@@ -96,8 +172,6 @@ class CartItems extends HTMLElement {
     }
 
     this.pendingFocusId = quantityInput.dataset.cartFocusId;
-    this.pendingAnnouncement = quantity === 0 ? "removed" : "updated";
-
     try {
       await window.Shopify.actions.updateCart(
         { lines: [{ id: lineId, quantity }] },
@@ -117,43 +191,37 @@ class CartItems extends HTMLElement {
     this.setAttribute("aria-busy", "true");
 
     try {
-      const result = await event.promise;
+      let result;
+
+      try {
+        result = await event.promise;
+      } catch (error) {
+        console.error("[Cart] Cart update failed", error);
+        return;
+      }
 
       const { cart, userErrors = [], warnings = [] } = result;
-      const errorMessages = userErrors.map(({ message }) => message).filter(Boolean);
-      const warningMessages = warnings.map(({ message }) => message).filter(Boolean);
-      const messages = [...errorMessages, ...warningMessages];
-      const messageType = errorMessages.length ? "error" : warningMessages.length ? "warning" : "";
-      const announcementType =
-        event.action === "add" || event.context === "product" ? "added" : this.pendingAnnouncement || "updated";
+      const hasIssues = userErrors.length > 0 || warnings.length > 0;
 
-      if (!cart && !messages.length) return;
+      if (!cart) return;
 
-      if (this.dataset.context === "drawer") {
-        await window.Shopify.actions.openCart();
+      try {
+        if (this.dataset.context === "drawer" && !hasIssues) {
+          await window.Shopify.actions.openCart();
+        }
+
+        await this.render();
+      } catch (error) {
+        console.error("[Cart] Cart rendering failed", error);
+
+        document.dispatchEvent(new CustomEvent("theme:cart:render-error"));
       }
-
-      await this.render(messages, messageType);
-
-      if (cart && !messages.length) this.announceCartUpdate(announcementType);
-    } catch (error) {
-      console.error("[Cart] Cart update failed", error);
-
-      if (this.dataset.context === "drawer") {
-        await window.Shopify.actions.openCart();
-      }
-
-      const currentCartItems =
-        document.querySelector(`cart-items[data-context="${CSS.escape(this.dataset.context)}"]`) || this;
-
-      this.showMessage([document.documentElement.dataset.cartErrorText], "error", currentCartItems)?.focus();
     } finally {
-      this.pendingAnnouncement = "";
       this.removeAttribute("aria-busy");
     }
   }
 
-  async render(messages = [], messageType = "") {
+  async render() {
     const url = new URL(window.location.href);
 
     url.searchParams.set("sections", "cart-items-render,cart-summary-render");
@@ -185,8 +253,6 @@ class CartItems extends HTMLElement {
       throw new Error("Rendered cart content was not found");
     }
 
-    const cartMessage = this.showMessage(messages, messageType, nextCartItems);
-
     const renderedId = nextCartItems.id;
 
     nextCartItems.id = this.id;
@@ -204,42 +270,9 @@ class CartItems extends HTMLElement {
     currentCartSummary.replaceWith(nextCartSummary);
     this.replaceWith(nextCartItems);
 
-    if (messages.length && cartMessage) {
-      cartMessage.focus();
-    } else if (focusId) {
+    if (focusId) {
       nextCartItems.querySelector(`[data-cart-focus-id="${CSS.escape(focusId)}"]`)?.focus();
     }
-  }
-
-  announceCartUpdate(type) {
-    const liveRegion = document.querySelector("[data-cart-live-region]");
-    const announcement = {
-      added: liveRegion?.dataset.cartAddedText,
-      removed: liveRegion?.dataset.cartRemovedText,
-      updated: liveRegion?.dataset.cartUpdatedText,
-    }[type];
-
-    if (!liveRegion || !announcement) return;
-
-    liveRegion.textContent = "";
-    requestAnimationFrame(() => {
-      liveRegion.textContent = announcement;
-    });
-  }
-
-  showMessage(messages, type, cartItems = this) {
-    const cartMessage = cartItems.querySelector("[data-cart-message]");
-
-    if (!cartMessage || !messages.length) return null;
-
-    cartMessage.textContent = messages.join(" ");
-    cartMessage.classList.remove("alert-error", "alert-warning");
-    cartMessage.classList.add(`alert-${type}`);
-    cartMessage.setAttribute("role", type === "error" ? "alert" : "status");
-    cartMessage.tabIndex = -1;
-    cartMessage.hidden = false;
-
-    return cartMessage;
   }
 }
 

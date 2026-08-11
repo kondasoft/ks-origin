@@ -9,11 +9,14 @@
  */
 {
   "current": {
-    "type_heading_font": "manrope_n6",
+    "type_heading_font": "lato_n5",
     "heading_size_scale": 100,
     "body_size_scale": 100,
     "container_width": "container-narrow",
     "border_radius": 6,
+    "cart_type": "drawer",
+    "cart_show_dynamic_checkout_buttons": false,
+    "cart_show_view_cart_button": false,
     "social_threads": "",
     "social_pinterest": "",
     "social_snapchat": "",

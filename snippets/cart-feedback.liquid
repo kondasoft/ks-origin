@@ -1,13 +1,9 @@
 {% comment %}
-  Announces cart updates to screen readers without moving focus.
+  Provides localized messages for the global cart feedback component.
 {% endcomment %}
-<div
-  class="visually-hidden"
-  role="status"
-  aria-live="polite"
-  aria-atomic="true"
-  data-cart-live-region
+<cart-feedback
+  data-cart-error-text="{{ 'cart.error' | t | escape }}"
   data-cart-added-text="{{ 'cart.announcements.added' | t | escape }}"
   data-cart-removed-text="{{ 'cart.announcements.removed' | t | escape }}"
   data-cart-updated-text="{{ 'cart.announcements.updated' | t | escape }}"
-></div>
+></cart-feedback>

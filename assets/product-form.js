@@ -46,7 +46,7 @@ class ThemeProductForm extends HTMLElement {
     submitButton.focus({ preventScroll: true });
 
     try {
-      const result = await window.Shopify.actions.updateCart(
+      await window.Shopify.actions.updateCart(
         { lines: [line] },
         {
           event: {
@@ -55,16 +55,8 @@ class ThemeProductForm extends HTMLElement {
           },
         },
       );
-
-      if (document.documentElement.dataset.cartType === "page") {
-        this.handlePageCartResult(result);
-      }
     } catch (error) {
       console.error("[Cart] Product add failed", error);
-
-      if (document.documentElement.dataset.cartType === "page") {
-        this.showToast(document.documentElement.dataset.cartErrorText, "error");
-      }
     } finally {
       this.form.removeAttribute("aria-busy");
       submitButton.removeAttribute("aria-busy");
@@ -96,24 +88,6 @@ class ThemeProductForm extends HTMLElement {
       ...(sellingPlanId ? { sellingPlanId: String(sellingPlanId) } : {}),
       ...(attributes.length ? { attributes } : {}),
     };
-  }
-
-  handlePageCartResult(result) {
-    const errorMessages = (result.userErrors || []).map(({ message }) => message).filter(Boolean);
-    const warningMessages = (result.warnings || []).map(({ message }) => message).filter(Boolean);
-    const messages = [...errorMessages, ...warningMessages];
-
-    if (messages.length) {
-      this.showToast(messages.join(" "), errorMessages.length ? "error" : "warning");
-    } else {
-      const addedMessage = document.querySelector("[data-cart-live-region]")?.dataset.cartAddedText;
-
-      this.showToast(addedMessage, "success");
-    }
-  }
-
-  showToast(message, type) {
-    document.querySelector("theme-toast")?.show(message, type);
   }
 }
 

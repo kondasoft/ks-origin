@@ -6,7 +6,6 @@
   data-template-suffix="{{ template.suffix }}"
   data-cart-type="{{ settings.cart_type }}"
   data-cart-url="{{ routes.cart_url }}"
-  data-cart-error-text="{{ 'cart.error' | t | escape }}"
   data-design-mode="{{ request.design_mode }}">
   <head>
     {% render 'theme-head' %}
@@ -34,7 +33,7 @@
     {% liquid
       render 'search-dialog'
       render 'cart-dialog'
-      render 'cart-announcer'
+      render 'cart-feedback'
       render 'localization-countries-dialog'
       render 'localization-languages-dialog'
       render 'theme-toast'

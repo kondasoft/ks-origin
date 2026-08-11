@@ -1633,6 +1633,7 @@ class ThemeToast extends HTMLElement {
     this.listenerController?.abort();
     window.clearTimeout(this.hideTimer);
     cancelAnimationFrame(this.showFrame);
+    cancelAnimationFrame(this.announcementFrame);
     this.isInitialized = false;
   }
 
@@ -1645,20 +1646,25 @@ class ThemeToast extends HTMLElement {
     this.alert.classList.remove("alert-error", "alert-warning", "alert-success");
     this.alert.classList.add(`alert-${type}`);
     this.message.textContent = "";
-    this.statusRegion.textContent = "";
-    this.alertRegion.textContent = "";
     this.alert.hidden = false;
+    this.announce(message, type === "error" ? "alert" : "status");
 
     this.showFrame = requestAnimationFrame(() => {
       this.message.textContent = message;
-
-      if (type === "error") {
-        this.alertRegion.textContent = message;
-      } else {
-        this.statusRegion.textContent = message;
-      }
-
       this.hideTimer = window.setTimeout(() => this.hide(), 6000);
+    });
+  }
+
+  announce(message, type = "status") {
+    if (!message || !this.statusRegion || !this.alertRegion) return;
+
+    const region = type === "alert" ? this.alertRegion : this.statusRegion;
+
+    cancelAnimationFrame(this.announcementFrame);
+    this.statusRegion.textContent = "";
+    this.alertRegion.textContent = "";
+    this.announcementFrame = requestAnimationFrame(() => {
+      region.textContent = message;
     });
   }
 
@@ -1667,8 +1673,6 @@ class ThemeToast extends HTMLElement {
     cancelAnimationFrame(this.showFrame);
     this.alert.hidden = true;
     this.message.textContent = "";
-    this.statusRegion.textContent = "";
-    this.alertRegion.textContent = "";
   }
 }
 

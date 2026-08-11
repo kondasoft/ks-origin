@@ -99,6 +99,7 @@
 .theme-collapse.facet .theme-collapse-summary {
   padding-right: 1em;
   padding-left: 1em;
+  font-weight: 700;
 }
 
 .theme-collapse.facet .theme-collapse-details[open] .theme-collapse-summary {

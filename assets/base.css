@@ -1188,6 +1188,7 @@ th {
   outline: 2px solid transparent;
   outline-offset: -2px;
   transition: color 200ms ease-out;
+  font-weight: 500;
 }
 
 .theme-collapse-summary::-webkit-details-marker {
