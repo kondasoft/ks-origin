@@ -8,7 +8,10 @@
   <theme-collapse class="theme-collapse cart-option cart-note-collapse">
     <details class="theme-collapse-details">
       <summary class="theme-collapse-summary">
-        <span>{{ 'cart.note.heading' | t }}</span>
+        <span class="cart-option-heading">
+          {% render 'svg-icons', icon: 'note', icon_size: 18 %}
+          <span>{{ 'cart.note.heading' | t }}</span>
+        </span>
         <span class="theme-collapse-icon" aria-hidden="true">
           {% render 'svg-icons', icon: 'chevron-down', icon_size: 18 %}
         </span>

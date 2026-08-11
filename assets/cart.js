@@ -8,6 +8,9 @@ class CartFeedback extends HTMLElement {
   connectedCallback() {
     if (this.isInitialized) return;
 
+    this.drawerAlert = document.querySelector("[data-cart-drawer-alert]");
+    this.drawerAlertMessage = this.drawerAlert?.querySelector("[data-cart-drawer-alert-message]");
+    this.cartDialog = document.getElementById("cart-dialog");
     this.listenerController = new AbortController();
     document.addEventListener("shopify:cart:lines-update", this.onCartLinesUpdate.bind(this), {
       signal: this.listenerController.signal,
@@ -21,11 +24,16 @@ class CartFeedback extends HTMLElement {
     document.addEventListener("theme:cart:render-error", this.onCartRenderError.bind(this), {
       signal: this.listenerController.signal,
     });
+    this.cartDialog?.addEventListener("close", this.hideDrawerAlert.bind(this), {
+      signal: this.listenerController.signal,
+    });
     this.isInitialized = true;
   }
 
   disconnectedCallback() {
     this.listenerController?.abort();
+    window.clearTimeout(this.drawerAlertTimer);
+    cancelAnimationFrame(this.drawerAlertFrame);
     this.isInitialized = false;
   }
 
@@ -72,6 +80,7 @@ class CartFeedback extends HTMLElement {
     try {
       const result = await event.promise;
 
+      if (event.detail?.source === "cart-discount-cleanup") return;
       if (this.showResultIssues(result)) return;
       if (!result.cart) return;
 
@@ -93,7 +102,38 @@ class CartFeedback extends HTMLElement {
   }
 
   show(message, type) {
+    if (this.cartDialog?.open && this.drawerAlert && this.drawerAlertMessage) {
+      this.showDrawerAlert(message, type);
+      return;
+    }
+
     document.querySelector("theme-toast")?.show(message, type);
+  }
+
+  showDrawerAlert(message, type) {
+    window.clearTimeout(this.drawerAlertTimer);
+    cancelAnimationFrame(this.drawerAlertFrame);
+
+    this.drawerAlert.classList.remove("alert-error", "alert-warning", "alert-success");
+    this.drawerAlert.classList.add(`alert-${type}`);
+    this.drawerAlertMessage.textContent = "";
+    this.drawerAlert.hidden = false;
+    document.querySelector("theme-toast")?.announce(message, type === "error" ? "alert" : "status");
+
+    this.drawerAlertFrame = requestAnimationFrame(() => {
+      this.drawerAlertMessage.textContent = message;
+      this.drawerAlertTimer = window.setTimeout(() => this.hideDrawerAlert(), 6000);
+    });
+  }
+
+  hideDrawerAlert() {
+    window.clearTimeout(this.drawerAlertTimer);
+    cancelAnimationFrame(this.drawerAlertFrame);
+
+    if (!this.drawerAlert || !this.drawerAlertMessage) return;
+
+    this.drawerAlert.hidden = true;
+    this.drawerAlertMessage.textContent = "";
   }
 
   showResultIssues(result) {
@@ -270,8 +310,14 @@ class CartDiscount extends HTMLElement {
       const codeWasApplied = result.cart?.discountCodes?.some(
         ({ applicable, code }) => applicable && code.toLowerCase() === submittedCode.toLowerCase(),
       );
+      const applicableCodes = result.cart?.discountCodes
+        ?.filter(({ applicable }) => applicable)
+        .map(({ code }) => code);
+      const hasInvalidCodes = result.cart?.discountCodes?.some(({ applicable }) => !applicable);
 
-      if (submittedCode && codeWasApplied) this.input.value = "";
+      if (hasInvalidCodes) await this.clearInvalidDiscountCodes(applicableCodes || []);
+
+      if (submittedCode && (codeWasApplied || hasInvalidCodes)) this.input.value = "";
     } catch (error) {
       console.error("[Cart] Discount update failed", error);
     } finally {
@@ -279,6 +325,18 @@ class CartDiscount extends HTMLElement {
       trigger.removeAttribute("aria-disabled");
       trigger.classList.remove("loading");
     }
+  }
+
+  async clearInvalidDiscountCodes(discountCodes) {
+    await window.Shopify.actions.updateCart(
+      { discountCodes },
+      {
+        event: {
+          context: this.dataset.context === "drawer" ? "dialog" : "cart",
+          detail: { source: "cart-discount-cleanup" },
+        },
+      },
+    );
   }
 
   getExistingCodes() {
