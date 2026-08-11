@@ -117,7 +117,7 @@
 }
 
 .cart-item:last-child {
-  border-bottom: 0;
+  /* border-bottom: 0; */
 }
 
 .cart-item-image-link {
@@ -353,7 +353,6 @@
 */
 .cart-options {
   flex: 0 0 auto;
-  margin-top: 1rem;
 }
 
 .cart-options .theme-collapse {
@@ -547,7 +546,7 @@
     display: grid;
     grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr);
     align-items: start;
-    gap: 2rem;
+    gap: 2.5rem;
   }
 
   .main-cart-layout:has(.main-cart-summary[hidden]) {
