@@ -151,6 +151,15 @@
       "save": "Enregistrer la note",
       "updated": "Note de commande enregistrée."
     },
+    "discount": {
+      "heading": "Code de réduction",
+      "label": "Code de réduction",
+      "placeholder": "Saisissez un code de réduction",
+      "apply": "Appliquer",
+      "remove": "Supprimer le code de réduction {{ code }}",
+      "updated": "Codes de réduction mis à jour.",
+      "invalid": "Ce code de réduction n’a pas pu être appliqué."
+    },
     "view_file": "Voir le fichier",
     "error": "Impossible de mettre à jour votre panier. Veuillez réessayer."
   },

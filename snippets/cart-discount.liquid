@@ -1,0 +1,87 @@
+{% doc %}
+  Renders the cart discount-code collapse and applied-code controls.
+
+  @param {string} context - Render context: `drawer` or `page`.
+{% enddoc %}
+
+{% if settings.cart_show_discount %}
+  {% liquid
+    assign discount_codes = cart.discount_applications | where: 'type', 'discount_code' | map: 'title' | uniq
+  %}
+
+  <theme-collapse class="theme-collapse cart-option cart-discount-collapse">
+    <details
+      class="theme-collapse-details"
+      {% if discount_codes.size > 0 %}
+        open
+      {% endif %}
+    >
+      <summary class="theme-collapse-summary">
+        <span>{{ 'cart.discount.heading' | t }}</span>
+        <span class="theme-collapse-icon" aria-hidden="true">
+          {% render 'svg-icons', icon: 'chevron-down', icon_size: 18 %}
+        </span>
+      </summary>
+
+      <div class="theme-collapse-content">
+        <cart-discount
+          class="cart-discount"
+          data-context="{{ context }}"
+          data-remove-label="{{ 'cart.discount.remove' | t: code: '[code]' | escape }}"
+        >
+          <form class="cart-discount-form" action="{{ routes.cart_url }}" method="post">
+            <label class="visually-hidden" for="CartDiscount-{{ context }}">
+              {{- 'cart.discount.label' | t -}}
+            </label>
+            <input
+              id="CartDiscount-{{ context }}"
+              class="input"
+              type="text"
+              name="discount"
+              placeholder="{{ 'cart.discount.placeholder' | t | escape }}"
+              autocapitalize="off"
+              autocomplete="off"
+              spellcheck="false"
+              required
+              data-cart-discount-input
+            >
+            <button class="btn btn-sm btn-text-outline cart-discount-button" type="submit">
+              {{ 'cart.discount.apply' | t }}
+            </button>
+          </form>
+
+          <ul
+            class="cart-discount-codes"
+            aria-label="{{ 'cart.applied_discounts' | t | escape }}"
+            data-cart-discount-codes
+          >
+            {% for discount_code in discount_codes %}
+              <li class="badge cart-discount-code" data-cart-discount-code="{{ discount_code | escape }}">
+                {% render 'svg-icons', icon: 'tag', icon_size: 14 %}
+                <span data-cart-discount-code-text>{{ discount_code | escape }}</span>
+                <button
+                  class="icon-button cart-discount-remove"
+                  type="button"
+                  data-cart-discount-remove
+                  aria-label="{{ 'cart.discount.remove' | t: code: discount_code | escape }}"
+                >
+                  {% render 'svg-icons', icon: 'close', icon_size: 14 %}
+                </button>
+              </li>
+            {% endfor %}
+          </ul>
+
+          <template data-cart-discount-code-template>
+            <li class="badge cart-discount-code" data-cart-discount-code>
+              {% render 'svg-icons', icon: 'tag', icon_size: 14 %}
+              <span data-cart-discount-code-text></span>
+              <button class="icon-button cart-discount-remove" type="button" data-cart-discount-remove>
+                {% render 'svg-icons', icon: 'close', icon_size: 14 %}
+              </button>
+            </li>
+          </template>
+        </cart-discount>
+      </div>
+    </details>
+  </theme-collapse>
+{% endif %}

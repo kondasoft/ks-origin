@@ -15,6 +15,9 @@ class CartFeedback extends HTMLElement {
     document.addEventListener("shopify:cart:note-update", this.onCartNoteUpdate.bind(this), {
       signal: this.listenerController.signal,
     });
+    document.addEventListener("shopify:cart:discount-update", this.onCartDiscountUpdate.bind(this), {
+      signal: this.listenerController.signal,
+    });
     document.addEventListener("theme:cart:render-error", this.onCartRenderError.bind(this), {
       signal: this.listenerController.signal,
     });
@@ -57,8 +60,29 @@ class CartFeedback extends HTMLElement {
       const result = await event.promise;
 
       if (this.showResultIssues(result)) return;
+      if (!result.cart) return;
 
       this.show(this.dataset.cartNoteUpdatedText, "success");
+    } catch {
+      this.show(this.dataset.cartErrorText, "error");
+    }
+  }
+
+  async onCartDiscountUpdate(event) {
+    try {
+      const result = await event.promise;
+
+      if (this.showResultIssues(result)) return;
+      if (!result.cart) return;
+
+      const hasInvalidCode = result.cart.discountCodes.some(({ applicable }) => !applicable);
+
+      if (hasInvalidCode) {
+        this.show(this.dataset.cartDiscountInvalidText, "warning");
+        return;
+      }
+
+      this.show(this.dataset.cartDiscountUpdatedText, "success");
     } catch {
       this.show(this.dataset.cartErrorText, "error");
     }
@@ -162,6 +186,129 @@ if (!customElements.get("cart-note")) {
   customElements.define("cart-note", CartNote);
 }
 
+class CartDiscount extends HTMLElement {
+  connectedCallback() {
+    if (this.isInitialized) return;
+
+    this.form = this.querySelector("form");
+    this.input = this.querySelector("[data-cart-discount-input]");
+    this.submitButton = this.form?.querySelector('[type="submit"]');
+    this.codeList = this.querySelector("[data-cart-discount-codes]");
+    this.codeTemplate = this.querySelector("[data-cart-discount-code-template]");
+
+    if (!this.form || !this.input || !this.submitButton || !this.codeList || !this.codeTemplate) return;
+
+    this.listenerController = new AbortController();
+    this.form.addEventListener("submit", this.onSubmit.bind(this), {
+      signal: this.listenerController.signal,
+    });
+    this.addEventListener("click", this.onRemoveClick.bind(this), {
+      signal: this.listenerController.signal,
+    });
+    document.addEventListener("shopify:cart:discount-update", this.onCartDiscountUpdate.bind(this), {
+      signal: this.listenerController.signal,
+    });
+    this.isInitialized = true;
+  }
+
+  disconnectedCallback() {
+    this.listenerController?.abort();
+    this.isInitialized = false;
+  }
+
+  async onSubmit(event) {
+    if (!window.Shopify?.actions?.updateCart) return;
+
+    event.preventDefault();
+
+    const code = this.input.value.trim();
+    const existingCodes = this.getExistingCodes();
+    const isDuplicate = existingCodes.some((existingCode) => existingCode.toLowerCase() === code.toLowerCase());
+
+    if (!code || isDuplicate || this.getAttribute("aria-busy") === "true") return;
+
+    await this.updateDiscountCodes([...existingCodes, code], code, this.submitButton);
+  }
+
+  async onRemoveClick(event) {
+    const removeButton = event.target.closest("[data-cart-discount-remove]");
+    const code = removeButton?.closest("[data-cart-discount-code]")?.dataset.cartDiscountCode;
+
+    if (!removeButton || !code || this.getAttribute("aria-busy") === "true") return;
+
+    const nextCodes = this.getExistingCodes().filter(
+      (existingCode) => existingCode.toLowerCase() !== code.toLowerCase(),
+    );
+
+    await this.updateDiscountCodes(nextCodes, "", removeButton);
+  }
+
+  async onCartDiscountUpdate(event) {
+    const result = await event.promise.catch(() => null);
+    const discountCodes = result?.cart?.discountCodes;
+
+    if (!Array.isArray(discountCodes)) return;
+
+    this.renderCodes(discountCodes.filter(({ applicable }) => applicable).map(({ code }) => code));
+  }
+
+  async updateDiscountCodes(discountCodes, submittedCode, trigger) {
+    this.setAttribute("aria-busy", "true");
+    trigger.setAttribute("aria-disabled", "true");
+    if (trigger.matches(".btn")) trigger.classList.add("loading");
+
+    try {
+      const result = await window.Shopify.actions.updateCart(
+        { discountCodes },
+        {
+          event: {
+            context: this.dataset.context === "drawer" ? "dialog" : "cart",
+            detail: { source: "cart-discount" },
+          },
+        },
+      );
+      const codeWasApplied = result.cart?.discountCodes?.some(
+        ({ applicable, code }) => applicable && code.toLowerCase() === submittedCode.toLowerCase(),
+      );
+
+      if (submittedCode && codeWasApplied) this.input.value = "";
+    } catch (error) {
+      console.error("[Cart] Discount update failed", error);
+    } finally {
+      this.removeAttribute("aria-busy");
+      trigger.removeAttribute("aria-disabled");
+      trigger.classList.remove("loading");
+    }
+  }
+
+  getExistingCodes() {
+    return Array.from(this.querySelectorAll("[data-cart-discount-code]"), (item) => item.dataset.cartDiscountCode)
+      .filter(Boolean);
+  }
+
+  renderCodes(discountCodes) {
+    this.codeList.replaceChildren();
+
+    discountCodes.forEach((code) => {
+      const codeFragment = this.codeTemplate.content.cloneNode(true);
+      const codeItem = codeFragment.querySelector("[data-cart-discount-code]");
+      const codeText = codeFragment.querySelector("[data-cart-discount-code-text]");
+      const removeButton = codeFragment.querySelector("[data-cart-discount-remove]");
+
+      if (!codeItem || !codeText || !removeButton) return;
+
+      codeItem.dataset.cartDiscountCode = code;
+      codeText.textContent = code;
+      removeButton.setAttribute("aria-label", this.dataset.removeLabel.replace("[code]", code));
+      this.codeList.append(codeFragment);
+    });
+  }
+}
+
+if (!customElements.get("cart-discount")) {
+  customElements.define("cart-discount", CartDiscount);
+}
+
 class CartBadge extends HTMLElement {
   connectedCallback() {
     if (this.isInitialized) return;
@@ -205,6 +352,9 @@ class CartItems extends HTMLElement {
       signal: this.listenerController.signal,
     });
     document.addEventListener("shopify:cart:lines-update", this.onCartLinesUpdate.bind(this), {
+      signal: this.listenerController.signal,
+    });
+    document.addEventListener("shopify:cart:discount-update", this.onCartDiscountUpdate.bind(this), {
       signal: this.listenerController.signal,
     });
     this.isInitialized = true;
@@ -296,6 +446,31 @@ class CartItems extends HTMLElement {
           await window.Shopify.actions.openCart();
         }
 
+        await this.render();
+      } catch (error) {
+        console.error("[Cart] Cart rendering failed", error);
+
+        document.dispatchEvent(new CustomEvent("theme:cart:render-error"));
+      }
+    } finally {
+      this.removeAttribute("aria-busy");
+    }
+  }
+
+  async onCartDiscountUpdate(event) {
+    this.setAttribute("aria-busy", "true");
+
+    try {
+      try {
+        const result = await event.promise;
+
+        if (!result.cart) return;
+      } catch (error) {
+        console.error("[Cart] Discount update failed", error);
+        return;
+      }
+
+      try {
         await this.render();
       } catch (error) {
         console.error("[Cart] Cart rendering failed", error);

@@ -340,6 +340,10 @@
   margin-top: 1rem;
 }
 
+
+/*
+  Cart note
+*/
 .cart-note {
   display: block;
 }
@@ -350,6 +354,70 @@
 
 .cart-note-form .input {
   margin-bottom: 0.75rem;
+}
+
+
+/*
+  Cart discount
+*/
+.cart-discount {
+  display: block;
+  transition: opacity 200ms ease-out;
+}
+
+.cart-discount[aria-busy='true'] {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.cart-discount-form {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+}
+
+.cart-discount-form .input {
+  flex: 1;
+}
+
+.cart-discount-button {
+  flex: 0 0 auto;
+}
+
+.cart-discount-codes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0;
+  margin: 0.75rem 0 0;
+  list-style: none;
+}
+
+.cart-discount-codes:empty {
+  display: none;
+}
+
+.cart-discount-code {
+  gap: 0.375em;
+}
+
+.cart-discount-code > .svg-icon {
+  flex: 0 0 auto;
+}
+
+.cart-discount-remove {
+  --icon-button-color: var(--color-background);
+  width: 24px;
+  min-width: 24px;
+  height: 24px;
+  margin: -0.25em -0.5em -0.25em 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cart-discount {
+    transition: none;
+  }
 }
 
 

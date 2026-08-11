@@ -151,6 +151,15 @@
       "save": "Save note",
       "updated": "Cart note saved."
     },
+    "discount": {
+      "heading": "Discount code",
+      "label": "Discount code",
+      "placeholder": "Enter discount code",
+      "apply": "Apply",
+      "remove": "Remove discount code {{ code }}",
+      "updated": "Discount codes updated.",
+      "invalid": "This discount code could not be applied."
+    },
     "view_file": "View file",
     "error": "Unable to update your cart. Please try again."
   },
