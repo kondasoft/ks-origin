@@ -243,6 +243,10 @@
   transition: opacity 200ms ease-out;
 }
 
+.product-grid:has(.product-card[data-custom-colors="true"]) {
+  gap: 1rem;
+}
+
 .faceted-results-grid[aria-busy="true"] .product-grid {
   opacity: 0.2;
 }
@@ -275,6 +279,10 @@
   .product-grid {
     grid-template-columns: repeat(var(--desktop-columns), minmax(0, 1fr));
     gap: 2.5rem 1.5rem;
+  }
+
+  .product-grid:has(.product-card[data-custom-colors="true"]) {
+    gap: 1rem;
   }
 }
 

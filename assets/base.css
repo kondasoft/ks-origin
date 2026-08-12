@@ -1343,7 +1343,7 @@ th {
   height: 2px;
   margin: 2rem auto 0;
   overflow: hidden;
-  background-color: rgb(var(--color-surface));
+  background-color: rgb(var(--color-text) / 0.12);
   border-radius: 50rem;
 }
 

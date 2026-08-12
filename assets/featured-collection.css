@@ -22,6 +22,10 @@
   list-style: none;
 }
 
+.featured-collection-grid:has(.product-card[data-custom-colors="true"]) {
+  gap: 1rem;
+}
+
 .featured-collection-item {
   min-width: 0;
 }
@@ -46,6 +50,10 @@
   .featured-collection-grid {
     grid-template-columns: repeat(var(--desktop-columns), minmax(0, 1fr));
     gap: 2.5rem 1.5rem;
+  }
+
+  .featured-collection-grid:has(.product-card[data-custom-colors="true"]) {
+    gap: 1rem;
   }
 
   .featured-collection-view-all {

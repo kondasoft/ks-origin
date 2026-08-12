@@ -46,6 +46,7 @@
     {% if layout == 'carousel' %}
       <theme-carousel
         class="theme-carousel"
+        data-align-navigation-to-media="{{ section.settings.carousel_align_navigation_to_media }}"
         data-partial-slide-mobile="{{ section.settings.carousel_partial_slide_mobile }}"
         role="region"
         aria-roledescription="{{ 'accessibility.carousel' | t }}"
@@ -231,6 +232,14 @@
       "label": "Show navigation buttons",
       "default": true,
       "visible_if": "{{ section.settings.layout == 'carousel' }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "carousel_align_navigation_to_media",
+      "label": "Align navigation to media",
+      "info": "Centers navigation buttons against the card image. Disable to center them against the full card.",
+      "default": true,
+      "visible_if": "{{ section.settings.layout == 'carousel' and section.settings.carousel_show_navigation }}"
     },
     {
       "type": "checkbox",

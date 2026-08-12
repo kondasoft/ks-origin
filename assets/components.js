@@ -892,7 +892,10 @@ class ThemeCarousel extends HTMLElement {
     this.nextButton = this.querySelector("[data-carousel-next]");
     this.progressBar = this.querySelector("[data-carousel-progress-bar]");
     this.trackWrapper = this.querySelector(".theme-carousel-track-wrapper");
-    this.controlAlignmentElement = this.items[0]?.querySelector("[data-carousel-control-alignment]");
+    this.controlAlignmentElement =
+      this.dataset.alignNavigationToMedia === "false"
+        ? this.items[0]
+        : this.items[0]?.querySelector("[data-carousel-control-alignment]");
 
     if (!this.track || !this.items.length) return;
 

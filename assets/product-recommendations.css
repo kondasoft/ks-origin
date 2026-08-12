@@ -23,6 +23,10 @@
   list-style: none;
 }
 
+.product-recommendations-grid:has(.product-card[data-custom-colors="true"]) {
+  gap: 1rem;
+}
+
 .product-recommendations-item {
   min-width: 0;
 }
@@ -77,6 +81,10 @@
   .product-recommendations-grid {
     grid-template-columns: repeat(var(--desktop-columns), minmax(0, 1fr));
     gap: 2.5rem 1.5rem;
+  }
+
+  .product-recommendations-grid:has(.product-card[data-custom-colors="true"]) {
+    gap: 1rem;
   }
 
   .product-recommendations-loading-grid {
