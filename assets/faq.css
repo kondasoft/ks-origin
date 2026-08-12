@@ -4,10 +4,6 @@
   This file contains the layout and presentation styles for the FAQ section.
 */
 
-
-/*
-  FAQ
-*/
 .faq {
   color: rgb(var(--color-text));
   text-align: var(--mobile-text-alignment);

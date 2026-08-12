@@ -17,6 +17,7 @@ class PredictiveSearch extends HTMLElement {
     this.submitIcon = this.querySelector("[data-predictive-search-submit-icon]");
     this.spinner = this.querySelector(".predictive-search-spinner-wrapper");
     this.initial = this.querySelector("[data-predictive-search-initial]");
+    this.loading = this.querySelector("[data-predictive-search-loading]");
     this.results = this.querySelector(".predictive-search-results");
     this.status = this.querySelector("[data-predictive-search-status]");
     this.dialog = this.closest("dialog");
@@ -31,6 +32,7 @@ class PredictiveSearch extends HTMLElement {
       !this.submitIcon ||
       !this.spinner ||
       !this.initial ||
+      !this.loading ||
       !this.results ||
       !this.status ||
       !this.footer ||
@@ -346,6 +348,7 @@ class PredictiveSearch extends HTMLElement {
 
   clearResults() {
     this.initial.hidden = this.input.value.trim().length > 0;
+    this.loading.hidden = true;
     this.results.innerHTML = "";
     this.results.hidden = true;
     this.results.removeAttribute("aria-busy");
@@ -378,8 +381,11 @@ class PredictiveSearch extends HTMLElement {
   setLoading(isLoading) {
     this.spinner.hidden = !isLoading;
     this.submitIcon.hidden = isLoading;
+    this.loading.hidden = !isLoading;
 
     if (isLoading) {
+      this.initial.hidden = true;
+      this.results.hidden = true;
       this.submitButton.setAttribute("aria-busy", "true");
       this.results.setAttribute("aria-busy", "true");
       this.status.textContent = this.dataset.textLoading;

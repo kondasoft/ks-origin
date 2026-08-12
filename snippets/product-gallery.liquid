@@ -115,7 +115,11 @@ Renders the main product media gallery with images, Shopify-hosted videos, contr
 
       {% if gallery_count == 0 %}
         <li class="product-gallery-slide is-active" data-product-gallery-slide aria-hidden="false">
-          {{ 'product-apparel-1' | placeholder_svg_tag: 'product-gallery-image placeholder-svg' }}
+          {% if gallery_product != blank %}
+            {{ 'image' | placeholder_svg_tag: 'product-gallery-image placeholder-svg' }}
+          {% else %}
+            {{ 'product-apparel-1' | placeholder_svg_tag: 'product-gallery-image placeholder-svg' }}
+          {% endif %}
         </li>
       {% endif %}
     </ul>

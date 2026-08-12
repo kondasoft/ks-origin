@@ -25,6 +25,8 @@
         sizes: 'auto, 100vw',
         loading: 'lazy'
     }}
+  {% elsif product != blank %}
+    {{ 'image' | placeholder_svg_tag: product_image_placeholder_class }}
   {% else %}
     {{ placeholder_name | placeholder_svg_tag: product_image_placeholder_class }}
   {% endif %}

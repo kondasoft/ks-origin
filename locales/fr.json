@@ -130,6 +130,67 @@
       "other": "Afficher {{ count }} produits"
     }
   },
+  "products": {
+    "sku": "UGS : {{ sku }}",
+    "placeholders": {
+      "title": "Exemple de titre de produit",
+      "vendor": "Exemple de fournisseur",
+      "sku": "DEMO-001",
+      "description": "Présentez les matériaux, les caractéristiques et les conseils d’entretien de ce produit."
+    },
+    "badges": {
+      "sale": "Promotion",
+      "sold_out": "Épuisé"
+    },
+    "variants": {
+      "unavailable": "Indisponible"
+    },
+    "quantity": {
+      "label": "Quantité",
+      "decrease": "Diminuer la quantité",
+      "increase": "Augmenter la quantité"
+    },
+    "rating": {
+      "value": "Noté {{ rating }} sur {{ scale_max }}",
+      "detailed": {
+        "one": "{{ rating }}/{{ scale_max }} étoiles selon {{ count }} avis",
+        "other": "{{ rating }}/{{ scale_max }} étoiles selon {{ count }} avis"
+      },
+      "reviews": {
+        "one": "{{ count }} avis",
+        "other": "{{ count }} avis"
+      }
+    },
+    "price": {
+      "regular_price": "Prix normal",
+      "sale_price": "Prix promotionnel",
+      "from_price": "À partir de {{ price }}",
+      "duties_and_taxes_included": "Droits et taxes inclus.",
+      "taxes_included": "Taxes incluses.",
+      "duties_included": "Droits inclus.",
+      "shipping_policy_html": "<a href=\"{{ link }}\">Livraison</a> calculée lors du paiement."
+    },
+    "form": {
+      "add_to_cart": "Ajouter au panier",
+      "buy_it_now": "Acheter maintenant",
+      "select_options": "Choisir les options",
+      "sold_out": "Épuisé",
+      "all_inventory_in_cart": "Tous les articles disponibles pour cette variante sont déjà dans votre panier.",
+      "error": "Une erreur s'est produite. Veuillez réessayer."
+    },
+    "gift_card_recipient": {
+      "send_to": "Envoyer à",
+      "send_to_self": "Mon adresse e-mail",
+      "send_to_recipient": "Un destinataire",
+      "email": "E-mail du destinataire",
+      "name": "Nom du destinataire (facultatif)",
+      "message": "Message (facultatif)",
+      "send_on": "Date d’envoi (facultative)",
+      "characters_used": "{{ used }}/{{ max }} caractères",
+      "fields_visible": "Les informations du destinataire sont maintenant visibles.",
+      "fields_hidden": "Les informations du destinataire sont maintenant masquées."
+    }
+  },
   "cart": {
     "empty": "Votre panier est vide.",
     "continue_shopping": "Continuer vos achats",
@@ -218,67 +279,6 @@
     "show_results": {
       "one": "Afficher {{ count }} résultat",
       "other": "Afficher {{ count }} résultats"
-    }
-  },
-  "products": {
-    "sku": "UGS : {{ sku }}",
-    "placeholders": {
-      "title": "Exemple de titre de produit",
-      "vendor": "Exemple de fournisseur",
-      "sku": "DEMO-001",
-      "description": "Présentez les matériaux, les caractéristiques et les conseils d’entretien de ce produit."
-    },
-    "badges": {
-      "sale": "Promotion",
-      "sold_out": "Épuisé"
-    },
-    "variants": {
-      "unavailable": "Indisponible"
-    },
-    "quantity": {
-      "label": "Quantité",
-      "decrease": "Diminuer la quantité",
-      "increase": "Augmenter la quantité"
-    },
-    "rating": {
-      "value": "Noté {{ rating }} sur {{ scale_max }}",
-      "detailed": {
-        "one": "{{ rating }}/{{ scale_max }} étoiles selon {{ count }} avis",
-        "other": "{{ rating }}/{{ scale_max }} étoiles selon {{ count }} avis"
-      },
-      "reviews": {
-        "one": "{{ count }} avis",
-        "other": "{{ count }} avis"
-      }
-    },
-    "price": {
-      "regular_price": "Prix normal",
-      "sale_price": "Prix promotionnel",
-      "from_price": "À partir de {{ price }}",
-      "duties_and_taxes_included": "Droits et taxes inclus.",
-      "taxes_included": "Taxes incluses.",
-      "duties_included": "Droits inclus.",
-      "shipping_policy_html": "<a href=\"{{ link }}\">Livraison</a> calculée lors du paiement."
-    },
-    "form": {
-      "add_to_cart": "Ajouter au panier",
-      "buy_it_now": "Acheter maintenant",
-      "select_options": "Choisir les options",
-      "sold_out": "Épuisé",
-      "all_inventory_in_cart": "Tous les articles disponibles pour cette variante sont déjà dans votre panier.",
-      "error": "Une erreur s'est produite. Veuillez réessayer."
-    },
-    "gift_card_recipient": {
-      "send_to": "Envoyer à",
-      "send_to_self": "Mon adresse e-mail",
-      "send_to_recipient": "Un destinataire",
-      "email": "E-mail du destinataire",
-      "name": "Nom du destinataire (facultatif)",
-      "message": "Message (facultatif)",
-      "send_on": "Date d’envoi (facultative)",
-      "characters_used": "{{ used }}/{{ max }} caractères",
-      "fields_visible": "Les informations du destinataire sont maintenant visibles.",
-      "fields_hidden": "Les informations du destinataire sont maintenant masquées."
     }
   },
   "gift_cards": {

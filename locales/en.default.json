@@ -130,6 +130,67 @@
       "other": "Show {{ count }} products"
     }
   },
+  "products": {
+    "sku": "SKU: {{ sku }}",
+    "placeholders": {
+      "title": "Example product title",
+      "vendor": "Example vendor",
+      "sku": "DEMO-001",
+      "description": "Share details about this product's materials, features, and care instructions."
+    },
+    "badges": {
+      "sale": "Sale",
+      "sold_out": "Sold out"
+    },
+    "variants": {
+      "unavailable": "Unavailable"
+    },
+    "quantity": {
+      "label": "Quantity",
+      "decrease": "Decrease quantity",
+      "increase": "Increase quantity"
+    },
+    "rating": {
+      "value": "Rated {{ rating }} out of {{ scale_max }}",
+      "detailed": {
+        "one": "{{ rating }}/{{ scale_max }} stars from {{ count }} review",
+        "other": "{{ rating }}/{{ scale_max }} stars from {{ count }} reviews"
+      },
+      "reviews": {
+        "one": "{{ count }} review",
+        "other": "{{ count }} reviews"
+      }
+    },
+    "price": {
+      "regular_price": "Regular price",
+      "sale_price": "Sale price",
+      "from_price": "From {{ price }}",
+      "duties_and_taxes_included": "Duties and taxes included.",
+      "taxes_included": "Taxes included.",
+      "duties_included": "Duties included.",
+      "shipping_policy_html": "<a href=\"{{ link }}\">Shipping</a> calculated at checkout."
+    },
+    "form": {
+      "add_to_cart": "Add to cart",
+      "buy_it_now": "Buy it now",
+      "select_options": "Select options",
+      "sold_out": "Sold out",
+      "all_inventory_in_cart": "All available items for this variant are already in your cart.",
+      "error": "Something went wrong. Please try again."
+    },
+    "gift_card_recipient": {
+      "send_to": "Send to",
+      "send_to_self": "My email address",
+      "send_to_recipient": "A recipient",
+      "email": "Recipient email",
+      "name": "Recipient name (optional)",
+      "message": "Message (optional)",
+      "send_on": "Send date (optional)",
+      "characters_used": "{{ used }}/{{ max }} characters",
+      "fields_visible": "Recipient details are now visible.",
+      "fields_hidden": "Recipient details are now hidden."
+    }
+  },
   "cart": {
     "empty": "Your cart is empty.",
     "continue_shopping": "Continue shopping",
@@ -218,67 +279,6 @@
     "show_results": {
       "one": "Show {{ count }} result",
       "other": "Show {{ count }} results"
-    }
-  },
-  "products": {
-    "sku": "SKU: {{ sku }}",
-    "placeholders": {
-      "title": "Example product title",
-      "vendor": "Example vendor",
-      "sku": "DEMO-001",
-      "description": "Share details about this product's materials, features, and care instructions."
-    },
-    "badges": {
-      "sale": "Sale",
-      "sold_out": "Sold out"
-    },
-    "variants": {
-      "unavailable": "Unavailable"
-    },
-    "quantity": {
-      "label": "Quantity",
-      "decrease": "Decrease quantity",
-      "increase": "Increase quantity"
-    },
-    "rating": {
-      "value": "Rated {{ rating }} out of {{ scale_max }}",
-      "detailed": {
-        "one": "{{ rating }}/{{ scale_max }} stars from {{ count }} review",
-        "other": "{{ rating }}/{{ scale_max }} stars from {{ count }} reviews"
-      },
-      "reviews": {
-        "one": "{{ count }} review",
-        "other": "{{ count }} reviews"
-      }
-    },
-    "price": {
-      "regular_price": "Regular price",
-      "sale_price": "Sale price",
-      "from_price": "From {{ price }}",
-      "duties_and_taxes_included": "Duties and taxes included.",
-      "taxes_included": "Taxes included.",
-      "duties_included": "Duties included.",
-      "shipping_policy_html": "<a href=\"{{ link }}\">Shipping</a> calculated at checkout."
-    },
-    "form": {
-      "add_to_cart": "Add to cart",
-      "buy_it_now": "Buy it now",
-      "select_options": "Select options",
-      "sold_out": "Sold out",
-      "all_inventory_in_cart": "All available items for this variant are already in your cart.",
-      "error": "Something went wrong. Please try again."
-    },
-    "gift_card_recipient": {
-      "send_to": "Send to",
-      "send_to_self": "My email address",
-      "send_to_recipient": "A recipient",
-      "email": "Recipient email",
-      "name": "Recipient name (optional)",
-      "message": "Message (optional)",
-      "send_on": "Send date (optional)",
-      "characters_used": "{{ used }}/{{ max }} characters",
-      "fields_visible": "Recipient details are now visible.",
-      "fields_hidden": "Recipient details are now hidden."
     }
   },
   "gift_cards": {

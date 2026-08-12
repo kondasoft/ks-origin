@@ -1,9 +1,13 @@
 /*
   Footer stylesheet
 
-  This file contains the layout and presentation styles for the footer section.
+  This file owns the footer section layout, content blocks, bottom area, and responsive behavior.
 */
 
+
+/*
+  Footer layout
+*/
 .footer {
   padding-top: var(--pt);
   padding-bottom: var(--pb);
@@ -12,6 +16,10 @@
   border-top: 1px solid rgb(var(--color-text) / var(--border-opacity));
 }
 
+
+/*
+  Footer blocks
+*/
 .footer-block-collapse {
   border-top: 0;
 }
@@ -58,6 +66,7 @@
   text-decoration: none;
 }
 
+
 .footer-text > :first-child {
   margin-top: 0;
 }
@@ -73,6 +82,10 @@
   margin-top: 1.25em;
 }
 
+
+/*
+  Newsletter block
+*/
 .footer-newsletter-text > :first-child {
   margin-top: 0;
 }
@@ -110,6 +123,22 @@
   margin-top: 1.25em;
 }
 
+@media (hover: hover) {
+  .footer-newsletter-form-button:hover .svg-icon {
+    transform: translateX(2px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .footer-newsletter-form-button .svg-icon {
+    transition: none;
+  }
+}
+
+
+/*
+  Footer bottom
+*/
 .footer-bottom {
   display: flex;
   flex-direction: column;
@@ -121,11 +150,19 @@
   font-size: var(--fs-sm);
 }
 
+
+/*
+  Social links
+*/
 .footer-social {
   display: flex;
   justify-content: center;
 }
 
+
+/*
+  Localization
+*/
 .footer-localization {
   display: flex;
   flex-wrap: wrap;
@@ -172,6 +209,16 @@
   display: block;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .footer-localization-button {
+    transition: none;
+  }
+}
+
+
+/*
+  Policies
+*/
 .footer-policy-list {
   display: flex;
   flex-wrap: wrap;
@@ -196,6 +243,10 @@
   display: flex;
 }
 
+
+/*
+  Copyright and credits
+*/
 .footer-copyright {
   margin: 0;
   text-align: center;
@@ -229,6 +280,10 @@
   transform: translateY(2px) scale(1.1);
 }
 
+
+/*
+  Payment methods and Follow on Shop
+*/
 .footer-payment-icons {
   margin-top: 0.5em;
 }
@@ -238,12 +293,10 @@
   margin-bottom: 0.75rem;
 }
 
-@media (hover: hover) {
-  .footer-newsletter-form-button:hover .svg-icon {
-    transform: translateX(2px);
-  }
-}
 
+/*
+  Desktop layout
+*/
 @media (min-width: 1200px) {
   .footer-blocks {
     display: grid;
@@ -279,15 +332,5 @@
   .footer-bottom {
     padding-top: 2.5em;
     margin-top: 2.5em;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .footer-localization-button {
-    transition: none;
-  }
-
-  .footer-newsletter-form-button .svg-icon {
-    transition: none;
   }
 }

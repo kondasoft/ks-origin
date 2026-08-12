@@ -199,7 +199,15 @@
   Predictive search
 */
 predictive-search {
-  display: block;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.search-dialog .dialog-body {
+  display: flex;
+  flex-direction: column;
 }
 
 .predictive-search-form {
@@ -260,15 +268,52 @@ predictive-search {
 }
 
 .predictive-search-initial {
-  display: grid;
-  align-content: center;
-  justify-items: center;
-  padding: 5em 0;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
   text-align: center;
 }
 
 .predictive-search-initial p {
   margin: 0;
+}
+
+.predictive-search-loading {
+  display: flex;
+  flex-direction: column;
+  margin: 1.5rem -1rem 0;
+}
+
+.predictive-search-loading-item {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr);
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5em 1rem;
+}
+
+.predictive-search-loading-media {
+  width: 64px;
+  height: 64px;
+  background-color: rgb(var(--color-surface));
+  border-radius: var(--border-radius);
+}
+
+.predictive-search-loading-content {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.predictive-search-loading-line {
+  width: 75%;
+  height: 1em;
+  background-color: rgb(var(--color-surface));
+  border-radius: var(--border-radius);
+}
+
+.predictive-search-loading-line-short {
+  width: 40%;
 }
 
 .predictive-search-content {
@@ -890,7 +935,7 @@ mobile-menu-dialog[data-open="true"] .mobile-menu-backdrop {
 
 .mobile-menu-submenu:not([hidden]) {
   animation:
-    mobile-menu-submenu-in 220ms
+    mobile-menu-submenu-in 300ms
     var(--mobile-menu-open-easing) both;
 }
 

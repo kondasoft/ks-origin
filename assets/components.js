@@ -1129,7 +1129,7 @@ if (!customElements.get("theme-carousel")) {
 
 class MobileMenuDialog extends HTMLElement {
   static closeDurationMs = 180;
-  static submenuBackDelayMs = 200;
+  static submenuOpenDurationMs = 300;
 
   connectedCallback() {
     if (this.isInitialized) return;
@@ -1175,7 +1175,6 @@ class MobileMenuDialog extends HTMLElement {
     this.closeMenu(false, true);
     this.listenerController?.abort();
     window.clearTimeout(this.closeTimer);
-    window.clearTimeout(this.submenuCloseTimer);
     this.isInitialized = false;
   }
 
@@ -1208,8 +1207,6 @@ class MobileMenuDialog extends HTMLElement {
   closeMenu(returnFocus = false, immediate = false) {
     if (!this.isOpen && this.panel?.hidden) return;
 
-    window.clearTimeout(this.submenuCloseTimer);
-    this.submenuCloseTimer = null;
     delete this.dataset.open;
     this.trigger?.setAttribute("aria-expanded", "false");
     this.resetSubmenus();
@@ -1355,7 +1352,7 @@ class MobileMenuDialog extends HTMLElement {
             if (!submenu.hidden) {
               submenu.querySelector("a, button")?.focus();
             }
-          }, 220);
+          }, MobileMenuDialog.submenuOpenDurationMs);
         } else {
           toggle.blur();
         }
@@ -1367,7 +1364,7 @@ class MobileMenuDialog extends HTMLElement {
     const backButton = event.target.closest("[data-submenu-back]");
 
     if (backButton && this.panel.contains(backButton)) {
-      this.closeSubmenu(backButton.closest(".mobile-menu-submenu"), MobileMenuDialog.submenuBackDelayMs);
+      this.closeSubmenu(backButton.closest(".mobile-menu-submenu"));
     }
   }
 
@@ -1393,20 +1390,8 @@ class MobileMenuDialog extends HTMLElement {
     }
   }
 
-  closeSubmenu(submenu, delayMs = 0) {
+  closeSubmenu(submenu) {
     if (!submenu) return;
-
-    if (delayMs > 0) {
-      window.clearTimeout(this.submenuCloseTimer);
-      this.submenuCloseTimer = window.setTimeout(() => {
-        this.submenuCloseTimer = null;
-
-        if (this.isOpen && !submenu.hidden) {
-          this.closeSubmenu(submenu);
-        }
-      }, delayMs);
-      return;
-    }
 
     const toggle = submenu.previousElementSibling;
 

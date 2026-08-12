@@ -34,6 +34,8 @@
         loading: image_loading,
         fetchpriority: image_fetchpriority
     }}
+  {% elsif collection != blank %}
+    {{ 'image' | placeholder_svg_tag: collection_image_placeholder_class }}
   {% else %}
     {{ placeholder_name | placeholder_svg_tag: collection_image_placeholder_class }}
   {% endif %}
