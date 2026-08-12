@@ -147,7 +147,7 @@
       "type": "color",
       "id": "background_color",
       "label": "Background color",
-      "default": "{{ settings.colors.background }}"
+      "default": "{{ settings.colors.surface }}"
     },
     {
       "type": "color",
@@ -275,24 +275,21 @@
     {
       "name": "Collection list",
       "category": "Collections",
+      "settings": {
+        "mobile_columns": 2
+      },
       "blocks": [
         {
           "type": "heading",
           "settings": {
             "heading": "Shop by collection",
-            "heading_tag": "2",
-            "heading_size": "h2",
-            "pt": 0,
             "pb": 6
           }
         },
         {
           "type": "text",
           "settings": {
-            "text": "<p>Explore collections created to help customers find the products that suit them best.</p>",
-            "text_size": "fs-md",
-            "pt": 0,
-            "pb": 0
+            "text": "<p>Explore collections created to help customers find the products that suit them best.</p>"
           }
         },
         {
@@ -300,20 +297,21 @@
           "id": "collection-card",
           "static": true,
           "settings": {
-            "text_alignment": "left"
+            "custom_colors": true,
+            "pt": 16,
+            "pb": 16,
+            "pl": 16,
+            "pr": 16
           },
           "blocks": [
             {
               "type": "_collection-card-image",
               "settings": {
-                "image_ratio": "square"
               }
             },
             {
               "type": "_collection-card-title",
               "settings": {
-                "font_family": "heading",
-                "heading_size": "fs-md"
               }
             }
           ]

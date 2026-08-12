@@ -2,11 +2,18 @@
 
 <div class="collection-card-title-block" {{ block.shopify_attributes }}>
   <h3
-    class="collection-card-title {{ block.settings.heading_size }}"
+    class="collection-card-title"
+    style="
+      --mobile-heading-size: var(--{{ block.settings.mobile_heading_size }});
+      --desktop-heading-size: var(--{{ block.settings.desktop_heading_size }});
+    "
     data-font-family="{{ block.settings.font_family }}"
   >
     {% if collection == blank %}
       {{ 'collections.placeholders.title' | t }}
+      {% if block.settings.show_product_count %}
+        (99)
+      {% endif %}
     {% else %}
       <a class="collection-card-title-link" href="{{ collection.url }}">
         {{ collection.title | escape }}
@@ -41,8 +48,21 @@
     },
     {
       "type": "select",
-      "id": "heading_size",
-      "label": "Heading size",
+      "id": "mobile_heading_size",
+      "label": "Mobile heading size",
+      "options": [
+        { "value": "fs-xs", "label": "Extra small" },
+        { "value": "fs-sm", "label": "Small" },
+        { "value": "fs-md", "label": "Medium" },
+        { "value": "fs-lg", "label": "Large" },
+        { "value": "fs-xl", "label": "Extra large" }
+      ],
+      "default": "fs-sm"
+    },
+    {
+      "type": "select",
+      "id": "desktop_heading_size",
+      "label": "Desktop heading size",
       "options": [
         { "value": "fs-xs", "label": "Extra small" },
         { "value": "fs-sm", "label": "Small" },

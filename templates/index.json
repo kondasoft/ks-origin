@@ -249,7 +249,17 @@
           "type": "collection-card",
           "static": true,
           "settings": {
-            "text_alignment": "left"
+            "custom_colors": true,
+            "background_color": "{{ settings.colors.background }}",
+            "text_color": "{{ settings.colors.text }}",
+            "accent_color": "{{ settings.colors.accent }}",
+            "text_alignment": "left",
+            "border_opacity": 0,
+            "show_box_shadow": false,
+            "pt": 16,
+            "pb": 16,
+            "pl": 16,
+            "pr": 16
           },
           "blocks": {
             "collection_card_image_JGTnK8": {
@@ -264,7 +274,8 @@
               "settings": {
                 "show_product_count": true,
                 "font_family": "heading",
-                "heading_size": "fs-md"
+                "mobile_heading_size": "fs-sm",
+                "desktop_heading_size": "fs-md"
               },
               "blocks": {}
             }
@@ -298,7 +309,7 @@
         "carousel_partial_slide_mobile": true,
         "carousel_show_navigation": true,
         "carousel_show_progress": true,
-        "mobile_columns": 1,
+        "mobile_columns": 2,
         "desktop_columns": 3,
         "pt": 60,
         "pb": 60
