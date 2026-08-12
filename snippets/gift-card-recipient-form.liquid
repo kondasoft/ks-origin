@@ -1,0 +1,211 @@
+{% doc %}
+  Renders recipient delivery fields inside a gift card product form.
+
+  @param {object} form - The current product form object.
+  @param {object} block - The buy buttons block used to create unique field IDs.
+{% enddoc %}
+
+{% liquid
+  assign recipient_selected = false
+
+  if form.email != blank or form.name != blank or form.message != blank or form.send_on != blank
+    assign recipient_selected = true
+  endif
+
+  if form.errors
+    assign recipient_selected = true
+  endif
+%}
+
+<link rel="stylesheet" href="{{ 'gift-card-recipient-form.css' | asset_url }}" type="text/css" media="all" />
+<script src="{{ 'gift-card-recipient-form.js' | asset_url }}" type="module"></script>
+
+<gift-card-recipient-form
+  class="gift-card-recipient-form"
+  data-fields-visible-text="{{ 'products.gift_card_recipient.fields_visible' | t | escape }}"
+  data-fields-hidden-text="{{ 'products.gift_card_recipient.fields_hidden' | t | escape }}"
+>
+  <fieldset class="gift-card-recipient-options">
+    <legend>{{ 'products.gift_card_recipient.send_to' | t }}</legend>
+
+    <div class="gift-card-recipient-option-list">
+      <label class="gift-card-recipient-option">
+        <input
+          type="radio"
+          name="gift-card-delivery-{{ block.id }}"
+          value="self"
+          aria-controls="GiftCardRecipientFields-{{ block.id }}"
+          data-gift-card-delivery
+          {% unless recipient_selected %}checked{% endunless %}
+        >
+        <span>{{ 'products.gift_card_recipient.send_to_self' | t }}</span>
+      </label>
+
+      <label class="gift-card-recipient-option">
+        <input
+          type="radio"
+          name="gift-card-delivery-{{ block.id }}"
+          value="recipient"
+          aria-controls="GiftCardRecipientFields-{{ block.id }}"
+          data-gift-card-delivery
+          {% if recipient_selected %}checked{% endif %}
+        >
+        <span>{{ 'products.gift_card_recipient.send_to_recipient' | t }}</span>
+      </label>
+    </div>
+  </fieldset>
+
+  <div
+    id="GiftCardRecipientFields-{{ block.id }}"
+    class="gift-card-recipient-fields"
+    data-gift-card-recipient-fields
+    {% unless recipient_selected %}hidden{% endunless %}
+  >
+    <div class="gift-card-recipient-field">
+      <label for="GiftCardRecipientEmail-{{ block.id }}">
+        {{ 'products.gift_card_recipient.email' | t }}
+      </label>
+      <input
+        id="GiftCardRecipientEmail-{{ block.id }}"
+        class="input"
+        type="email"
+        name="properties[Recipient email]"
+        value="{{ form.email | escape }}"
+        autocomplete="email"
+        autocorrect="off"
+        autocapitalize="off"
+        data-gift-card-recipient-email
+        {% if recipient_selected %}required{% else %}disabled{% endif %}
+        {% if form.errors contains 'email' %}
+          aria-invalid="true"
+          aria-describedby="GiftCardRecipientEmailError-{{ block.id }}"
+        {% endif %}
+      >
+      <p
+        id="GiftCardRecipientEmailError-{{ block.id }}"
+        class="gift-card-recipient-error fs-sm"
+        data-gift-card-recipient-error="email"
+        {% unless form.errors contains 'email' %}hidden{% endunless %}
+      >
+        {% if form.errors contains 'email' %}{{ form.errors.messages.email }}{% endif %}
+      </p>
+    </div>
+
+    <div class="gift-card-recipient-field">
+      <label for="GiftCardRecipientName-{{ block.id }}">
+        {{ 'products.gift_card_recipient.name' | t }}
+      </label>
+      <input
+        id="GiftCardRecipientName-{{ block.id }}"
+        class="input"
+        type="text"
+        name="properties[Recipient name]"
+        value="{{ form.name | escape }}"
+        autocomplete="name"
+        maxlength="100"
+        data-gift-card-recipient-input
+        {% unless recipient_selected %}disabled{% endunless %}
+        {% if form.errors contains 'name' %}
+          aria-invalid="true"
+          aria-describedby="GiftCardRecipientNameError-{{ block.id }}"
+        {% endif %}
+      >
+      <p
+        id="GiftCardRecipientNameError-{{ block.id }}"
+        class="gift-card-recipient-error fs-sm"
+        data-gift-card-recipient-error="name"
+        {% unless form.errors contains 'name' %}hidden{% endunless %}
+      >
+        {% if form.errors contains 'name' %}{{ form.errors.messages.name }}{% endif %}
+      </p>
+    </div>
+
+    <div class="gift-card-recipient-field">
+      <label for="GiftCardRecipientMessage-{{ block.id }}">
+        {{ 'products.gift_card_recipient.message' | t }}
+      </label>
+      <textarea
+        id="GiftCardRecipientMessage-{{ block.id }}"
+        class="input"
+        name="properties[Message]"
+        maxlength="200"
+        data-gift-card-recipient-message
+        {% unless recipient_selected %}disabled{% endunless %}
+        {% if form.errors contains 'message' %}
+          aria-invalid="true"
+          aria-describedby="GiftCardRecipientMessageError-{{ block.id }}"
+        {% endif %}
+      >{{ form.message | escape }}</textarea>
+      <p
+        class="gift-card-recipient-character-count fs-sm"
+        data-gift-card-recipient-character-count
+        data-character-count-template="
+          {{- 'products.gift_card_recipient.characters_used'
+            | t: used: '[used]', max: '[max]'
+            | escape
+          -}}
+        "
+      >
+        {{ 'products.gift_card_recipient.characters_used' | t: used: form.message.size, max: 200 }}
+      </p>
+      <p
+        id="GiftCardRecipientMessageError-{{ block.id }}"
+        class="gift-card-recipient-error fs-sm"
+        data-gift-card-recipient-error="message"
+        {% unless form.errors contains 'message' %}hidden{% endunless %}
+      >
+        {% if form.errors contains 'message' %}{{ form.errors.messages.message }}{% endif %}
+      </p>
+    </div>
+
+    <div class="gift-card-recipient-field">
+      <label for="GiftCardRecipientSendOn-{{ block.id }}">
+        {{ 'products.gift_card_recipient.send_on' | t }}
+      </label>
+      <input
+        id="GiftCardRecipientSendOn-{{ block.id }}"
+        class="input"
+        type="date"
+        name="properties[Send on]"
+        value="{{ form.send_on | escape }}"
+        data-gift-card-recipient-send-on
+        {% unless recipient_selected %}disabled{% endunless %}
+        {% if form.errors contains 'send_on' %}
+          aria-invalid="true"
+          aria-describedby="GiftCardRecipientSendOnError-{{ block.id }}"
+        {% endif %}
+      >
+      <p
+        id="GiftCardRecipientSendOnError-{{ block.id }}"
+        class="gift-card-recipient-error fs-sm"
+        data-gift-card-recipient-error="send_on"
+        {% unless form.errors contains 'send_on' %}hidden{% endunless %}
+      >
+        {% if form.errors contains 'send_on' %}{{ form.errors.messages.send_on }}{% endif %}
+      </p>
+    </div>
+  </div>
+
+  <input
+    type="hidden"
+    name="properties[__shopify_send_gift_card_to_recipient]"
+    value="on"
+    data-gift-card-recipient-control
+    {% unless recipient_selected %}disabled{% endunless %}
+  >
+  <input
+    type="hidden"
+    name="properties[__shopify_offset]"
+    value=""
+    data-gift-card-recipient-offset
+    {% unless recipient_selected %}disabled{% endunless %}
+  >
+
+  <div
+    class="visually-hidden"
+    role="status"
+    aria-live="polite"
+    aria-atomic="true"
+    data-gift-card-recipient-status
+  ></div>
+</gift-card-recipient-form>

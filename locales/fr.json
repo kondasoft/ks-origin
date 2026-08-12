@@ -267,14 +267,29 @@
       "sold_out": "Épuisé",
       "all_inventory_in_cart": "Tous les articles disponibles pour cette variante sont déjà dans votre panier.",
       "error": "Une erreur s'est produite. Veuillez réessayer."
+    },
+    "gift_card_recipient": {
+      "send_to": "Envoyer à",
+      "send_to_self": "Mon adresse e-mail",
+      "send_to_recipient": "Un destinataire",
+      "email": "E-mail du destinataire",
+      "name": "Nom du destinataire (facultatif)",
+      "message": "Message (facultatif)",
+      "send_on": "Date d’envoi (facultative)",
+      "characters_used": "{{ used }}/{{ max }} caractères",
+      "fields_visible": "Les informations du destinataire sont maintenant visibles.",
+      "fields_hidden": "Les informations du destinataire sont maintenant masquées."
     }
   },
   "gift_cards": {
     "issued": {
       "title": "Carte-cadeau de {{ value }} pour {{ shop }}",
       "subtext": "Carte cadeau",
-      "how_to_use_gift_card": "Utilisez ce code de carte cadeau au moment de payer.",
+      "how_to_use_gift_card": "Utilisez le code de la carte-cadeau en ligne ou le code QR en magasin.",
       "code": "Code de la carte-cadeau",
+      "copy_code": "Copier le code",
+      "copy_code_success": "Code copié",
+      "qr_image_alt": "Code QR de cette carte-cadeau",
       "shop_link": "Visiter la boutique en ligne",
       "add_to_apple_wallet": "Ajouter à Cartes",
       "expiration_date": "Expire le {{ expires_on }}",

@@ -1,0 +1,58 @@
+
+/*
+  Gift card recipient form stylesheet
+
+  This file owns the gift card recipient form layout, delivery controls, fields, and validation presentation.
+*/
+
+.gift-card-recipient-form {
+  display: grid;
+  gap: 1.5rem;
+  padding: 1em;
+  background-color: rgb(var(--color-surface));
+  border-radius: var(--border-radius);
+}
+
+.gift-card-recipient-form .input {
+  background-color: rgb(var(--color-site-background));
+}
+
+.gift-card-recipient-options {
+  padding: 0;
+  margin: 0;
+  border: 0;
+}
+
+.gift-card-recipient-options legend {
+  padding: 0;
+  margin-bottom: 0.5em;
+}
+
+.gift-card-recipient-option-list {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.gift-card-recipient-option {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  cursor: pointer;
+}
+
+.gift-card-recipient-fields {
+  display: grid;
+  gap: 1rem;
+}
+
+.gift-card-recipient-character-count {
+  margin: 0.35em 0 0;
+  color: rgb(var(--color-text) / 0.7);
+  text-align: right;
+}
+
+.gift-card-recipient-error {
+  margin: 0.35em 0 0;
+  color: rgb(var(--alert-error-color));
+}

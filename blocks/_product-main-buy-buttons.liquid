@@ -5,6 +5,11 @@
   assign cart_quantity = cart | item_count_for_variant: selected_variant.id
   assign quantity_max = blank
   assign all_inventory_in_cart = false
+  assign show_gift_card_recipient_form = false
+
+  if product.gift_card? and block.settings.show_gift_card_recipient_form
+    assign show_gift_card_recipient_form = true
+  endif
 
   if selected_variant.inventory_management != blank and selected_variant.inventory_policy == 'deny' and selected_variant.inventory_quantity > 0
     assign quantity_max = selected_variant.inventory_quantity
@@ -36,6 +41,10 @@
       </p>
 
       <input type="hidden" name="id" value="{{ selected_variant.id }}" data-product-variant-input>
+
+      {% if show_gift_card_recipient_form %}
+        {% render 'gift-card-recipient-form', form: form, block: block %}
+      {% endif %}
 
       <div class="product-main-buy-buttons-primary">
         {% if block.settings.show_quantity %}
@@ -90,7 +99,7 @@
         </button>
       </div>
 
-      {% if block.settings.show_buy_it_now %}
+      {% if block.settings.show_buy_it_now and show_gift_card_recipient_form == false %}
         <theme-buy-it-now data-cart-url="{{ routes.cart_url }}">
           <a
             href="{{ routes.cart_url }}/{{ selected_variant.id }}:1"
@@ -195,6 +204,17 @@
       "type": "checkbox",
       "id": "show_dynamic_checkout",
       "label": "Show dynamic checkout button",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Gift card products"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_gift_card_recipient_form",
+      "label": "Show recipient form",
+      "info": "Allows customers to send gift cards to a recipient with an optional message and delivery date. Only appears on gift card products.",
       "default": true
     },
     {

@@ -18,6 +18,8 @@
 
     {{ content_for_header }}
     {% render 'theme-assets' %}
+    <script src="{{ 'vendor/qrcode.js' | shopify_asset_url }}" defer></script>
+    <script src="{{ 'gift-card.js' | asset_url }}" type="module"></script>
 
     {% style %}
       /*
@@ -46,7 +48,11 @@
       .gift-card-code {
         padding: 1rem;
         overflow-wrap: anywhere;
+        font-size: var(--fs-xl);
+        font-weight: 500;
         background-color: {{ settings.color_surface }};
+        border: 2px dashed {{ settings.color_text }};
+        border-radius: var(--border-radius);
       }
 
       .gift-card-actions {
@@ -57,8 +63,31 @@
         margin-block-start: 2rem;
       }
 
-      .gift-card-link {
-        color: {{ settings.color_accent }};
+      .gift-card-qr-code {
+        display: block;
+        width: 160px;
+        height: 160px;
+        margin: 2rem auto 0;
+      }
+
+      .gift-card-qr-code img {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+
+      .gift-card-qr-code canvas {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+
+      .gift-card-buttons {
+        justify-content: center;
+      }
+
+      .gift-card-copy {
+        display: contents;
       }
     {% endstyle %}
   </head>
@@ -93,7 +122,47 @@
         {{ gift_card.code | format_code }}
       </p>
 
+      <gift-card-qr-code
+        class="gift-card-qr-code"
+        role="img"
+        aria-label="{{ 'gift_cards.issued.qr_image_alt' | t | escape }}"
+        data-identifier="{{ gift_card.qr_identifier | escape }}"
+      ></gift-card-qr-code>
+
       <div class="gift-card-actions">
+        <div class="gift-card-buttons btn-group">
+          <gift-card-copy class="gift-card-copy">
+            <input
+              class="visually-hidden"
+              type="text"
+              value="{{ gift_card.code | escape }}"
+              tabindex="-1"
+              disabled
+              data-gift-card-copy-input
+            >
+            <button
+              class="btn btn-wide btn-accent-solid btn-md"
+              type="button"
+              data-gift-card-copy-button
+              data-copy-text="{{ 'gift_cards.issued.copy_code' | t | escape }}"
+              data-copied-text="{{ 'gift_cards.issued.copy_code_success' | t | escape }}"
+            >
+              {{ 'gift_cards.issued.copy_code' | t }}
+            </button>
+            <span
+              class="visually-hidden"
+              role="status"
+              aria-live="polite"
+              aria-atomic="true"
+              data-gift-card-copy-status
+            ></span>
+          </gift-card-copy>
+
+          <a class="btn btn-wide btn-text-outline btn-md" href="{{ shop.url }}">
+            {{ 'gift_cards.issued.shop_link' | t }}
+          </a>
+        </div>
+
         {% if gift_card.pass_url %}
           <a href="{{ gift_card.pass_url }}">
             <img
@@ -104,10 +173,6 @@
             >
           </a>
         {% endif %}
-
-        <a class="gift-card-link" href="{{ shop.url }}">
-          {{ 'gift_cards.issued.shop_link' | t }}
-        </a>
       </div>
     </main>
   </body>

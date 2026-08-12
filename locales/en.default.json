@@ -267,14 +267,29 @@
       "sold_out": "Sold out",
       "all_inventory_in_cart": "All available items for this variant are already in your cart.",
       "error": "Something went wrong. Please try again."
+    },
+    "gift_card_recipient": {
+      "send_to": "Send to",
+      "send_to_self": "My email address",
+      "send_to_recipient": "A recipient",
+      "email": "Recipient email",
+      "name": "Recipient name (optional)",
+      "message": "Message (optional)",
+      "send_on": "Send date (optional)",
+      "characters_used": "{{ used }}/{{ max }} characters",
+      "fields_visible": "Recipient details are now visible.",
+      "fields_hidden": "Recipient details are now hidden."
     }
   },
   "gift_cards": {
     "issued": {
       "title": "{{ value }} gift card for {{ shop }}",
       "subtext": "Gift card",
-      "how_to_use_gift_card": "Use this gift card code at checkout.",
+      "how_to_use_gift_card": "Use the gift card code online or QR code in-store.",
       "code": "Gift card code",
+      "copy_code": "Copy code",
+      "copy_code_success": "Code copied",
+      "qr_image_alt": "QR code for this gift card",
       "shop_link": "Visit online store",
       "add_to_apple_wallet": "Add to Apple Wallet",
       "expiration_date": "Expires {{ expires_on }}",
