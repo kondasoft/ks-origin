@@ -21,59 +21,6 @@
   {% content_for 'blocks' %}
 </div>
 
-{% stylesheet %}
-  .group-block {
-    display: flex;
-    flex-direction: var(--mobile-content-direction);
-    gap: var(--mobile-gap);
-    padding-right: calc(var(--pr) * var(--spacing-scale));
-    padding-left: calc(var(--pl) * var(--spacing-scale));
-  }
-
-  .group-block[data-custom-colors="true"] {
-    color: rgb(var(--color-text));
-    background-color: rgb(var(--color-background));
-    border-radius: var(--border-radius);
-  }
-
-  [data-mobile-text-alignment="left"] .group-block {
-    align-items: flex-start;
-    justify-content: flex-start;
-  }
-
-  [data-mobile-text-alignment="center"] .group-block {
-    align-items: center;
-    justify-content: center;
-  }
-
-  [data-mobile-text-alignment="right"] .group-block {
-    align-items: flex-end;
-    justify-content: flex-end;
-  }
-
-  @media (min-width: 1200px) {
-    .group-block {
-      flex-direction: var(--desktop-content-direction);
-      gap: var(--desktop-gap);
-    }
-
-    [data-desktop-text-alignment="left"] .group-block {
-      align-items: flex-start;
-      justify-content: flex-start;
-    }
-
-    [data-desktop-text-alignment="center"] .group-block {
-      align-items: center;
-      justify-content: center;
-    }
-
-    [data-desktop-text-alignment="right"] .group-block {
-      align-items: flex-end;
-      justify-content: flex-end;
-    }
-  }
-{% endstylesheet %}
-
 {% schema %}
 {
   "name": "Group",

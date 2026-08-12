@@ -38,33 +38,6 @@
   {% endif %}
 </div>
 
-{% stylesheet %}
-  .logo-block {
-    min-width: 0;
-    max-width: 100%;
-  }
-
-  .logo-block-media {
-    display: inline-flex;
-    height: var(--logo-height-mobile);
-    max-width: 100%;
-    vertical-align: middle;
-  }
-
-  .logo-block-image {
-    width: auto;
-    height: 100%;
-    max-width: 100%;
-    object-fit: contain;
-  }
-
-  @media (min-width: 1200px) {
-    .logo-block-media {
-      height: var(--logo-height-desktop);
-    }
-  }
-{% endstylesheet %}
-
 {% schema %}
 {
   "name": "Logo",
