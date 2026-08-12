@@ -1,7 +1,7 @@
 /*
   Main blog stylesheet
 
-  This file owns the blog page header and article-grid layout.
+  This file owns the blog page structure, header, toolbar, and article-grid layout.
 */
 
 
@@ -9,6 +9,11 @@
   Blog header
 */
 .main-blog {
+  color: rgb(var(--color-text));
+  background-color: rgb(var(--color-background));
+}
+
+.blog-header-block {
   color: rgb(var(--color-text));
   background-color: rgb(var(--color-background));
 }
@@ -38,17 +43,16 @@
 
 
 /*
-  Blog utilities
+  Blog toolbar
 */
-.blog-utilities {
+.blog-toolbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  margin-top: calc(3em * var(--spacing-scale));
 }
 
-.blog-article-count {
+.blog-toolbar-article-count {
   margin: 0;
   font-size: var(--fs-sm);
 }
@@ -101,7 +105,7 @@
   grid-template-columns: repeat(var(--mobile-columns), minmax(0, 1fr));
   gap: 2rem 1rem;
   padding: 0;
-  margin: calc(3em * var(--spacing-scale)) 0 0;
+  margin: 0;
   list-style: none;
 }
 
@@ -113,18 +117,10 @@
   min-width: 0;
 }
 
-.blog-utilities + .article-grid {
-  margin-top: 1.5rem;
-}
-
 .main-blog-empty {
-  margin: calc(3em * var(--spacing-scale)) 0 0;
+  margin: 0;
   padding: 5rem 0;
   text-align: center;
-}
-
-.blog-utilities + .main-blog-empty {
-  margin-top: 1.5rem;
 }
 
 @media (min-width: 600px) {

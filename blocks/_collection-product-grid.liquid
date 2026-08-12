@@ -1,0 +1,124 @@
+{% doc %}
+Renders the paginated collection product grid and its reusable product cards.
+{% enddoc %}
+
+{% liquid
+  assign products_per_page = block.settings.products_per_page | default: 24
+  assign pagination_previous = 'general.pagination.previous' | t
+  assign pagination_next = 'general.pagination.next' | t
+
+  if shop.permanent_domain contains 'ks-'
+    assign products_per_page = 12
+  endif
+%}
+
+<div
+  class="collection-product-grid section-spacing"
+  style="
+    --pt: {{ block.settings.pt | divided_by: 16.0 | append: 'em' }};
+    --pb: {{ block.settings.pb | divided_by: 16.0 | append: 'em' }};
+  "
+  {{ block.shopify_attributes }}
+>
+  <div class="container {{ settings.container_width }}">
+    {% paginate collection.products by products_per_page %}
+      {% if collection.products.size > 0 %}
+        <ul
+          class="product-grid"
+          role="list"
+          style="
+            --mobile-columns: {{ block.settings.mobile_columns }};
+            --tablet-columns: 2;
+            --desktop-columns: {{ block.settings.desktop_columns }};
+          "
+        >
+          {% for product in collection.products %}
+            <li class="product-grid-item">
+              {% content_for 'block', type: 'product-card', id: 'product-card', closest.product: product %}
+            </li>
+          {% endfor %}
+        </ul>
+
+        {% if paginate.pages > 1 %}
+          <nav class="pagination" aria-label="{{ 'accessibility.pagination' | t }}">
+            {{ paginate
+              | default_pagination:
+                previous: pagination_previous,
+                next: pagination_next
+            }}
+          </nav>
+        {% endif %}
+      {% else %}
+        <p class="faceted-results-empty">
+          {{ 'collections.empty' | t }}
+        </p>
+      {% endif %}
+    {% endpaginate %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Product grid",
+  "tag": null,
+  "settings": [
+    {
+      "type": "range",
+      "id": "mobile_columns",
+      "label": "Mobile columns",
+      "info": "Tablet layouts always use two columns.",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "desktop_columns",
+      "label": "Desktop columns",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "label": "Products per page",
+      "min": 8,
+      "max": 48,
+      "step": 4,
+      "default": 24
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pt",
+      "label": "Top",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "pb",
+      "label": "Bottom",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 60
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product-card"
+    }
+  ]
+}
+{% endschema %}

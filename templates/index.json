@@ -739,55 +739,6 @@
         "pb": 60
       }
     },
-    "email_signup_qQHGQ8": {
-      "type": "email-signup",
-      "blocks": {
-        "heading_mQpYne": {
-          "type": "heading",
-          "settings": {
-            "heading": "Join our newsletter",
-            "heading_tag": "2",
-            "heading_size": "h2",
-            "pt": 0,
-            "pb": 6
-          },
-          "blocks": {}
-        },
-        "text_bmLXED": {
-          "type": "text",
-          "settings": {
-            "text": "<p>Sign up for new arrivals, special offers, and updates.</p>",
-            "text_size": "fs-md",
-            "pt": 0,
-            "pb": 20
-          },
-          "blocks": {}
-        },
-        "email_signup_form_Hmifed": {
-          "type": "email-signup-form",
-          "settings": {
-            "pt": 0,
-            "pb": 0
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "heading_mQpYne",
-        "text_bmLXED",
-        "email_signup_form_Hmifed"
-      ],
-      "name": "Email signup",
-      "settings": {
-        "background_color": "{{ settings.colors.background }}",
-        "text_color": "{{ settings.colors.text }}",
-        "accent_color": "{{ settings.colors.accent }}",
-        "mobile_text_alignment": "center",
-        "desktop_text_alignment": "center",
-        "pt": 60,
-        "pb": 60
-      }
-    },
     "faq_yDtf3p": {
       "type": "faq",
       "blocks": {
@@ -1737,6 +1688,55 @@
         "pt": 60,
         "pb": 60
       }
+    },
+    "email_signup_Ffm6w8": {
+      "type": "email-signup",
+      "blocks": {
+        "heading_VRizy4": {
+          "type": "heading",
+          "settings": {
+            "heading": "Join our newsletter",
+            "heading_tag": "2",
+            "heading_size": "h2",
+            "pt": 0,
+            "pb": 6
+          },
+          "blocks": {}
+        },
+        "text_8XRWyf": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Sign up for new arrivals, special offers, and updates.</p>",
+            "text_size": "fs-md",
+            "pt": 0,
+            "pb": 20
+          },
+          "blocks": {}
+        },
+        "email_signup_form_q7GU6R": {
+          "type": "email-signup-form",
+          "settings": {
+            "pt": 0,
+            "pb": 0
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "heading_VRizy4",
+        "text_8XRWyf",
+        "email_signup_form_q7GU6R"
+      ],
+      "name": "Email signup",
+      "settings": {
+        "background_color": "{{ settings.colors.surface }}",
+        "text_color": "{{ settings.colors.text }}",
+        "accent_color": "{{ settings.colors.accent }}",
+        "mobile_text_alignment": "center",
+        "desktop_text_alignment": "center",
+        "pt": 60,
+        "pb": 60
+      }
     }
   },
   "order": [
@@ -1749,7 +1749,6 @@
     "video_DJLR97",
     "image_with_text_CMaCke",
     "custom_section_cVKwjJ",
-    "email_signup_qQHGQ8",
     "faq_yDtf3p",
     "rich_text_Yt7LTn",
     "video_TetJLA",
@@ -1757,6 +1756,7 @@
     "columns_xVQnwK",
     "email_signup_bC6B3d",
     "columns_4nFedD",
-    "blog_posts_TbccFM"
+    "blog_posts_TbccFM",
+    "email_signup_Ffm6w8"
   ]
 }

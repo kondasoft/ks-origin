@@ -1048,7 +1048,7 @@ mobile-menu-dialog[data-open="true"] .mobile-menu-backdrop {
     width: 100%;
     height: auto;
     object-fit: cover;
-    transition: transform 250ms ease;
+    transition: opacity 200ms ease-out;
   }
 
   .header[data-megamenu-image-ratio="square"] .header-megamenu-image {
@@ -1069,8 +1069,14 @@ mobile-menu-dialog[data-open="true"] .mobile-menu-backdrop {
     height: 100%;
   }
 
-  .header-megamenu-image-link:hover img {
-    transform: scale(1.04);
+  @media (hover: hover) {
+    .header-megamenu-image-link:hover img {
+      opacity: 0.85;
+    }
+  }
+
+  .header-megamenu-image-link:active img {
+    opacity: 0.7;
   }
 
   body[data-header-menu-open="true"]::after {

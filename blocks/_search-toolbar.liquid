@@ -1,0 +1,163 @@
+{% doc %}
+Renders the search result count, filter trigger, and sorting control.
+{% enddoc %}
+
+{% liquid
+  assign search_types = ''
+  assign sort_by = search.sort_by | default: search.default_sort_by
+  assign show_search_filters = false
+  assign active_filter_count = 0
+
+  if section.settings.search_products
+    assign search_types = 'product'
+  endif
+
+  if section.settings.search_articles
+    if search_types != blank
+      assign search_types = search_types | append: ','
+    endif
+    assign search_types = search_types | append: 'article'
+  endif
+
+  if section.settings.search_pages
+    if search_types != blank
+      assign search_types = search_types | append: ','
+    endif
+    assign search_types = search_types | append: 'page'
+  endif
+
+  if search_types == blank
+    assign search_types = 'product'
+  endif
+
+  if block.settings.show_filters and section.settings.search_products and search.filters.size > 0
+    assign show_search_filters = true
+  endif
+
+  for filter in search.filters
+    case filter.type
+      when 'boolean'
+        if filter.true_value != nil and filter.true_value.active
+          assign active_filter_count = active_filter_count | plus: 1
+        endif
+        if filter.false_value != nil and filter.false_value.active
+          assign active_filter_count = active_filter_count | plus: 1
+        endif
+      when 'list'
+        assign active_filter_count = active_filter_count | plus: filter.active_values.size
+      when 'price_range'
+        if filter.min_value.value != nil or filter.max_value.value != nil
+          assign active_filter_count = active_filter_count | plus: 1
+        endif
+    endcase
+  endfor
+%}
+
+{% if search.performed %}
+  {% if block.settings.show_result_count or show_search_filters or block.settings.show_sort %}
+    <div
+      class="search-toolbar-block section-spacing"
+      style="
+        --pt: {{ block.settings.pt | divided_by: 16.0 | append: 'em' }};
+        --pb: {{ block.settings.pb | divided_by: 16.0 | append: 'em' }};
+      "
+      {{ block.shopify_attributes }}
+    >
+      <div class="container {{ settings.container_width }}">
+        <div class="search-toolbar">
+          {% if block.settings.show_result_count %}
+            <p class="search-toolbar-result-count">
+              {{ 'search.results_count' | t: count: search.results_count }}
+            </p>
+          {% endif %}
+
+          {% if show_search_filters or block.settings.show_sort %}
+            <div class="search-toolbar-actions btn-group">
+              {% if show_search_filters %}
+                <button
+                  class="btn btn-sm btn-text-outline"
+                  type="button"
+                  data-toggle="FacetsDialog-{{ section.id }}"
+                >
+                  {% render 'svg-icons', icon: 'filter', icon_size: 16 %}
+                  {{ 'general.facets.filters' | t }}
+                  {% if active_filter_count > 0 %}
+                    <span aria-hidden="true">({{ active_filter_count }})</span>
+                    <span class="visually-hidden">
+                      {{ 'general.facets.active_filters_count' | t: count: active_filter_count }}
+                    </span>
+                  {% endif %}
+                </button>
+              {% endif %}
+
+              {% if block.settings.show_sort %}
+                {% render 'facets-sort',
+                  context: 'search',
+                  filters: search.filters,
+                  form_action: routes.search_url,
+                  sort_by: sort_by,
+                  sort_options: search.sort_options,
+                  search_terms: search.terms,
+                  search_types: search_types
+                %}
+              {% endif %}
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  {% endif %}
+{% endif %}
+
+{% schema %}
+{
+  "name": "Search toolbar",
+  "tag": null,
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_result_count",
+      "label": "Show result count",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_filters",
+      "label": "Show filters",
+      "info": "Manage available filters with Shopify's [Search & Discovery app](https://apps.shopify.com/search-and-discovery).",
+      "default": true,
+      "visible_if": "{{ section.settings.search_products }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_sort",
+      "label": "Show sort",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pt",
+      "label": "Top",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "pb",
+      "label": "Bottom",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 32
+    }
+  ]
+}
+{% endschema %}

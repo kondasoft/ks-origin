@@ -1,0 +1,128 @@
+{% doc %}
+Renders the paginated blog article grid and its reusable article cards.
+{% enddoc %}
+
+{% liquid
+  assign articles_per_page = block.settings.articles_per_page | default: 24
+  assign pagination_previous = 'general.pagination.previous' | t
+  assign pagination_next = 'general.pagination.next' | t
+
+  if shop.permanent_domain contains 'ks-'
+    assign articles_per_page = 9
+  endif
+%}
+
+<div
+  class="blog-article-grid-block section-spacing"
+  style="
+    --pt: {{ block.settings.pt | divided_by: 16.0 | append: 'em' }};
+    --pb: {{ block.settings.pb | divided_by: 16.0 | append: 'em' }};
+  "
+  {{ block.shopify_attributes }}
+>
+  <div class="container {{ settings.container_width }}">
+    {% paginate blog.articles by articles_per_page %}
+      {% if blog.articles.size > 0 %}
+        <ul
+          class="article-grid"
+          role="list"
+          style="
+            --mobile-columns: {{ block.settings.mobile_columns }};
+            --tablet-columns: 2;
+            --desktop-columns: {{ block.settings.desktop_columns }};
+          "
+        >
+          {% for article in blog.articles %}
+            <li class="article-grid-item">
+              {% content_for 'block', type: 'article-card', id: 'article-card', closest.article: article %}
+            </li>
+          {% endfor %}
+        </ul>
+
+        {% if paginate.pages > 1 %}
+          <nav class="pagination" aria-label="{{ 'accessibility.pagination' | t }}">
+            {{ paginate
+              | default_pagination:
+                previous: pagination_previous,
+                next: pagination_next
+            }}
+          </nav>
+        {% endif %}
+      {% else %}
+        <p class="main-blog-empty">
+          {{ 'blogs.empty' | t }}
+        </p>
+      {% endif %}
+    {% endpaginate %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Article grid",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "mobile_columns",
+      "label": "Mobile columns",
+      "info": "Tablet layouts always use two columns.",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "desktop_columns",
+      "label": "Desktop columns",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "articles_per_page",
+      "label": "Articles per page",
+      "min": 4,
+      "max": 48,
+      "step": 2,
+      "default": 24
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pt",
+      "label": "Top",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "pb",
+      "label": "Bottom",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 60
+    }
+  ],
+  "blocks": [
+    {
+      "type": "article-card"
+    }
+  ]
+}
+{% endschema %}

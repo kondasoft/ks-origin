@@ -1,0 +1,135 @@
+{% doc %}
+Renders the collection product count, filter trigger, and sorting control.
+{% enddoc %}
+
+{% liquid
+  assign sort_by = collection.sort_by | default: collection.default_sort_by
+  assign show_collection_filters = false
+  assign active_filter_count = 0
+
+  if block.settings.show_filters and collection.filters.size > 0
+    assign show_collection_filters = true
+  endif
+
+  for filter in collection.filters
+    case filter.type
+      when 'boolean'
+        if filter.true_value != nil and filter.true_value.active
+          assign active_filter_count = active_filter_count | plus: 1
+        endif
+        if filter.false_value != nil and filter.false_value.active
+          assign active_filter_count = active_filter_count | plus: 1
+        endif
+      when 'list'
+        assign active_filter_count = active_filter_count | plus: filter.active_values.size
+      when 'price_range'
+        if filter.min_value.value != nil or filter.max_value.value != nil
+          assign active_filter_count = active_filter_count | plus: 1
+        endif
+    endcase
+  endfor
+%}
+
+{% if block.settings.show_product_count or show_collection_filters or block.settings.show_sort %}
+  <div
+    class="collection-toolbar-block section-spacing"
+    style="
+      --pt: {{ block.settings.pt | divided_by: 16.0 | append: 'em' }};
+      --pb: {{ block.settings.pb | divided_by: 16.0 | append: 'em' }};
+    "
+    {{ block.shopify_attributes }}
+  >
+    <div class="container {{ settings.container_width }}">
+      <div class="collection-toolbar">
+        {% if block.settings.show_product_count %}
+          <p class="collection-toolbar-product-count">
+            {{ 'collections.products_count' | t: count: collection.products_count }}
+          </p>
+        {% endif %}
+
+        {% if show_collection_filters or block.settings.show_sort %}
+          <div class="collection-toolbar-actions btn-group">
+            {% if show_collection_filters %}
+              <button
+                class="btn btn-sm btn-text-outline"
+                type="button"
+                data-toggle="FacetsDialog-{{ section.id }}"
+              >
+                {% render 'svg-icons', icon: 'filter', icon_size: 16 %}
+                {{ 'general.facets.filters' | t }}
+                {% if active_filter_count > 0 %}
+                  <span aria-hidden="true">({{ active_filter_count }})</span>
+                  <span class="visually-hidden">
+                    {{ 'general.facets.active_filters_count' | t: count: active_filter_count }}
+                  </span>
+                {% endif %}
+              </button>
+            {% endif %}
+
+            {% if block.settings.show_sort %}
+              {% render 'facets-sort',
+                context: 'collection',
+                filters: collection.filters,
+                form_action: collection.url,
+                sort_by: sort_by,
+                sort_options: collection.sort_options
+              %}
+            {% endif %}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Collection toolbar",
+  "tag": null,
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_product_count",
+      "label": "Show product count",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_filters",
+      "label": "Show filters",
+      "info": "Manage available filters with Shopify's [Search & Discovery app](https://apps.shopify.com/search-and-discovery).",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_sort",
+      "label": "Show sort",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pt",
+      "label": "Top",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "pb",
+      "label": "Bottom",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 32
+    }
+  ]
+}
+{% endschema %}

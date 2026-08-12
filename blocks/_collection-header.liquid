@@ -1,0 +1,229 @@
+{% doc %}
+Renders the collection page heading, description, breadcrumbs, and optional collection image.
+{% enddoc %}
+
+{% liquid
+  assign collection_image_class = 'main-collection-image'
+  assign collection_image_sizes = '(min-width: 1200px) 50vw, 100vw'
+
+  unless block.settings.image_ratio == 'adapt'
+    assign collection_image_class = collection_image_class | append: ' aspect-ratio aspect-ratio-' | append: block.settings.image_ratio
+  endunless
+
+  if block.settings.desktop_image_width == 'one-third'
+    assign collection_image_sizes = '(min-width: 1200px) 33vw, 100vw'
+  endif
+%}
+
+<div
+  class="collection-header-block section-spacing"
+  data-custom-colors="{{ block.settings.custom_colors }}"
+  style="
+    --pt: {{ block.settings.pt | divided_by: 16.0 | append: 'em' }};
+    --pb: {{ block.settings.pb | divided_by: 16.0 | append: 'em' }};
+    {% if block.settings.custom_colors %}
+      --color-background: {{ block.settings.background_color.red }} {{ block.settings.background_color.green }} {{ block.settings.background_color.blue }};
+      --color-text: {{ block.settings.text_color.red }} {{ block.settings.text_color.green }} {{ block.settings.text_color.blue }};
+      --color-accent: {{ block.settings.accent_color.red }} {{ block.settings.accent_color.green }} {{ block.settings.accent_color.blue }};
+    {% endif %}
+  "
+  {{ block.shopify_attributes }}
+>
+  <div class="container {{ settings.container_width }}">
+    <header
+      class="main-collection-header responsive-text-alignment{% if block.settings.show_image and collection.image != blank %} main-collection-header-with-image{% endif %}"
+      data-mobile-text-alignment="{{ block.settings.mobile_text_alignment }}"
+      data-desktop-text-alignment="{{ block.settings.desktop_text_alignment }}"
+      data-desktop-image-width="{{ block.settings.desktop_image_width }}"
+      style="
+        --mobile-text-alignment: {{ block.settings.mobile_text_alignment }};
+        --desktop-text-alignment: {{ block.settings.desktop_text_alignment }};
+      "
+    >
+      {% if block.settings.show_image and collection.image != blank %}
+        {{ collection.image
+          | image_url: width: 2400
+          | image_tag:
+            class: collection_image_class,
+            widths: '320, 640, 960, 1280, 1600, 2000, 2400',
+            sizes: collection_image_sizes,
+            loading: 'eager',
+            fetchpriority: 'high'
+        }}
+      {% endif %}
+
+      <div class="main-collection-header-content">
+        {% if block.settings.show_breadcrumbs %}
+          {% render 'breadcrumb', current_title: collection.title %}
+        {% endif %}
+
+        <h1 class="main-collection-title {{ block.settings.heading_size }}">
+          {{ collection.title | escape }}
+        </h1>
+
+        {% if block.settings.show_description and collection.description != blank %}
+          <div class="main-collection-description rte {{ block.settings.description_size }}">
+            {{ collection.description }}
+          </div>
+        {% endif %}
+      </div>
+    </header>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Collection header",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "checkbox",
+      "id": "custom_colors",
+      "label": "Use custom colors",
+      "info": "Overrides the colors inherited from the parent section.",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "{{ settings.colors.surface }}",
+      "visible_if": "{{ block.settings.custom_colors }}"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "{{ settings.colors.text }}",
+      "visible_if": "{{ block.settings.custom_colors }}"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent color",
+      "default": "{{ settings.colors.accent }}",
+      "visible_if": "{{ block.settings.custom_colors }}"
+    },
+    {
+      "type": "header",
+      "content": "Collection image"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_image",
+      "label": "Show collection image",
+      "default": true,
+      "info": "Uses the image assigned to this collection."
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "Image aspect ratio",
+      "options": [
+        { "group": "Adapt", "value": "adapt", "label": "Adapt to image" },
+        { "group": "Square", "value": "square", "label": "Square (1:1)" },
+        { "group": "Horizontal", "value": "landscape", "label": "Landscape (4:3)" },
+        { "group": "Horizontal", "value": "widescreen", "label": "Widescreen (16:9)" }
+      ],
+      "default": "widescreen",
+      "visible_if": "{{ block.settings.show_image == true }}"
+    },
+    {
+      "type": "select",
+      "id": "desktop_image_width",
+      "label": "Desktop image width",
+      "options": [
+        { "value": "half", "label": "Half (1/2)" },
+        { "value": "one-third", "label": "One third (1/3)" }
+      ],
+      "default": "half",
+      "visible_if": "{{ block.settings.show_image == true }}"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text_alignment",
+      "id": "mobile_text_alignment",
+      "label": "Mobile text alignment",
+      "default": "left"
+    },
+    {
+      "type": "text_alignment",
+      "id": "desktop_text_alignment",
+      "label": "Desktop text alignment",
+      "default": "left"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_breadcrumbs",
+      "label": "Show breadcrumbs",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "options": [
+        { "value": "h1", "label": "H1" },
+        { "value": "h2", "label": "H2" },
+        { "value": "h3", "label": "H3" },
+        { "value": "h4", "label": "H4" },
+        { "value": "h5", "label": "H5" },
+        { "value": "h6", "label": "H6" }
+      ],
+      "default": "h1",
+      "info": "Changes the visual size only. The HTML heading remains H1."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_description",
+      "label": "Show collection description",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "description_size",
+      "label": "Description size",
+      "options": [
+        { "value": "fs-xs", "label": "Extra small" },
+        { "value": "fs-sm", "label": "Small" },
+        { "value": "fs-md", "label": "Medium" },
+        { "value": "fs-lg", "label": "Large" },
+        { "value": "fs-xl", "label": "Extra large" }
+      ],
+      "default": "fs-md",
+      "visible_if": "{{ block.settings.show_description == true }}"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pt",
+      "label": "Top",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "pb",
+      "label": "Bottom",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 40
+    }
+  ]
+}
+{% endschema %}

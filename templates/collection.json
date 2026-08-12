@@ -12,91 +12,133 @@
     "main": {
       "type": "main-collection",
       "blocks": {
-        "product-card": {
-          "type": "product-card",
+        "collection-header": {
+          "type": "_collection-header",
           "static": true,
           "settings": {
-            "text_alignment": "left"
+            "custom_colors": true,
+            "background_color": "{{ settings.colors.surface }}",
+            "text_color": "{{ settings.colors.text }}",
+            "accent_color": "{{ settings.colors.accent }}",
+            "show_image": true,
+            "image_ratio": "widescreen",
+            "desktop_image_width": "half",
+            "mobile_text_alignment": "left",
+            "desktop_text_alignment": "left",
+            "show_breadcrumbs": true,
+            "heading_size": "h1",
+            "show_description": true,
+            "description_size": "fs-md",
+            "pt": 40,
+            "pb": 40
+          },
+          "blocks": {}
+        },
+        "collection-toolbar": {
+          "type": "_collection-toolbar",
+          "static": true,
+          "settings": {
+            "show_product_count": true,
+            "show_filters": true,
+            "show_sort": true,
+            "pt": 32,
+            "pb": 32
+          },
+          "blocks": {}
+        },
+        "collection-product-grid": {
+          "type": "_collection-product-grid",
+          "static": true,
+          "settings": {
+            "mobile_columns": 2,
+            "desktop_columns": 4,
+            "products_per_page": 24,
+            "pt": 0,
+            "pb": 60
           },
           "blocks": {
-            "product-card-image": {
-              "type": "_product-card-image",
+            "product-card": {
+              "type": "product-card",
+              "static": true,
               "settings": {
-                "image_ratio": "square"
+                "custom_colors": false,
+                "background_color": "{{ settings.colors.background }}",
+                "text_color": "{{ settings.colors.text }}",
+                "accent_color": "{{ settings.colors.accent }}",
+                "text_alignment": "left",
+                "border_opacity": 0,
+                "show_box_shadow": false,
+                "pt": 0,
+                "pb": 0,
+                "pl": 0,
+                "pr": 0
               },
-              "blocks": {}
-            },
-            "product-vendor": {
-              "type": "_product-vendor",
-              "disabled": true,
-              "settings": {
-                "text_size": "fs-sm"
+              "blocks": {
+                "product-card-image": {
+                  "type": "_product-card-image",
+                  "settings": {
+                    "image_ratio": "square"
+                  },
+                  "blocks": {}
+                },
+                "product-vendor": {
+                  "type": "_product-vendor",
+                  "disabled": true,
+                  "settings": {
+                    "text_size": "fs-sm"
+                  },
+                  "blocks": {}
+                },
+                "product-card-title": {
+                  "type": "_product-card-title",
+                  "settings": {
+                    "font_family": "heading",
+                    "heading_size": "fs-md"
+                  },
+                  "blocks": {}
+                },
+                "product-rating": {
+                  "type": "_product-card-rating",
+                  "settings": {
+                    "show_count": true,
+                    "count_style": "simple",
+                    "rating_size": "fs-sm"
+                  },
+                  "blocks": {}
+                },
+                "product-card-price": {
+                  "type": "_product-card-price",
+                  "settings": {
+                    "price_size": "fs-md"
+                  },
+                  "blocks": {}
+                },
+                "product-card-form": {
+                  "type": "_product-card-form",
+                  "settings": {
+                    "button_style": "btn-accent-solid",
+                    "button_size": "btn-sm"
+                  },
+                  "blocks": {}
+                }
               },
-              "blocks": {}
-            },
-            "product-card-title": {
-              "type": "_product-card-title",
-              "settings": {
-                "font_family": "heading",
-                "heading_size": "fs-md"
-              },
-              "blocks": {}
-            },
-            "product-rating": {
-              "type": "_product-card-rating",
-              "settings": {
-                "show_count": true,
-                "rating_size": "fs-sm"
-              },
-              "blocks": {}
-            },
-            "product-card-price": {
-              "type": "_product-card-price",
-              "settings": {
-                "price_size": "fs-md"
-              },
-              "blocks": {}
-            },
-            "product-card-form": {
-              "type": "_product-card-form",
-              "settings": {
-                "button_style": "btn-accent-solid",
-                "button_size": "btn-sm"
-              },
-              "blocks": {}
+              "block_order": [
+                "product-card-image",
+                "product-vendor",
+                "product-card-title",
+                "product-rating",
+                "product-card-price",
+                "product-card-form"
+              ]
             }
           },
-          "block_order": [
-            "product-card-image",
-            "product-vendor",
-            "product-card-title",
-            "product-rating",
-            "product-card-price",
-            "product-card-form"
-          ]
+          "block_order": []
         }
       },
       "settings": {
         "background_color": "{{ settings.colors.background }}",
         "text_color": "{{ settings.colors.text }}",
-        "accent_color": "{{ settings.colors.accent }}",
-        "show_image": true,
-        "image_ratio": "widescreen",
-        "desktop_image_width": "half",
-        "header_mobile_text_alignment": "left",
-        "header_desktop_text_alignment": "left",
-        "show_breadcrumbs": true,
-        "heading_size": "h1",
-        "show_description": true,
-        "description_size": "fs-md",
-        "show_product_count": true,
-        "show_filters": true,
-        "show_sort": true,
-        "mobile_columns": 2,
-        "desktop_columns": 4,
-        "products_per_page": 24,
-        "pt": 44,
-        "pb": 60
+        "accent_color": "{{ settings.colors.accent }}"
       }
     }
   },

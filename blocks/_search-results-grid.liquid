@@ -1,0 +1,154 @@
+{% doc %}
+Renders paginated search results using the reusable product and article cards.
+{% enddoc %}
+
+{% liquid
+  assign results_per_page = block.settings.results_per_page | default: 24
+  assign escaped_search_terms = search.terms | escape
+  assign pagination_previous = 'general.pagination.previous' | t
+  assign pagination_next = 'general.pagination.next' | t
+
+  if shop.permanent_domain contains 'ks-'
+    assign results_per_page = 12
+  endif
+%}
+
+{% if search.performed %}
+  <div
+    class="search-results-grid section-spacing"
+    style="
+      --pt: {{ block.settings.pt | divided_by: 16.0 | append: 'em' }};
+      --pb: {{ block.settings.pb | divided_by: 16.0 | append: 'em' }};
+    "
+    {{ block.shopify_attributes }}
+  >
+    <div class="container {{ settings.container_width }}">
+      {% paginate search.results by results_per_page %}
+        {% if search.results_count > 0 %}
+          <ul
+            class="product-grid"
+            role="list"
+            style="
+              --mobile-columns: {{ block.settings.mobile_columns }};
+              --tablet-columns: 2;
+              --desktop-columns: {{ block.settings.desktop_columns }};
+            "
+          >
+            {% for result in search.results %}
+              <li class="product-grid-item">
+                {% case result.object_type %}
+                  {% when 'product' %}
+                    {% content_for 'block', type: 'product-card', id: 'product-card', closest.product: result %}
+
+                  {% when 'article' %}
+                    {% content_for 'block', type: 'article-card', id: 'article-card', closest.article: result %}
+
+                  {% when 'page' %}
+                    <article class="search-result-card">
+                      <div class="search-result-card-placeholder">
+                        <span class="badge search-result-card-badge">
+                          {{ 'search.types.page' | t }}
+                        </span>
+                      </div>
+                      <h3 class="search-result-card-title fs-md">
+                        <a class="search-result-card-title-link" href="{{ result.url }}">
+                          {{ result.title | escape }}
+                        </a>
+                      </h3>
+                    </article>
+                {% endcase %}
+              </li>
+            {% endfor %}
+          </ul>
+
+          {% if paginate.pages > 1 %}
+            <nav class="pagination" aria-label="{{ 'accessibility.pagination' | t }}">
+              {{ paginate
+                | default_pagination:
+                  previous: pagination_previous,
+                  next: pagination_next
+              }}
+            </nav>
+          {% endif %}
+        {% else %}
+          <p class="faceted-results-empty">
+            {{ 'search.no_results' | t: terms: escaped_search_terms }}
+          </p>
+        {% endif %}
+      {% endpaginate %}
+    </div>
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Results grid",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "mobile_columns",
+      "label": "Mobile columns",
+      "info": "Tablet layouts always use two columns.",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "desktop_columns",
+      "label": "Desktop columns",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "results_per_page",
+      "label": "Results per page",
+      "min": 8,
+      "max": 48,
+      "step": 4,
+      "default": 24
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pt",
+      "label": "Top",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "pb",
+      "label": "Bottom",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 60
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product-card"
+    },
+    {
+      "type": "article-card"
+    }
+  ]
+}
+{% endschema %}

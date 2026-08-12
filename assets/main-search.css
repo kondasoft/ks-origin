@@ -1,7 +1,7 @@
 /*
   Main search stylesheet
 
-  This file owns the search page header, search form, and non-product result-card presentation.
+  This file owns the search page structure, header, toolbar, and non-product result-card presentation.
 */
 
 
@@ -14,9 +14,14 @@
   background-color: rgb(var(--color-background));
 }
 
+.search-header-block {
+  color: rgb(var(--color-text));
+  background-color: rgb(var(--color-background));
+}
+
 .main-search-header {
   display: grid;
-  gap: 0.5rem;
+  gap: 1rem;
 }
 
 .main-search-title {
@@ -24,15 +29,36 @@
 }
 
 .main-search-form {
-  display: flex;
   width: 100%;
   max-width: 720px;
-  gap: 0.5rem;
 }
 
-.main-search-form .btn {
-  min-width: auto;
-  flex: none;
+.main-search-input-wrapper {
+  position: relative;
+}
+
+.main-search-input {
+  padding-right: 3.5rem;
+}
+
+.main-search-input::-webkit-search-cancel-button {
+  display: none;
+}
+
+.main-search-submit {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  height: 100%;
+}
+
+.input-lg + .main-search-submit {
+  width: 50px;
+}
+
+.search-header-block[data-surface-background="true"] .main-search-form .input {
+  background-color: rgb(var(--color-site-background));
 }
 
 .main-search-header[data-mobile-text-alignment="center"] .main-search-form {
@@ -42,6 +68,39 @@
 
 .main-search-header[data-mobile-text-alignment="right"] .main-search-form {
   margin-left: auto;
+}
+
+
+/*
+  Search toolbar
+*/
+.search-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.search-toolbar-result-count {
+  margin: 0;
+  font-size: var(--fs-sm);
+}
+
+.search-toolbar-actions {
+  flex-wrap: nowrap;
+  margin-left: auto;
+}
+
+.search-toolbar .btn {
+  min-width: auto;
+}
+
+.main-search .faceted-results-grid {
+  margin-top: 0;
+}
+
+.main-search .faceted-results-grid:focus-visible {
+  outline-color: transparent;
 }
 
 
@@ -97,7 +156,7 @@
 
 @media (min-width: 1200px) {
   .main-search-header {
-    gap: 1rem;
+    gap: 1.5rem;
   }
 
   .main-search-header[data-desktop-text-alignment="left"] .main-search-form {

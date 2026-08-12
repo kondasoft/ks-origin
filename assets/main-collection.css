@@ -1,7 +1,7 @@
 /*
   Main collection stylesheet
 
-  This file owns the collection page header layout and collection-image presentation.
+  This file owns the collection page structure, header presentation, and toolbar layout.
 */
 
 
@@ -14,7 +14,12 @@
   background-color: rgb(var(--color-background));
 }
 
-.main-collection[data-has-image="true"] {
+.collection-header-block {
+  color: rgb(var(--color-text));
+  background-color: rgb(var(--color-background));
+}
+
+.collection-header-block:has(.main-collection-header-with-image) {
   padding-top: 1rem;
 }
 
@@ -59,7 +64,7 @@
 }
 
 @media (min-width: 600px) {
-  .main-collection[data-has-image="true"] {
+  .collection-header-block:has(.main-collection-header-with-image) {
     padding-top: calc(var(--pt) * var(--spacing-scale));
   }
 }
@@ -110,4 +115,33 @@
     margin-right: 0;
     margin-left: auto;
   }
+}
+
+
+/*
+  Collection toolbar
+*/
+.collection-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.collection-toolbar-product-count {
+  margin: 0;
+  font-size: var(--fs-sm);
+}
+
+.collection-toolbar-actions {
+  flex-wrap: nowrap;
+  margin-left: auto;
+}
+
+.collection-toolbar .btn {
+  min-width: auto;
+}
+
+.main-collection .faceted-results-grid {
+  margin-top: 0;
 }

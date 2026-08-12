@@ -1,0 +1,136 @@
+{% doc %}
+Renders the blog article count and tag filter.
+{% enddoc %}
+
+{% liquid
+  assign active_blog_tag = current_tags | first
+  assign article_count = blog.articles_count
+  assign tag_filter_label = 'blogs.filter_by_tag' | t
+  assign show_blog_tag_filter = false
+
+  if active_blog_tag != blank
+    assign tag_filter_label = active_blog_tag
+  endif
+
+  if block.settings.show_tag_filter and blog.all_tags.size > 0
+    assign show_blog_tag_filter = true
+  endif
+%}
+
+{% if active_blog_tag != blank %}
+  {% paginate blog.articles by 1 %}
+    {% assign article_count = paginate.items %}
+  {% endpaginate %}
+{% endif %}
+
+{% if block.settings.show_article_count or show_blog_tag_filter %}
+  <div
+    class="blog-toolbar-block section-spacing"
+    style="
+      --pt: {{ block.settings.pt | divided_by: 16.0 | append: 'em' }};
+      --pb: {{ block.settings.pb | divided_by: 16.0 | append: 'em' }};
+    "
+    {{ block.shopify_attributes }}
+  >
+    <div class="container {{ settings.container_width }}">
+      <div class="blog-toolbar">
+        {% if block.settings.show_article_count %}
+          <p class="blog-toolbar-article-count">
+            {{ 'blogs.articles_count' | t: count: article_count }}
+          </p>
+        {% endif %}
+
+        {% if show_blog_tag_filter %}
+          <theme-dropdown class="theme-dropdown blog-tag-filter">
+            <button
+              class="theme-dropdown-btn btn btn-sm btn-text-outline"
+              type="button"
+              aria-expanded="false"
+            >
+              {% render 'svg-icons', icon: 'filter', icon_size: 16 %}
+              {{ tag_filter_label | escape }}
+              {% render 'svg-icons', icon: 'chevron-down', icon_size: 14 %}
+            </button>
+
+            <div
+              class="theme-dropdown-content"
+              data-dropdown-alignment="right"
+              hidden
+            >
+              <ul class="blog-tag-filter-list" role="list">
+                <li>
+                  <a
+                    class="blog-tag-filter-link"
+                    href="{{ blog.url }}"
+                    {% if current_tags == blank %}aria-current="page"{% endif %}
+                  >
+                    {{ 'blogs.all_articles' | t }}
+                  </a>
+                </li>
+
+                {% for tag in blog.all_tags %}
+                  {% assign tag_handle = tag | handle %}
+                  {% assign tag_url = blog.url | append: '/tagged/' | append: tag_handle %}
+                  <li>
+                    <a
+                      class="blog-tag-filter-link"
+                      href="{{ tag_url }}"
+                      {% if current_tags contains tag %}aria-current="page"{% endif %}
+                    >
+                      {{ tag | escape }}
+                    </a>
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </theme-dropdown>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Blog toolbar",
+  "tag": null,
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_article_count",
+      "label": "Show article count",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_tag_filter",
+      "label": "Show tag filter",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pt",
+      "label": "Top",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "pb",
+      "label": "Bottom",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 24
+    }
+  ]
+}
+{% endschema %}
