@@ -4,8 +4,8 @@
     "theme_name": "KS Origin",
     "theme_version": "1.0.0",
     "theme_author": "KondaSoft",
-    "theme_documentation_url": "https://github.com/kondasoft/ks-origin",
-    "theme_support_url": "https://github.com/kondasoft/ks-origin/issues"
+    "theme_documentation_url": "https://www.kondasoft.com/products/ks-origin",
+    "theme_support_url": "https://www.kondasoft.com/contact"
   },
   {
     "name": "Colors",
@@ -21,8 +21,8 @@
         "default": {
           "background": "#FFFFFF",
           "text": "#0A0A0A",
-          "surface": "#EBEBEC",
-          "accent": "#2563EB"
+          "surface": "#F6F6F6",
+          "accent": "#0069A9"
         }
       },
       {

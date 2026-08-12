@@ -15,7 +15,7 @@
         "subheading_H8xPFr": {
           "type": "subheading",
           "settings": {
-            "subheading": "New collection",
+            "subheading": "Developed by KondaSoft",
             "subheading_size": "fs-md",
             "pt": 0,
             "pb": 0
@@ -25,7 +25,7 @@
         "heading_ax8Ben": {
           "type": "heading",
           "settings": {
-            "heading": "A hero built around your story",
+            "heading": "Welcome to KS Origin Theme",
             "heading_tag": "1",
             "heading_size": "h1",
             "pt": 0,
@@ -64,8 +64,8 @@
               "type": "button",
               "settings": {
                 "label": "Latest arrivals",
-                "link": "shopify://collections/all",
-                "style": "btn-accent-solid",
+                "link": "shopify://collections/latest-arrivals",
+                "style": "btn-text-solid",
                 "size": "btn-md"
               },
               "blocks": {}
@@ -74,8 +74,8 @@
               "type": "button",
               "settings": {
                 "label": "Best selling",
-                "link": "",
-                "style": "btn-text-solid",
+                "link": "shopify://collections/best-selling",
+                "style": "btn-text-outline",
                 "size": "btn-md"
               },
               "blocks": {}
@@ -96,11 +96,12 @@
       "name": "Hero",
       "settings": {
         "source": "image",
+        "desktop_image": "shopify://shop_images/dave-hoefler-SpzGTdBg738-unsplash.jpg",
         "external_video": "",
         "external_video_alt": "",
         "background_color": "#0a0a0a",
         "text_color": "#ffffff",
-        "accent_color": "#60a5fa",
+        "accent_color": "#66a5cb",
         "overlay_color": "#000000",
         "overlay_opacity": 30,
         "mobile_content_position": "center",
@@ -130,7 +131,7 @@
         "text_yKAUnX": {
           "type": "text",
           "settings": {
-            "text": "<p>Introduce a collection, campaign, or key message with immersive full-width media.</p>",
+            "text": "<p>Explore featured new arrivals, customer favorites, and everyday essentials</p>",
             "text_size": "fs-md",
             "pt": 0,
             "pb": 0
@@ -163,6 +164,7 @@
               "type": "_product-card-rating",
               "settings": {
                 "show_count": true,
+                "count_style": "simple",
                 "rating_size": "fs-sm"
               },
               "blocks": {}
@@ -219,19 +221,6 @@
         "pb": 60
       }
     },
-    "divider_mhqKLJ": {
-      "type": "divider",
-      "name": "Divider",
-      "settings": {
-        "background_color": "{{ settings.colors.background }}",
-        "line_color": "{{ settings.colors.text }}",
-        "custom_line_opacity": false,
-        "line_opacity": 20,
-        "container_width": "site",
-        "pt": 0,
-        "pb": 0
-      }
-    },
     "collection_list_6dLrBL": {
       "type": "collection-list",
       "blocks": {
@@ -273,7 +262,7 @@
             "collection_card_title_dDKALW": {
               "type": "_collection-card-title",
               "settings": {
-                "show_product_count": false,
+                "show_product_count": true,
                 "font_family": "heading",
                 "heading_size": "fs-md"
               },
@@ -293,12 +282,14 @@
       "name": "Collection list",
       "settings": {
         "collections": [
-          "all",
-          "lateset-arrivals-copy",
-          "automated-collection",
-          "men"
+          "men",
+          "women",
+          "children",
+          "babies",
+          "latest-arrivals",
+          "best-selling"
         ],
-        "background_color": "{{ settings.colors.background }}",
+        "background_color": "{{ settings.colors.surface }}",
         "text_color": "{{ settings.colors.text }}",
         "accent_color": "{{ settings.colors.accent }}",
         "header_mobile_text_alignment": "left",
@@ -311,19 +302,6 @@
         "desktop_columns": 3,
         "pt": 60,
         "pb": 60
-      }
-    },
-    "divider_wGwDd6": {
-      "type": "divider",
-      "name": "Divider",
-      "settings": {
-        "background_color": "{{ settings.colors.background }}",
-        "line_color": "{{ settings.colors.text }}",
-        "custom_line_opacity": false,
-        "line_opacity": 20,
-        "container_width": "site",
-        "pt": 0,
-        "pb": 0
       }
     },
     "blog_posts_TbccFM": {
@@ -1381,7 +1359,7 @@
           "name": "Column 2",
           "settings": {
             "custom_colors": true,
-            "background_color": "#e7cacc",
+            "background_color": "{{ settings.colors.surface }}",
             "text_color": "{{ settings.colors.text }}",
             "accent_color": "{{ settings.colors.accent }}",
             "mobile_content_direction": "column",
@@ -1727,9 +1705,7 @@
   "order": [
     "hero_epRUea",
     "featured_collection_zBQiyp",
-    "divider_mhqKLJ",
     "collection_list_6dLrBL",
-    "divider_wGwDd6",
     "blog_posts_TbccFM",
     "contact_form_jN7QXd",
     "liquid_html_6ttYfG",

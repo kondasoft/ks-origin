@@ -48,6 +48,10 @@
 >
   <div
     class="hero responsive-text-alignment"
+    data-source="{{ section.settings.source }}"
+    {% if section.settings.source == 'image' and desktop_image == blank %}
+      data-media-loaded="true"
+    {% endif %}
     data-mobile-content-position="{{ section.settings.mobile_content_position }}"
     data-desktop-content-position="{{ section.settings.desktop_content_position }}"
     data-mobile-height="{{ section.settings.mobile_height }}"
@@ -92,7 +96,8 @@
                 widths: '640, 960, 1280, 1600, 1920, 2400, 3200, 3840',
                 sizes: media_sizes,
                 loading: media_loading,
-                fetchpriority: media_fetchpriority
+                fetchpriority: media_fetchpriority,
+                onload: "this.closest('.hero').dataset.mediaLoaded = 'true'"
             }}
           </picture>
         {% else %}
@@ -209,7 +214,7 @@
       "type": "color",
       "id": "accent_color",
       "label": "Accent color",
-      "default": "#60A5FA"
+      "default": "#66A5CB"
     },
     {
       "type": "header",

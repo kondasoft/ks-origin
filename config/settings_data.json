@@ -9,6 +9,7 @@
  */
 {
   "current": {
+    "color_surface": "{{ settings.colors.surface }}",
     "type_heading_font": "lato_n5",
     "heading_size_scale": 100,
     "body_size_scale": 100,
@@ -43,8 +44,8 @@
     "colors": {
       "background": "#ffffff",
       "text": "#0a0a0a",
-      "surface": "#ebebec",
-      "accent": "#2563EB"
+      "surface": "#F6F6F6",
+      "accent": "#0069a9"
     }
   }
 }

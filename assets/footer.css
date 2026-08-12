@@ -220,7 +220,7 @@
 .footer-heart {
   display: inline-flex;
   margin: 0 0.125em;
-  color: #ff4d73;
+  color: rgb(var(--color-accent));
   transform: translateY(2px) scale(1.1);
 }
 

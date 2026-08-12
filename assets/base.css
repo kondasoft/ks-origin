@@ -259,7 +259,10 @@ button {
   cursor: pointer;
   outline: 2px solid transparent;
   outline-offset: 2px;
-  transition: background-color 200ms ease-out, border-color 200ms ease-out;
+  transition:
+    background-color 200ms ease-out,
+    border-color 200ms ease-out,
+    color 200ms ease-out;
 }
 
 .btn:hover:not(:disabled):not([aria-disabled='true']) {
@@ -345,6 +348,7 @@ button {
   position: relative;
   color: transparent;
   opacity: 1;
+  transition-property: background-color, border-color;
 }
 
 .btn.loading::after {

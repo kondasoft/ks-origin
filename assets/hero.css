@@ -77,6 +77,15 @@
   pointer-events: none;
 }
 
+.hero[data-source="image"] .hero-overlay {
+  opacity: 0;
+  transition: opacity 500ms ease-out;
+}
+
+.hero[data-source="image"][data-media-loaded="true"] .hero-overlay {
+  opacity: 1;
+}
+
 .hero-content-container {
   position: relative;
   z-index: 2;
@@ -166,5 +175,11 @@
   .hero[data-desktop-content-position="center-right"] .hero-content,
   .hero[data-desktop-content-position="bottom-right"] .hero-content {
     justify-self: end;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero[data-source="image"] .hero-overlay {
+    transition: none;
   }
 }
