@@ -191,5 +191,35 @@ Renders the main product media gallery with images, Shopify-hosted videos, contr
         {% endif %}
       {% endfor %}
     </ul>
+    <script>
+      (() => {
+        const thumbnailList = globalThis.document.currentScript.previousElementSibling;
+
+        thumbnailList.updateThumbnailLayout = () => {
+          const thumbnails = thumbnailList.querySelectorAll('[data-product-gallery-thumbnail]');
+          const styles = globalThis.getComputedStyle(thumbnailList);
+          const gap = Number.parseFloat(styles.columnGap) || 0;
+          const padding =
+            (Number.parseFloat(styles.paddingLeft) || 0) + (Number.parseFloat(styles.paddingRight) || 0);
+          const minimumSize =
+            Number.parseFloat(styles.getPropertyValue('--product-gallery-thumbnail-min')) || 50;
+          const maximumSize =
+            Number.parseFloat(styles.getPropertyValue('--product-gallery-thumbnail-max')) || 140;
+          const availableWidth = thumbnailList.clientWidth - padding;
+          const maximumVisible = Math.max(1, Math.floor((availableWidth + gap) / (minimumSize + gap)));
+          const visibleCount = Math.min(thumbnails.length, maximumVisible);
+          const thumbnailSize = Math.max(
+            minimumSize,
+            Math.min(maximumSize, (availableWidth - gap * (visibleCount - 1)) / visibleCount),
+          );
+
+          thumbnailList.style.setProperty('--product-gallery-thumbnail-size', `${thumbnailSize}px`);
+
+          return visibleCount;
+        };
+
+        thumbnailList.updateThumbnailLayout();
+      })();
+    </script>
   {% endif %}
 </product-gallery>

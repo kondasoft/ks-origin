@@ -10,6 +10,7 @@
 {
   "current": {
     "color_surface": "{{ settings.colors.surface }}",
+    "favicon": "shopify://shop_images/kondasoft-icon.png",
     "type_heading_font": "lato_n5",
     "heading_size_scale": 100,
     "body_size_scale": 100,

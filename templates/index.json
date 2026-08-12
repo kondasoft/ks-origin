@@ -149,7 +149,7 @@
             "text_alignment": "left",
             "border_opacity": 0,
             "show_box_shadow": false,
-            "pt": 24,
+            "pt": 0,
             "pb": 0,
             "pl": 0,
             "pr": 0

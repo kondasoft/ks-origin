@@ -21,7 +21,15 @@ class ProductVariantPicker extends HTMLElement {
     this.addEventListener("change", this.onOptionChange.bind(this), {
       signal: this.listenerController.signal,
     });
+    window.addEventListener("resize", this.updateActiveButtonIndicators.bind(this), {
+      signal: this.listenerController.signal,
+    });
     this.updateOptionAvailability();
+    this.updateActiveButtonIndicators();
+    this.enableActiveButtonTransitions();
+    document.fonts?.ready.then(() => {
+      if (this.isConnected) this.updateActiveButtonIndicators();
+    });
     this.isInitialized = true;
   }
 
@@ -128,9 +136,39 @@ class ProductVariantPicker extends HTMLElement {
     });
   }
 
+  updateActiveButtonIndicators() {
+    this.querySelectorAll("[data-variant-button-group]").forEach((group) => {
+      const selectedButton = group.querySelector(".product-main-variant-picker-radio:has(input:checked)");
+
+      if (!selectedButton) {
+        group.style.setProperty("--variant-button-active-opacity", "0");
+        delete group.dataset.activeIndicator;
+        return;
+      }
+
+      group.style.setProperty("--variant-button-active-left", `${selectedButton.offsetLeft}px`);
+      group.style.setProperty("--variant-button-active-top", `${selectedButton.offsetTop}px`);
+      group.style.setProperty("--variant-button-active-width", `${selectedButton.offsetWidth}px`);
+      group.style.setProperty("--variant-button-active-height", `${selectedButton.offsetHeight}px`);
+      group.style.setProperty("--variant-button-active-opacity", "1");
+      group.dataset.activeIndicator = "";
+    });
+  }
+
+  enableActiveButtonTransitions() {
+    requestAnimationFrame(() => {
+      if (!this.isConnected) return;
+
+      this.querySelectorAll("[data-variant-button-group]").forEach((group) => {
+        group.dataset.activeIndicatorReady = "";
+      });
+    });
+  }
+
   updateProduct(variant, selectedOptions) {
     this.updateSelectedOptionLabels(selectedOptions);
     this.updateOptionAvailability();
+    this.updateActiveButtonIndicators();
     this.updateVariantInputs(variant);
     this.updatePrice(variant);
     this.updateSku(variant);

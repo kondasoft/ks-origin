@@ -182,20 +182,10 @@ class ProductGallery extends HTMLElement {
   }
 
   updateThumbnailLayout() {
-    const styles = getComputedStyle(this.thumbnailList);
-    const gap = Number.parseFloat(styles.columnGap) || 0;
-    const padding = (Number.parseFloat(styles.paddingLeft) || 0) + (Number.parseFloat(styles.paddingRight) || 0);
-    const minimumSize = Number.parseFloat(styles.getPropertyValue("--product-gallery-thumbnail-min")) || 50;
-    const maximumSize = Number.parseFloat(styles.getPropertyValue("--product-gallery-thumbnail-max")) || 140;
-    const availableWidth = this.thumbnailList.clientWidth - padding;
-    const maximumVisible = Math.max(1, Math.floor((availableWidth + gap) / (minimumSize + gap)));
-    const visibleCount = Math.min(this.thumbnails.length, maximumVisible);
-    const thumbnailSize = Math.max(
-      minimumSize,
-      Math.min(maximumSize, (availableWidth - gap * (visibleCount - 1)) / visibleCount),
-    );
+    const visibleCount = this.thumbnailList.updateThumbnailLayout?.();
 
-    this.thumbnailList.style.setProperty("--product-gallery-thumbnail-size", `${thumbnailSize}px`);
+    if (!visibleCount) return;
+
     this.visibleThumbnailCount = visibleCount;
 
     cancelAnimationFrame(this.thumbnailScrollFrame);

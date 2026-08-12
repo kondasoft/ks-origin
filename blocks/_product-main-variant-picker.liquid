@@ -69,7 +69,10 @@
             <legend>
               {{ product_option.name | escape }}{% if option_has_swatches %}: <span class="product-main-variant-picker-selected-value" data-selected-option-value>{{ selected_option_value | escape }}</span>{% endif %}
             </legend>
-            <div class="product-main-variant-picker-radio-list">
+            <div
+              class="product-main-variant-picker-radio-list"
+              {% unless option_has_swatches %}data-variant-button-group{% endunless %}
+            >
               {% for option_value in product_option.values %}
                 {% assign option_id = 'ProductOption-' | append: block.id | append: '-' | append: product_option.position | append: '-' | append: forloop.index %}
                 <label
