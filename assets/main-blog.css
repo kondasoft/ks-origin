@@ -105,6 +105,10 @@
   list-style: none;
 }
 
+.article-grid:has(.article-card[data-custom-colors="true"]) {
+  gap: 1rem;
+}
+
 .article-grid-item {
   min-width: 0;
 }
@@ -133,5 +137,9 @@
   .article-grid {
     grid-template-columns: repeat(var(--desktop-columns), minmax(0, 1fr));
     gap: 2.5rem 1.5rem;
+  }
+
+  .article-grid:has(.article-card[data-custom-colors="true"]) {
+    gap: 1rem;
   }
 }

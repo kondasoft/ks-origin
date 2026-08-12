@@ -46,6 +46,7 @@
     {% if layout == 'carousel' %}
       <theme-carousel
         class="theme-carousel"
+        data-align-navigation-to-media="{{ section.settings.carousel_align_navigation_to_media }}"
         data-partial-slide-mobile="{{ section.settings.carousel_partial_slide_mobile }}"
         role="region"
         aria-roledescription="{{ 'accessibility.carousel' | t }}"
@@ -171,7 +172,7 @@
       "type": "color",
       "id": "background_color",
       "label": "Background color",
-      "default": "{{ settings.colors.background }}"
+      "default": "{{ settings.colors.surface }}"
     },
     {
       "type": "color",
@@ -228,6 +229,14 @@
       "label": "Show navigation buttons",
       "default": true,
       "visible_if": "{{ section.settings.layout == 'carousel' }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "carousel_align_navigation_to_media",
+      "label": "Align navigation to media",
+      "info": "Centers navigation buttons against the card image. Disable to center them against the full card.",
+      "default": true,
+      "visible_if": "{{ section.settings.layout == 'carousel' and section.settings.carousel_show_navigation }}"
     },
     {
       "type": "checkbox",
@@ -341,24 +350,22 @@
     {
       "name": "Blog posts",
       "category": "Blog",
+      "settings": {
+        "carousel_align_navigation_to_media": false,
+        "show_view_all": false
+      },
       "blocks": [
         {
           "type": "heading",
           "settings": {
             "heading": "From the blog",
-            "heading_tag": "2",
-            "heading_size": "h2",
-            "pt": 0,
             "pb": 6
           }
         },
         {
           "type": "text",
           "settings": {
-            "text": "<p>Discover useful guides, fresh ideas, and stories from our latest articles.</p>",
-            "text_size": "fs-md",
-            "pt": 0,
-            "pb": 0
+            "text": "<p>Discover useful guides, fresh ideas, and stories from our latest articles.</p>"
           }
         },
         {
@@ -366,44 +373,30 @@
           "id": "article-card",
           "static": true,
           "settings": {
-            "text_alignment": "left"
+            "custom_colors": true,
+            "pt": 16,
+            "pb": 16,
+            "pl": 18,
+            "pr": 16
           },
           "blocks": [
             {
               "type": "_article-card-image",
               "settings": {
-                "image_ratio": "landscape",
-                "show_tags": true
+                "image_ratio": "widescreen"
               }
             },
             {
-              "type": "_article-card-heading",
-              "settings": {
-                "font_family": "heading",
-                "heading_size": "fs-xl"
-              }
+              "type": "_article-card-heading"
             },
             {
-              "type": "_article-card-meta",
-              "settings": {
-                "show_date": true,
-                "show_author": true,
-                "text_size": "fs-sm"
-              }
+              "type": "_article-card-meta"
             },
             {
-              "type": "_article-card-excerpt",
-              "settings": {
-                "text_size": "fs-md",
-                "max_words": 40
-              }
+              "type": "_article-card-excerpt"
             },
             {
-              "type": "_article-card-read-more",
-              "settings": {
-                "button_style": "btn-text-outline",
-                "button_size": "btn-sm"
-              }
+              "type": "_article-card-read-more"
             }
           ]
         }

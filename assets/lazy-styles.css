@@ -699,7 +699,7 @@ predictive-search {
   padding: 0.5em 0.75em;
   color: rgb(var(--color-accent));
   background-color: rgb(var(--color-accent) / 0.1);
-  /* font-weight: 600; */
+  font-weight: 500;
   border: 1px solid rgb(var(--color-accent) / var(--border-opacity));
   border-radius: var(--border-radius);
 }

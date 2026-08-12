@@ -22,6 +22,10 @@
   list-style: none;
 }
 
+.blog-posts-grid:has(.article-card[data-custom-colors="true"]) {
+  gap: 1rem;
+}
+
 .blog-posts-item {
   min-width: 0;
 }
@@ -46,6 +50,10 @@
   .blog-posts-grid {
     grid-template-columns: repeat(var(--desktop-columns), minmax(0, 1fr));
     gap: 2.5rem 1.5rem;
+  }
+
+  .blog-posts-grid:has(.article-card[data-custom-colors="true"]) {
+    gap: 1rem;
   }
 
   .blog-posts-view-all {

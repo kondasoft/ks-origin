@@ -327,115 +327,6 @@
         "pb": 60
       }
     },
-    "blog_posts_TbccFM": {
-      "type": "blog-posts",
-      "blocks": {
-        "heading_dQPte6": {
-          "type": "heading",
-          "settings": {
-            "heading": "From the blog",
-            "heading_tag": "2",
-            "heading_size": "h2",
-            "pt": 0,
-            "pb": 6
-          },
-          "blocks": {}
-        },
-        "text_d4aL4z": {
-          "type": "text",
-          "settings": {
-            "text": "<p>Discover useful guides, fresh ideas, and stories from our latest articles.</p>",
-            "text_size": "fs-md",
-            "pt": 0,
-            "pb": 0
-          },
-          "blocks": {}
-        },
-        "article-card": {
-          "type": "article-card",
-          "static": true,
-          "settings": {
-            "text_alignment": "left"
-          },
-          "blocks": {
-            "article_card_image_49kzWz": {
-              "type": "_article-card-image",
-              "settings": {
-                "image_ratio": "landscape",
-                "show_tags": true
-              },
-              "blocks": {}
-            },
-            "article_card_heading_wKgPE7": {
-              "type": "_article-card-heading",
-              "settings": {
-                "font_family": "heading",
-                "heading_size": "fs-xl"
-              },
-              "blocks": {}
-            },
-            "article_card_meta_XB8VKk": {
-              "type": "_article-card-meta",
-              "settings": {
-                "show_date": true,
-                "show_author": true,
-                "text_size": "fs-sm"
-              },
-              "blocks": {}
-            },
-            "article_card_excerpt_ycQrn8": {
-              "type": "_article-card-excerpt",
-              "settings": {
-                "text_size": "fs-md",
-                "max_words": 40
-              },
-              "blocks": {}
-            },
-            "article_card_read_more_zqE4yn": {
-              "type": "_article-card-read-more",
-              "settings": {
-                "button_style": "btn-text-outline",
-                "button_size": "btn-sm"
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "article_card_image_49kzWz",
-            "article_card_heading_wKgPE7",
-            "article_card_meta_XB8VKk",
-            "article_card_excerpt_ycQrn8",
-            "article_card_read_more_zqE4yn"
-          ]
-        }
-      },
-      "block_order": [
-        "heading_dQPte6",
-        "text_d4aL4z"
-      ],
-      "name": "Blog posts",
-      "settings": {
-        "blog": "news",
-        "articles_to_show": 6,
-        "background_color": "{{ settings.colors.background }}",
-        "text_color": "{{ settings.colors.text }}",
-        "accent_color": "{{ settings.colors.accent }}",
-        "header_mobile_text_alignment": "left",
-        "header_desktop_text_alignment": "left",
-        "layout": "carousel",
-        "carousel_partial_slide_mobile": true,
-        "carousel_show_navigation": true,
-        "carousel_show_progress": true,
-        "mobile_columns": 1,
-        "desktop_columns": 3,
-        "show_view_all": false,
-        "view_all_label": "View all posts",
-        "view_all_style": "btn-text-outline",
-        "view_all_size": "btn-md",
-        "pt": 60,
-        "pb": 60
-      }
-    },
     "contact_form_jN7QXd": {
       "type": "contact-form",
       "blocks": {
@@ -1473,6 +1364,7 @@
         "group_chdhGG",
         "group_mznWLa"
       ],
+      "disabled": true,
       "name": "Columns",
       "settings": {
         "background_color": "{{ settings.colors.surface }}",
@@ -1528,6 +1420,7 @@
         "text_JYXbFg",
         "email_signup_form_GKq4Kd"
       ],
+      "disabled": true,
       "name": "Email signup",
       "settings": {
         "background_color": "{{ settings.colors.surface }}",
@@ -1707,6 +1600,7 @@
         "group_7idWUc",
         "group_Rwjkzf"
       ],
+      "disabled": true,
       "name": "Columns",
       "settings": {
         "background_color": "{{ settings.colors.surface }}",
@@ -1723,13 +1617,132 @@
         "pt": 60,
         "pb": 60
       }
+    },
+    "blog_posts_TbccFM": {
+      "type": "blog-posts",
+      "blocks": {
+        "heading_dQPte6": {
+          "type": "heading",
+          "settings": {
+            "heading": "From the blog",
+            "heading_tag": "2",
+            "heading_size": "h2",
+            "pt": 0,
+            "pb": 6
+          },
+          "blocks": {}
+        },
+        "text_d4aL4z": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Discover useful guides, fresh ideas, and stories from our latest articles.</p>",
+            "text_size": "fs-md",
+            "pt": 0,
+            "pb": 0
+          },
+          "blocks": {}
+        },
+        "article-card": {
+          "type": "article-card",
+          "static": true,
+          "settings": {
+            "custom_colors": true,
+            "background_color": "{{ settings.colors.background }}",
+            "text_color": "{{ settings.colors.text }}",
+            "accent_color": "{{ settings.colors.accent }}",
+            "text_alignment": "left",
+            "border_opacity": 0,
+            "show_box_shadow": false,
+            "pt": 16,
+            "pb": 16,
+            "pl": 18,
+            "pr": 16
+          },
+          "blocks": {
+            "article_card_image_49kzWz": {
+              "type": "_article-card-image",
+              "settings": {
+                "image_ratio": "widescreen",
+                "show_tags": true
+              },
+              "blocks": {}
+            },
+            "article_card_heading_wKgPE7": {
+              "type": "_article-card-heading",
+              "settings": {
+                "font_family": "heading",
+                "heading_size": "fs-xl"
+              },
+              "blocks": {}
+            },
+            "article_card_meta_XB8VKk": {
+              "type": "_article-card-meta",
+              "settings": {
+                "show_date": true,
+                "show_author": true,
+                "text_size": "fs-sm"
+              },
+              "blocks": {}
+            },
+            "article_card_excerpt_ycQrn8": {
+              "type": "_article-card-excerpt",
+              "settings": {
+                "text_size": "fs-md",
+                "max_words": 40
+              },
+              "blocks": {}
+            },
+            "article_card_read_more_zqE4yn": {
+              "type": "_article-card-read-more",
+              "settings": {
+                "button_style": "btn-text-outline",
+                "button_size": "btn-sm"
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "article_card_image_49kzWz",
+            "article_card_heading_wKgPE7",
+            "article_card_meta_XB8VKk",
+            "article_card_excerpt_ycQrn8",
+            "article_card_read_more_zqE4yn"
+          ]
+        }
+      },
+      "block_order": [
+        "heading_dQPte6",
+        "text_d4aL4z"
+      ],
+      "name": "Blog posts",
+      "settings": {
+        "blog": "news",
+        "articles_to_show": 6,
+        "background_color": "{{ settings.colors.surface }}",
+        "text_color": "{{ settings.colors.text }}",
+        "accent_color": "{{ settings.colors.accent }}",
+        "header_mobile_text_alignment": "left",
+        "header_desktop_text_alignment": "left",
+        "layout": "carousel",
+        "carousel_partial_slide_mobile": true,
+        "carousel_show_navigation": true,
+        "carousel_align_navigation_to_media": false,
+        "carousel_show_progress": true,
+        "mobile_columns": 1,
+        "desktop_columns": 3,
+        "show_view_all": false,
+        "view_all_label": "View all posts",
+        "view_all_style": "btn-text-outline",
+        "view_all_size": "btn-md",
+        "pt": 60,
+        "pb": 60
+      }
     }
   },
   "order": [
     "hero_epRUea",
     "featured_collection_zBQiyp",
     "collection_list_6dLrBL",
-    "blog_posts_TbccFM",
     "contact_form_jN7QXd",
     "liquid_html_6ttYfG",
     "image_4hw3MC",
@@ -1743,6 +1756,7 @@
     "video_with_text_mUK9FU",
     "columns_xVQnwK",
     "email_signup_bC6B3d",
-    "columns_4nFedD"
+    "columns_4nFedD",
+    "blog_posts_TbccFM"
   ]
 }

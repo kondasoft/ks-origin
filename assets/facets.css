@@ -247,6 +247,10 @@
   gap: 1rem;
 }
 
+.product-grid:has(.article-card[data-custom-colors="true"]) {
+  gap: 1rem;
+}
+
 .faceted-results-grid[aria-busy="true"] .product-grid {
   opacity: 0.2;
 }
@@ -282,6 +286,10 @@
   }
 
   .product-grid:has(.product-card[data-custom-colors="true"]) {
+    gap: 1rem;
+  }
+
+  .product-grid:has(.article-card[data-custom-colors="true"]) {
     gap: 1rem;
   }
 }

@@ -1,14 +1,24 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
+{% liquid
+  assign body_font_medium = settings.type_body_font | font_modify: 'weight', '500'
+  assign body_font_url = settings.type_body_font | font_url
+  assign body_font_medium_url = body_font_medium | font_url
+%}
+
 {% # theme-check-disable AssetPreload %}
 {% unless settings.type_heading_font.system? %}
   <link rel="preload" as="font" href="{{ settings.type_heading_font | font_url }}" type="font/woff2" crossorigin >
 {% endunless %}
 
 {% unless settings.type_body_font.system? %}
-  <link rel="preload" as="font" href="{{ settings.type_body_font | font_url }}" type="font/woff2" crossorigin>
+  <link rel="preload" as="font" href="{{ body_font_url }}" type="font/woff2" crossorigin>
 {% endunless %}
+
+{% if body_font_medium != blank and body_font_medium.system? == false and body_font_medium_url != body_font_url %}
+  <link rel="preload" as="font" href="{{ body_font_medium_url }}" type="font/woff2" crossorigin>
+{% endif %}
 {% # theme-check-enable AssetPreload %}
 
 {% if settings.favicon != blank %}

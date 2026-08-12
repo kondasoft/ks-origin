@@ -9,7 +9,25 @@
   display: grid;
   min-width: 0;
   gap: 0.5rem;
+  padding-top: calc(var(--card-pt) * var(--spacing-scale));
+  padding-right: calc(var(--card-pr) * var(--spacing-scale));
+  padding-bottom: calc(var(--card-pb) * var(--spacing-scale));
+  padding-left: calc(var(--card-pl) * var(--spacing-scale));
+  color: rgb(var(--color-text));
   text-align: left;
+  border-radius: var(--border-radius);
+}
+
+.article-card:not([data-border-opacity="0"]) {
+  border: 1px solid rgb(var(--color-text) / var(--card-border-opacity));
+}
+
+.article-card[data-custom-colors="true"] {
+  background-color: rgb(var(--color-background));
+}
+
+.article-card[data-box-shadow="true"] {
+  box-shadow: 0 0.25rem 0.75rem rgb(var(--color-text) / 0.1);
 }
 
 .article-card[data-text-alignment="center"] {
