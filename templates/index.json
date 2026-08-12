@@ -1662,7 +1662,7 @@
             "article_card_image_49kzWz": {
               "type": "_article-card-image",
               "settings": {
-                "image_ratio": "widescreen",
+                "image_ratio": "landscape",
                 "show_tags": true
               },
               "blocks": {}

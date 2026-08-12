@@ -138,8 +138,8 @@
           aria-haspopup="dialog"
           aria-label="{{ 'general.localization.country' | t }}: {{ localization.country.name | escape }}"
         >
-          <span class="header-localization-image" aria-hidden="true">
-            {{ localization.country | image_url: width: 20, height: 20 | image_tag: loading: 'eager' }}
+          <span class="localization-country-code" aria-hidden="true">
+            {{ localization.country.iso_code }}
           </span>
         </button>
       {% endif %}
