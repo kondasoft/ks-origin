@@ -8,6 +8,10 @@
   endunless
 
   assign article_image_placeholder_class = article_image_class | append: ' placeholder-svg'
+  assign block_id_parts = block.id | split: '-'
+  assign placeholder_index = block_id_parts.last | default: 0
+  assign placeholder_variant = placeholder_index | modulo: 3 | plus: 1
+  assign placeholder_name = 'blog-apparel-' | append: placeholder_variant
 %}
 
 {% if article.image != blank or article == blank %}
@@ -23,7 +27,7 @@
           loading: 'lazy'
       }}
     {% else %}
-      {{ 'lifestyle-1' | placeholder_svg_tag: article_image_placeholder_class }}
+      {{ placeholder_name | placeholder_svg_tag: article_image_placeholder_class }}
     {% endif %}
 
     {% if block.settings.show_tags and article.tags.size > 0 %}

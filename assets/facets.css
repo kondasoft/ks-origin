@@ -156,12 +156,12 @@
 
 .facets-swatch {
   display: inline-flex;
-  width: 20px;
-  height: 20px;
+  width: 14px;
+  height: 14px;
   flex: 0 0 auto;
   overflow: hidden;
   background-color: var(--swatch-color);
-  border: 1px solid rgb(var(--color-text) / var(--border-opacity));
+  border: 1px solid rgb(var(--color-text) / 0.1);
   border-radius: 50%;
 }
 
@@ -199,6 +199,18 @@
 
 .facets-price-input .input {
   padding-left: 2em;
+}
+
+.facets-price-range-slider {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+
+.facets-price-range-slider input {
+  width: 50%;
+  min-width: 0;
 }
 
 .facets-actions {

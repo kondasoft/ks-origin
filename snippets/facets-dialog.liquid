@@ -155,10 +155,10 @@
                                       | image_tag: loading: 'lazy', widths: '40, 80'
                                     }}
                                   </span>
-                                {% elsif filter.presentation == 'swatch' %}
+                                {% elsif filter_value.swatch != blank %}
                                   <span
                                     class="facets-swatch"
-                                    style="--swatch-color: {{ filter_value.swatch.color | default: 'transparent' }};"
+                                    style="--swatch-color: {% if filter_value.swatch.color %}rgb({{ filter_value.swatch.color.rgb }}){% else %}transparent{% endif %};"
                                     aria-hidden="true"
                                   >
                                     {% if filter_value.swatch.image %}
@@ -177,36 +177,70 @@
                         </ul>
 
                       {% when 'price_range' %}
-                        <div class="facets-price-range">
-                          <label>
-                            <span>{{ price_from_label }}</span>
-                            <span class="facets-price-input">
-                              <span aria-hidden="true">{{ cart.currency.symbol }}</span>
-                              <input
-                                class="input"
-                                type="text"
-                                inputmode="decimal"
-                                name="{{ filter.min_value.param_name }}"
-                                value="{% if filter.min_value.value %}{{ filter.min_value.value | money_without_currency }}{% endif %}"
-                                placeholder="0"
-                              >
-                            </span>
-                          </label>
+                        {% liquid
+                          assign range_max = filter.range_max | divided_by: 100.0
+                          assign range_min_value = filter.min_value.value | divided_by: 100.0
+                          assign range_max_value = filter.max_value.value | divided_by: 100.0
 
-                          <label>
-                            <span>{{ price_to_label }}</span>
-                            <span class="facets-price-input">
-                              <span aria-hidden="true">{{ cart.currency.symbol }}</span>
-                              <input
-                                class="input"
-                                type="text"
-                                inputmode="decimal"
-                                name="{{ filter.max_value.param_name }}"
-                                value="{% if filter.max_value.value %}{{ filter.max_value.value | money_without_currency }}{% endif %}"
-                                placeholder="{{ filter.range_max | money_without_currency }}"
-                              >
-                            </span>
-                          </label>
+                          if filter.max_value.value == nil
+                            assign range_max_value = range_max
+                          endif
+                        %}
+                        <div class="facets-price-filter" data-price-range>
+                          <div class="facets-price-range">
+                            <label>
+                              <span>{{ price_from_label }}</span>
+                              <span class="facets-price-input">
+                                <span aria-hidden="true">{{ cart.currency.symbol }}</span>
+                                <input
+                                  class="input"
+                                  type="text"
+                                  inputmode="decimal"
+                                  name="{{ filter.min_value.param_name }}"
+                                  value="{% if filter.min_value.value %}{{ filter.min_value.value | money_without_currency }}{% endif %}"
+                                  placeholder="0"
+                                  data-price-input="min"
+                                >
+                              </span>
+                            </label>
+
+                            <label>
+                              <span>{{ price_to_label }}</span>
+                              <span class="facets-price-input">
+                                <span aria-hidden="true">{{ cart.currency.symbol }}</span>
+                                <input
+                                  class="input"
+                                  type="text"
+                                  inputmode="decimal"
+                                  name="{{ filter.max_value.param_name }}"
+                                  value="{% if filter.max_value.value %}{{ filter.max_value.value | money_without_currency }}{% endif %}"
+                                  placeholder="{{ filter.range_max | money_without_currency }}"
+                                  data-price-input="max"
+                                >
+                              </span>
+                            </label>
+                          </div>
+
+                          <div class="facets-price-range-slider">
+                            <input
+                              type="range"
+                              value="{{ range_min_value }}"
+                              min="0"
+                              max="{{ range_max }}"
+                              step="1"
+                              data-range-type="min"
+                              aria-label="{{ price_from_label }}"
+                            >
+                            <input
+                              type="range"
+                              value="{{ range_max_value }}"
+                              min="0"
+                              max="{{ range_max }}"
+                              step="1"
+                              data-range-type="max"
+                              aria-label="{{ price_to_label }}"
+                            >
+                          </div>
                         </div>
                     {% endcase %}
                   </div>

@@ -232,6 +232,7 @@ class FacetedResults extends HTMLElement {
 
     return {
       activeName: activeElement?.name || "",
+      activeRangeType: activeElement?.dataset.rangeType || "",
       activeValue: activeElement?.value || "",
       openGroups: Array.from(filters.querySelectorAll(".theme-collapse-details"), (details) => details.open),
       scrollTop: dialogBody?.scrollTop || 0,
@@ -282,7 +283,14 @@ class FacetedResults extends HTMLElement {
 
     if (dialogBody) dialogBody.scrollTop = filterState.scrollTop;
 
-    if (!filterState.activeName) return;
+    if (!filterState.activeName) {
+      const matchingRange = nextFilters.querySelector(
+        `[data-range-type="${CSS.escape(filterState.activeRangeType)}"]`,
+      );
+
+      matchingRange?.focus({ preventScroll: true });
+      return;
+    }
 
     const matchingInputs = nextFilters.querySelectorAll(`[name="${CSS.escape(filterState.activeName)}"]`);
     const matchingInput =
@@ -363,6 +371,7 @@ class FacetFilters extends HTMLElement {
     this.form.addEventListener("click", this.onClick.bind(this), {
       signal: this.listenerController.signal,
     });
+    this.initializePriceRanges();
     this.isInitialized = true;
   }
 
@@ -381,20 +390,103 @@ class FacetFilters extends HTMLElement {
   onChange(event) {
     const input = event.target.closest("input, select");
 
-    if (!input || input.type === "text") return;
+    if (!input || input.type === "text" || input.type === "range") return;
 
     this.updateResults();
   }
 
   onInput(event) {
-    const input = event.target.closest('input[type="text"]');
+    const input = event.target.closest('input[type="text"], input[type="range"]');
 
-    if (!input) return;
+    if (!input?.closest("[data-price-range]")) return;
+
+    if (input.type === "range") {
+      this.syncPriceRange(input.closest("[data-price-range]"), input.dataset.rangeType, true);
+    } else {
+      this.syncPriceRange(input.closest("[data-price-range]"));
+    }
 
     window.clearTimeout(this.inputTimer);
     this.inputTimer = window.setTimeout(() => {
       this.updateResults();
     }, 500);
+  }
+
+  initializePriceRanges() {
+    this.querySelectorAll("[data-price-range]").forEach((priceRange) => {
+      this.syncPriceRange(priceRange);
+    });
+  }
+
+  getPriceRangeParts(priceRange) {
+    return {
+      minInput: priceRange.querySelector('[data-price-input="min"]'),
+      maxInput: priceRange.querySelector('[data-price-input="max"]'),
+      minRange: priceRange.querySelector('[data-range-type="min"]'),
+      maxRange: priceRange.querySelector('[data-range-type="max"]'),
+    };
+  }
+
+  getPriceNumber(value, fallback = 0) {
+    if (value === null || value === undefined || value === "") return fallback;
+
+    const compactValue = String(value).trim().replace(/\s/g, "").replace(/[^\d,.-]/g, "");
+    const commaIndex = compactValue.lastIndexOf(",");
+    const dotIndex = compactValue.lastIndexOf(".");
+    let normalizedValue = compactValue;
+
+    if (commaIndex > -1 && dotIndex > -1) {
+      normalizedValue = commaIndex > dotIndex
+        ? compactValue.replace(/\./g, "").replace(",", ".")
+        : compactValue.replace(/,/g, "");
+    } else if (commaIndex > -1) {
+      normalizedValue = compactValue.replace(",", ".");
+    }
+
+    const number = Number(normalizedValue);
+    return Number.isNaN(number) ? fallback : number;
+  }
+
+  getPriceInputNumber(input, fallback = 0) {
+    return input ? this.getPriceNumber(input.value, fallback) : fallback;
+  }
+
+  syncPriceRange(priceRange, activeRangeType = null, updateTextInputs = false) {
+    const { minInput, maxInput, minRange, maxRange } = this.getPriceRangeParts(priceRange);
+
+    if (!minInput || !maxInput || !minRange || !maxRange) return;
+
+    const minAllowed = this.getPriceNumber(minRange.min, 0);
+    const maxAllowed = this.getPriceNumber(maxRange.max, this.getPriceNumber(minRange.max, 0));
+    const minInputHasValue = minInput.value.trim() !== "";
+    const maxInputHasValue = maxInput.value.trim() !== "";
+    const minFallback = minInputHasValue ? this.getPriceInputNumber(minInput, minAllowed) : minAllowed;
+    const maxFallback = maxInputHasValue ? this.getPriceInputNumber(maxInput, maxAllowed) : maxAllowed;
+    let minValue = activeRangeType === "min"
+      ? this.getPriceInputNumber(minRange, minFallback)
+      : this.getPriceInputNumber(minInput, minFallback);
+    let maxValue = activeRangeType === "max"
+      ? this.getPriceInputNumber(maxRange, maxFallback)
+      : this.getPriceInputNumber(maxInput, maxFallback);
+
+    minValue = Math.min(Math.max(minValue, minAllowed), maxAllowed);
+    maxValue = Math.min(Math.max(maxValue, minAllowed), maxAllowed);
+
+    if (minValue > maxValue) {
+      if (activeRangeType === "min") {
+        maxValue = minValue;
+      } else {
+        minValue = maxValue;
+      }
+    }
+
+    minRange.value = minValue;
+    maxRange.value = maxValue;
+    minRange.max = maxValue;
+    maxRange.min = minValue;
+
+    if (updateTextInputs && activeRangeType === "min") minInput.value = minValue;
+    if (updateTextInputs && activeRangeType === "max") maxInput.value = maxValue;
   }
 
   onClick(event) {

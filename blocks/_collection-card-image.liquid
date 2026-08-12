@@ -16,6 +16,10 @@
   endunless
 
   assign collection_image_placeholder_class = collection_image_class | append: ' placeholder-svg'
+  assign block_id_parts = block.id | split: '-'
+  assign placeholder_index = block_id_parts.last | default: 0
+  assign placeholder_variant = placeholder_index | modulo: 4 | plus: 1
+  assign placeholder_name = 'collection-apparel-' | append: placeholder_variant
 %}
 
 <div class="collection-card-image-block" data-carousel-control-alignment {{ block.shopify_attributes }}>
@@ -31,7 +35,7 @@
         fetchpriority: image_fetchpriority
     }}
   {% else %}
-    {{ 'collection-apparel-1' | placeholder_svg_tag: collection_image_placeholder_class }}
+    {{ placeholder_name | placeholder_svg_tag: collection_image_placeholder_class }}
   {% endif %}
 </div>
 
