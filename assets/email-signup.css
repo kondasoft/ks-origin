@@ -6,18 +6,20 @@
 
 
 .email-signup-form-fields {
-  display: flex;
-  flex-direction: column;
-  gap: 0.625rem;
   width: 100%;
 }
 
 .email-signup-form-input {
+  width: 100%;
   min-width: 0;
 }
 
 .email-signup-form-status {
   margin-bottom: 1.25em;
+}
+
+.email-signup-form-button .svg-icon {
+  transition: transform 200ms ease-out;
 }
 
 [data-mobile-text-alignment="center"] .email-signup-form-fields,
@@ -29,16 +31,6 @@
 [data-mobile-text-alignment="right"] .email-signup-form-fields,
 [data-mobile-text-alignment="right"] .email-signup-form-status {
   margin-left: auto;
-}
-
-@media (min-width: 600px) {
-  .email-signup-form-fields {
-    flex-direction: row;
-  }
-
-  .email-signup-form-input {
-    flex: 1;
-  }
 }
 
 @media (min-width: 1200px) {
@@ -58,5 +50,17 @@
   [data-desktop-text-alignment="right"] .email-signup-form-status {
     margin-right: 0;
     margin-left: auto;
+  }
+}
+
+@media (hover: hover) {
+  .email-signup-form-button:hover .svg-icon {
+    transform: translateX(2px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .email-signup-form-button .svg-icon {
+    transition: none;
   }
 }

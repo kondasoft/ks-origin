@@ -36,7 +36,6 @@ Renders the search page heading and search form.
 <div
   class="search-header-block section-spacing"
   data-custom-colors="{{ block.settings.custom_colors }}"
-  data-surface-background="{{ use_site_background_for_input }}"
   style="
     --pt: {{ block.settings.pt | divided_by: 16.0 | append: 'em' }};
     --pb: {{ block.settings.pb | divided_by: 16.0 | append: 'em' }};
@@ -80,13 +79,13 @@ Renders the search page heading and search form.
         <input type="hidden" name="type" value="{{ search_types }}">
         <input type="hidden" name="options[prefix]" value="last">
 
-        <div class="main-search-input-wrapper">
+        <div class="input-wrapper">
           <label class="visually-hidden" for="SearchInput-{{ section.id }}">
             {{ 'search.label' | t }}
           </label>
           <input
             id="SearchInput-{{ section.id }}"
-            class="input main-search-input{% if block.settings.input_size == 'lg' %} input-lg{% endif %}"
+            class="input input-with-icon-right main-search-input{% if block.settings.input_size == 'lg' %} input-lg{% endif %}{% if use_site_background_for_input %} input-site-background{% endif %}"
             type="search"
             name="q"
             value="{{ search.terms | escape }}"
@@ -94,7 +93,7 @@ Renders the search page heading and search form.
             required
           >
           <button
-            class="icon-button main-search-submit"
+            class="icon-button input-icon-right"
             type="submit"
             aria-label="{{ 'accessibility.search' | t }}"
           >

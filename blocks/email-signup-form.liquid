@@ -2,7 +2,14 @@
   <link href="{{ 'email-signup.css' | asset_url }}" rel="stylesheet" fetchpriority="high">
 {% endif %}
 
-{% assign form_id = 'EmailSignupForm-' | append: section.id | append: '-' | append: block.id %}
+{% liquid
+  assign form_id = 'EmailSignupForm-' | append: section.id | append: '-' | append: block.id
+  assign use_site_background_for_input = false
+
+  if section.settings.background_color == settings.color_surface
+    assign use_site_background_for_input = true
+  endif
+%}
 
 <div
   class="email-signup-form-block block-spacing"
@@ -39,13 +46,13 @@
       </div>
     {% endif %}
 
-    <div class="email-signup-form-fields">
+    <div class="email-signup-form-fields input-wrapper">
       <label class="visually-hidden" for="{{ form_id }}-email">
         {{ 'general.email_signup.form.email' | t }}
       </label>
       <input
         id="{{ form_id }}-email"
-        class="email-signup-form-input input"
+        class="email-signup-form-input input input-with-icon-right {% if block.settings.input_size == 'lg' %} input-lg{% endif %}{% if use_site_background_for_input %} input-site-background{% endif %}"
         type="email"
         name="contact[email]"
         value="{% if customer %}{{ customer.email }}{% endif %}"
@@ -60,8 +67,12 @@
           aria-describedby="{{ form_id }}-error"
         {% endif %}
       >
-      <button class="btn btn-wide btn-md btn-accent-solid" type="submit">
-        {{ 'general.email_signup.form.submit' | t }}
+      <button
+        class="email-signup-form-button icon-button input-icon-right"
+        type="submit"
+        aria-label="{{ 'general.email_signup.form.submit' | t }}"
+      >
+        {% render 'svg-icons', icon: 'send', icon_size: 20 %}
       </button>
     </div>
   {% endform %}
@@ -72,6 +83,20 @@
   "name": "Email signup form",
   "tag": null,
   "settings": [
+    {
+      "type": "header",
+      "content": "Appearance"
+    },
+    {
+      "type": "select",
+      "id": "input_size",
+      "label": "Input size",
+      "options": [
+        { "value": "md", "label": "Medium" },
+        { "value": "lg", "label": "Large" }
+      ],
+      "default": "lg"
+    },
     {
       "type": "header",
       "content": "Spacing"

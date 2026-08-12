@@ -195,6 +195,7 @@
     "label": "Rechercher dans la boutique",
     "placeholder": "Rechercher…",
     "submit": "Rechercher",
+    "empty": "Saisissez un terme de recherche pour commencer.",
     "searching": "Recherche en cours…",
     "suggestions": "Suggestions de recherche",
     "groups": {

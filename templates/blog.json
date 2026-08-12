@@ -16,16 +16,16 @@
           "type": "_blog-header",
           "static": true,
           "settings": {
-            "custom_colors": false,
-            "background_color": "{{ settings.colors.background }}",
+            "custom_colors": true,
+            "background_color": "{{ settings.colors.surface }}",
             "text_color": "{{ settings.colors.text }}",
             "accent_color": "{{ settings.colors.accent }}",
-            "mobile_text_alignment": "left",
-            "desktop_text_alignment": "left",
+            "mobile_text_alignment": "center",
+            "desktop_text_alignment": "center",
             "show_breadcrumbs": true,
             "heading_size": "h1",
             "pt": 60,
-            "pb": 48
+            "pb": 60
           },
           "blocks": {}
         },
@@ -35,8 +35,8 @@
           "settings": {
             "show_article_count": true,
             "show_tag_filter": true,
-            "pt": 0,
-            "pb": 24
+            "pt": 32,
+            "pb": 32
           },
           "blocks": {}
         },
@@ -118,7 +118,8 @@
                 "article-card-read-more"
               ]
             }
-          }
+          },
+          "block_order": []
         }
       },
       "settings": {

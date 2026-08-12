@@ -13,16 +13,16 @@ Renders paginated search results using the reusable product and article cards.
   endif
 %}
 
-{% if search.performed %}
-  <div
-    class="search-results-grid section-spacing"
-    style="
-      --pt: {{ block.settings.pt | divided_by: 16.0 | append: 'em' }};
-      --pb: {{ block.settings.pb | divided_by: 16.0 | append: 'em' }};
-    "
-    {{ block.shopify_attributes }}
-  >
-    <div class="container {{ settings.container_width }}">
+<div
+  class="search-results-grid section-spacing"
+  style="
+    --pt: {{ block.settings.pt | divided_by: 16.0 | append: 'em' }};
+    --pb: {{ block.settings.pb | divided_by: 16.0 | append: 'em' }};
+  "
+  {{ block.shopify_attributes }}
+>
+  <div class="container {{ settings.container_width }}">
+    {% if search.performed %}
       {% paginate search.results by results_per_page %}
         {% if search.results_count > 0 %}
           <ul
@@ -76,9 +76,13 @@ Renders paginated search results using the reusable product and article cards.
           </p>
         {% endif %}
       {% endpaginate %}
-    </div>
+    {% else %}
+      <div class="main-search-empty">
+        <p>{{ 'search.empty' | t }}</p>
+      </div>
+    {% endif %}
   </div>
-{% endif %}
+</div>
 
 {% schema %}
 {

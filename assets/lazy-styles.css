@@ -211,7 +211,7 @@ predictive-search {
 }
 
 .predictive-search-input {
-  padding-right: 5.5rem;
+  padding-right: 80px;
 }
 
 .predictive-search-input::-webkit-search-cancel-button {
@@ -221,8 +221,8 @@ predictive-search {
 .predictive-search-reset {
   position: absolute;
   top: 50%;
-  right: 2.75rem;
-  width: 44px;
+  right: 40px;
+  width: 40px;
   transform: translateY(-50%);
 }
 
@@ -257,6 +257,18 @@ predictive-search {
 .dialog-body .predictive-search-results {
   margin-left: -1rem;
   margin-right: -1rem;
+}
+
+.predictive-search-initial {
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  padding: 5em 0;
+  text-align: center;
+}
+
+.predictive-search-initial p {
+  margin: 0;
 }
 
 .predictive-search-content {
@@ -647,6 +659,28 @@ predictive-search {
 
 .social-icons svg {
   display: block;
+}
+
+[data-mobile-text-alignment="center"] .social-icons-block .social-icons {
+  justify-content: center;
+}
+
+[data-mobile-text-alignment="right"] .social-icons-block .social-icons {
+  justify-content: flex-end;
+}
+
+@media (min-width: 1200px) {
+  [data-desktop-text-alignment="left"] .social-icons-block .social-icons {
+    justify-content: flex-start;
+  }
+
+  [data-desktop-text-alignment="center"] .social-icons-block .social-icons {
+    justify-content: center;
+  }
+
+  [data-desktop-text-alignment="right"] .social-icons-block .social-icons {
+    justify-content: flex-end;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

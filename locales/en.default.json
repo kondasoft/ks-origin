@@ -195,6 +195,7 @@
     "label": "Search the store",
     "placeholder": "Search for…",
     "submit": "Search",
+    "empty": "Enter a search term to get started.",
     "searching": "Searching…",
     "suggestions": "Search suggestions",
     "groups": {

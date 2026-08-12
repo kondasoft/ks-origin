@@ -37,7 +37,7 @@
           <input type="hidden" name="type" value="product,article,page">
           <input type="hidden" name="options[prefix]" value="last">
 
-          <div class="predictive-search-input-wrapper">
+          <div class="predictive-search-input-wrapper input-wrapper">
             <label class="visually-hidden" for="PredictiveSearchInput">
               {{ 'search.label' | t }}
             </label>
@@ -81,6 +81,10 @@
             </button>
           </div>
         </form>
+
+        <div class="predictive-search-initial" data-predictive-search-initial>
+          <p>{{ 'search.empty' | t }}</p>
+        </div>
 
         <div
           id="predictive-search-results"

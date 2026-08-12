@@ -118,10 +118,11 @@
           "settings": {
             "heading": "Join our newsletter",
             "heading_size": "fs-xl",
-            "text": "<p>Sign up for new arrivals, special offers, and updates.</p>",
+            "text": "<p>Sign up for new arrivals, exclusive offers, inspiring updates delivered to your inbox.</p>",
             "text_size": "fs-md",
-            "button_style": "btn-accent-solid",
-            "button_size": "btn-md"
+            "input_size": "md",
+            "show_social_links": true,
+            "social_icon_size": 16
           }
         }
       },
@@ -136,7 +137,7 @@
         "background_color": "{{ settings.colors.text }}",
         "text_color": "{{ settings.colors.background }}",
         "accent_color": "#66a5cb",
-        "show_social_links": true,
+        "show_social_links": false,
         "social_icon_size": 18,
         "show_country_selector": true,
         "show_language_selector": true,

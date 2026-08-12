@@ -17,6 +17,10 @@
       <circle cx="9" cy="9" r="4.75" stroke="currentColor" stroke-width="{{ stroke_width }}"></circle>
       <path d="m12.5 12.5 3.25 3.25" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="{{ stroke_width }}"></path>
     </svg>
+  {% when 'send' %}
+    <svg aria-hidden="true" class="svg-icon svg-icon-send" width="{{ scaled_icon_size }}" height="{{ scaled_icon_size }}" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M28 61v151.065l323.045 43.821L28 299.524V451l455.555-195L28 61Z" fill="currentColor"></path>
+    </svg>
   {% when 'account' %}
     <svg aria-hidden="true" class="svg-icon svg-icon-account" width="{{ scaled_icon_size }}" height="{{ scaled_icon_size }}" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
       <circle cx="10" cy="6.5" r="2.75" stroke="currentColor" stroke-width="{{ stroke_width }}"></circle>

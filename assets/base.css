@@ -568,8 +568,8 @@ input[type='radio']:not(.visually-hidden):disabled {
   outline-color: rgb(var(--color-text));
 }
 
-.input-wrapper {
-  position: relative;
+.input-site-background {
+  background-color: rgb(var(--color-site-background));
 }
 
 select.input {
@@ -625,6 +625,46 @@ select.input-lg {
 .input-group-horizontal .input {
   flex: 1;
 }
+
+.input-wrapper {
+  position: relative;
+}
+
+.input-wrapper:has(.input-with-icon-right),
+.input-wrapper:has(.input-with-icon-left) {
+  --icon-width: 3rem;
+}
+
+.input-wrapper:has(.input-with-icon-left.input-sm),
+.input-wrapper:has(.input-with-icon-right.input-sm) {
+  --icon-width: 2.5rem;
+}
+
+.input-wrapper:has(.input-with-icon-left.input-lg),
+.input-wrapper:has(.input-with-icon-right.input-lg) {
+  --icon-width: 3.5rem;
+}
+
+.input-with-icon-left {
+  padding-left: var(--icon-width);
+}
+
+.input-with-icon-right {
+  padding-right: var(--icon-width);
+}
+
+.input-icon-left,
+.input-icon-right {
+  position: absolute;
+  top: 50%;
+  width: var(--icon-width);
+  height: 100%;
+  transform: translateY(-50%);
+}
+
+.input-icon-left { left: 0; }
+.input-icon-right { right: 0; }
+
 
 @media (prefers-reduced-motion: reduce) {
   input[type='checkbox']:not(.visually-hidden) {

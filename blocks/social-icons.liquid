@@ -1,0 +1,66 @@
+<div
+  class="social-icons-block block-spacing"
+  style="
+    --pt: {{ block.settings.pt | divided_by: 16.0 | append: 'em' }};
+    --pb: {{ block.settings.pb | divided_by: 16.0 | append: 'em' }};
+  "
+  {{ block.shopify_attributes }}
+>
+  {% render 'social-icons',
+    icon_size: block.settings.icon_size,
+    wrapper_class: 'social-icons-block-wrapper'
+  %}
+</div>
+
+{% schema %}
+{
+  "name": "Social icons",
+  "tag": null,
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Uses the profiles configured in Theme settings > Social media."
+    },
+    {
+      "type": "range",
+      "id": "icon_size",
+      "label": "Icon size",
+      "min": 12,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "default": 18
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pt",
+      "label": "Top",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "pb",
+      "label": "Bottom",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Social icons",
+      "category": "Social media"
+    }
+  ]
+}
+{% endschema %}

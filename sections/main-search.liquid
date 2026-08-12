@@ -70,7 +70,6 @@
     data-result-count="{{ search.results_count }}"
     data-result-count-text="{{ 'search.results_count' | t: count: search.results_count | escape }}"
     tabindex="-1"
-    {% unless search.performed %}hidden{% endunless %}
   >
     {% content_for 'block', type: '_search-toolbar', id: 'search-toolbar' %}
     {% content_for 'block', type: '_search-results-grid', id: 'search-results-grid' %}

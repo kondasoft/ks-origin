@@ -1,12 +1,12 @@
 {% liquid
-  assign load_footer_css = false
+  assign load_footer_css = true
   assign show_country_selector = false
   assign show_follow_on_shop = false
   assign show_language_selector = false
   assign show_payment_icons = false
 
-  if request.page_type == '404' or template.suffix == 'contact' or template.suffix == 'faq'
-    assign load_footer_css = true
+  if request.page_type == 'index' or request.page_type == 'collection' or request.page_type == 'product'
+    assign load_footer_css = false
   endif
 
   if section.settings.enable_follow_on_shop and shop.features.follow_on_shop?
@@ -152,13 +152,13 @@
                           </div>
                         {% endif %}
 
-                        <div class="footer-newsletter-form-fields">
+                        <div class="footer-newsletter-form-fields input-wrapper">
                           <label class="visually-hidden" for="{{ form_id }}-email">
                             {{ 'general.email_signup.form.email' | t }}
                           </label>
                           <input
                             id="{{ form_id }}-email"
-                            class="footer-newsletter-form-input input"
+                            class="footer-newsletter-form-input input input-with-icon-right input-{{ block.settings.input_size }}"
                             type="email"
                             name="contact[email]"
                             value="{% if customer %}{{ customer.email }}{% endif %}"
@@ -174,13 +174,21 @@
                             {% endif %}
                           >
                           <button
-                            class="footer-newsletter-form-button btn btn-wide {{ block.settings.button_size }} {{ block.settings.button_style }}"
+                            class="footer-newsletter-form-button icon-button input-icon-right"
                             type="submit"
+                            aria-label="{{ 'general.email_signup.form.submit' | t }}"
                           >
-                            {{ 'general.email_signup.form.submit' | t }}
+                            {% render 'svg-icons', icon: 'send', icon_size: 18 %}
                           </button>
                         </div>
                       {% endform %}
+
+                      {% if block.settings.show_social_links %}
+                        {% render 'social-icons',
+                          icon_size: block.settings.social_icon_size,
+                          wrapper_class: 'footer-newsletter-social'
+                        %}
+                      {% endif %}
                   {% endcase %}
                 </div>
               </details>
@@ -743,7 +751,7 @@
           "type": "richtext",
           "id": "text",
           "label": "Text",
-          "default": "<p>Sign up for new arrivals, special offers, and updates.</p>"
+          "default": "<p>Sign up for new arrivals, exclusive offers, inspiring updates delivered to your inbox.</p>"
         },
         {
           "type": "select",
@@ -760,30 +768,40 @@
         },
         {
           "type": "header",
-          "content": "Button"
+          "content": "Form"
         },
         {
           "type": "select",
-          "id": "button_style",
-          "label": "Style",
+          "id": "input_size",
+          "label": "Input size",
           "options": [
-            { "value": "btn-accent-solid", "label": "Accent solid" },
-            { "value": "btn-accent-outline", "label": "Accent outline" },
-            { "value": "btn-text-solid", "label": "Text solid" },
-            { "value": "btn-text-outline", "label": "Text outline" }
+            { "value": "sm", "label": "Small" },
+            { "value": "md", "label": "Medium" },
+            { "value": "lg", "label": "Large" }
           ],
-          "default": "btn-accent-solid"
+          "default": "md"
         },
         {
-          "type": "select",
-          "id": "button_size",
-          "label": "Size",
-          "options": [
-            { "value": "btn-sm", "label": "Small" },
-            { "value": "btn-md", "label": "Medium" },
-            { "value": "btn-lg", "label": "Large" }
-          ],
-          "default": "btn-sm"
+          "type": "header",
+          "content": "Social media"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_social_links",
+          "label": "Show social links",
+          "info": "Uses the profiles configured in Theme settings > Social media.",
+          "default": false
+        },
+        {
+          "type": "range",
+          "id": "social_icon_size",
+          "label": "Social icon size",
+          "min": 12,
+          "max": 32,
+          "step": 2,
+          "unit": "px",
+          "default": 18,
+          "visible_if": "{{ block.settings.show_social_links }}"
         }
       ]
     }

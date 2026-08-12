@@ -33,32 +33,8 @@
   max-width: 720px;
 }
 
-.main-search-input-wrapper {
-  position: relative;
-}
-
-.main-search-input {
-  padding-right: 3.5rem;
-}
-
 .main-search-input::-webkit-search-cancel-button {
   display: none;
-}
-
-.main-search-submit {
-  position: absolute;
-  top: 50%;
-  right: 0;
-  transform: translateY(-50%);
-  height: 100%;
-}
-
-.input-lg + .main-search-submit {
-  width: 50px;
-}
-
-.search-header-block[data-surface-background="true"] .main-search-form .input {
-  background-color: rgb(var(--color-site-background));
 }
 
 .main-search-header[data-mobile-text-alignment="center"] .main-search-form {
@@ -101,6 +77,22 @@
 
 .main-search .faceted-results-grid:focus-visible {
   outline-color: transparent;
+}
+
+
+/*
+  Empty search
+*/
+.main-search-empty {
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  padding: 5em 0;
+  text-align: center;
+}
+
+.main-search-empty p {
+  margin: 0;
 }
 
 
