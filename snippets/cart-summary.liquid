@@ -77,12 +77,13 @@
     type="submit"
     name="checkout"
   >
+    {% render 'svg-icons', icon: 'lock', icon_size: 16, stroke_width: 2 %}
     {{ 'cart.checkout' | t }}
   </button>
 </form>
 
 {% if settings.cart_show_dynamic_checkout_buttons and additional_checkout_buttons %}
-  <div class="cart-summary-additional-checkout-buttons additional-checkout-buttons--vertical">
+  <div class="cart-summary-additional-checkout-buttons">
     {{ content_for_additional_checkout_buttons }}
   </div>
 {% endif %}

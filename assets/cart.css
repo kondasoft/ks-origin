@@ -536,6 +536,10 @@
   margin-top: 0.75rem;
 }
 
+shopify-accelerated-checkout-cart {
+  --shopify-accelerated-checkout-inline-alignment: center;
+}
+
 .cart-summary-view-cart {
   width: 100%;
   margin-top: 0.75rem;

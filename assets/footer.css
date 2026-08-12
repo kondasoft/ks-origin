@@ -4,7 +4,6 @@
   This file contains the layout and presentation styles for the footer section.
 */
 
-
 .footer {
   padding-top: var(--pt);
   padding-bottom: var(--pb);
@@ -232,6 +231,11 @@
 
 .footer-payment-icons {
   margin-top: 0.5em;
+}
+
+.footer-follow-on-shop {
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
 }
 
 @media (hover: hover) {
