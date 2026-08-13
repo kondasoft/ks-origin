@@ -97,8 +97,8 @@
 }
 
 .modal {
-  max-height: calc(100vh - 2rem);
-  max-height: calc(100dvh - 2rem);
+  max-height: calc(100vh - 2.5rem);
+  max-height: calc(100dvh - 2.5rem);
   overflow: hidden;
   opacity: 1;
   transform: none;

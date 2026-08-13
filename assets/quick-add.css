@@ -4,10 +4,6 @@
   This file owns the layout and presentation of the product quick add modal.
 */
 
-.quick-add-dialog {
-  width: min(90vw, var(--quick-add-width));
-}
-
 .quick-add-product {
   display: grid;
   gap: 1rem;
@@ -85,6 +81,14 @@
 .quick-add-view-product {
   justify-self: center;
   padding: 0.25em 0;
+}
+
+@media (max-width: 599px) {
+  .quick-add-media {
+    width: calc(100% + 2rem);
+    margin: -1rem -1rem 0;
+    border-radius: 0;
+  }
 }
 
 @media (min-width: 700px) {
