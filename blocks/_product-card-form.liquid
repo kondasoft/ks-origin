@@ -43,6 +43,9 @@
     <button
       type="button"
       class="btn {{ block.settings.button_size }} {{ block.settings.button_style }}"
+      aria-label="{{ 'products.quick_add.button_label' | t: product: product.title | escape }}"
+      aria-controls="quick-add-dialog"
+      aria-haspopup="dialog"
       data-quick-add-url="{{ product.url }}"
     >
       {{ 'products.quick_add.button' | t }}

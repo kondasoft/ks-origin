@@ -41,6 +41,10 @@ class QuickAdd extends HTMLElement {
 
     if (!productUrl) return;
 
+    const dialogBody = this.content.closest(".dialog-body");
+
+    if (dialogBody) dialogBody.scrollTop = 0;
+
     this.requestController?.abort();
     this.setTriggerLoading(trigger, true);
     this.content.innerHTML = `<p role="status">${this.escapeHtml(this.content.dataset.loadingText)}</p>`;

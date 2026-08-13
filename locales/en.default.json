@@ -134,6 +134,7 @@
     "quick_add": {
       "title": "Quick add",
       "button": "Choose options",
+      "button_label": "Choose options for {{ product }}",
       "loading": "Loading product…",
       "unavailable": "This product could not be loaded.",
       "view_product": "View product details"

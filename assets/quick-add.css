@@ -35,9 +35,18 @@
 .quick-add-gallery-stage {
   position: relative;
   overflow: hidden;
-  outline: 2px solid transparent;
-  outline-offset: 2px;
+  border-radius: inherit;
   touch-action: pan-y pinch-zoom;
+}
+
+.quick-add-gallery-stage::after {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border: 2px solid transparent;
+  border-radius: inherit;
+  content: "";
+  pointer-events: none;
 }
 
 .quick-add-gallery[data-image-ratio="adapt"] .quick-add-gallery-stage {
@@ -45,7 +54,11 @@
 }
 
 .quick-add-gallery-stage:focus-visible {
-  outline-color: currentcolor;
+  outline: none;
+}
+
+.quick-add-gallery-stage:focus-visible::after {
+  border-color: currentcolor;
 }
 
 .quick-add-gallery-track {
@@ -150,6 +163,7 @@
 
 .quick-add-product-title {
   margin: 0 0 0.25em;
+  overflow-wrap: anywhere;
 }
 
 .quick-add-product-title[data-font-family="body"] {
@@ -167,10 +181,6 @@
   flex-wrap: wrap;
   gap: 0.5em;
   margin: 0;
-}
-
-.quick-add-price-sale {
-  color: rgb(var(--color-accent));
 }
 
 .quick-add-price-current.product-main-price-sale {

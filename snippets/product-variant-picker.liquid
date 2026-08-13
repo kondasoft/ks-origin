@@ -104,6 +104,7 @@ Renders product options, swatches, and variant data for the shared variant picke
                     name="options[{{ product_option.name | escape }}]"
                     value="{{ option_value | escape }}"
                     data-variant-option
+                    {% unless option_value.available %}aria-disabled="true"{% endunless %}
                     {% if option_value.selected %}checked{% endif %}
                   >
                   {% if option_value.swatch != blank %}

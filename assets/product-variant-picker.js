@@ -132,6 +132,12 @@ class ProductVariantPicker extends HTMLElement {
         );
 
         option.classList.toggle("disabled", !isAvailable);
+
+        if (isAvailable) {
+          option.removeAttribute("aria-disabled");
+        } else {
+          option.setAttribute("aria-disabled", "true");
+        }
       });
     });
   }
@@ -174,6 +180,7 @@ class ProductVariantPicker extends HTMLElement {
     this.updateSku(variant);
     this.updateBuyButtons(variant);
     this.updateGallery(variant);
+    this.updateProductDetailsLink(variant);
   }
 
   updateVariantInputs(variant) {
@@ -269,6 +276,16 @@ class ProductVariantPicker extends HTMLElement {
     if (!variant?.featuredMediaId) return;
 
     this.productElement.querySelector("product-gallery, quick-add-gallery")?.showMedia(variant.featuredMediaId);
+  }
+
+  updateProductDetailsLink(variant) {
+    const link = this.productElement.querySelector("[data-product-details-link]");
+
+    if (!link || !variant) return;
+
+    const url = new URL(link.href);
+    url.searchParams.set("variant", variant.id);
+    link.href = `${url.pathname}${url.search}${url.hash}`;
   }
 
   updateUrl(variantId) {

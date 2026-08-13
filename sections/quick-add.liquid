@@ -53,7 +53,7 @@
             {% if on_sale %}{{ 'products.price.sale_price' | t }}{% else %}{{ 'products.price.regular_price' | t }}{% endif %}
           </span>
           <span
-            class="quick-add-price-current{% if on_sale %} quick-add-price-sale{% endif %}"
+            class="quick-add-price-current{% if on_sale %} product-main-price-sale{% endif %}"
             data-product-current-price
           >
             {{ current_price | money }}
@@ -105,7 +105,11 @@
             {% endform %}
           </theme-product-form>
 
-          <a class="quick-add-view-product" href="{{ quick_add_product.url }}">
+          <a
+            class="quick-add-view-product"
+            href="{{ quick_add_variant.url }}"
+            data-product-details-link
+          >
             {{ 'products.quick_add.view_product' | t }}
           </a>
         </div>

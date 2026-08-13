@@ -47,7 +47,7 @@ Renders the image-only gallery used by the Quick add modal.
     class="{{ gallery_stage_class }}"
     role="region"
     aria-label="{{ 'accessibility.product_gallery' | t }}"
-    tabindex="0"
+    {% if gallery_count > 1 %}tabindex="0"{% endif %}
     data-quick-add-gallery-stage
   >
     <ul
@@ -57,6 +57,16 @@ Renders the image-only gallery used by the Quick add modal.
       style="transform: translateX(-{{ initial_index | times: 100 }}%);"
     >
       {% for image in gallery_images %}
+        {% liquid
+          assign image_alt = image.alt | default: product.title
+          assign image_loading = 'lazy'
+          assign image_fetchpriority = 'auto'
+
+          if forloop.index0 == initial_index
+            assign image_loading = 'eager'
+            assign image_fetchpriority = 'high'
+          endif
+        %}
         <li
           class="quick-add-gallery-slide{% if forloop.index0 == initial_index %} is-active{% endif %}"
           data-quick-add-gallery-slide
@@ -66,14 +76,14 @@ Renders the image-only gallery used by the Quick add modal.
         >
           {{
             image
-            | image_url: width: 800
+            | image_url: width: 1200
             | image_tag:
-              alt: image.alt,
+              alt: image_alt,
               class: 'quick-add-gallery-image',
-              widths: '320, 480, 640, 800',
-              sizes: '(min-width: 700px) 50vw, 100vw',
-              loading: 'eager',
-              fetchpriority: 'auto'
+              widths: '320, 480, 640, 800, 1000, 1200',
+              sizes: '(min-width: 1200px) 600px, (min-width: 700px) 50vw, 100vw',
+              loading: image_loading,
+              fetchpriority: image_fetchpriority
           }}
         </li>
       {% else %}

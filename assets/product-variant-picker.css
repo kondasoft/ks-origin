@@ -14,9 +14,15 @@
 }
 
 .product-main-variant-picker-option {
+  min-width: 0;
   padding: 0;
   margin: 0;
   border: 0;
+}
+
+.product-main-variant-picker-option legend {
+  max-width: 100%;
+  overflow-wrap: anywhere;
 }
 
 .product-main-variant-picker-selected-value {
@@ -73,6 +79,7 @@
   justify-content: center;
   gap: 0.5em;
   box-sizing: border-box;
+  max-width: 100%;
   padding: 0.375em 1em;
   color: rgb(var(--color-text));
   background-color: transparent;
@@ -81,6 +88,8 @@
   cursor: pointer;
   outline: 2px solid transparent;
   outline-offset: 2px;
+  overflow-wrap: anywhere;
+  text-align: center;
   transition: color 200ms ease-out, background-color 200ms ease-out, border-color 200ms ease-out;
 }
 

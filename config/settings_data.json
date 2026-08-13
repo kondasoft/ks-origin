@@ -16,6 +16,7 @@
     "container_width": "container-narrow",
     "border_radius": 6,
     "favicon": "shopify://shop_images/kondasoft-icon.png",
+    "quick_add_image_ratio": "square",
     "cart_type": "drawer",
     "cart_show_dynamic_checkout_buttons": false,
     "cart_show_view_cart_button": false,
