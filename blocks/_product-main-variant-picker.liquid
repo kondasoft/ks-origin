@@ -1,153 +1,20 @@
-{% liquid
-  assign product = closest.product
-  assign product_gid = 'gid://shopify/Product/' | append: product.id
-  assign swatch_size = block.settings.swatch_size | default: 32
-  assign swatch_image_size = swatch_size | times: 2
-%}
-
-{% unless product == blank or product.has_only_default_variant %}
-  <product-variant-picker
-    class="product-main-variant-picker block-spacing"
-    data-product-id="{{ product_gid }}"
-    data-product-title="{{ product.title | escape }}"
-    data-product-handle="{{ product.handle | escape }}"
-    data-currency-code="{{ cart.currency.iso_code }}"
+{% unless closest.product == blank or closest.product.has_only_default_variant %}
+  <div
+    class="product-main-variant-picker-block block-spacing"
     style="
       --pt: {{ block.settings.pt | divided_by: 16.0 | append: 'em' }};
       --pb: {{ block.settings.pb | divided_by: 16.0 | append: 'em' }};
-      --swatch-size: {{ swatch_size }}px;
     "
     {{ block.shopify_attributes }}
   >
-    <div class="product-main-variant-picker-options">
-      {% for product_option in product.options_with_values %}
-        {% liquid
-          assign option_has_swatches = false
-          assign selected_option_value = product_option.selected_value | default: product_option.values.first
-
-          for option_value in product_option.values
-            if option_value.swatch != blank
-              assign option_has_swatches = true
-              break
-            endif
-          endfor
-        %}
-        {% if block.settings.option_style == 'select' and option_has_swatches == false %}
-          <div
-            class="product-main-variant-picker-option"
-            data-variant-option-group
-            data-option-name="{{ product_option.name | escape }}"
-          >
-            <label for="ProductOption-{{ block.id }}-{{ product_option.position }}">
-              {{ product_option.name | escape }}
-            </label>
-            <div class="input-wrapper">
-              <select
-                id="ProductOption-{{ block.id }}-{{ product_option.position }}"
-                class="input"
-                name="options[{{ product_option.name | escape }}]"
-                data-variant-option
-              >
-                {% for option_value in product_option.values %}
-                  <option
-                    value="{{ option_value | escape }}"
-                    {% if option_value.selected %}selected{% endif %}
-                  >
-                    {{ option_value | escape }}
-                  </option>
-                {% endfor %}
-              </select>
-              {% render 'svg-icons', icon: 'chevron-down', icon_size: 18 %}
-            </div>
-          </div>
-        {% else %}
-          <fieldset
-            class="product-main-variant-picker-option"
-            data-variant-option-group
-            data-option-name="{{ product_option.name | escape }}"
-          >
-            <legend>
-              {{ product_option.name | escape }}{% if option_has_swatches %}: <span class="product-main-variant-picker-selected-value" data-selected-option-value>{{ selected_option_value | escape }}</span>{% endif %}
-            </legend>
-            <div
-              class="product-main-variant-picker-radio-list"
-              {% unless option_has_swatches %}data-variant-button-group{% endunless %}
-            >
-              {% for option_value in product_option.values %}
-                {% assign option_id = 'ProductOption-' | append: block.id | append: '-' | append: product_option.position | append: '-' | append: forloop.index %}
-                <label
-                  class="product-main-variant-picker-radio{% if option_value.swatch != blank %} product-main-variant-picker-radio-swatch{% endif %}"
-                  for="{{ option_id }}"
-                  {% if option_value.swatch != blank %}title="{{ option_value | escape }}"{% endif %}
-                >
-                  <input
-                    id="{{ option_id }}"
-                    class="visually-hidden{% unless option_value.available %} disabled{% endunless %}"
-                    type="radio"
-                    name="options[{{ product_option.name | escape }}]"
-                    value="{{ option_value | escape }}"
-                    data-variant-option
-                    {% if option_value.selected %}checked{% endif %}
-                  >
-                  {% if option_value.swatch != blank %}
-                    <span
-                      class="product-main-variant-picker-swatch"
-                      style="--swatch-color: {% if option_value.swatch.color %}rgb({{ option_value.swatch.color.rgb }}){% else %}transparent{% endif %};"
-                      aria-hidden="true"
-                    >
-                      {% if option_value.swatch.image %}
-                        {{
-                          option_value.swatch.image
-                          | image_url: width: swatch_image_size, height: swatch_image_size, crop: 'center'
-                          | image_tag:
-                            loading: 'lazy',
-                            width: swatch_size,
-                            height: swatch_size,
-                            alt: ''
-                        }}
-                      {% endif %}
-                    </span>
-                  {% endif %}
-                  <span {% if option_value.swatch != blank %}class="visually-hidden"{% endif %}>
-                    {{ option_value | escape }}
-                  </span>
-                </label>
-              {% endfor %}
-            </div>
-          </fieldset>
-        {% endif %}
-      {% endfor %}
-    </div>
-
-    <script type="application/json" data-product-variants>
-      [
-        {% for variant in product.variants %}
-          {% liquid
-            assign variant_gid = 'gid://shopify/ProductVariant/' | append: variant.id
-            assign variant_cart_quantity = cart | item_count_for_variant: variant.id
-          %}
-          {
-            "id": {{ variant.id | json }},
-            "gid": {{ variant_gid | json }},
-            "title": {{ variant.title | json }},
-            "available": {{ variant.available | json }},
-            "price": {{ variant.price | json }},
-            "priceAmount": {{ variant.price | money_amount | json }},
-            "priceMoney": {{ variant.price | money | json }},
-            "compareAtPrice": {{ variant.compare_at_price | json }},
-            "compareAtPriceMoney": {{ variant.compare_at_price | money | json }},
-            "options": {{ variant.options | json }},
-            "featuredMediaId": {{ variant.featured_media.id | json }},
-            "sku": {{ variant.sku | json }},
-            "inventoryManagement": {{ variant.inventory_management | json }},
-            "inventoryPolicy": {{ variant.inventory_policy | json }},
-            "inventoryQuantity": {{ variant.inventory_quantity | json }},
-            "cartQuantity": {{ variant_cart_quantity | json }}
-          }{% unless forloop.last %},{% endunless %}
-        {% endfor %}
-      ]
-    </script>
-  </product-variant-picker>
+    {% render 'product-variant-picker',
+      product: closest.product,
+      id: block.id,
+      context: 'product',
+      option_style: block.settings.option_style,
+      swatch_size: block.settings.swatch_size
+    %}
+  </div>
 {% endunless %}
 
 {% schema %}

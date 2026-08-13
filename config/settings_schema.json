@@ -150,6 +150,20 @@
     "name": "Quick add",
     "settings": [
       {
+        "type": "header",
+        "content": "Layout"
+      },
+      {
+        "type": "range",
+        "id": "quick_add_width",
+        "label": "Modal width",
+        "min": 700,
+        "max": 1200,
+        "step": 20,
+        "unit": "px",
+        "default": 1080
+      },
+      {
         "type": "select",
         "id": "quick_add_image_ratio",
         "label": "Image aspect ratio",
@@ -162,6 +176,10 @@
           { "group": "Vertical", "value": "vertical", "label": "Vertical (9:16)" }
         ],
         "default": "adapt"
+      },
+      {
+        "type": "header",
+        "content": "Product information"
       },
       {
         "type": "checkbox",
@@ -219,7 +237,94 @@
           { "value": "fs-2xl", "label": "2XL" },
           { "value": "fs-3xl", "label": "3XL" }
         ],
-        "default": "fs-lg"
+        "default": "fs-xl"
+      },
+      {
+        "type": "header",
+        "content": "Rating"
+      },
+      {
+        "type": "paragraph",
+        "content": "Requires a reviews app that writes to Shopify's standard product rating metafields."
+      },
+      {
+        "type": "checkbox",
+        "id": "quick_add_show_rating",
+        "label": "Show product rating",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "quick_add_show_rating_count",
+        "label": "Show review count",
+        "default": true,
+        "visible_if": "{{ settings.quick_add_show_rating }}"
+      },
+      {
+        "type": "select",
+        "id": "quick_add_rating_size",
+        "label": "Rating size",
+        "options": [
+          { "value": "fs-xs", "label": "Extra small" },
+          { "value": "fs-sm", "label": "Small" },
+          { "value": "fs-md", "label": "Medium" },
+          { "value": "fs-lg", "label": "Large" },
+          { "value": "fs-xl", "label": "Extra large" }
+        ],
+        "default": "fs-sm",
+        "visible_if": "{{ settings.quick_add_show_rating }}"
+      },
+      {
+        "type": "header",
+        "content": "Variant picker"
+      },
+      {
+        "type": "select",
+        "id": "quick_add_option_style",
+        "label": "Option style",
+        "options": [
+          { "value": "select", "label": "Select fields" },
+          { "value": "radio", "label": "Radio buttons" }
+        ],
+        "default": "radio",
+        "info": "Options with Shopify swatches always display as swatches."
+      },
+      {
+        "type": "range",
+        "id": "quick_add_swatch_size",
+        "label": "Swatch size",
+        "min": 20,
+        "max": 50,
+        "step": 2,
+        "unit": "px",
+        "default": 32
+      },
+      {
+        "type": "header",
+        "content": "Add to cart"
+      },
+      {
+        "type": "select",
+        "id": "quick_add_button_style",
+        "label": "Button style",
+        "options": [
+          { "value": "btn-accent-solid", "label": "Accent solid" },
+          { "value": "btn-accent-outline", "label": "Accent outline" },
+          { "value": "btn-text-solid", "label": "Text solid" },
+          { "value": "btn-text-outline", "label": "Text outline" }
+        ],
+        "default": "btn-accent-solid"
+      },
+      {
+        "type": "select",
+        "id": "quick_add_button_size",
+        "label": "Button size",
+        "options": [
+          { "value": "btn-sm", "label": "Small" },
+          { "value": "btn-md", "label": "Medium" },
+          { "value": "btn-lg", "label": "Large" }
+        ],
+        "default": "btn-md"
       }
     ]
   },

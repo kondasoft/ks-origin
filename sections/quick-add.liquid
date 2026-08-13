@@ -3,6 +3,7 @@
   assign quick_add_image = quick_add_product.featured_image
   assign quick_add_variant = quick_add_product.selected_or_first_available_variant
   assign quick_add_image_class = 'quick-add-image'
+  assign quick_add_form_id = 'quick-add-form-' | append: quick_add_product.id
   assign current_price = quick_add_variant.price
   assign compare_price = quick_add_variant.compare_at_price
   assign on_sale = false
@@ -17,50 +18,121 @@
 %}
 
 {% if quick_add_product != blank %}
-  <div class="quick-add-product" data-quick-add-product>
-    <div class="quick-add-media">
-      {% if quick_add_image != blank %}
-        {{
-          quick_add_image
-          | image_url: width: 800
-          | image_tag:
-            class: quick_add_image_class,
-            widths: '320, 480, 640, 800',
-            sizes: '(min-width: 600px) 50vw, 100vw',
-            loading: 'eager'
-        }}
-      {% else %}
-        {% assign quick_add_placeholder_class = quick_add_image_class | append: ' placeholder-svg' %}
-        {{ 'image' | placeholder_svg_tag: quick_add_placeholder_class }}
-      {% endif %}
-    </div>
-
-    <div class="quick-add-details">
-      {% if settings.quick_add_show_vendor and quick_add_product.vendor != blank %}
-        <p class="product-vendor quick-add-vendor {{ settings.quick_add_vendor_size }}">
-          {{ quick_add_product.vendor | escape }}
-        </p>
-      {% endif %}
-
-      <h3
-        class="quick-add-product-title {{ settings.quick_add_title_size }}"
-        data-font-family="{{ settings.quick_add_title_font_family }}"
-      >
-        {{ quick_add_product.title | escape }}
-      </h3>
-
-      <p class="quick-add-price {{ settings.quick_add_price_size }}">
-        <span class="visually-hidden">
-          {% if on_sale %}{{ 'products.price.sale_price' | t }}{% else %}{{ 'products.price.regular_price' | t }}{% endif %}
-        </span>
-        <span{% if on_sale %} class="quick-add-price-sale"{% endif %}>{{ current_price | money }}</span>
-        {% if on_sale %}
-          <span class="visually-hidden">{{ 'products.price.regular_price' | t }}</span>
-          <s class="quick-add-price-compare">{{ compare_price | money }}</s>
+  <s-view-event
+    view-event-trigger="connect"
+    view-event-payload="{{ quick_add_product | standard_event_data: 'view', context: 'dialog' | escape }}"
+  >
+    <div class="quick-add-product" data-quick-add-product data-product-root>
+      <div class="quick-add-media">
+        {% if quick_add_image != blank %}
+          {{
+            quick_add_image
+            | image_url: width: 800
+            | image_tag:
+              class: quick_add_image_class,
+              widths: '320, 480, 640, 800',
+              sizes: '(min-width: 700px) 50vw, 100vw',
+              loading: 'eager'
+          }}
+        {% else %}
+          {% assign quick_add_placeholder_class = quick_add_image_class | append: ' placeholder-svg' %}
+          {{ 'image' | placeholder_svg_tag: quick_add_placeholder_class }}
         {% endif %}
-      </p>
+      </div>
+
+      <div class="quick-add-details">
+        {% if settings.quick_add_show_vendor and quick_add_product.vendor != blank %}
+          <p class="product-vendor quick-add-vendor {{ settings.quick_add_vendor_size }}">
+            {{ quick_add_product.vendor | escape }}
+          </p>
+        {% endif %}
+
+        <h3
+          class="quick-add-product-title {{ settings.quick_add_title_size }}"
+          data-font-family="{{ settings.quick_add_title_font_family }}"
+        >
+          {{ quick_add_product.title | escape }}
+        </h3>
+
+        {% if settings.quick_add_show_rating %}
+          {% render 'product-rating',
+            product: quick_add_product,
+            rating_size: settings.quick_add_rating_size,
+            show_count: settings.quick_add_show_rating_count,
+            count_style: 'simple',
+            classes: 'quick-add-rating'
+          %}
+        {% endif %}
+
+        <p
+          class="quick-add-price {{ settings.quick_add_price_size }}"
+          data-product-price
+          data-regular-price-label="{{ 'products.price.regular_price' | t | escape }}"
+          data-sale-price-label="{{ 'products.price.sale_price' | t | escape }}"
+        >
+          <span class="visually-hidden" data-product-current-price-label>
+            {% if on_sale %}{{ 'products.price.sale_price' | t }}{% else %}{{ 'products.price.regular_price' | t }}{% endif %}
+          </span>
+          <span
+            class="quick-add-price-current{% if on_sale %} quick-add-price-sale{% endif %}"
+            data-product-current-price
+          >
+            {{ current_price | money }}
+          </span>
+          <span class="visually-hidden" data-product-compare-price-label{% unless on_sale %} hidden{% endunless %}>
+            {{ 'products.price.regular_price' | t }}
+          </span>
+          <s class="quick-add-price-compare" data-product-compare-price{% unless on_sale %} hidden{% endunless %}>
+            {% if on_sale %}{{ compare_price | money }}{% endif %}
+          </s>
+        </p>
+
+        {% unless quick_add_product.has_only_default_variant %}
+          <div class="quick-add-variant-picker">
+            {% render 'product-variant-picker',
+              product: quick_add_product,
+              id: quick_add_product.id,
+              context: 'quick-add',
+              option_style: settings.quick_add_option_style,
+              swatch_size: settings.quick_add_swatch_size
+            %}
+          </div>
+        {% endunless %}
+
+        <div
+          class="quick-add-actions"
+          data-product-buy-buttons
+          data-add-to-cart-text="{{ 'products.form.add_to_cart' | t | escape }}"
+          data-sold-out-text="{{ 'products.form.sold_out' | t | escape }}"
+        >
+          <theme-product-form data-source="quick-add">
+            {% form 'product', quick_add_product, id: quick_add_form_id, class: 'quick-add-form' %}
+              <input type="hidden" name="id" value="{{ quick_add_variant.id }}" data-product-variant-input>
+              <button
+                type="submit"
+                name="add"
+                class="btn {{ settings.quick_add_button_size }} {{ settings.quick_add_button_style }}"
+                data-add-to-cart-button
+                {% unless quick_add_variant.available %}disabled{% endunless %}
+              >
+                <span data-add-to-cart-text>
+                  {% if quick_add_variant.available %}
+                    {{ 'products.form.add_to_cart' | t }}
+                  {% else %}
+                    {{ 'products.form.sold_out' | t }}
+                  {% endif %}
+                </span>
+              </button>
+            {% endform %}
+          </theme-product-form>
+
+          <a class="quick-add-view-product" href="{{ quick_add_product.url }}">
+            {{ 'products.quick_add.view_product' | t }}
+          </a>
+        </div>
+      </div>
     </div>
-  </div>
+  </s-view-event>
 {% endif %}
 
 {% schema %}

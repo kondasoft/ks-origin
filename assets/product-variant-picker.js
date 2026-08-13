@@ -11,7 +11,7 @@ class ProductVariantPicker extends HTMLElement {
   connectedCallback() {
     if (this.isInitialized) return;
 
-    this.productElement = this.closest(".main-product");
+    this.productElement = this.closest("[data-product-root]");
     this.optionGroups = Array.from(this.querySelectorAll("[data-variant-option-group]"));
     this.variants = this.parseVariants();
 
@@ -67,7 +67,7 @@ class ProductVariantPicker extends HTMLElement {
     try {
       const variant = this.findVariant(selectedOptions);
 
-      if (variant) this.updateUrl(variant.id);
+      if (variant && this.dataset.updateUrl !== "false") this.updateUrl(variant.id);
       this.updateProduct(variant, selectedOptions);
 
       deferred.resolve({

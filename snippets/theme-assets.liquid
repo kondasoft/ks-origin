@@ -85,6 +85,17 @@
 >
 
 {% if request.page_type == 'product' %}
+  {{ 'product-variant-picker.css' | asset_url | stylesheet_tag: preload: true }}
+{% else %}
+  <link
+    rel="stylesheet"
+    href="{{ 'product-variant-picker.css' | asset_url }}"
+    media="print"
+    onload="this.media='all'"
+  >
+{% endif %}
+
+{% if request.page_type == 'product' %}
   {{ 'main-product.css' | asset_url | stylesheet_tag: preload: true }}
   {{ 'product-gallery.css' | asset_url | stylesheet_tag: preload: true }}
 {% elsif request.page_type == 'collection' %}
@@ -124,10 +135,10 @@
 <script src="{{ 'product-form.js' | asset_url }}" type="module"></script>
 <script src="{{ 'cart.js' | asset_url }}" type="module"></script>
 <script src="{{ 'quick-add.js' | asset_url }}" type="module"></script>
+<script src="{{ 'product-variant-picker.js' | asset_url }}" type="module"></script>
 
 {% if request.page_type == 'product' %}
   <script src="{{ 'product-gallery.js' | asset_url }}" type="module"></script>
-  <script src="{{ 'product-variant-picker.js' | asset_url }}" type="module"></script>
 {% endif %}
 
 {% if request.page_type == 'collection' or request.page_type == 'search' %}

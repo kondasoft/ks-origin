@@ -5,7 +5,7 @@
 */
 
 .quick-add-dialog {
-  width: min(90vw, 900px);
+  width: min(90vw, var(--quick-add-width));
 }
 
 .quick-add-product {
@@ -44,6 +44,10 @@
   font-weight: var(--font-body-weight);
 }
 
+.quick-add-rating {
+  margin-bottom: 0.75em;
+}
+
 .quick-add-price {
   display: flex;
   flex-wrap: wrap;
@@ -55,11 +59,35 @@
   color: rgb(var(--color-accent));
 }
 
+.quick-add-price-current.product-main-price-sale {
+  color: rgb(var(--color-accent));
+}
+
 .quick-add-price-compare {
   color: rgb(var(--color-text) / 0.6);
 }
 
-@media (min-width: 600px) {
+.quick-add-variant-picker {
+  min-width: 0;
+  margin-top: 1.25em;
+}
+
+.quick-add-actions {
+  display: grid;
+  gap: 0.5rem;
+  margin-top: 1.5em;
+}
+
+.quick-add-form .btn {
+  width: 100%;
+}
+
+.quick-add-view-product {
+  justify-self: center;
+  padding: 0.25em 0;
+}
+
+@media (min-width: 700px) {
   .quick-add-product {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     align-items: center;

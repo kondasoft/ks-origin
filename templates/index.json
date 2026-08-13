@@ -114,124 +114,6 @@
         "pb": 0
       }
     },
-    "featured_collection_6mjXpQ": {
-      "type": "featured-collection",
-      "blocks": {
-        "heading_Lz9T6M": {
-          "type": "heading",
-          "settings": {
-            "heading": "Featured collection",
-            "heading_tag": "2",
-            "heading_size": "h2",
-            "pt": 0,
-            "pb": 6
-          },
-          "blocks": {}
-        },
-        "text_fqenxx": {
-          "type": "text",
-          "settings": {
-            "text": "<p>Explore featured new arrivals, customer favorites, and everyday essentials.</p>",
-            "text_size": "fs-md",
-            "pt": 0,
-            "pb": 0
-          },
-          "blocks": {}
-        },
-        "product-card": {
-          "type": "product-card",
-          "static": true,
-          "settings": {
-            "custom_colors": false,
-            "background_color": "{{ settings.colors.background }}",
-            "text_color": "{{ settings.colors.text }}",
-            "accent_color": "{{ settings.colors.accent }}",
-            "text_alignment": "left",
-            "border_opacity": 0,
-            "show_box_shadow": false,
-            "pt": 0,
-            "pb": 0,
-            "pl": 0,
-            "pr": 0
-          },
-          "blocks": {
-            "product_card_image_BxaLWK": {
-              "type": "_product-card-image",
-              "settings": {
-                "image_ratio": "square"
-              },
-              "blocks": {}
-            },
-            "product_card_title_M99qgK": {
-              "type": "_product-card-title",
-              "settings": {
-                "font_family": "heading",
-                "heading_size": "fs-md"
-              },
-              "blocks": {}
-            },
-            "product_card_rating_kGfwk3": {
-              "type": "_product-card-rating",
-              "settings": {
-                "show_count": true,
-                "count_style": "simple",
-                "rating_size": "fs-sm"
-              },
-              "blocks": {}
-            },
-            "product_card_price_PzqU6n": {
-              "type": "_product-card-price",
-              "settings": {
-                "price_size": "fs-md"
-              },
-              "blocks": {}
-            },
-            "product_card_form_pcN73h": {
-              "type": "_product-card-form",
-              "settings": {
-                "button_style": "btn-accent-solid",
-                "button_size": "btn-sm"
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "product_card_image_BxaLWK",
-            "product_card_title_M99qgK",
-            "product_card_rating_kGfwk3",
-            "product_card_price_PzqU6n",
-            "product_card_form_pcN73h"
-          ]
-        }
-      },
-      "block_order": [
-        "heading_Lz9T6M",
-        "text_fqenxx"
-      ],
-      "name": "Featured collection",
-      "settings": {
-        "collection": "",
-        "products_to_show": 8,
-        "background_color": "{{ settings.colors.background }}",
-        "text_color": "{{ settings.colors.text }}",
-        "accent_color": "{{ settings.colors.accent }}",
-        "header_mobile_text_alignment": "left",
-        "header_desktop_text_alignment": "left",
-        "layout": "carousel",
-        "carousel_partial_slide_mobile": true,
-        "carousel_show_navigation": true,
-        "carousel_align_navigation_to_media": true,
-        "carousel_show_progress": true,
-        "mobile_columns": 2,
-        "desktop_columns": 4,
-        "show_view_all": true,
-        "view_all_label": "View all",
-        "view_all_style": "btn-text-outline",
-        "view_all_size": "btn-md",
-        "pt": 60,
-        "pb": 60
-      }
-    },
     "featured_collection_zBQiyp": {
       "type": "featured-collection",
       "blocks": {
@@ -1819,7 +1701,6 @@
   },
   "order": [
     "hero_epRUea",
-    "featured_collection_6mjXpQ",
     "featured_collection_zBQiyp",
     "collection_list_6dLrBL",
     "contact_form_jN7QXd",
