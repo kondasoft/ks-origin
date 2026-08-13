@@ -10,6 +10,7 @@ class CartFeedback extends HTMLElement {
 
     this.drawerAlert = document.querySelector("[data-cart-drawer-alert]");
     this.drawerAlertMessage = this.drawerAlert?.querySelector("[data-cart-drawer-alert-message]");
+    this.drawerAlertClose = this.drawerAlert?.querySelector("[data-cart-drawer-alert-close]");
     this.cartDialog = document.getElementById("cart-dialog");
     this.listenerController = new AbortController();
     document.addEventListener("shopify:cart:lines-update", this.onCartLinesUpdate.bind(this), {
@@ -28,6 +29,9 @@ class CartFeedback extends HTMLElement {
       signal: this.listenerController.signal,
     });
     this.cartDialog?.addEventListener("close", this.hideDrawerAlert.bind(this), {
+      signal: this.listenerController.signal,
+    });
+    this.drawerAlertClose?.addEventListener("click", this.hideDrawerAlert.bind(this), {
       signal: this.listenerController.signal,
     });
     this.isInitialized = true;
@@ -434,7 +438,14 @@ class CartItems extends HTMLElement {
   connectedCallback() {
     if (this.isInitialized) return;
 
+    this.interactedByPointer = false;
     this.listenerController = new AbortController();
+    this.addEventListener("pointerdown", () => {
+      this.interactedByPointer = true;
+    }, { signal: this.listenerController.signal });
+    this.addEventListener("keydown", () => {
+      this.interactedByPointer = false;
+    }, { signal: this.listenerController.signal });
     this.addEventListener("click", this.onRemoveClick.bind(this), {
       signal: this.listenerController.signal,
     });
@@ -492,6 +503,7 @@ class CartItems extends HTMLElement {
     }
 
     this.pendingFocusId = quantityInput.dataset.cartFocusId;
+    this.pendingFocusFromPointer = this.interactedByPointer;
     try {
       await window.Shopify.actions.updateCart(
         { lines: [{ id: lineId, quantity }] },
@@ -537,6 +549,13 @@ class CartItems extends HTMLElement {
 
       try {
         if (this.dataset.context === "drawer" && event.action === "add" && !hasIssues) {
+          const cartDialog = document.getElementById("cart-dialog")?.closest("theme-dialog");
+
+          if (cartDialog) {
+            cartDialog.openedByPointer = event.detail?.openedByPointer === true;
+            cartDialog.setReturnFocus(document.activeElement);
+          }
+
           await window.Shopify.actions.openCart();
         }
 
@@ -629,12 +648,20 @@ class CartItems extends HTMLElement {
     nextCartSummary.dataset.context = this.dataset.context;
 
     const focusId = this.pendingFocusId;
+    const restoreFocusFromPointer = this.pendingFocusFromPointer;
 
     currentCartSummary.replaceWith(nextCartSummary);
     this.replaceWith(nextCartItems);
 
     if (focusId) {
-      nextCartItems.querySelector(`[data-cart-focus-id="${CSS.escape(focusId)}"]`)?.focus();
+      const focusElement = nextCartItems.querySelector(`[data-cart-focus-id="${CSS.escape(focusId)}"]`);
+
+      if (focusElement && restoreFocusFromPointer) {
+        focusElement.dataset.focusedBy = "pointer";
+        focusElement.addEventListener("blur", () => delete focusElement.dataset.focusedBy, { once: true });
+      }
+
+      focusElement?.focus();
     }
   }
 }

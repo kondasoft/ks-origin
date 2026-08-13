@@ -12,7 +12,14 @@ class ThemeProductForm extends HTMLElement {
 
     if (!this.form) return;
 
+    this.openedByPointer = false;
     this.listenerController = new AbortController();
+    this.form.addEventListener("pointerdown", () => {
+      this.openedByPointer = true;
+    }, { signal: this.listenerController.signal });
+    this.form.addEventListener("keydown", () => {
+      this.openedByPointer = false;
+    }, { signal: this.listenerController.signal });
     this.form.addEventListener("submit", this.onSubmit.bind(this), {
       signal: this.listenerController.signal,
     });
@@ -43,6 +50,14 @@ class ThemeProductForm extends HTMLElement {
     submitButton.setAttribute("aria-busy", "true");
     submitButton.setAttribute("aria-disabled", "true");
     submitButton.classList.add("loading");
+
+    if (this.openedByPointer) {
+      submitButton.dataset.focusedBy = "pointer";
+      submitButton.addEventListener("blur", () => delete submitButton.dataset.focusedBy, { once: true });
+    } else {
+      delete submitButton.dataset.focusedBy;
+    }
+
     submitButton.focus({ preventScroll: true });
 
     try {
@@ -51,7 +66,10 @@ class ThemeProductForm extends HTMLElement {
         {
           event: {
             context: this.dataset.cartContext || "product",
-            detail: { source: this.dataset.source || "theme-product-form" },
+            detail: {
+              source: this.dataset.source || "theme-product-form",
+              openedByPointer: this.openedByPointer,
+            },
           },
         },
       );

@@ -374,8 +374,16 @@ class ThemeDialog extends HTMLElement {
     window.clearTimeout(this.closeTimer);
     this.closeTimer = null;
     const returnFocusElement = this.lastTrigger;
+    const restoreFocusFromPointer = this.openedByPointer;
 
     this.lastTrigger = null;
+    this.openedByPointer = false;
+
+    if (returnFocusElement && restoreFocusFromPointer) {
+      returnFocusElement.dataset.focusedBy = "pointer";
+      returnFocusElement.addEventListener("blur", () => delete returnFocusElement.dataset.focusedBy, { once: true });
+    }
+
     returnFocusElement?.focus();
   }
 

@@ -39,7 +39,6 @@
 }
 
 .cart-dialog .dialog-footer {
-  padding-top: 0.75rem;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -54,6 +53,17 @@
 */
 .cart-drawer-alert {
   margin: 1rem 1rem 0;
+}
+
+.cart-drawer-alert-message {
+  flex: 1;
+  min-width: 0;
+}
+
+.cart-drawer-alert-close {
+  --icon-button-color: var(--alert-color);
+  flex: 0 0 auto;
+  margin: -0.5em -0.75em -0.5em auto;
 }
 
 

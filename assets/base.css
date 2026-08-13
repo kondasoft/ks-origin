@@ -1103,7 +1103,7 @@ select.input-lg {
 
 /* Block spacing */
 .block-spacing {
-  --spacing-scale: 0.75;
+  --spacing-scale: 1;
   box-sizing: border-box;
   padding-top: calc(var(--pt) * var(--spacing-scale));
   padding-bottom: calc(var(--pb) * var(--spacing-scale));
@@ -1326,6 +1326,12 @@ select.input-lg {
   --icon-button-color: var(--alert-color);
   flex: 0 0 auto;
   margin: -0.5em -0.75em -0.5em auto;
+}
+
+
+/* Pointer focus restoration */
+[data-focused-by='pointer']:focus-visible {
+  outline-color: transparent;
 }
 
 

@@ -26,7 +26,15 @@
       </div>
 
       <div class="cart-drawer-alert alert alert-with-icon" data-cart-drawer-alert hidden>
-        <span data-cart-drawer-alert-message></span>
+        <span class="cart-drawer-alert-message" data-cart-drawer-alert-message></span>
+        <button
+          type="button"
+          class="cart-drawer-alert-close icon-button"
+          data-cart-drawer-alert-close
+          aria-label="{{ 'accessibility.close' | t }}"
+        >
+          {% render 'svg-icons', icon: 'close', icon_size: 16 %}
+        </button>
       </div>
 
       <div class="dialog-body">
