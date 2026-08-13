@@ -147,6 +147,83 @@
     ]
   },
   {
+    "name": "Quick add",
+    "settings": [
+      {
+        "type": "select",
+        "id": "quick_add_image_ratio",
+        "label": "Image aspect ratio",
+        "options": [
+          { "group": "Adapt", "value": "adapt", "label": "Adapt to image" },
+          { "group": "Square", "value": "square", "label": "Square (1:1)" },
+          { "group": "Horizontal", "value": "landscape", "label": "Landscape (4:3)" },
+          { "group": "Horizontal", "value": "widescreen", "label": "Widescreen (16:9)" },
+          { "group": "Vertical", "value": "portrait", "label": "Portrait (3:4)" },
+          { "group": "Vertical", "value": "vertical", "label": "Vertical (9:16)" }
+        ],
+        "default": "adapt"
+      },
+      {
+        "type": "checkbox",
+        "id": "quick_add_show_vendor",
+        "label": "Show vendor",
+        "default": true
+      },
+      {
+        "type": "select",
+        "id": "quick_add_vendor_size",
+        "label": "Vendor size",
+        "options": [
+          { "value": "fs-xs", "label": "Extra small" },
+          { "value": "fs-sm", "label": "Small" },
+          { "value": "fs-md", "label": "Medium" },
+          { "value": "fs-lg", "label": "Large" },
+          { "value": "fs-xl", "label": "Extra large" }
+        ],
+        "default": "fs-sm",
+        "visible_if": "{{ settings.quick_add_show_vendor }}"
+      },
+      {
+        "type": "select",
+        "id": "quick_add_title_font_family",
+        "label": "Title font family",
+        "options": [
+          { "value": "heading", "label": "Heading" },
+          { "value": "body", "label": "Body" }
+        ],
+        "default": "heading"
+      },
+      {
+        "type": "select",
+        "id": "quick_add_title_size",
+        "label": "Title size",
+        "options": [
+          { "value": "h1", "label": "H1" },
+          { "value": "h2", "label": "H2" },
+          { "value": "h3", "label": "H3" },
+          { "value": "h4", "label": "H4" },
+          { "value": "h5", "label": "H5" },
+          { "value": "h6", "label": "H6" }
+        ],
+        "default": "h3",
+        "info": "Changes the visual size only. The HTML heading remains H3."
+      },
+      {
+        "type": "select",
+        "id": "quick_add_price_size",
+        "label": "Price size",
+        "options": [
+          { "value": "fs-md", "label": "Medium" },
+          { "value": "fs-lg", "label": "Large" },
+          { "value": "fs-xl", "label": "Extra large" },
+          { "value": "fs-2xl", "label": "2XL" },
+          { "value": "fs-3xl", "label": "3XL" }
+        ],
+        "default": "fs-lg"
+      }
+    ]
+  },
+  {
     "name": "Cart",
     "settings": [
       {

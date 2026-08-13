@@ -46,7 +46,7 @@
               class="input predictive-search-input"
               type="search"
               name="q"
-              placeholder="{{ 'search.placeholder' | t }}"
+              placeholder="{{ 'search.predictive_placeholder' | t }}"
               role="combobox"
               aria-expanded="false"
               aria-controls="predictive-search-results"
@@ -81,10 +81,6 @@
             </button>
           </div>
         </form>
-
-        <div class="predictive-search-initial" data-predictive-search-initial>
-          <p>{{ 'search.empty' | t }}</p>
-        </div>
 
         <div class="predictive-search-loading" data-predictive-search-loading aria-hidden="true" hidden>
           {% for index in (1..4) %}

@@ -1,0 +1,33 @@
+<quick-add>
+  <theme-dialog>
+    <dialog
+      id="quick-add-dialog"
+      class="dialog modal quick-add-dialog"
+      aria-labelledby="quick-add-dialog-title"
+    >
+      <div class="dialog-header">
+        <h2 id="quick-add-dialog-title" class="dialog-title">
+          {{ 'products.quick_add.title' | t }}
+        </h2>
+
+        <button
+          class="icon-button dialog-close"
+          type="button"
+          data-dialog-close
+          aria-label="{{ 'accessibility.close' | t }}"
+        >
+          {% render 'svg-icons', icon: 'close' %}
+        </button>
+      </div>
+
+      <div class="dialog-body">
+        <div
+          class="quick-add-content"
+          data-quick-add-content
+          data-loading-text="{{ 'products.quick_add.loading' | t | escape }}"
+          data-unavailable-text="{{ 'products.quick_add.unavailable' | t | escape }}"
+        ></div>
+      </div>
+    </dialog>
+  </theme-dialog>
+</quick-add>

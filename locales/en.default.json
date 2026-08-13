@@ -131,6 +131,11 @@
     }
   },
   "products": {
+    "quick_add": {
+      "title": "Quick add",
+      "loading": "Loading product…",
+      "unavailable": "This product could not be loaded."
+    },
     "sku": "SKU: {{ sku }}",
     "placeholders": {
       "title": "Example product title",
@@ -255,6 +260,7 @@
     "results_title": "Search results",
     "label": "Search the store",
     "placeholder": "Search for…",
+    "predictive_placeholder": "Start typing to search…",
     "submit": "Search",
     "empty": "Enter a search term to get started.",
     "searching": "Searching…",

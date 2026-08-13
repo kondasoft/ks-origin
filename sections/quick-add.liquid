@@ -1,0 +1,71 @@
+{% liquid
+  assign quick_add_product = product
+  assign quick_add_image = quick_add_product.featured_image
+  assign quick_add_variant = quick_add_product.selected_or_first_available_variant
+  assign quick_add_image_class = 'quick-add-image'
+  assign current_price = quick_add_variant.price
+  assign compare_price = quick_add_variant.compare_at_price
+  assign on_sale = false
+
+  if compare_price > current_price
+    assign on_sale = true
+  endif
+
+  unless settings.quick_add_image_ratio == 'adapt'
+    assign quick_add_image_class = quick_add_image_class | append: ' aspect-ratio aspect-ratio-' | append: settings.quick_add_image_ratio
+  endunless
+%}
+
+{% if quick_add_product != blank %}
+  <div class="quick-add-product" data-quick-add-product>
+    <div class="quick-add-media">
+      {% if quick_add_image != blank %}
+        {{
+          quick_add_image
+          | image_url: width: 800
+          | image_tag:
+            class: quick_add_image_class,
+            widths: '320, 480, 640, 800',
+            sizes: '(min-width: 600px) 50vw, 100vw',
+            loading: 'eager'
+        }}
+      {% else %}
+        {% assign quick_add_placeholder_class = quick_add_image_class | append: ' placeholder-svg' %}
+        {{ 'image' | placeholder_svg_tag: quick_add_placeholder_class }}
+      {% endif %}
+    </div>
+
+    <div class="quick-add-details">
+      {% if settings.quick_add_show_vendor and quick_add_product.vendor != blank %}
+        <p class="product-vendor quick-add-vendor {{ settings.quick_add_vendor_size }}">
+          {{ quick_add_product.vendor | escape }}
+        </p>
+      {% endif %}
+
+      <h3
+        class="quick-add-product-title {{ settings.quick_add_title_size }}"
+        data-font-family="{{ settings.quick_add_title_font_family }}"
+      >
+        {{ quick_add_product.title | escape }}
+      </h3>
+
+      <p class="quick-add-price {{ settings.quick_add_price_size }}">
+        <span class="visually-hidden">
+          {% if on_sale %}{{ 'products.price.sale_price' | t }}{% else %}{{ 'products.price.regular_price' | t }}{% endif %}
+        </span>
+        <span{% if on_sale %} class="quick-add-price-sale"{% endif %}>{{ current_price | money }}</span>
+        {% if on_sale %}
+          <span class="visually-hidden">{{ 'products.price.regular_price' | t }}</span>
+          <s class="quick-add-price-compare">{{ compare_price | money }}</s>
+        {% endif %}
+      </p>
+    </div>
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Quick add",
+  "settings": []
+}
+{% endschema %}

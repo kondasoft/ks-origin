@@ -267,18 +267,6 @@ predictive-search {
   margin-right: -1rem;
 }
 
-.predictive-search-initial {
-  display: flex;
-  flex: 1;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-}
-
-.predictive-search-initial p {
-  margin: 0;
-}
-
 .predictive-search-loading {
   display: flex;
   flex-direction: column;

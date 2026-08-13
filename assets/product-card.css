@@ -144,10 +144,6 @@
   width: 100%;
 }
 
-.product-card-form-link-block {
-  pointer-events: none;
-}
-
 @media (hover: hover) {
   .product-card:has(.product-card-title-link:hover) .product-card-image {
     opacity: 0.85;

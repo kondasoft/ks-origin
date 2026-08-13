@@ -131,6 +131,11 @@
     }
   },
   "products": {
+    "quick_add": {
+      "title": "Ajout rapide",
+      "loading": "Chargement du produit…",
+      "unavailable": "Ce produit n’a pas pu être chargé."
+    },
     "sku": "UGS : {{ sku }}",
     "placeholders": {
       "title": "Exemple de titre de produit",
@@ -255,6 +260,7 @@
     "results_title": "Résultats de recherche",
     "label": "Rechercher dans la boutique",
     "placeholder": "Rechercher…",
+    "predictive_placeholder": "Commencez à saisir pour rechercher…",
     "submit": "Rechercher",
     "empty": "Saisissez un terme de recherche pour commencer.",
     "searching": "Recherche en cours…",

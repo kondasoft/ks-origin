@@ -2,17 +2,10 @@
   assign product = closest.product
   assign selected_variant = product.selected_or_first_available_variant
   assign product_form_id = 'product-card-form-' | append: block.id | append: '-' | append: product.id
-  assign show_select_options = false
-
-  if product != blank and product.available
-    if product.variants.size > 1 or product.requires_selling_plan
-      assign show_select_options = true
-    endif
-  endif
 %}
 
 <div
-  class="product-card-form-block{% if show_select_options %} product-card-form-link-block{% endif %}"
+  class="product-card-form-block"
   {{ block.shopify_attributes }}
 >
   {% if product == blank %}
@@ -47,11 +40,13 @@
       {% endform %}
     </theme-product-form>
   {% else %}
-    <span
+    <button
+      type="button"
       class="btn {{ block.settings.button_size }} {{ block.settings.button_style }}"
+      data-quick-add-url="{{ product.url }}"
     >
       {{ 'products.form.select_options' | t }}
-    </span>
+    </button>
   {% endif %}
 </div>
 
