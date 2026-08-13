@@ -1,3 +1,25 @@
+{% liquid
+  assign custom_icon = block.settings.custom_icon
+  assign custom_icon_width = block.settings.icon_size | times: 2
+  assign custom_icon_height = block.settings.icon_size
+  assign collapse_content = block.settings.text
+  assign icon_type = block.settings.icon
+  assign predefined_icon = block.settings.predefined_icon
+
+  unless icon_type == 'none' or icon_type == 'predefined' or icon_type == 'custom'
+    assign predefined_icon = icon_type
+    assign icon_type = 'predefined'
+  endunless
+
+  if block.settings.content_source == 'product-description'
+    assign collapse_content = closest.product.description
+  endif
+
+  if custom_icon != blank and custom_icon.aspect_ratio != blank
+    assign custom_icon_height = block.settings.icon_size | divided_by: custom_icon.aspect_ratio | round
+  endif
+%}
+
 <theme-collapse
   class="theme-collapse collapse-block block-spacing"
   style="
@@ -18,12 +40,38 @@
     {% endif %}
   >
     <summary class="theme-collapse-summary">
-      <span
-        {% if section.settings.enable_faq_structured_data %}
-          itemprop="name"
-        {% endif %}
-      >
-        {{ block.settings.heading }}
+      <span class="theme-collapse-summary-content">
+        {% unless icon_type == 'none' %}
+          <span
+            class="theme-collapse-leading-icon"
+            style="--collapse-leading-icon-size: {{ block.settings.icon_size }}px;"
+            aria-hidden="true"
+          >
+            {% if icon_type == 'custom' %}
+              {% if custom_icon != blank %}
+                <img
+                  class="theme-collapse-custom-icon"
+                  src="{{ custom_icon | image_url: width: custom_icon_width }}"
+                  alt=""
+                  width="{{ block.settings.icon_size }}"
+                  height="{{ custom_icon_height }}"
+                  loading="lazy"
+                  data-transform-svg-inline
+                >
+              {% endif %}
+            {% else %}
+              {% render 'svg-icons', icon: predefined_icon, icon_size: block.settings.icon_size %}
+            {% endif %}
+          </span>
+        {% endunless %}
+
+        <span
+          {% if section.settings.enable_faq_structured_data %}
+            itemprop="name"
+          {% endif %}
+        >
+          {{ block.settings.heading }}
+        </span>
       </span>
       <span class="theme-collapse-icon" aria-hidden="true">
         {% render 'svg-icons', icon: 'chevron-down', icon_size: 18 %}
@@ -43,7 +91,7 @@
           itemprop="text"
         {% endif %}
       >
-        {{ block.settings.text }}
+        {{ collapse_content }}
       </div>
     </div>
   </details>
@@ -61,10 +109,73 @@
       "default": "What would you like to know?"
     },
     {
+      "type": "select",
+      "id": "icon",
+      "label": "Icon",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "predefined", "label": "Predefined" },
+        { "value": "custom", "label": "Custom" }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "select",
+      "id": "predefined_icon",
+      "label": "Predefined icon",
+      "options": [
+        { "value": "info", "label": "Information" },
+        { "value": "file-text", "label": "Details" },
+        { "value": "package", "label": "Package" },
+        { "value": "truck", "label": "Shipping" },
+        { "value": "refresh", "label": "Returns" },
+        { "value": "credit-card", "label": "Payment" },
+        { "value": "shield", "label": "Security" },
+        { "value": "ruler", "label": "Size guide" },
+        { "value": "droplet", "label": "Care instructions" },
+        { "value": "layers", "label": "Materials" },
+        { "value": "award", "label": "Warranty" },
+        { "value": "gift", "label": "Gift" },
+        { "value": "help-circle", "label": "Help" },
+        { "value": "star-outline", "label": "Star" }
+      ],
+      "default": "info",
+      "visible_if": "{{ block.settings.icon == 'predefined' }}"
+    },
+    {
+      "type": "image_picker",
+      "id": "custom_icon",
+      "label": "Custom icon",
+      "info": "For best results, upload an SVG. SVG icons inherit the collapse text color.",
+      "visible_if": "{{ block.settings.icon == 'custom' }}"
+    },
+    {
+      "type": "range",
+      "id": "icon_size",
+      "label": "Icon size",
+      "min": 16,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "default": 20,
+      "visible_if": "{{ block.settings.icon == 'predefined' or block.settings.icon == 'custom' }}"
+    },
+    {
+      "type": "select",
+      "id": "content_source",
+      "label": "Content source",
+      "options": [
+        { "value": "custom", "label": "Custom text" },
+        { "value": "product-description", "label": "Product description" }
+      ],
+      "default": "custom"
+    },
+    {
       "type": "richtext",
       "id": "text",
       "label": "Text",
-      "default": "<p>Add the answer or supporting information here.</p>"
+      "default": "<p>Add the answer or supporting information here.</p>",
+      "visible_if": "{{ block.settings.content_source == 'custom' }}"
     },
     {
       "type": "checkbox",

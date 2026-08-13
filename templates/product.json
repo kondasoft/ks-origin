@@ -125,7 +125,10 @@
           "name": "Collapse",
           "settings": {
             "heading": "Product details",
-            "text": "{{ closest.product.description }}",
+            "icon": "predefined",
+            "predefined_icon": "file-text",
+            "icon_size": 20,
+            "content_source": "product-description",
             "open_by_default": true,
             "pt": 0,
             "pb": 0
@@ -137,6 +140,9 @@
           "name": "Collapse",
           "settings": {
             "heading": "Shipping information",
+            "icon": "predefined",
+            "predefined_icon": "truck",
+            "icon_size": 20,
             "text": "<p><strong>Fast, reliable delivery.</strong> Orders are processed promptly, and available shipping methods, costs, and estimated delivery times are shown at checkout.</p><p>For more details, view our <a href=\"/policies/shipping-policy\">shipping policy</a>.</p>",
             "open_by_default": false,
             "pt": 0,
@@ -149,6 +155,9 @@
           "name": "Collapse",
           "settings": {
             "heading": "Returns and refunds",
+            "icon": "predefined",
+            "predefined_icon": "refresh",
+            "icon_size": 20,
             "text": "<p><strong>Changed your mind?</strong> Eligible items can be returned within the stated return period, provided they are unused and in their original condition.</p><p>Review our <a href=\"/policies/refund-policy\">refund policy</a> for full instructions and exclusions.</p>",
             "open_by_default": false,
             "pt": 0,
@@ -161,6 +170,9 @@
           "name": "Collapse",
           "settings": {
             "heading": "Payment information",
+            "icon": "predefined",
+            "predefined_icon": "credit-card",
+            "icon_size": 20,
             "text": "<p><strong>Safe and secure checkout.</strong> Payments are encrypted and processed securely using the payment methods available for your location at checkout.</p><p>Learn how we protect your information in our <a href=\"/policies/privacy-policy\">privacy policy</a>.</p>",
             "open_by_default": false,
             "pt": 0,

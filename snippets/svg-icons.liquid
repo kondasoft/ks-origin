@@ -35,6 +35,69 @@
       <rect x="3" y="11" width="18" height="11" rx="2" ry="2" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="{{ stroke_width }}"></rect>
       <path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="{{ stroke_width }}"></path>
     </svg>
+  {% when 'info' %}
+    <svg aria-hidden="true" class="svg-icon svg-icon-info" width="{{ scaled_icon_size }}" height="{{ scaled_icon_size }}" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="{{ stroke_width }}"></circle>
+      <path d="M12 16v-4M12 8h.01" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="{{ stroke_width }}"></path>
+    </svg>
+  {% when 'file-text' %}
+    <svg aria-hidden="true" class="svg-icon svg-icon-file-text" width="{{ scaled_icon_size }}" height="{{ scaled_icon_size }}" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="{{ stroke_width }}"></path>
+      <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="{{ stroke_width }}"></path>
+    </svg>
+  {% when 'package' %}
+    <svg aria-hidden="true" class="svg-icon svg-icon-package" width="{{ scaled_icon_size }}" height="{{ scaled_icon_size }}" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="m16.5 9.4-9-5.19M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="{{ stroke_width }}"></path>
+      <path d="M3.27 6.96 12 12.01l8.73-5.05M12 22.08V12" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="{{ stroke_width }}"></path>
+    </svg>
+  {% when 'truck' %}
+    <svg aria-hidden="true" class="svg-icon svg-icon-truck" width="{{ scaled_icon_size }}" height="{{ scaled_icon_size }}" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M10 17h4V5H2v12h3m15 0h2v-5l-3-4h-5v9h1" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="{{ stroke_width }}"></path>
+      <circle cx="7.5" cy="17.5" r="2.5" stroke="currentColor" stroke-width="{{ stroke_width }}"></circle>
+      <circle cx="17.5" cy="17.5" r="2.5" stroke="currentColor" stroke-width="{{ stroke_width }}"></circle>
+    </svg>
+  {% when 'refresh' %}
+    <svg aria-hidden="true" class="svg-icon svg-icon-refresh" width="{{ scaled_icon_size }}" height="{{ scaled_icon_size }}" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M20 11a8.1 8.1 0 0 0-15.5-2M4 4v5h5M4 13a8.1 8.1 0 0 0 15.5 2m.5 5v-5h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="{{ stroke_width }}"></path>
+    </svg>
+  {% when 'credit-card' %}
+    <svg aria-hidden="true" class="svg-icon svg-icon-credit-card" width="{{ scaled_icon_size }}" height="{{ scaled_icon_size }}" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="1" y="4" width="22" height="16" rx="2" ry="2" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="{{ stroke_width }}"></rect>
+      <path d="M1 10h22" stroke="currentColor" stroke-linecap="round" stroke-width="{{ stroke_width }}"></path>
+    </svg>
+  {% when 'shield' %}
+    <svg aria-hidden="true" class="svg-icon svg-icon-shield" width="{{ scaled_icon_size }}" height="{{ scaled_icon_size }}" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="{{ stroke_width }}"></path>
+    </svg>
+  {% when 'ruler' %}
+    <svg aria-hidden="true" class="svg-icon svg-icon-ruler" width="{{ scaled_icon_size }}" height="{{ scaled_icon_size }}" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="m16 2 6 6L8 22l-6-6Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="{{ stroke_width }}"></path>
+      <path d="m7.5 10.5 2 2m1-5 2 2m1-5 2 2m-11 7 2 2" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="{{ stroke_width }}"></path>
+    </svg>
+  {% when 'droplet' %}
+    <svg aria-hidden="true" class="svg-icon svg-icon-droplet" width="{{ scaled_icon_size }}" height="{{ scaled_icon_size }}" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 22a7 7 0 0 0 7-7c0-5-7-13-7-13S5 10 5 15a7 7 0 0 0 7 7Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="{{ stroke_width }}"></path>
+    </svg>
+  {% when 'layers' %}
+    <svg aria-hidden="true" class="svg-icon svg-icon-layers" width="{{ scaled_icon_size }}" height="{{ scaled_icon_size }}" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="m12 2 10 5-10 5L2 7l10-5Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="{{ stroke_width }}"></path>
+      <path d="m2 17 10 5 10-5M2 12l10 5 10-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="{{ stroke_width }}"></path>
+    </svg>
+  {% when 'award' %}
+    <svg aria-hidden="true" class="svg-icon svg-icon-award" width="{{ scaled_icon_size }}" height="{{ scaled_icon_size }}" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="12" cy="8" r="7" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="{{ stroke_width }}"></circle>
+      <path d="m8.21 13.89-1.21 8 5-3 5 3-1.21-8" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="{{ stroke_width }}"></path>
+    </svg>
+  {% when 'gift' %}
+    <svg aria-hidden="true" class="svg-icon svg-icon-gift" width="{{ scaled_icon_size }}" height="{{ scaled_icon_size }}" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M20 12v10H4V12M2 7h20v5H2Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="{{ stroke_width }}"></path>
+      <path d="M12 22V7m0 0H7.5A2.5 2.5 0 1 1 10 4.5C10 7 12 7 12 7Zm0 0h4.5A2.5 2.5 0 1 0 14 4.5C14 7 12 7 12 7Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="{{ stroke_width }}"></path>
+    </svg>
+  {% when 'help-circle' %}
+    <svg aria-hidden="true" class="svg-icon svg-icon-help-circle" width="{{ scaled_icon_size }}" height="{{ scaled_icon_size }}" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="{{ stroke_width }}"></circle>
+      <path d="M9.09 9a3 3 0 1 1 5.83 1c0 2-3 2-3 4m.08 4h.01" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="{{ stroke_width }}"></path>
+    </svg>
   {% when 'close' %}
     <svg aria-hidden="true" class="svg-icon svg-icon-close" width="{{ scaled_icon_size }}" height="{{ scaled_icon_size }}" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M5 5l10 10M15 5 5 15" stroke="currentColor" stroke-linecap="round" stroke-width="{{ stroke_width }}"></path>
@@ -74,6 +137,10 @@
   {% when 'star' %}
     <svg aria-hidden="true" class="svg-icon svg-icon-star" width="{{ scaled_icon_size }}" height="{{ scaled_icon_size }}" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
       <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="currentColor"></polygon>
+    </svg>
+  {% when 'star-outline' %}
+    <svg aria-hidden="true" class="svg-icon svg-icon-star-outline" width="{{ scaled_icon_size }}" height="{{ scaled_icon_size }}" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="{{ stroke_width }}"></polygon>
     </svg>
   {% when 'filter' %}
     <svg aria-hidden="true" class="svg-icon svg-icon-filter" width="{{ scaled_icon_size }}" height="{{ scaled_icon_size }}" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

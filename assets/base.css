@@ -1418,6 +1418,33 @@ select.input-lg {
   outline-color: currentcolor;
 }
 
+.theme-collapse-summary-content {
+  display: inline-flex;
+  min-width: 0;
+  align-items: center;
+  gap: 0.75em;
+}
+
+.theme-collapse-leading-icon {
+  display: inline-flex;
+  flex: 0 0 var(--collapse-leading-icon-size);
+  align-items: center;
+  justify-content: center;
+  width: var(--collapse-leading-icon-size);
+  height: var(--collapse-leading-icon-size);
+}
+
+.theme-collapse-leading-icon .svg-icon {
+  width: 100%;
+  height: 100%;
+}
+
+.theme-collapse-custom-icon {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
 .theme-collapse-icon {
   display: inline-flex;
   flex-shrink: 0;
@@ -1434,7 +1461,7 @@ select.input-lg {
 }
 
 .theme-collapse-content {
-  padding: 0.25em 0 1.5em;
+  padding: 0.5em 0 1.5em;
   text-align: left;
 }
 
