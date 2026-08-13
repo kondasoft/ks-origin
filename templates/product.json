@@ -129,6 +129,7 @@
             "predefined_icon": "file-text",
             "icon_size": 20,
             "content_source": "product-description",
+            "text": "<p>Add the answer or supporting information here.</p>",
             "open_by_default": true,
             "pt": 0,
             "pb": 0
@@ -143,6 +144,7 @@
             "icon": "predefined",
             "predefined_icon": "truck",
             "icon_size": 20,
+            "content_source": "custom",
             "text": "<p><strong>Fast, reliable delivery.</strong> Orders are processed promptly, and available shipping methods, costs, and estimated delivery times are shown at checkout.</p><p>For more details, view our <a href=\"/policies/shipping-policy\">shipping policy</a>.</p>",
             "open_by_default": false,
             "pt": 0,
@@ -158,6 +160,7 @@
             "icon": "predefined",
             "predefined_icon": "refresh",
             "icon_size": 20,
+            "content_source": "custom",
             "text": "<p><strong>Changed your mind?</strong> Eligible items can be returned within the stated return period, provided they are unused and in their original condition.</p><p>Review our <a href=\"/policies/refund-policy\">refund policy</a> for full instructions and exclusions.</p>",
             "open_by_default": false,
             "pt": 0,
@@ -173,10 +176,129 @@
             "icon": "predefined",
             "predefined_icon": "credit-card",
             "icon_size": 20,
+            "content_source": "custom",
             "text": "<p><strong>Safe and secure checkout.</strong> Payments are encrypted and processed securely using the payment methods available for your location at checkout.</p><p>Learn how we protect your information in our <a href=\"/policies/privacy-policy\">privacy policy</a>.</p>",
             "open_by_default": false,
             "pt": 0,
             "pb": 0
+          },
+          "blocks": {}
+        },
+        "product_recommendations_QdhxV7": {
+          "type": "product-recommendations",
+          "name": "Product recommendations",
+          "settings": {
+            "recommendation_type": "related",
+            "heading": "Pairs well with",
+            "heading_size": "h5",
+            "products_to_show": 6,
+            "layout": "carousel",
+            "carousel_partial_slide_mobile": true,
+            "carousel_show_navigation": true,
+            "carousel_align_navigation_to_media": true,
+            "carousel_show_progress": true,
+            "mobile_columns": 2,
+            "desktop_columns": 3,
+            "pt": 24,
+            "pb": 24
+          },
+          "blocks": {
+            "product-card": {
+              "type": "product-card",
+              "static": true,
+              "settings": {
+                "custom_colors": false,
+                "background_color": "{{ settings.colors.background }}",
+                "text_color": "{{ settings.colors.text }}",
+                "accent_color": "{{ settings.colors.accent }}",
+                "text_alignment": "left",
+                "border_opacity": 0,
+                "show_box_shadow": false,
+                "pt": 0,
+                "pb": 0,
+                "pl": 0,
+                "pr": 0
+              },
+              "blocks": {
+                "product_card_image_BnK7YR": {
+                  "type": "_product-card-image",
+                  "settings": {
+                    "image_ratio": "square",
+                    "pt": 0,
+                    "pb": 12
+                  },
+                  "blocks": {}
+                },
+                "product_card_title_wnRjD3": {
+                  "type": "_product-card-title",
+                  "settings": {
+                    "font_family": "heading",
+                    "heading_size": "fs-md",
+                    "pt": 0,
+                    "pb": 8
+                  },
+                  "blocks": {}
+                },
+                "product_card_rating_BA7Dci": {
+                  "type": "_product-card-rating",
+                  "settings": {
+                    "show_count": true,
+                    "count_style": "simple",
+                    "rating_size": "fs-sm",
+                    "pt": 0,
+                    "pb": 8
+                  },
+                  "blocks": {}
+                },
+                "product_card_price_9PAAkt": {
+                  "type": "_product-card-price",
+                  "settings": {
+                    "price_size": "fs-md",
+                    "pt": 0,
+                    "pb": 14
+                  },
+                  "blocks": {}
+                },
+                "product_card_swatches_pQ6Drq": {
+                  "type": "_product-card-swatches",
+                  "settings": {
+                    "swatch_size": 20,
+                    "pt": 0,
+                    "pb": 22
+                  },
+                  "blocks": {}
+                },
+                "product_card_form_t3gY9C": {
+                  "type": "_product-card-form",
+                  "settings": {
+                    "button_style": "btn-accent-solid",
+                    "button_size": "btn-sm",
+                    "pt": 0,
+                    "pb": 0
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "product_card_image_BnK7YR",
+                "product_card_title_wnRjD3",
+                "product_card_rating_BA7Dci",
+                "product_card_price_9PAAkt",
+                "product_card_swatches_pQ6Drq",
+                "product_card_form_t3gY9C"
+              ]
+            }
+          },
+          "block_order": []
+        },
+        "divider_xMYX39": {
+          "type": "divider",
+          "name": "Divider",
+          "settings": {
+            "custom_line_opacity": false,
+            "line_opacity": 20,
+            "pt": 16,
+            "pb": 16
           },
           "blocks": {}
         },
@@ -193,7 +315,7 @@
           "type": "_product-main-share",
           "name": "Product share",
           "settings": {
-            "text_alignment": "right",
+            "text_alignment": "left",
             "button_style": "btn-text-outline",
             "button_size": "btn-sm",
             "pt": 20,
@@ -216,6 +338,8 @@
         "collapse_YdpkQT",
         "collapse_HbkRVr",
         "collapse_payment_information",
+        "product_recommendations_QdhxV7",
+        "divider_xMYX39",
         "product_main_breadcrumb_DNX9H8",
         "product_main_share_6EqjYr"
       ],

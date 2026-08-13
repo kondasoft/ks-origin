@@ -1,0 +1,80 @@
+/*
+  Product recommendations block stylesheet
+
+  This file owns the product recommendations block layout and loading presentation within product content.
+*/
+
+.product-recommendations-block {
+  display: block;
+  width: 100%;
+  min-width: 0;
+}
+
+.product-recommendations-block-heading {
+  margin: 0 0 1em;
+}
+
+.product-recommendations-block-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--mobile-columns), minmax(0, 1fr));
+  gap: 2rem 1rem;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.product-recommendations-block-item {
+  min-width: 0;
+}
+
+.product-recommendations-block-loading-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--mobile-columns), minmax(0, 1fr));
+  gap: 1rem;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.product-recommendations-block-loading-item {
+  display: grid;
+  min-width: 0;
+  gap: 0.5rem;
+}
+
+.product-recommendations-block-loading-media {
+  aspect-ratio: 1;
+  background-color: rgb(var(--color-surface));
+  border-radius: var(--border-radius);
+}
+
+.product-recommendations-block-loading-line {
+  width: 75%;
+  height: 1em;
+  background-color: rgb(var(--color-surface));
+  border-radius: var(--border-radius);
+}
+
+.product-recommendations-block-loading-line-short {
+  width: 40%;
+}
+
+@media (min-width: 600px) {
+  .product-recommendations-block-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .product-recommendations-block-loading-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1200px) {
+  .product-recommendations-block-grid {
+    grid-template-columns: repeat(var(--desktop-columns), minmax(0, 1fr));
+  }
+
+  .product-recommendations-block-loading-grid {
+    grid-template-columns: repeat(var(--desktop-columns), minmax(0, 1fr));
+  }
+}

@@ -109,13 +109,13 @@
       "id": "gallery_video_autoplay",
       "label": "Autoplay videos",
       "info": "Autoplay videos are muted.",
-      "default": false
+      "default": true
     },
     {
       "type": "checkbox",
       "id": "gallery_video_show_controls",
       "label": "Show video controls",
-      "default": true
+      "default": false
     },
     {
       "type": "header",
@@ -129,7 +129,7 @@
       "max": 160,
       "step": 2,
       "unit": "px",
-      "default": 60
+      "default": 44
     },
     {
       "type": "range",
@@ -257,6 +257,7 @@
             "buy_it_now_style": "btn-text-outline",
             "buy_it_now_size": "btn-md",
             "show_dynamic_checkout": false,
+            "show_gift_card_recipient_form": true,
             "pt": 0,
             "pb": 30
           }
@@ -327,6 +328,60 @@
           }
         },
         {
+          "type": "product-recommendations",
+          "settings": {
+            "recommendation_type": "related",
+            "heading": "Pairs well with",
+            "heading_size": "h5",
+            "products_to_show": 6,
+            "layout": "carousel",
+            "carousel_partial_slide_mobile": true,
+            "carousel_show_navigation": true,
+            "carousel_align_navigation_to_media": true,
+            "carousel_show_progress": true,
+            "mobile_columns": 2,
+            "desktop_columns": 3,
+            "pt": 24,
+            "pb": 24
+          },
+          "blocks": [
+            {
+              "type": "product-card",
+              "id": "product-card",
+              "static": true,
+              "blocks": [
+                {
+                  "type": "_product-card-image"
+                },
+                {
+                  "type": "_product-card-title"
+                },
+                {
+                  "type": "_product-card-rating"
+                },
+                {
+                  "type": "_product-card-price"
+                },
+                {
+                  "type": "_product-card-swatches"
+                },
+                {
+                  "type": "_product-card-form"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "divider",
+          "settings": {
+            "custom_line_opacity": false,
+            "line_opacity": 20,
+            "pt": 16,
+            "pb": 16
+          }
+        },
+        {
           "type": "_product-main-breadcrumb",
           "settings": {
             "pt": 18,
@@ -336,10 +391,10 @@
         {
           "type": "_product-main-share",
           "settings": {
-            "text_alignment": "right",
+            "text_alignment": "left",
             "button_style": "btn-text-outline",
             "button_size": "btn-sm",
-            "pt": 12,
+            "pt": 20,
             "pb": 0
           }
         }

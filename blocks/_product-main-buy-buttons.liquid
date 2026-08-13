@@ -159,7 +159,7 @@
         { "value": "btn-md", "label": "Medium" },
         { "value": "btn-lg", "label": "Large" }
       ],
-      "default": "btn-lg"
+      "default": "btn-md"
     },
     {
       "type": "header",
@@ -193,7 +193,7 @@
         { "value": "btn-md", "label": "Medium" },
         { "value": "btn-lg", "label": "Large" }
       ],
-      "default": "btn-lg",
+      "default": "btn-md",
       "visible_if": "{{ block.settings.show_buy_it_now }}"
     },
     {
@@ -204,7 +204,7 @@
       "type": "checkbox",
       "id": "show_dynamic_checkout",
       "label": "Show dynamic checkout button",
-      "default": true
+      "default": false
     },
     {
       "type": "header",
@@ -239,7 +239,7 @@
       "max": 80,
       "step": 2,
       "unit": "px",
-      "default": 0
+      "default": 30
     }
   ],
   "presets": [
