@@ -18,6 +18,7 @@ Renders the ordered inner blocks shared by every product card in a product grid.
 %}
 
 <s-view-event
+  class="product-card-view-event"
   view-event-trigger="intersect"
   {% if closest.product != blank %}
     view-event-payload="{{ closest.product | standard_event_data: 'view', context: product_view_context | escape }}"
@@ -173,6 +174,9 @@ Renders the ordered inner blocks shared by every product card in a product grid.
     },
     {
       "type": "_product-card-rating"
+    },
+    {
+      "type": "_product-card-swatches"
     },
     {
       "type": "_product-card-form"

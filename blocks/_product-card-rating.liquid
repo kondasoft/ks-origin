@@ -1,9 +1,15 @@
+{% capture rating_style %}
+  --pt: {{ block.settings.pt | divided_by: 16.0 | append: 'em' }};
+  --pb: {{ block.settings.pb | divided_by: 16.0 | append: 'em' }};
+{% endcapture %}
+
 {% render 'product-rating',
   product: closest.product,
   rating_size: block.settings.rating_size,
   show_count: block.settings.show_count,
   count_style: block.settings.count_style,
-  classes: 'product-card-rating',
+  classes: 'product-card-rating block-spacing',
+  custom_style: rating_style,
   block: block
 %}
 
@@ -45,6 +51,30 @@
         { "value": "fs-xl", "label": "Extra large" }
       ],
       "default": "fs-sm"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pt",
+      "label": "Top",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "pb",
+      "label": "Bottom",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 8
     }
   ],
   "presets": [

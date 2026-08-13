@@ -1374,8 +1374,8 @@ select.input-lg {
 /* Collapses */
 .theme-collapse {
   display: block;
-  border-top: 1px solid rgb(var(--color-text) / var(--border-opacity));
-  border-bottom: 1px solid rgb(var(--color-text) / var(--border-opacity));
+  border-top: 1px dotted rgb(var(--color-text) / var(--border-opacity));
+  border-bottom: 1px dotted rgb(var(--color-text) / var(--border-opacity));
 }
 
 .theme-collapse + .theme-collapse {
@@ -1434,7 +1434,7 @@ select.input-lg {
 }
 
 .theme-collapse-content {
-  padding: 0.125em 0 1.5em;
+  padding: 0.25em 0 1.5em;
   text-align: left;
 }
 

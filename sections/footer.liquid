@@ -42,18 +42,20 @@
     --pb: {{ section.settings.pb | divided_by: 16.0 | append: 'em' }};
   "
   data-section-css="{{ 'footer.css' | asset_url }}"
+  data-section-js="{{ 'footer.js' | asset_url }}"
 >
   <div class="container {{ settings.container_width }}">
     {% if section.blocks.size > 0 %}
-      <div class="footer-blocks">
+      <footer-blocks class="footer-blocks">
         {% for block in section.blocks %}
           <div
             class="footer-block footer-block-{{ block.type }}"
+            data-footer-block-type="{{ block.type }}"
             {{ block.shopify_attributes }}
           >
             <theme-collapse
               class="theme-collapse footer-block-collapse"
-              data-collapse-mobile
+              {% unless block.type == 'newsletter' %}data-collapse-mobile{% endunless %}
             >
               <details class="theme-collapse-details footer-block-details" open>
                 <summary class="theme-collapse-summary footer-block-summary">
@@ -195,7 +197,7 @@
             </theme-collapse>
           </div>
         {% endfor %}
-      </div>
+      </footer-blocks>
     {% endif %}
 
     <div class="footer-bottom">

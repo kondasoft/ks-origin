@@ -1,6 +1,13 @@
 {% assign product = closest.product %}
 
-<div class="product-card-title-block" {{ block.shopify_attributes }}>
+<div
+  class="product-card-title-block block-spacing"
+  style="
+    --pt: {{ block.settings.pt | divided_by: 16.0 | append: 'em' }};
+    --pb: {{ block.settings.pb | divided_by: 16.0 | append: 'em' }};
+  "
+  {{ block.shopify_attributes }}
+>
   <h3
     class="product-card-title {{ block.settings.heading_size }}"
     data-font-family="{{ block.settings.font_family }}"
@@ -8,7 +15,7 @@
     {% if product == blank %}
       {{ 'products.placeholders.title' | t }}
     {% else %}
-      <a class="product-card-title-link" href="{{ product.url }}">
+      <a class="product-card-title-link" href="{{ product.url }}" data-product-card-link>
         {{ product.title | escape }}
       </a>
     {% endif %}
@@ -42,6 +49,30 @@
         { "value": "fs-xl", "label": "Extra large" }
       ],
       "default": "fs-md"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pt",
+      "label": "Top",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "pb",
+      "label": "Bottom",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 8
     }
   ],
   "presets": [

@@ -1,0 +1,138 @@
+{% liquid
+  assign product = closest.product
+  assign swatch_option = null
+  assign swatch_image_width = block.settings.swatch_size | times: 2
+
+  for product_option in product.options_with_values
+    for option_value in product_option.values
+      if option_value.swatch != blank
+        assign swatch_option = product_option
+        break
+      endif
+    endfor
+
+    if swatch_option != blank
+      break
+    endif
+  endfor
+%}
+
+{% if swatch_option != blank %}
+  <product-card-swatches
+    class="product-card-swatches-block block-spacing"
+    style="
+      --pt: {{ block.settings.pt | divided_by: 16.0 | append: 'em' }};
+      --pb: {{ block.settings.pb | divided_by: 16.0 | append: 'em' }};
+    "
+    {{ block.shopify_attributes }}
+  >
+    <ul
+      class="product-card-swatches"
+      role="list"
+      aria-label="{{ swatch_option.name | escape }}"
+      style="--product-card-swatch-size: {{ block.settings.swatch_size }}px;"
+    >
+      {% for option_value in swatch_option.values %}
+        {% if option_value.swatch != blank %}
+          {% liquid
+            assign swatch_variant = option_value.variant
+            assign variant_image = swatch_variant.featured_media.preview_image
+            assign variant_image_alt = variant_image.alt | default: product.title
+          %}
+          <li class="product-card-swatch-item">
+            <label
+              class="product-card-swatch"
+              title="{{ option_value | escape }}"
+              style="--swatch-color: {% if option_value.swatch.color %}rgb({{ option_value.swatch.color.rgb }}){% else %}transparent{% endif %};"
+            >
+              <input
+                class="visually-hidden"
+                type="radio"
+                name="product-card-swatch-{{ block.id }}-{{ product.id }}"
+                value="{{ swatch_variant.id }}"
+                data-product-card-swatch
+                data-variant-url="{{ swatch_variant.url }}"
+                {% if option_value.selected %}checked{% endif %}
+              >
+              {% if option_value.swatch.image %}
+                {{
+                  option_value.swatch.image
+                  | image_url: width: swatch_image_width
+                  | image_tag:
+                    alt: '',
+                    class: 'product-card-swatch-image',
+                    loading: 'lazy'
+                }}
+              {% endif %}
+              <span class="visually-hidden">{{ option_value | escape }}</span>
+            </label>
+
+            {% if variant_image != blank %}
+              <template data-product-card-swatch-image>
+                {{
+                  variant_image
+                  | image_url: width: 2400
+                  | image_tag:
+                    alt: variant_image_alt,
+                    class: 'product-card-image',
+                    widths: '320, 640, 960, 1280, 1600, 2000, 2400',
+                    sizes: 'auto, 100vw',
+                    loading: 'lazy'
+                }}
+              </template>
+            {% endif %}
+          </li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+  </product-card-swatches>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Product swatches",
+  "tag": null,
+  "settings": [
+    {
+      "type": "range",
+      "id": "swatch_size",
+      "label": "Swatch size",
+      "min": 10,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pt",
+      "label": "Top",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "pb",
+      "label": "Bottom",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 22
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product swatches",
+      "category": "Product"
+    }
+  ]
+}
+{% endschema %}

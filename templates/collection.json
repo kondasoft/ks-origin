@@ -77,7 +77,9 @@
                 "product-card-image": {
                   "type": "_product-card-image",
                   "settings": {
-                    "image_ratio": "square"
+                    "image_ratio": "square",
+                    "pt": 0,
+                    "pb": 12
                   },
                   "blocks": {}
                 },
@@ -93,7 +95,9 @@
                   "type": "_product-card-title",
                   "settings": {
                     "font_family": "heading",
-                    "heading_size": "fs-md"
+                    "heading_size": "fs-md",
+                    "pt": 0,
+                    "pb": 8
                   },
                   "blocks": {}
                 },
@@ -102,14 +106,27 @@
                   "settings": {
                     "show_count": true,
                     "count_style": "simple",
-                    "rating_size": "fs-sm"
+                    "rating_size": "fs-sm",
+                    "pt": 0,
+                    "pb": 8
                   },
                   "blocks": {}
                 },
                 "product-card-price": {
                   "type": "_product-card-price",
                   "settings": {
-                    "price_size": "fs-md"
+                    "price_size": "fs-md",
+                    "pt": 0,
+                    "pb": 14
+                  },
+                  "blocks": {}
+                },
+                "product-card-swatches": {
+                  "type": "_product-card-swatches",
+                  "settings": {
+                    "swatch_size": 20,
+                    "pt": 0,
+                    "pb": 22
                   },
                   "blocks": {}
                 },
@@ -117,7 +134,9 @@
                   "type": "_product-card-form",
                   "settings": {
                     "button_style": "btn-accent-solid",
-                    "button_size": "btn-sm"
+                    "button_size": "btn-sm",
+                    "pt": 0,
+                    "pb": 0
                   },
                   "blocks": {}
                 }
@@ -128,6 +147,7 @@
                 "product-card-title",
                 "product-rating",
                 "product-card-price",
+                "product-card-swatches",
                 "product-card-form"
               ]
             }

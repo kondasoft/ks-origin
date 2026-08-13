@@ -158,7 +158,9 @@
             "product_card_image_yiCBiq": {
               "type": "_product-card-image",
               "settings": {
-                "image_ratio": "square"
+                "image_ratio": "square",
+                "pt": 0,
+                "pb": 12
               },
               "blocks": {}
             },
@@ -166,7 +168,9 @@
               "type": "_product-card-title",
               "settings": {
                 "font_family": "heading",
-                "heading_size": "fs-md"
+                "heading_size": "fs-md",
+                "pt": 0,
+                "pb": 8
               },
               "blocks": {}
             },
@@ -175,14 +179,28 @@
               "settings": {
                 "show_count": true,
                 "count_style": "simple",
-                "rating_size": "fs-sm"
+                "rating_size": "fs-sm",
+                "pt": 0,
+                "pb": 8
               },
               "blocks": {}
             },
             "product_card_price_pHjnjE": {
               "type": "_product-card-price",
               "settings": {
-                "price_size": "fs-md"
+                "price_size": "fs-md",
+                "pt": 0,
+                "pb": 14
+              },
+              "blocks": {}
+            },
+            "product_card_swatches_awJEB9": {
+              "type": "_product-card-swatches",
+              "name": "Product swatches",
+              "settings": {
+                "swatch_size": 20,
+                "pt": 0,
+                "pb": 22
               },
               "blocks": {}
             },
@@ -190,7 +208,9 @@
               "type": "_product-card-form",
               "settings": {
                 "button_style": "btn-accent-solid",
-                "button_size": "btn-sm"
+                "button_size": "btn-sm",
+                "pt": 0,
+                "pb": 0
               },
               "blocks": {}
             }
@@ -200,6 +220,7 @@
             "product_card_title_HVka4L",
             "product_rating_HBbUqt",
             "product_card_price_pHjnjE",
+            "product_card_swatches_awJEB9",
             "product_card_form_Mkjbif"
           ]
         }
@@ -268,7 +289,7 @@
             "border_opacity": 0,
             "show_box_shadow": false,
             "pt": 16,
-            "pb": 16,
+            "pb": 18,
             "pl": 16,
             "pr": 16
           },
