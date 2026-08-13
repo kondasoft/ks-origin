@@ -103,12 +103,16 @@
   "tag": null,
   "settings": [
     {
-      "type": "text",
-      "id": "heading",
-      "label": "Heading",
-      "default": "What would you like to know?"
+      "type": "header",
+      "content": "Heading"
     },
     {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading text",
+      "default": "What would you like to know?"
+    },
+     {
       "type": "select",
       "id": "icon",
       "label": "Icon",
@@ -159,6 +163,10 @@
       "unit": "px",
       "default": 20,
       "visible_if": "{{ block.settings.icon == 'predefined' or block.settings.icon == 'custom' }}"
+    },
+    {
+      "type": "header",
+      "content": "Content"
     },
     {
       "type": "select",
