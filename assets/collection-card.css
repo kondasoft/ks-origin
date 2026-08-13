@@ -8,7 +8,6 @@
   position: relative;
   display: grid;
   min-width: 0;
-  gap: 0.5rem;
   padding-top: calc(var(--card-pt) * var(--spacing-scale));
   padding-right: calc(var(--card-pr) * var(--spacing-scale));
   padding-bottom: calc(var(--card-pb) * var(--spacing-scale));
@@ -40,7 +39,6 @@
 
 .collection-card-image-block {
   position: relative;
-  margin-bottom: 0.25rem;
 }
 
 .collection-card-image {

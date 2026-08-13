@@ -167,7 +167,9 @@
                   "type": "_article-card-image",
                   "settings": {
                     "image_ratio": "landscape",
-                    "show_tags": false
+                    "show_tags": false,
+                    "pt": 0,
+                    "pb": 12
                   },
                   "blocks": {}
                 },
@@ -175,7 +177,9 @@
                   "type": "_article-card-heading",
                   "settings": {
                     "font_family": "heading",
-                    "heading_size": "fs-md"
+                    "heading_size": "fs-md",
+                    "pt": 0,
+                    "pb": 8
                   },
                   "blocks": {}
                 },
@@ -184,7 +188,9 @@
                   "settings": {
                     "show_date": true,
                     "show_author": true,
-                    "text_size": "fs-sm"
+                    "text_size": "fs-sm",
+                    "pt": 0,
+                    "pb": 8
                   },
                   "blocks": {}
                 }

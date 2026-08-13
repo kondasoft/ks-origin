@@ -49,6 +49,10 @@
   list-style: none;
 }
 
+.main-list-collections-grid:has(.collection-card[data-custom-colors="true"]) {
+  gap: 1rem;
+}
+
 .main-list-collections-item {
   min-width: 0;
 }
@@ -69,5 +73,9 @@
   .main-list-collections-grid {
     grid-template-columns: repeat(var(--desktop-columns), minmax(0, 1fr));
     gap: 2.5rem 1.5rem;
+  }
+
+  .main-list-collections-grid:has(.collection-card[data-custom-colors="true"]) {
+    gap: 1rem;
   }
 }

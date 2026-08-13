@@ -15,7 +15,15 @@
 %}
 
 {% if article.image != blank or article == blank %}
-  <div class="article-card-image-block" data-carousel-control-alignment {{ block.shopify_attributes }}>
+  <div
+    class="article-card-image-block block-spacing"
+    style="
+      --pt: {{ block.settings.pt | divided_by: 16.0 | append: 'em' }};
+      --pb: {{ block.settings.pb | divided_by: 16.0 | append: 'em' }};
+    "
+    data-carousel-control-alignment
+    {{ block.shopify_attributes }}
+  >
     {% if article.image != blank %}
       {{ article.image
         | image_url: width: 2400
@@ -67,6 +75,30 @@
       "label": "Show tags",
       "default": true,
       "info": "Shows up to three article tags over the image."
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pt",
+      "label": "Top",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "pb",
+      "label": "Bottom",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 12
     }
   ],
   "presets": [

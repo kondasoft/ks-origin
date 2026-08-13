@@ -72,7 +72,9 @@
                   "type": "_article-card-image",
                   "settings": {
                     "image_ratio": "landscape",
-                    "show_tags": true
+                    "show_tags": true,
+                    "pt": 0,
+                    "pb": 12
                   },
                   "blocks": {}
                 },
@@ -80,7 +82,9 @@
                   "type": "_article-card-heading",
                   "settings": {
                     "font_family": "heading",
-                    "heading_size": "fs-xl"
+                    "heading_size": "fs-xl",
+                    "pt": 0,
+                    "pb": 8
                   },
                   "blocks": {}
                 },
@@ -89,7 +93,9 @@
                   "settings": {
                     "show_date": true,
                     "show_author": true,
-                    "text_size": "fs-sm"
+                    "text_size": "fs-sm",
+                    "pt": 0,
+                    "pb": 8
                   },
                   "blocks": {}
                 },
@@ -97,7 +103,9 @@
                   "type": "_article-card-excerpt",
                   "settings": {
                     "text_size": "fs-md",
-                    "max_words": 40
+                    "max_words": 40,
+                    "pt": 0,
+                    "pb": 16
                   },
                   "blocks": {}
                 },
@@ -105,7 +113,9 @@
                   "type": "_article-card-read-more",
                   "settings": {
                     "button_style": "btn-text-outline",
-                    "button_size": "btn-sm"
+                    "button_size": "btn-sm",
+                    "pt": 0,
+                    "pb": 4
                   },
                   "blocks": {}
                 }

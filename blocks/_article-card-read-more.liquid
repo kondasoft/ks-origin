@@ -1,4 +1,11 @@
-<div class="article-card-read-more-block" {{ block.shopify_attributes }}>
+<div
+  class="article-card-read-more-block block-spacing"
+  style="
+    --pt: {{ block.settings.pt | divided_by: 16.0 | append: 'em' }};
+    --pb: {{ block.settings.pb | divided_by: 16.0 | append: 'em' }};
+  "
+  {{ block.shopify_attributes }}
+>
   <span class="btn btn-wide {{ block.settings.button_size }} {{ block.settings.button_style }}">
     {{ 'blogs.read_more' | t }}
   </span>
@@ -31,6 +38,30 @@
         { "value": "btn-lg", "label": "Large" }
       ],
       "default": "btn-sm"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pt",
+      "label": "Top",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "pb",
+      "label": "Bottom",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 4
     }
   ],
   "presets": [

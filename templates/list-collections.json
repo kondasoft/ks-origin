@@ -17,6 +17,12 @@
           "static": true,
           "settings": {
             "custom_colors": true,
+            "background_color": "{{ settings.colors.background }}",
+            "text_color": "{{ settings.colors.text }}",
+            "accent_color": "{{ settings.colors.accent }}",
+            "text_alignment": "left",
+            "border_opacity": 0,
+            "show_box_shadow": false,
             "pt": 16,
             "pb": 16,
             "pl": 16,
@@ -26,14 +32,21 @@
             "collection-card-image": {
               "type": "_collection-card-image",
               "settings": {
-                "image_ratio": "landscape"
+                "image_ratio": "landscape",
+                "pt": 0,
+                "pb": 12
               },
               "blocks": {}
             },
             "collection-card-title": {
               "type": "_collection-card-title",
               "settings": {
-                "mobile_heading_size": "fs-sm"
+                "show_product_count": true,
+                "font_family": "heading",
+                "mobile_heading_size": "fs-sm",
+                "desktop_heading_size": "fs-md",
+                "pt": 0,
+                "pb": 2
               },
               "blocks": {}
             }
@@ -46,7 +59,17 @@
       },
       "settings": {
         "background_color": "{{ settings.colors.surface }}",
-        "mobile_columns": 2
+        "text_color": "{{ settings.colors.text }}",
+        "accent_color": "{{ settings.colors.accent }}",
+        "header_mobile_text_alignment": "left",
+        "header_desktop_text_alignment": "left",
+        "show_breadcrumbs": true,
+        "heading_size": "h1",
+        "mobile_columns": 2,
+        "desktop_columns": 3,
+        "collections_per_page": 24,
+        "pt": 60,
+        "pb": 60
       }
     }
   },

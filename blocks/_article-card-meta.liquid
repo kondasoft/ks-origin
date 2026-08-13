@@ -6,7 +6,14 @@
 %}
 
 {% if show_date or show_author %}
-  <div class="article-card-meta-block" {{ block.shopify_attributes }}>
+  <div
+    class="article-card-meta-block block-spacing"
+    style="
+      --pt: {{ block.settings.pt | divided_by: 16.0 | append: 'em' }};
+      --pb: {{ block.settings.pb | divided_by: 16.0 | append: 'em' }};
+    "
+    {{ block.shopify_attributes }}
+  >
     <p class="article-card-meta {{ block.settings.text_size }}">
       {% if show_date %}
         {% if article == blank %}
@@ -56,6 +63,30 @@
         { "value": "fs-xl", "label": "Extra large" }
       ],
       "default": "fs-sm"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pt",
+      "label": "Top",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "pb",
+      "label": "Bottom",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 8
     }
   ],
   "presets": [

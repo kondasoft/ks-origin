@@ -8,7 +8,14 @@
 %}
 
 {% if article_excerpt != blank %}
-  <div class="article-card-excerpt-block" {{ block.shopify_attributes }}>
+  <div
+    class="article-card-excerpt-block block-spacing"
+    style="
+      --pt: {{ block.settings.pt | divided_by: 16.0 | append: 'em' }};
+      --pb: {{ block.settings.pb | divided_by: 16.0 | append: 'em' }};
+    "
+    {{ block.shopify_attributes }}
+  >
     <p class="article-card-excerpt {{ block.settings.text_size }}">
       {{ article_excerpt }}
     </p>
@@ -41,6 +48,30 @@
       "max": 50,
       "step": 5,
       "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pt",
+      "label": "Top",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "pb",
+      "label": "Bottom",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 16
     }
   ],
   "presets": [

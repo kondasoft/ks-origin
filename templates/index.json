@@ -289,7 +289,7 @@
             "border_opacity": 0,
             "show_box_shadow": false,
             "pt": 16,
-            "pb": 18,
+            "pb": 16,
             "pl": 16,
             "pr": 16
           },
@@ -297,7 +297,9 @@
             "collection_card_image_JGTnK8": {
               "type": "_collection-card-image",
               "settings": {
-                "image_ratio": "landscape"
+                "image_ratio": "landscape",
+                "pt": 0,
+                "pb": 12
               },
               "blocks": {}
             },
@@ -307,7 +309,9 @@
                 "show_product_count": true,
                 "font_family": "heading",
                 "mobile_heading_size": "fs-sm",
-                "desktop_heading_size": "fs-md"
+                "desktop_heading_size": "fs-md",
+                "pt": 0,
+                "pb": 2
               },
               "blocks": {}
             }
@@ -1644,7 +1648,9 @@
               "type": "_article-card-image",
               "settings": {
                 "image_ratio": "landscape",
-                "show_tags": true
+                "show_tags": true,
+                "pt": 0,
+                "pb": 12
               },
               "blocks": {}
             },
@@ -1652,7 +1658,9 @@
               "type": "_article-card-heading",
               "settings": {
                 "font_family": "heading",
-                "heading_size": "fs-xl"
+                "heading_size": "fs-xl",
+                "pt": 0,
+                "pb": 8
               },
               "blocks": {}
             },
@@ -1661,7 +1669,9 @@
               "settings": {
                 "show_date": true,
                 "show_author": true,
-                "text_size": "fs-sm"
+                "text_size": "fs-sm",
+                "pt": 0,
+                "pb": 8
               },
               "blocks": {}
             },
@@ -1669,7 +1679,9 @@
               "type": "_article-card-excerpt",
               "settings": {
                 "text_size": "fs-md",
-                "max_words": 40
+                "max_words": 40,
+                "pt": 0,
+                "pb": 16
               },
               "blocks": {}
             },
@@ -1677,7 +1689,9 @@
               "type": "_article-card-read-more",
               "settings": {
                 "button_style": "btn-text-outline",
-                "button_size": "btn-sm"
+                "button_size": "btn-sm",
+                "pt": 0,
+                "pb": 4
               },
               "blocks": {}
             }

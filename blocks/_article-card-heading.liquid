@@ -1,6 +1,13 @@
 {% assign article = closest.article %}
 
-<div class="article-card-heading-block" {{ block.shopify_attributes }}>
+<div
+  class="article-card-heading-block block-spacing"
+  style="
+    --pt: {{ block.settings.pt | divided_by: 16.0 | append: 'em' }};
+    --pb: {{ block.settings.pb | divided_by: 16.0 | append: 'em' }};
+  "
+  {{ block.shopify_attributes }}
+>
   <h3
     class="article-card-heading {{ block.settings.heading_size }}"
     data-font-family="{{ block.settings.font_family }}"
@@ -42,6 +49,30 @@
         { "value": "fs-xl", "label": "Extra large" }
       ],
       "default": "fs-xl"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pt",
+      "label": "Top",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "pb",
+      "label": "Bottom",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 8
     }
   ],
   "presets": [
