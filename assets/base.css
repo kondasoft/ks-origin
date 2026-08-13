@@ -1499,6 +1499,20 @@ select.input-lg {
   right: 0.75rem;
 }
 
+.theme-carousel-control [class*="svg-icon-chevron-"] {
+  transition: transform 100ms ease-out;
+}
+
+@media (hover: hover) {
+  .theme-carousel-control:hover .svg-icon-chevron-left {
+    transform: translateX(-2px);
+  }
+
+  .theme-carousel-control:hover .svg-icon-chevron-right {
+    transform: translateX(2px);
+  }
+}
+
 .theme-carousel-progress {
   position: relative;
   width: min(100%, 400px, 70vw);
@@ -1579,6 +1593,10 @@ select.input-lg {
   }
 
   .theme-carousel-progress-bar {
+    transition: none;
+  }
+
+  .theme-carousel-control [class*="svg-icon-chevron-"] {
     transition: none;
   }
 }

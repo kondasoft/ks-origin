@@ -268,7 +268,7 @@ class ProductVariantPicker extends HTMLElement {
   updateGallery(variant) {
     if (!variant?.featuredMediaId) return;
 
-    this.productElement.querySelector("product-gallery")?.showMedia(variant.featuredMediaId);
+    this.productElement.querySelector("product-gallery, quick-add-gallery")?.showMedia(variant.featuredMediaId);
   }
 
   updateUrl(variantId) {

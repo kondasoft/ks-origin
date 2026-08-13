@@ -1,0 +1,118 @@
+{% doc %}
+Renders the image-only gallery used by the Quick add modal.
+{% enddoc %}
+
+{% liquid
+  assign image_ratio = settings.quick_add_image_ratio | default: 'adapt'
+  assign gallery_images = product.media | where: 'media_type', 'image'
+  assign gallery_count = gallery_images.size
+  assign selected_variant = product.selected_or_first_available_variant
+  assign initial_media = selected_variant.featured_media
+
+  unless initial_media.media_type == 'image'
+    assign initial_media = product.featured_media
+  endunless
+
+  unless initial_media.media_type == 'image'
+    assign initial_media = gallery_images.first
+  endunless
+
+  assign initial_media_id = initial_media.id
+  assign initial_index = 0
+  assign gallery_aspect_ratio = '1 / 1'
+  assign gallery_stage_class = 'quick-add-gallery-stage'
+
+  for image in gallery_images
+    if image.id == initial_media_id
+      assign initial_index = forloop.index0
+      break
+    endif
+  endfor
+
+  if image_ratio == 'adapt'
+    if initial_media != blank
+      assign gallery_aspect_ratio = initial_media.width | append: ' / ' | append: initial_media.height
+    endif
+  else
+    assign gallery_stage_class = gallery_stage_class | append: ' aspect-ratio-' | append: image_ratio
+  endif
+%}
+
+<quick-add-gallery
+  class="quick-add-media quick-add-gallery"
+  data-image-ratio="{{ image_ratio }}"
+  style="--quick-add-gallery-aspect-ratio: {{ gallery_aspect_ratio }};"
+>
+  <div
+    class="{{ gallery_stage_class }}"
+    role="region"
+    aria-label="{{ 'accessibility.product_gallery' | t }}"
+    tabindex="0"
+    data-quick-add-gallery-stage
+  >
+    <ul
+      class="quick-add-gallery-track"
+      role="list"
+      data-quick-add-gallery-track
+      style="transform: translateX(-{{ initial_index | times: 100 }}%);"
+    >
+      {% for image in gallery_images %}
+        <li
+          class="quick-add-gallery-slide{% if forloop.index0 == initial_index %} is-active{% endif %}"
+          data-quick-add-gallery-slide
+          data-media-id="{{ image.id }}"
+          aria-hidden="{% if forloop.index0 == initial_index %}false{% else %}true{% endif %}"
+          {% unless forloop.index0 == initial_index %}inert{% endunless %}
+        >
+          {{
+            image
+            | image_url: width: 800
+            | image_tag:
+              alt: image.alt,
+              class: 'quick-add-gallery-image',
+              widths: '320, 480, 640, 800',
+              sizes: '(min-width: 700px) 50vw, 100vw',
+              loading: 'eager',
+              fetchpriority: 'auto'
+          }}
+        </li>
+      {% else %}
+        <li class="quick-add-gallery-slide is-active" data-quick-add-gallery-slide aria-hidden="false">
+          {{ 'image' | placeholder_svg_tag: 'quick-add-gallery-image placeholder-svg' }}
+        </li>
+      {% endfor %}
+    </ul>
+
+    {% if gallery_count > 1 %}
+      <div class="quick-add-gallery-controls">
+        <button
+          class="icon-button"
+          type="button"
+          aria-label="{{ 'accessibility.previous_media' | t }}"
+          data-quick-add-gallery-previous
+        >
+          {% render 'svg-icons', icon: 'chevron-left', icon_size: 20 %}
+        </button>
+        <button
+          class="icon-button"
+          type="button"
+          aria-label="{{ 'accessibility.next_media' | t }}"
+          data-quick-add-gallery-next
+        >
+          {% render 'svg-icons', icon: 'chevron-right', icon_size: 20 %}
+        </button>
+      </div>
+
+      <span class="quick-add-gallery-counter" aria-hidden="true" data-quick-add-gallery-counter>
+        {{ initial_index | plus: 1 }} / {{ gallery_count }}
+      </span>
+    {% endif %}
+  </div>
+
+  <span
+    class="visually-hidden"
+    aria-live="polite"
+    data-quick-add-gallery-status
+    data-template="{{ 'accessibility.media_status' | t: index: '[index]', count: '[count]' | escape }}"
+  ></span>
+</quick-add-gallery>

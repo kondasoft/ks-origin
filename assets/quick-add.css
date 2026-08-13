@@ -4,24 +4,142 @@
   This file owns the layout and presentation of the product quick add modal.
 */
 
+
+/*
+  Modal layout
+*/
 .quick-add-product {
   display: grid;
   gap: 1rem;
 }
 
+@media (min-width: 700px) {
+  .quick-add-product {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: center;
+  }
+}
+
+
+/*
+  Gallery
+*/
 .quick-add-media {
+  display: block;
   min-width: 0;
   overflow: hidden;
   background-color: rgb(var(--color-surface));
   border-radius: var(--border-radius);
 }
 
-.quick-add-image {
-  display: block;
-  width: 100%;
-  height: auto;
+.quick-add-gallery-stage {
+  position: relative;
+  overflow: hidden;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  touch-action: pan-y pinch-zoom;
 }
 
+.quick-add-gallery[data-image-ratio="adapt"] .quick-add-gallery-stage {
+  aspect-ratio: var(--quick-add-gallery-aspect-ratio);
+}
+
+.quick-add-gallery-stage:focus-visible {
+  outline-color: currentcolor;
+}
+
+.quick-add-gallery-track {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  transition: transform 250ms ease-out;
+}
+
+.quick-add-gallery-slide {
+  flex: 0 0 100%;
+  min-width: 0;
+  height: 100%;
+}
+
+.quick-add-gallery-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.quick-add-gallery:not([data-image-ratio="adapt"]) .quick-add-gallery-image {
+  object-fit: cover;
+}
+
+.quick-add-gallery-controls {
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  left: 1rem;
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+  transform: translateY(-50%);
+}
+
+.quick-add-gallery-controls .icon-button {
+  color: rgb(var(--color-text));
+  background-color: rgb(var(--color-background));
+  pointer-events: auto;
+}
+
+.quick-add-gallery-controls [class*="svg-icon-chevron-"] {
+  transition: transform 100ms ease-out;
+}
+
+@media (hover: hover) {
+  .quick-add-gallery-controls .icon-button:hover .svg-icon-chevron-left {
+    transform: translateX(-2px);
+  }
+
+  .quick-add-gallery-controls .icon-button:hover .svg-icon-chevron-right {
+    transform: translateX(2px);
+  }
+}
+
+.quick-add-gallery-counter {
+  position: absolute;
+  bottom: 1rem;
+  left: 50%;
+  padding: 0.25em 0.625em;
+  color: rgb(var(--color-text));
+  background-color: rgb(var(--color-background));
+  border-radius: var(--border-radius);
+  transform: translateX(-50%);
+  font-size: var(--fs-sm);
+}
+
+@media (max-width: 599px) {
+  .quick-add-media {
+    width: calc(100% + 2rem);
+    margin: -1rem -1rem 0;
+    border-radius: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .quick-add-gallery-track {
+    transition: none;
+  }
+
+  .quick-add-gallery-controls [class*="svg-icon-chevron-"] {
+    transition: none;
+  }
+}
+
+
+/*
+  Product information
+*/
 .quick-add-details {
   min-width: 0;
 }
@@ -63,11 +181,19 @@
   color: rgb(var(--color-text) / 0.6);
 }
 
+
+/*
+  Variant picker
+*/
 .quick-add-variant-picker {
   min-width: 0;
   margin-top: 1.25em;
 }
 
+
+/*
+  Actions
+*/
 .quick-add-actions {
   display: grid;
   gap: 0.5rem;
@@ -81,19 +207,4 @@
 .quick-add-view-product {
   justify-self: center;
   padding: 0.25em 0;
-}
-
-@media (max-width: 599px) {
-  .quick-add-media {
-    width: calc(100% + 2rem);
-    margin: -1rem -1rem 0;
-    border-radius: 0;
-  }
-}
-
-@media (min-width: 700px) {
-  .quick-add-product {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    align-items: center;
-  }
 }

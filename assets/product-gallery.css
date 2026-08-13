@@ -136,6 +136,20 @@
   pointer-events: auto;
 }
 
+.product-gallery-controls [class*="svg-icon-chevron-"] {
+  transition: transform 100ms ease-out;
+}
+
+@media (hover: hover) {
+  .product-gallery-controls .icon-button:hover .svg-icon-chevron-left {
+    transform: translateX(-2px);
+  }
+
+  .product-gallery-controls .icon-button:hover .svg-icon-chevron-right {
+    transform: translateX(2px);
+  }
+}
+
 .product-gallery-counter {
   position: absolute;
   z-index: 2;
@@ -258,6 +272,10 @@
   }
 
   .product-gallery-thumbnail-image {
+    transition: none;
+  }
+
+  .product-gallery-controls [class*="svg-icon-chevron-"] {
     transition: none;
   }
 }
