@@ -18,7 +18,7 @@
             "subheading": "Developed by KondaSoft",
             "subheading_size": "fs-md",
             "pt": 0,
-            "pb": 0
+            "pb": 12
           },
           "blocks": {}
         },
@@ -29,7 +29,7 @@
             "heading_tag": "1",
             "heading_size": "h1",
             "pt": 0,
-            "pb": 6
+            "pb": 12
           },
           "blocks": {}
         },
@@ -39,7 +39,7 @@
             "text": "<p>Introduce a collection, campaign, or key message with immersive full-width media.</p>",
             "text_size": "fs-lg",
             "pt": 0,
-            "pb": 28
+            "pb": 32
           },
           "blocks": {}
         },
@@ -117,26 +117,51 @@
     "featured_collection_zBQiyp": {
       "type": "featured-collection",
       "blocks": {
-        "heading_HDjxhr": {
-          "type": "heading",
+        "header": {
+          "type": "group",
+          "static": true,
+          "name": "Header",
           "settings": {
-            "heading": "Featured collection",
-            "heading_tag": "2",
-            "heading_size": "h2",
+            "custom_colors": false,
+            "background_color": "{{ settings.colors.background }}",
+            "text_color": "{{ settings.colors.text }}",
+            "accent_color": "{{ settings.colors.accent }}",
+            "mobile_content_direction": "column",
+            "mobile_gap": 0,
+            "desktop_content_direction": "column",
+            "desktop_gap": 0,
             "pt": 0,
-            "pb": 6
+            "pb": 0,
+            "pl": 0,
+            "pr": 0
           },
-          "blocks": {}
-        },
-        "text_yKAUnX": {
-          "type": "text",
-          "settings": {
-            "text": "<p>Explore featured new arrivals, customer favorites, and everyday essentials</p>",
-            "text_size": "fs-md",
-            "pt": 0,
-            "pb": 0
+          "blocks": {
+            "heading_HDjxhr": {
+              "type": "heading",
+              "settings": {
+                "heading": "Featured collection",
+                "heading_tag": "2",
+                "heading_size": "h2",
+                "pt": 0,
+                "pb": 6
+              },
+              "blocks": {}
+            },
+            "text_yKAUnX": {
+              "type": "text",
+              "settings": {
+                "text": "<p>Explore featured new arrivals, customer favorites, and everyday essentials</p>",
+                "text_size": "fs-md",
+                "pt": 0,
+                "pb": 0
+              },
+              "blocks": {}
+            }
           },
-          "blocks": {}
+          "block_order": [
+            "heading_HDjxhr",
+            "text_yKAUnX"
+          ]
         },
         "product-card": {
           "type": "product-card",
@@ -225,10 +250,6 @@
           ]
         }
       },
-      "block_order": [
-        "heading_HDjxhr",
-        "text_yKAUnX"
-      ],
       "name": "Featured collection",
       "settings": {
         "collection": "all",
@@ -792,6 +813,10 @@
           "type": "collapse",
           "settings": {
             "heading": "How long does shipping take?",
+            "icon": "none",
+            "predefined_icon": "info",
+            "icon_size": 20,
+            "content_source": "custom",
             "text": "<p>Orders are usually processed within 1–2 business days. Delivery times depend on your location and the shipping method selected at checkout.</p>",
             "open_by_default": true,
             "pt": 0,
@@ -803,6 +828,10 @@
           "type": "collapse",
           "settings": {
             "heading": "Can I return or exchange an item?",
+            "icon": "none",
+            "predefined_icon": "info",
+            "icon_size": 20,
+            "content_source": "custom",
             "text": "<p>Eligible items can be returned or exchanged within the return period shown in our policy. Items must be unused and returned in their original condition.</p>",
             "open_by_default": false,
             "pt": 0,
@@ -814,6 +843,10 @@
           "type": "collapse",
           "settings": {
             "heading": "How can I contact your team?",
+            "icon": "none",
+            "predefined_icon": "info",
+            "icon_size": 20,
+            "content_source": "custom",
             "text": "<p>Send us a message through our contact page. Our customer support team will respond as soon as possible during regular business hours.</p>",
             "open_by_default": false,
             "pt": 0,
@@ -825,6 +858,10 @@
           "type": "collapse",
           "settings": {
             "heading": "How can I track my order?",
+            "icon": "none",
+            "predefined_icon": "info",
+            "icon_size": 20,
+            "content_source": "custom",
             "text": "<p>Once your order ships, you will receive a confirmation email containing a tracking link. You can use that link to follow your delivery.</p>",
             "open_by_default": false,
             "pt": 0,
@@ -836,6 +873,10 @@
           "type": "collapse",
           "settings": {
             "heading": "Can I change or cancel my order?",
+            "icon": "none",
+            "predefined_icon": "info",
+            "icon_size": 20,
+            "content_source": "custom",
             "text": "<p>Contact us as soon as possible after placing your order. We will do our best to help before the order has been processed or shipped.</p>",
             "open_by_default": false,
             "pt": 0,
@@ -847,6 +888,10 @@
           "type": "collapse",
           "settings": {
             "heading": "What payment methods do you accept?",
+            "icon": "none",
+            "predefined_icon": "info",
+            "icon_size": 20,
+            "content_source": "custom",
             "text": "<p>Available payment methods are displayed securely at checkout and may include major credit cards, accelerated checkout options, and local payment methods.</p>",
             "open_by_default": false,
             "pt": 0,
@@ -858,6 +903,10 @@
           "type": "collapse",
           "settings": {
             "heading": "Do you ship internationally?",
+            "icon": "none",
+            "predefined_icon": "info",
+            "icon_size": 20,
+            "content_source": "custom",
             "text": "<p>International shipping availability and rates are calculated at checkout based on your delivery address. Additional duties or taxes may apply.</p>",
             "open_by_default": false,
             "pt": 0,
@@ -869,6 +918,10 @@
           "type": "collapse",
           "settings": {
             "heading": "Will sold-out products be restocked?",
+            "icon": "none",
+            "predefined_icon": "info",
+            "icon_size": 20,
+            "content_source": "custom",
             "text": "<p>Some popular products are restocked. Check the product page regularly or sign up for restock notifications when that option is available.</p>",
             "open_by_default": false,
             "pt": 0,
@@ -1238,6 +1291,25 @@
             "heading_pL79Rr",
             "text_Tjm3YQ"
           ]
+        },
+        "header": {
+          "type": "group",
+          "static": true,
+          "settings": {
+            "custom_colors": false,
+            "background_color": "{{ settings.colors.background }}",
+            "text_color": "{{ settings.colors.text }}",
+            "accent_color": "{{ settings.colors.accent }}",
+            "mobile_content_direction": "column",
+            "mobile_gap": 10,
+            "desktop_content_direction": "column",
+            "desktop_gap": 10,
+            "pt": 0,
+            "pb": 0,
+            "pl": 0,
+            "pr": 0
+          },
+          "blocks": {}
         }
       },
       "block_order": [
@@ -1579,6 +1651,25 @@
             "heading_Rxxwg3",
             "text_PQKjxb"
           ]
+        },
+        "header": {
+          "type": "group",
+          "static": true,
+          "settings": {
+            "custom_colors": false,
+            "background_color": "{{ settings.colors.background }}",
+            "text_color": "{{ settings.colors.text }}",
+            "accent_color": "{{ settings.colors.accent }}",
+            "mobile_content_direction": "column",
+            "mobile_gap": 10,
+            "desktop_content_direction": "column",
+            "desktop_gap": 10,
+            "pt": 0,
+            "pb": 0,
+            "pl": 0,
+            "pr": 0
+          },
+          "blocks": {}
         }
       },
       "block_order": [

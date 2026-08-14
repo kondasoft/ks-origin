@@ -24,6 +24,8 @@
   data-section-css="{{ 'columns.css' | asset_url }}"
 >
   <div class="columns-container container {{ settings.container_width }}">
+    {% content_for 'block', type: 'group', id: 'header' %}
+
     <div
       class="columns-grid"
       style="
@@ -175,7 +177,44 @@
     {
       "name": "Columns",
       "category": "Text",
-      "blocks": [ 
+      "blocks": [
+        {
+          "type": "group",
+          "id": "header",
+          "static": true,
+          "name": "Header",
+          "settings": {
+            "mobile_content_direction": "column",
+            "mobile_gap": 0,
+            "desktop_content_direction": "column",
+            "desktop_gap": 0,
+            "pt": 0,
+            "pb": 24,
+            "pl": 0,
+            "pr": 0
+          },
+          "blocks": [
+            {
+              "type": "heading",
+              "settings": {
+                "heading": "Section name",
+                "heading_tag": "2",
+                "heading_size": "h2",
+                "pt": 0,
+                "pb": 6
+              }
+            },
+            {
+              "type": "text",
+              "settings": {
+                "text": "<p>Organize related content into flexible columns to highlight features, services, or key information.</p>",
+                "text_size": "fs-md",
+                "pt": 0,
+                "pb": 0
+              }
+            }
+          ]
+        },
         {
           "type": "group",
           "name": "Column 1",

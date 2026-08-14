@@ -6,10 +6,6 @@
   if carousel_label == blank
     assign carousel_label = 'accessibility.products_carousel' | t
   endif
-
-  capture header_content
-    content_for 'blocks'
-  endcapture
 %}
 
 {% if section.index <= 3 or request.design_mode %}
@@ -29,19 +25,17 @@
   data-section-css="{{ 'featured-collection.css' | asset_url }}, {{ 'product-card.css' | asset_url }}"
 >
   <div class="container {{ settings.container_width }}">
-    {% if header_content != blank %}
-      <div
-        class="featured-collection-header responsive-text-alignment"
-        data-mobile-text-alignment="{{ section.settings.header_mobile_text_alignment }}"
-        data-desktop-text-alignment="{{ section.settings.header_desktop_text_alignment }}"
-        style="
-          --mobile-text-alignment: {{ section.settings.header_mobile_text_alignment }};
-          --desktop-text-alignment: {{ section.settings.header_desktop_text_alignment }};
-        "
-      >
-        {{ header_content }}
-      </div>
-    {% endif %}
+    <div
+      class="featured-collection-header responsive-text-alignment"
+      data-mobile-text-alignment="{{ section.settings.header_mobile_text_alignment }}"
+      data-desktop-text-alignment="{{ section.settings.header_desktop_text_alignment }}"
+      style="
+        --mobile-text-alignment: {{ section.settings.header_mobile_text_alignment }};
+        --desktop-text-alignment: {{ section.settings.header_desktop_text_alignment }};
+      "
+    >
+      {% content_for 'block', type: 'group', id: 'header' %}
+    </div>
 
     {% if layout == 'carousel' %}
       <theme-carousel
@@ -355,23 +349,41 @@
       "category": "Products",
       "blocks": [
         {
-          "type": "heading",
+          "type": "group",
+          "id": "header",
+          "static": true,
+          "name": "Header",
           "settings": {
-            "heading": "Featured collection",
-            "heading_tag": "2",
-            "heading_size": "h2",
+            "mobile_content_direction": "column",
+            "mobile_gap": 0,
+            "desktop_content_direction": "column",
+            "desktop_gap": 0,
             "pt": 0,
-            "pb": 6
-          }
-        },
-        {
-          "type": "text",
-          "settings": {
-            "text": "<p>Explore featured new arrivals, customer favorites, and everyday essentials.</p>",
-            "text_size": "fs-md",
-            "pt": 0,
-            "pb": 0
-          }
+            "pb": 0,
+            "pl": 0,
+            "pr": 0
+          },
+          "blocks": [
+            {
+              "type": "heading",
+              "settings": {
+                "heading": "Featured collection",
+                "heading_tag": "2",
+                "heading_size": "h2",
+                "pt": 0,
+                "pb": 6
+              }
+            },
+            {
+              "type": "text",
+              "settings": {
+                "text": "<p>Explore featured new arrivals, customer favorites, and everyday essentials.</p>",
+                "text_size": "fs-md",
+                "pt": 0,
+                "pb": 0
+              }
+            }
+          ]
         },
         {
           "type": "product-card",

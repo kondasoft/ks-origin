@@ -1,0 +1,444 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "hero_about": {
+      "type": "hero",
+      "blocks": {
+        "subheading_about": {
+          "type": "subheading",
+          "settings": {
+            "subheading": "Our story",
+            "subheading_size": "fs-md",
+            "pt": 0,
+            "pb": 12
+          },
+          "blocks": {}
+        },
+        "heading_about": {
+          "type": "heading",
+          "settings": {
+            "heading": "Designed for everyday life",
+            "heading_tag": "1",
+            "heading_size": "h1",
+            "pt": 0,
+            "pb": 12
+          },
+          "blocks": {}
+        },
+        "text_about": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Thoughtful essentials, dependable quality, and a simpler way to shop for the whole family.</p>",
+            "text_size": "fs-lg",
+            "pt": 0,
+            "pb": 0
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "subheading_about",
+        "heading_about",
+        "text_about"
+      ],
+      "name": "About hero",
+      "settings": {
+        "source": "image",
+        "desktop_image": "shopify://shop_images/krzysztof-kowalik-FkZCvnW0sYs-unsplash.jpg",
+        "external_video": "",
+        "external_video_alt": "",
+        "background_color": "#0a0a0a",
+        "text_color": "#ffffff",
+        "accent_color": "#66a5cb",
+        "overlay_color": "#000000",
+        "overlay_opacity": 35,
+        "mobile_content_position": "center",
+        "mobile_text_alignment": "center",
+        "mobile_height": "medium",
+        "desktop_content_position": "center",
+        "desktop_text_alignment": "center",
+        "desktop_height": "small",
+        "pt": 0,
+        "pb": 0
+      }
+    },
+    "page_content_about": {
+      "type": "main-page",
+      "name": "About page content",
+      "settings": {
+        "background_color": "{{ settings.colors.background }}",
+        "text_color": "{{ settings.colors.text }}",
+        "accent_color": "{{ settings.colors.accent }}",
+        "show_title": true,
+        "container_width": "narrow",
+        "mobile_text_alignment": "left",
+        "desktop_text_alignment": "left",
+        "pt": 60,
+        "pb": 60
+      }
+    },
+    "team_columns_about": {
+      "type": "columns",
+      "blocks": {
+        "team_member_one": {
+          "type": "group",
+          "name": "Team member 1",
+          "settings": {
+            "custom_colors": false,
+            "background_color": "{{ settings.colors.background }}",
+            "text_color": "{{ settings.colors.text }}",
+            "accent_color": "{{ settings.colors.accent }}",
+            "mobile_content_direction": "column",
+            "mobile_gap": 0,
+            "desktop_content_direction": "column",
+            "desktop_gap": 0,
+            "pt": 16,
+            "pb": 16,
+            "pl": 16,
+            "pr": 16
+          },
+          "blocks": {
+            "team_image_one": {
+              "type": "image",
+              "settings": {
+                "image": "shopify://shop_images/team-maya-chen.jpg",
+                "image_ratio": "adapt",
+                "image_width": 800,
+                "pt": 0,
+                "pb": 20
+              },
+              "blocks": {}
+            },
+            "team_heading_one": {
+              "type": "heading",
+              "settings": {
+                "heading": "Maya Chen",
+                "heading_tag": "3",
+                "heading_size": "h4",
+                "pt": 0,
+                "pb": 4
+              },
+              "blocks": {}
+            },
+            "team_text_one": {
+              "type": "text",
+              "settings": {
+                "text": "<p>Creative Director</p>",
+                "text_size": "fs-md",
+                "pt": 0,
+                "pb": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "team_image_one",
+            "team_heading_one",
+            "team_text_one"
+          ]
+        },
+        "team_member_two": {
+          "type": "group",
+          "name": "Team member 2",
+          "settings": {
+            "custom_colors": false,
+            "background_color": "{{ settings.colors.background }}",
+            "text_color": "{{ settings.colors.text }}",
+            "accent_color": "{{ settings.colors.accent }}",
+            "mobile_content_direction": "column",
+            "mobile_gap": 0,
+            "desktop_content_direction": "column",
+            "desktop_gap": 0,
+            "pt": 20,
+            "pb": 20,
+            "pl": 20,
+            "pr": 20
+          },
+          "blocks": {
+            "team_image_two": {
+              "type": "image",
+              "settings": {
+                "image": "shopify://shop_images/team-daniel-brooks.jpg",
+                "image_ratio": "adapt",
+                "image_width": 800,
+                "pt": 0,
+                "pb": 20
+              },
+              "blocks": {}
+            },
+            "team_heading_two": {
+              "type": "heading",
+              "settings": {
+                "heading": "Daniel Brooks",
+                "heading_tag": "3",
+                "heading_size": "h4",
+                "pt": 0,
+                "pb": 4
+              },
+              "blocks": {}
+            },
+            "team_text_two": {
+              "type": "text",
+              "settings": {
+                "text": "<p>Product Lead</p>",
+                "text_size": "fs-md",
+                "pt": 0,
+                "pb": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "team_image_two",
+            "team_heading_two",
+            "team_text_two"
+          ]
+        },
+        "team_member_three": {
+          "type": "group",
+          "name": "Team member 3",
+          "settings": {
+            "custom_colors": false,
+            "background_color": "{{ settings.colors.background }}",
+            "text_color": "{{ settings.colors.text }}",
+            "accent_color": "{{ settings.colors.accent }}",
+            "mobile_content_direction": "column",
+            "mobile_gap": 0,
+            "desktop_content_direction": "column",
+            "desktop_gap": 0,
+            "pt": 20,
+            "pb": 20,
+            "pl": 20,
+            "pr": 20
+          },
+          "blocks": {
+            "team_image_three": {
+              "type": "image",
+              "settings": {
+                "image": "shopify://shop_images/team-sofia-rivera.jpg",
+                "image_ratio": "adapt",
+                "image_width": 800,
+                "pt": 0,
+                "pb": 20
+              },
+              "blocks": {}
+            },
+            "team_heading_three": {
+              "type": "heading",
+              "settings": {
+                "heading": "Sofia Rivera",
+                "heading_tag": "3",
+                "heading_size": "h4",
+                "pt": 0,
+                "pb": 4
+              },
+              "blocks": {}
+            },
+            "team_text_three": {
+              "type": "text",
+              "settings": {
+                "text": "<p>Customer Experience</p>",
+                "text_size": "fs-md",
+                "pt": 0,
+                "pb": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "team_image_three",
+            "team_heading_three",
+            "team_text_three"
+          ]
+        },
+        "header": {
+          "type": "group",
+          "name": "Team header",
+          "static": true,
+          "settings": {
+            "custom_colors": false,
+            "background_color": "{{ settings.colors.background }}",
+            "text_color": "{{ settings.colors.text }}",
+            "accent_color": "{{ settings.colors.accent }}",
+            "mobile_content_direction": "column",
+            "mobile_gap": 0,
+            "desktop_content_direction": "column",
+            "desktop_gap": 0,
+            "pt": 0,
+            "pb": 28,
+            "pl": 0,
+            "pr": 0
+          },
+          "blocks": {
+            "subheading_team": {
+              "type": "subheading",
+              "settings": {
+                "subheading": "The people behind the store",
+                "subheading_size": "fs-md",
+                "pt": 0,
+                "pb": 0
+              },
+              "blocks": {}
+            },
+            "heading_team": {
+              "type": "heading",
+              "settings": {
+                "heading": "Meet our team",
+                "heading_tag": "2",
+                "heading_size": "h2",
+                "pt": 0,
+                "pb": 0
+              },
+              "blocks": {}
+            },
+            "text_team": {
+              "type": "text",
+              "settings": {
+                "text": "<p>A small team working together to make every product and customer experience feel considered.</p>",
+                "text_size": "fs-md",
+                "pt": 12,
+                "pb": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "subheading_team",
+            "heading_team",
+            "text_team"
+          ]
+        }
+      },
+      "block_order": [
+        "team_member_one",
+        "team_member_two",
+        "team_member_three"
+      ],
+      "name": "Team",
+      "settings": {
+        "background_color": "{{ settings.colors.surface }}",
+        "column_background_color": "{{ settings.colors.background }}",
+        "text_color": "{{ settings.colors.text }}",
+        "accent_color": "{{ settings.colors.accent }}",
+        "mobile_columns": 1,
+        "mobile_scroll": true,
+        "mobile_text_alignment": "left",
+        "mobile_gap": 16,
+        "desktop_columns": 3,
+        "desktop_text_alignment": "center",
+        "desktop_gap": 24,
+        "pt": 60,
+        "pb": 60
+      }
+    },
+    "cta_about": {
+      "type": "rich-text",
+      "blocks": {
+        "subheading_cta": {
+          "type": "subheading",
+          "settings": {
+            "subheading": "Need a hand?",
+            "subheading_size": "fs-md",
+            "pt": 0,
+            "pb": 12
+          },
+          "blocks": {}
+        },
+        "heading_cta": {
+          "type": "heading",
+          "settings": {
+            "heading": "Questions? We’re here to help",
+            "heading_tag": "2",
+            "heading_size": "h2",
+            "pt": 0,
+            "pb": 12
+          },
+          "blocks": {}
+        },
+        "text_cta": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Contact our team for support or browse answers to the questions customers ask most often.</p>",
+            "text_size": "fs-md",
+            "pt": 0,
+            "pb": 26
+          },
+          "blocks": {}
+        },
+        "buttons_cta": {
+          "type": "group",
+          "settings": {
+            "custom_colors": false,
+            "background_color": "{{ settings.colors.background }}",
+            "text_color": "{{ settings.colors.text }}",
+            "accent_color": "{{ settings.colors.accent }}",
+            "mobile_content_direction": "column",
+            "mobile_gap": 8,
+            "desktop_content_direction": "row",
+            "desktop_gap": 10,
+            "pt": 0,
+            "pb": 0,
+            "pl": 0,
+            "pr": 0
+          },
+          "blocks": {
+            "button_contact": {
+              "type": "button",
+              "settings": {
+                "label": "Contact us",
+                "link": "shopify://pages/contact",
+                "style": "btn-accent-solid",
+                "size": "btn-md"
+              },
+              "blocks": {}
+            },
+            "button_faq": {
+              "type": "button",
+              "settings": {
+                "label": "View FAQs",
+                "link": "shopify://pages/faq",
+                "style": "btn-text-outline",
+                "size": "btn-md"
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "button_contact",
+            "button_faq"
+          ]
+        }
+      },
+      "block_order": [
+        "subheading_cta",
+        "heading_cta",
+        "text_cta",
+        "buttons_cta"
+      ],
+      "name": "Contact call to action",
+      "settings": {
+        "background_color": "{{ settings.colors.background }}",
+        "text_color": "{{ settings.colors.text }}",
+        "accent_color": "{{ settings.colors.accent }}",
+        "mobile_text_alignment": "center",
+        "desktop_text_alignment": "center",
+        "pt": 80,
+        "pb": 80
+      }
+    }
+  },
+  "order": [
+    "hero_about",
+    "page_content_about",
+    "team_columns_about",
+    "cta_about"
+  ]
+}

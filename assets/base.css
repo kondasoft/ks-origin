@@ -1173,6 +1173,12 @@ select.input-lg {
 }
 
 
+/* Subheading block */
+.subheading-block .subheading-block-subheading {
+  margin: 0;
+}
+
+
 /* Group block */
 .group-block {
   display: flex;
