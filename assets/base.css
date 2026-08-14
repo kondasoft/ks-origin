@@ -245,7 +245,9 @@ cite {
 }
 
 
-/* Tables */
+/*
+  Tables
+*/
 table {
   width: 100%;
   margin: 1.5em 0;
@@ -259,15 +261,58 @@ caption {
   text-align: left;
 }
 
-th,
+th {
+  padding: 0.75em;
+  border-bottom: 1px solid rgb(var(--color-text) / var(--border-opacity));
+}
+
 td {
   padding: 0.75em;
   border-bottom: 1px solid rgb(var(--color-text) / var(--border-opacity));
 }
 
-th {
+thead th {
   background-color: rgb(var(--color-surface));
   font-weight: 500;
+}
+
+.table-responsive {
+  width: 100%;
+  margin: 1.5em 0 0;
+  overflow-x: auto;
+  border: 1px solid rgb(var(--color-text) / var(--border-opacity));
+  border-radius: var(--border-radius);
+  -webkit-overflow-scrolling: touch;
+}
+
+.table {
+  min-width: 600px;
+  margin: 0;
+  table-layout: fixed;
+}
+
+.table-caption {
+  margin: 0.75em 0 1.5em;
+  font-weight: 500;
+  text-align: center;
+  font-size: var(--fs-sm);
+  color: rgb(var(--color-text) / 0.6);
+}
+
+.table th:not(:last-child) {
+  border-right: 1px solid rgb(var(--color-text) / var(--border-opacity));
+}
+
+.table td:not(:last-child) {
+  border-right: 1px solid rgb(var(--color-text) / var(--border-opacity));
+}
+
+.table tbody tr:last-child th {
+  border-bottom: 0;
+}
+
+.table tbody tr:last-child td {
+  border-bottom: 0;
 }
 
 

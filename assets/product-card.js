@@ -16,9 +16,6 @@ class ProductCardSwatches extends HTMLElement {
     this.addEventListener("change", this.onChange.bind(this), {
       signal: this.listenerController.signal,
     });
-    const selectedSwatch = this.querySelector("[data-product-card-swatch]:checked");
-
-    if (selectedSwatch) this.updateLinks(selectedSwatch.dataset.variantUrl);
 
     this.isInitialized = true;
   }

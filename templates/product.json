@@ -136,6 +136,22 @@
           },
           "blocks": {}
         },
+        "collapse_size_chart": {
+          "type": "collapse",
+          "name": "Collapse",
+          "settings": {
+            "heading": "Size chart",
+            "icon": "predefined",
+            "predefined_icon": "ruler",
+            "icon_size": 20,
+            "content_source": "custom",
+            "text": "<p><strong>Find your best fit.</strong> Compare measurements for men, women, children, and babies before choosing a size.</p><p>View our <a href=\"/pages/size-guide\">size guide</a> for the full charts.</p>",
+            "open_by_default": false,
+            "pt": 0,
+            "pb": 0
+          },
+          "blocks": {}
+        },
         "collapse_YdpkQT": {
           "type": "collapse",
           "name": "Collapse",
@@ -335,6 +351,7 @@
         "divider_6jkQPj",
         "product-main-description",
         "collapse_FENgDc",
+        "collapse_size_chart",
         "collapse_YdpkQT",
         "collapse_HbkRVr",
         "collapse_payment_information",

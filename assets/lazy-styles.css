@@ -1066,7 +1066,7 @@ mobile-menu-dialog[data-open="true"] .mobile-menu-backdrop {
 
   .header-megamenu-heading {
     display: block;
-    margin-bottom: 0.5em;
+    margin-bottom: 0.6em;
     color: rgb(var(--text-color));
     font-family: var(--font-heading-family);
     font-weight: var(--font-heading-weight);
@@ -1086,7 +1086,7 @@ mobile-menu-dialog[data-open="true"] .mobile-menu-backdrop {
 
   .header-megamenu-link {
     display: block;
-    padding: 0.5em 0;
+    padding: 0.375em 0;
     text-decoration: none;
     font-size: 0.925em;
   }

@@ -268,8 +268,11 @@
             "layout": "horizontal",
             "icon_size": 24,
             "text_size": "fs-sm",
+            "image_1": "shopify://shop_images/icon-truck.svg",
             "text_1": "<p>Fast shipping</p>",
+            "image_2": "shopify://shop_images/icon-shield-check.svg",
             "text_2": "<p>Secure checkout</p>",
+            "image_3": "shopify://shop_images/icon-arrow-counterclockwise.svg",
             "text_3": "<p>Easy returns</p>",
             "pt": 0,
             "pb": 30
@@ -291,7 +294,22 @@
         {
           "type": "collapse",
           "settings": {
+            "heading": "Size chart",
+            "icon": "predefined",
+            "predefined_icon": "ruler",
+            "icon_size": 20,
+            "content_source": "custom",
+            "text": "<p><strong>Find your best fit.</strong> Compare measurements for men, women, children, and babies before choosing a size.</p><p>View our <a href=\"/pages/size-guide\">size guide</a> for the full charts.</p>",
+            "open_by_default": false,
+            "pt": 0,
+            "pb": 0
+          }
+        },
+        {
+          "type": "collapse",
+          "settings": {
             "heading": "Shipping information",
+            "content_source": "custom",
             "text": "<p><strong>Fast, reliable delivery.</strong> Orders are processed promptly, and available shipping methods, costs, and estimated delivery times are shown at checkout.</p><p>For more details, view our <a href=\"/policies/shipping-policy\">shipping policy</a>.</p>",
             "icon": "predefined",
             "predefined_icon": "truck",
@@ -305,6 +323,7 @@
           "type": "collapse",
           "settings": {
             "heading": "Returns and refunds",
+            "content_source": "custom",
             "text": "<p><strong>Changed your mind?</strong> Eligible items can be returned within the stated return period, provided they are unused and in their original condition.</p><p>Review our <a href=\"/policies/refund-policy\">refund policy</a> for full instructions and exclusions.</p>",
             "icon": "predefined",
             "predefined_icon": "refresh",
@@ -318,6 +337,7 @@
           "type": "collapse",
           "settings": {
             "heading": "Payment information",
+            "content_source": "custom",
             "text": "<p><strong>Safe and secure checkout.</strong> Payments are encrypted and processed securely using the payment methods available for your location at checkout.</p><p>Learn how we protect your information in our <a href=\"/policies/privacy-policy\">privacy policy</a>.</p>",
             "icon": "predefined",
             "predefined_icon": "credit-card",
