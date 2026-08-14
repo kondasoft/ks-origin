@@ -67,7 +67,9 @@ class ProductVariantPicker extends HTMLElement {
     try {
       const variant = this.findVariant(selectedOptions);
 
-      if (variant && this.dataset.updateUrl !== "false") this.updateUrl(variant.id);
+      if (variant && this.productElement.dataset.updateProductUrl === "true") {
+        this.updateUrl(variant.id);
+      }
       this.updateProduct(variant, selectedOptions);
 
       deferred.resolve({
@@ -201,6 +203,7 @@ class ProductVariantPicker extends HTMLElement {
     const currentLabel = price.querySelector("[data-product-current-price-label]");
     const comparePrice = price.querySelector("[data-product-compare-price]");
     const compareLabel = price.querySelector("[data-product-compare-price-label]");
+    const saleBadge = price.querySelector("[data-product-sale-badge]");
     const onSale = variant.compareAtPrice > variant.price;
 
     currentPrice.textContent = variant.priceMoney;
@@ -209,6 +212,14 @@ class ProductVariantPicker extends HTMLElement {
     comparePrice.textContent = onSale ? variant.compareAtPriceMoney : "";
     comparePrice.hidden = !onSale;
     compareLabel.hidden = !onSale;
+
+    if (saleBadge) {
+      const badgeText =
+        saleBadge.dataset.saleBadgeType === "value" ? variant.saleBadgeValue : variant.saleBadgePercentage;
+
+      saleBadge.textContent = badgeText;
+      saleBadge.hidden = !onSale || !badgeText;
+    }
   }
 
   updateSku(variant) {

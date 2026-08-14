@@ -779,6 +779,237 @@
         "pb": 60
       }
     },
+    "divider_9TdDib": {
+      "type": "divider",
+      "name": "Divider",
+      "settings": {
+        "background_color": "{{ settings.colors.background }}",
+        "line_color": "{{ settings.colors.text }}",
+        "custom_line_opacity": false,
+        "line_opacity": 20,
+        "container_width": "site",
+        "pt": 0,
+        "pb": 0
+      }
+    },
+    "featured_product_7PDx4A": {
+      "type": "featured-product",
+      "blocks": {
+        "product_main_vendor": {
+          "type": "_product-main-vendor",
+          "settings": {
+            "text_size": "fs-sm",
+            "pt": 6,
+            "pb": 6
+          },
+          "blocks": {}
+        },
+        "product_main_title_hMJGtQ": {
+          "type": "_product-main-title",
+          "settings": {
+            "heading_tag": "2",
+            "heading_size": "h2",
+            "pt": 0,
+            "pb": 8
+          },
+          "blocks": {}
+        },
+        "product_main_rating": {
+          "type": "_product-main-rating",
+          "settings": {
+            "show_count": true,
+            "count_style": "detailed",
+            "rating_size": "fs-md",
+            "pt": 0,
+            "pb": 16
+          },
+          "blocks": {}
+        },
+        "product_main_price_GypWAG": {
+          "type": "_product-main-price",
+          "settings": {
+            "price_size": "fs-xl",
+            "show_installments": true,
+            "show_tax_information": true,
+            "show_sale_badge": true,
+            "sale_badge_type": "percentage",
+            "pt": 0,
+            "pb": 24
+          },
+          "blocks": {}
+        },
+        "product_main_variant_picker": {
+          "type": "_product-main-variant-picker",
+          "settings": {
+            "option_style": "radio",
+            "swatch_size": 28,
+            "pt": 0,
+            "pb": 30
+          },
+          "blocks": {}
+        },
+        "product_main_buy_buttons": {
+          "type": "_product-main-buy-buttons",
+          "settings": {
+            "show_quantity": true,
+            "button_style": "btn-accent-solid",
+            "add_to_cart_size": "btn-md",
+            "show_buy_it_now": true,
+            "buy_it_now_style": "btn-text-outline",
+            "buy_it_now_size": "btn-md",
+            "show_dynamic_checkout": false,
+            "show_gift_card_recipient_form": true,
+            "pt": 0,
+            "pb": 30
+          },
+          "blocks": {}
+        },
+        "product_main_trust_badges": {
+          "type": "_product-main-trust-badges",
+          "settings": {
+            "layout": "horizontal",
+            "icon_size": 24,
+            "text_size": "fs-sm",
+            "image_1": "shopify://shop_images/icon-truck.svg",
+            "text_1": "<p>Fast shipping</p>",
+            "image_2": "shopify://shop_images/icon-shield-check.svg",
+            "text_2": "<p>Secure checkout</p>",
+            "image_3": "shopify://shop_images/icon-arrow-counterclockwise.svg",
+            "text_3": "<p>Easy returns</p>",
+            "text_4": "",
+            "text_5": "",
+            "text_6": "",
+            "pt": 0,
+            "pb": 30
+          },
+          "blocks": {}
+        },
+        "featured_product_details": {
+          "type": "collapse",
+          "name": "Collapse",
+          "settings": {
+            "heading": "Product details",
+            "icon": "predefined",
+            "predefined_icon": "file-text",
+            "icon_size": 20,
+            "content_source": "product-description",
+            "text": "<p>Add the answer or supporting information here.</p>",
+            "open_by_default": false,
+            "pt": 0,
+            "pb": 0
+          },
+          "blocks": {}
+        },
+        "featured_product_size_chart": {
+          "type": "collapse",
+          "name": "Collapse",
+          "settings": {
+            "heading": "Size chart",
+            "icon": "predefined",
+            "predefined_icon": "ruler",
+            "icon_size": 20,
+            "content_source": "custom",
+            "text": "<p><strong>Find your best fit.</strong> Compare measurements for men, women, children, and babies before choosing a size.</p><p>View our <a href=\"/pages/size-guide\">size guide</a> for the full charts.</p>",
+            "open_by_default": false,
+            "pt": 0,
+            "pb": 0
+          },
+          "blocks": {}
+        },
+        "featured_product_shipping": {
+          "type": "collapse",
+          "name": "Collapse",
+          "settings": {
+            "heading": "Shipping information",
+            "icon": "predefined",
+            "predefined_icon": "truck",
+            "icon_size": 20,
+            "content_source": "custom",
+            "text": "<p><strong>Fast, reliable delivery.</strong> Orders are processed promptly, and available shipping methods, costs, and estimated delivery times are shown at checkout.</p><p>For more details, view our <a href=\"/policies/shipping-policy\">shipping policy</a>.</p>",
+            "open_by_default": false,
+            "pt": 0,
+            "pb": 0
+          },
+          "blocks": {}
+        },
+        "featured_product_returns": {
+          "type": "collapse",
+          "name": "Collapse",
+          "settings": {
+            "heading": "Returns and refunds",
+            "icon": "predefined",
+            "predefined_icon": "refresh",
+            "icon_size": 20,
+            "content_source": "custom",
+            "text": "<p><strong>Changed your mind?</strong> Eligible items can be returned within the stated return period, provided they are unused and in their original condition.</p><p>Review our <a href=\"/policies/refund-policy\">refund policy</a> for full instructions and exclusions.</p>",
+            "open_by_default": false,
+            "pt": 0,
+            "pb": 0
+          },
+          "blocks": {}
+        },
+        "featured_product_payment": {
+          "type": "collapse",
+          "name": "Collapse",
+          "settings": {
+            "heading": "Payment information",
+            "icon": "predefined",
+            "predefined_icon": "credit-card",
+            "icon_size": 20,
+            "content_source": "custom",
+            "text": "<p><strong>Safe and secure checkout.</strong> Payments are encrypted and processed securely using the payment methods available for your location at checkout.</p><p>Learn how we protect your information in our <a href=\"/policies/privacy-policy\">privacy policy</a>.</p>",
+            "open_by_default": false,
+            "pt": 0,
+            "pb": 0
+          },
+          "blocks": {}
+        },
+        "featured_product_view_details": {
+          "type": "_featured-product-view-details",
+          "name": "View product details",
+          "settings": {
+            "label": "View product details",
+            "text_alignment": "left",
+            "button_style": "btn-accent-outline",
+            "button_size": "btn-sm",
+            "pt": 26,
+            "pb": 12
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "product_main_vendor",
+        "product_main_title_hMJGtQ",
+        "product_main_rating",
+        "product_main_price_GypWAG",
+        "product_main_variant_picker",
+        "product_main_buy_buttons",
+        "product_main_trust_badges",
+        "featured_product_details",
+        "featured_product_size_chart",
+        "featured_product_shipping",
+        "featured_product_returns",
+        "featured_product_payment",
+        "featured_product_view_details"
+      ],
+      "name": "Featured product",
+      "settings": {
+        "product": "watch-series-1",
+        "gallery_media_ratio": "adapt",
+        "gallery_transition": "slide",
+        "gallery_show_navigation": true,
+        "gallery_show_counter": true,
+        "gallery_show_thumbnails": true,
+        "gallery_video_autoplay": true,
+        "gallery_video_show_controls": false,
+        "background_color": "{{ settings.colors.background }}",
+        "text_color": "{{ settings.colors.text }}",
+        "accent_color": "{{ settings.colors.accent }}",
+        "pt": 60,
+        "pb": 60
+      }
+    },
     "contact_form_jN7QXd": {
       "type": "contact-form",
       "blocks": {
@@ -1749,6 +1980,8 @@
     "image_xRkeM4",
     "columns_ADQtND",
     "video_MJhzDH",
+    "divider_9TdDib",
+    "featured_product_7PDx4A",
     "contact_form_jN7QXd",
     "image_with_text_CMaCke",
     "video_with_text_mUK9FU",

@@ -1,0 +1,307 @@
+{% assign featured_product = section.settings.product %}
+
+<script src="{{ 'product-gallery.js' | asset_url }}" type="module"></script>
+
+{% if section.index <= 3 or request.design_mode %}
+  <link href="{{ 'featured-product.css' | asset_url }}" rel="stylesheet" fetchpriority="high">
+  <link href="{{ 'main-product.css' | asset_url }}" rel="stylesheet" fetchpriority="high">
+  <link href="{{ 'product-gallery.css' | asset_url }}" rel="stylesheet" fetchpriority="high">
+{% endif %}
+
+<div
+  class="featured-product section-spacing"
+  data-product-root
+  style="
+    --color-background: {{ section.settings.background_color.red }} {{ section.settings.background_color.green }} {{ section.settings.background_color.blue }};
+    --color-text: {{ section.settings.text_color.red }} {{ section.settings.text_color.green }} {{ section.settings.text_color.blue }};
+    --color-accent: {{ section.settings.accent_color.red }} {{ section.settings.accent_color.green }} {{ section.settings.accent_color.blue }};
+    --pt: {{ section.settings.pt | divided_by: 16.0 | append: 'em' }};
+    --pb: {{ section.settings.pb | divided_by: 16.0 | append: 'em' }};
+  "
+  data-section-css="{{ 'featured-product.css' | asset_url }}, {{ 'main-product.css' | asset_url }}, {{ 'product-gallery.css' | asset_url }}"
+>
+  <div class="container {{ settings.container_width }}">
+    <div class="featured-product-layout">
+      <div class="featured-product-media">
+        {% render 'product-gallery', product: featured_product %}
+      </div>
+
+      <div class="featured-product-details">
+        {% content_for 'blocks', closest.product: featured_product %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Featured product",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Product"
+    },
+    {
+      "type": "header",
+      "content": "Gallery"
+    },
+    {
+      "type": "select",
+      "id": "gallery_media_ratio",
+      "label": "Media aspect ratio",
+      "options": [
+        { "group": "Adapt", "value": "adapt", "label": "Adapt to media" },
+        { "group": "Square", "value": "square", "label": "Square (1:1)" },
+        { "group": "Horizontal", "value": "landscape", "label": "Landscape (4:3)" },
+        { "group": "Horizontal", "value": "widescreen", "label": "Widescreen (16:9)" },
+        { "group": "Vertical", "value": "portrait", "label": "Portrait (3:4)" },
+        { "group": "Vertical", "value": "vertical", "label": "Vertical (9:16)" }
+      ],
+      "default": "adapt"
+    },
+    {
+      "type": "select",
+      "id": "gallery_transition",
+      "label": "Transition",
+      "options": [
+        { "value": "slide", "label": "Slide" },
+        { "value": "fade", "label": "Fade" }
+      ],
+      "default": "slide"
+    },
+    {
+      "type": "checkbox",
+      "id": "gallery_show_navigation",
+      "label": "Show navigation buttons",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "gallery_show_counter",
+      "label": "Show media counter",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "gallery_show_thumbnails",
+      "label": "Show thumbnails",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "gallery_video_autoplay",
+      "label": "Autoplay videos",
+      "info": "Autoplay videos are muted.",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "gallery_video_show_controls",
+      "label": "Show video controls",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "{{ settings.colors.background }}"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "{{ settings.colors.text }}"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent color",
+      "default": "{{ settings.colors.accent }}"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pt",
+      "label": "Top",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "pb",
+      "label": "Bottom",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 60
+    }
+  ],
+  "blocks": [
+    {
+      "type": "_product-main-breadcrumb"
+    },
+    {
+      "type": "_product-main-vendor"
+    },
+    {
+      "type": "_product-main-title"
+    },
+    {
+      "type": "_product-main-description"
+    },
+    {
+      "type": "_product-main-rating"
+    },
+    {
+      "type": "_product-main-price"
+    },
+    {
+      "type": "_product-main-variant-picker"
+    },
+    {
+      "type": "_product-main-buy-buttons"
+    },
+    {
+      "type": "_product-main-trust-badges"
+    },
+    {
+      "type": "_product-main-sku"
+    },
+    {
+      "type": "_product-main-share"
+    },
+    {
+      "type": "_featured-product-view-details"
+    },
+    {
+      "type": "@theme"
+    },
+    {
+      "type": "@app"
+    }
+  ],
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "presets": [
+    {
+      "name": "Featured product",
+      "category": "Product",
+      "settings": {
+        "gallery_media_ratio": "adapt",
+        "gallery_transition": "slide",
+        "gallery_show_navigation": true,
+        "gallery_show_counter": true,
+        "gallery_show_thumbnails": true,
+        "gallery_video_autoplay": true,
+        "gallery_video_show_controls": false
+      },
+      "blocks": [
+        {
+          "type": "_product-main-vendor",
+          "settings": {
+            "text_size": "fs-sm",
+            "pt": 6,
+            "pb": 6
+          }
+        },
+        {
+          "type": "_product-main-title",
+          "settings": {
+            "heading_tag": "2",
+            "heading_size": "h2",
+            "pt": 0,
+            "pb": 8
+          }
+        },
+        {
+          "type": "_product-main-rating",
+          "settings": {
+            "show_count": true,
+            "count_style": "detailed",
+            "rating_size": "fs-md",
+            "pt": 0,
+            "pb": 16
+          }
+        },
+        {
+          "type": "_product-main-price",
+          "settings": {
+            "price_size": "fs-xl",
+            "show_installments": true,
+            "show_tax_information": true,
+            "show_sale_badge": true,
+            "sale_badge_type": "percentage",
+            "pt": 0,
+            "pb": 24
+          }
+        },
+        {
+          "type": "_product-main-variant-picker",
+          "settings": {
+            "option_style": "radio",
+            "swatch_size": 28,
+            "pt": 0,
+            "pb": 30
+          }
+        },
+        {
+          "type": "_product-main-buy-buttons",
+          "settings": {
+            "show_quantity": true,
+            "show_buy_it_now": true,
+            "button_style": "btn-accent-solid",
+            "add_to_cart_size": "btn-md",
+            "buy_it_now_style": "btn-text-outline",
+            "buy_it_now_size": "btn-md",
+            "show_dynamic_checkout": false,
+            "show_gift_card_recipient_form": true,
+            "pt": 0,
+            "pb": 30
+          }
+        },
+        {
+          "type": "_product-main-trust-badges",
+          "settings": {
+            "layout": "horizontal",
+            "icon_size": 24,
+            "text_size": "fs-sm",
+            "image_1": "shopify://shop_images/icon-truck.svg",
+            "text_1": "<p>Fast shipping</p>",
+            "image_2": "shopify://shop_images/icon-shield-check.svg",
+            "text_2": "<p>Secure checkout</p>",
+            "image_3": "shopify://shop_images/icon-arrow-counterclockwise.svg",
+            "text_3": "<p>Easy returns</p>",
+            "pt": 0,
+            "pb": 30
+          }
+        },
+        {
+          "type": "_featured-product-view-details",
+          "settings": {
+            "label": "View product details",
+            "text_alignment": "left",
+            "button_style": "btn-text-outline",
+            "button_size": "btn-sm",
+            "pt": 20,
+            "pb": 0
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

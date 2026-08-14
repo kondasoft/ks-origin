@@ -1,0 +1,99 @@
+{% liquid
+  assign product = closest.product
+  assign selected_variant = product.selected_or_first_available_variant
+  assign product_url = selected_variant.url | default: product.url | default: routes.all_products_collection_url
+%}
+
+<div
+  class="featured-product-view-details block-spacing"
+  data-text-alignment="{{ block.settings.text_alignment }}"
+  style="
+    --pt: {{ block.settings.pt | divided_by: 16.0 | append: 'em' }};
+    --pb: {{ block.settings.pb | divided_by: 16.0 | append: 'em' }};
+  "
+  {{ block.shopify_attributes }}
+>
+  {% if block.settings.label != blank %}
+    <a
+      class="btn {{ block.settings.button_style }} {{ block.settings.button_size }}"
+      href="{{ product_url }}"
+      data-product-details-link
+    >
+      {{ block.settings.label | escape }}
+    </a>
+  {% endif %}
+</div>
+
+{% schema %}
+{
+  "name": "View product details",
+  "tag": null,
+  "settings": [
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Label",
+      "default": "View product details"
+    },
+    {
+      "type": "text_alignment",
+      "id": "text_alignment",
+      "label": "Alignment",
+      "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "Button style",
+      "options": [
+        { "value": "btn-accent-solid", "label": "Accent solid" },
+        { "value": "btn-accent-outline", "label": "Accent outline" },
+        { "value": "btn-text-solid", "label": "Text solid" },
+        { "value": "btn-text-outline", "label": "Text outline" }
+      ],
+      "default": "btn-text-outline"
+    },
+    {
+      "type": "select",
+      "id": "button_size",
+      "label": "Button size",
+      "options": [
+        { "value": "btn-sm", "label": "Small" },
+        { "value": "btn-md", "label": "Medium" },
+        { "value": "btn-lg", "label": "Large" }
+      ],
+      "default": "btn-sm"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pt",
+      "label": "Top",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "pb",
+      "label": "Bottom",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "View product details",
+      "category": "Product"
+    }
+  ]
+}
+{% endschema %}

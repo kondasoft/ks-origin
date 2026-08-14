@@ -100,6 +100,15 @@
   color: rgb(var(--color-text) / 0.6);
 }
 
+.product-main-price-sale-badge {
+  align-self: center;
+  white-space: nowrap;
+  margin-left: 0.125em;
+  background-color: rgb(var(--color-accent) / 0.1);
+  color: rgb(var(--color-accent));
+  padding: 0.25em 0.5em;
+}
+
 .product-main-price-tax-information {
   margin: 0.25em 0 0;
   color: rgb(var(--color-text) / 0.7);

@@ -172,6 +172,7 @@
     "price": {
       "regular_price": "Prix normal",
       "sale_price": "Prix promotionnel",
+      "save": "Économisez {{ savings }}",
       "from_price": "À partir de {{ price }}",
       "duties_and_taxes_included": "Droits et taxes inclus.",
       "taxes_included": "Taxes incluses.",

@@ -47,6 +47,8 @@
             "price_size": "fs-xl",
             "show_installments": true,
             "show_tax_information": true,
+            "show_sale_badge": true,
+            "sale_badge_type": "percentage",
             "pt": 0,
             "pb": 24
           },

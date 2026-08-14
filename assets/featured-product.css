@@ -1,0 +1,68 @@
+/*
+  Featured product stylesheet
+
+  This file owns the responsive media-and-details layout for the Featured product section.
+  Product detail block styles remain in the shared main product stylesheet.
+*/
+
+.featured-product {
+  color: rgb(var(--color-text));
+  background-color: rgb(var(--color-background));
+}
+
+.featured-product-layout {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.featured-product-media {
+  min-width: 0;
+}
+
+.featured-product-details {
+  min-width: 0;
+}
+
+.featured-product-view-details {
+  display: flex;
+}
+
+.featured-product-view-details[data-text-alignment="left"] {
+  justify-content: flex-start;
+}
+
+.featured-product-view-details[data-text-alignment="center"] {
+  justify-content: center;
+}
+
+.featured-product-view-details[data-text-alignment="right"] {
+  justify-content: flex-end;
+}
+
+@media (min-width: 1200px) {
+  .featured-product-layout {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+    gap: 2rem;
+  }
+
+  .featured-product-media {
+    position: sticky;
+    top: 1rem;
+    transition: top 300ms ease-out;
+  }
+
+  body:has(#header-group[data-header-behavior="sticky"]) .featured-product-media {
+    top: calc(var(--header-group-height, 0px) + 1rem);
+  }
+
+  body:has(#header-group[data-header-behavior="reveal"]:not(.header-hidden)) .featured-product-media {
+    top: calc(var(--header-group-height, 0px) + 1rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .featured-product-media {
+    transition: none;
+  }
+}

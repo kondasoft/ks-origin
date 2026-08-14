@@ -1,6 +1,7 @@
 {% liquid
   assign product = closest.product
   assign product_title = product.title
+  assign heading_tag = block.settings.heading_tag | default: '1'
 
   if product == blank
     assign product_title = 'products.placeholders.title' | t
@@ -15,9 +16,9 @@
   "
   {{ block.shopify_attributes }}
 >
-  <h1 class="product-main-title {{ block.settings.heading_size }}">
+  <h{{ heading_tag }} class="product-main-title {{ block.settings.heading_size }}">
     {{ product_title | escape }}
-  </h1>
+  </h{{ heading_tag }}>
 </div>
 
 {% schema %}
@@ -25,6 +26,21 @@
   "name": "Product title",
   "tag": null,
   "settings": [
+    {
+      "type": "select",
+      "id": "heading_tag",
+      "label": "HTML tag",
+      "options": [
+        { "value": "1", "label": "H1" },
+        { "value": "2", "label": "H2" },
+        { "value": "3", "label": "H3" },
+        { "value": "4", "label": "H4" },
+        { "value": "5", "label": "H5" },
+        { "value": "6", "label": "H6" }
+      ],
+      "default": "1",
+      "info": "Sets the heading level for page structure and accessibility."
+    },
     {
       "type": "select",
       "id": "heading_size",
@@ -37,8 +53,7 @@
         { "value": "h5", "label": "H5" },
         { "value": "h6", "label": "H6" }
       ],
-      "default": "h2",
-      "info": "Changes the visual size only. The HTML heading remains H1."
+      "default": "h2"
     },
     {
       "type": "header",

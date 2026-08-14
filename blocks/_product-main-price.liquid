@@ -12,9 +12,18 @@
 
   assign current_price = current_price_value | money
   assign on_sale = false
+  assign sale_badge_label = ''
 
   if compare_price > current_price_value
     assign on_sale = true
+
+    if block.settings.sale_badge_type == 'percentage'
+      assign sale_badge_savings = compare_price | minus: current_price_value | times: 100.0 | divided_by: compare_price | round | append: '%'
+    else
+      assign sale_badge_savings = compare_price | minus: current_price_value | money_without_trailing_zeros
+    endif
+
+    assign sale_badge_label = 'products.price.save' | t: savings: sale_badge_savings
   endif
 
   capture tax_information
@@ -59,6 +68,16 @@
     <s class="product-main-price-compare" data-product-compare-price{% unless on_sale %} hidden{% endunless %}>
       {% if on_sale %}{{ compare_price | money }}{% endif %}
     </s>
+    {% if block.settings.show_sale_badge %}
+      <span
+        class="badge product-main-price-sale-badge"
+        data-product-sale-badge
+        data-sale-badge-type="{{ block.settings.sale_badge_type }}"
+        {% unless on_sale %}hidden{% endunless %}
+      >
+        {{ sale_badge_label }}
+      </span>
+    {% endif %}
   </p>
 
   {% if block.settings.show_tax_information and tax_information != blank %}
@@ -105,6 +124,27 @@
       "id": "show_tax_information",
       "label": "Tax information",
       "default": true
+    },
+    {
+      "type": "header",
+      "content": "Sale badge"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_sale_badge",
+      "label": "Show sale badge",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "sale_badge_type",
+      "label": "Discount type",
+      "options": [
+        { "value": "percentage", "label": "Percentage" },
+        { "value": "value", "label": "Value" }
+      ],
+      "default": "percentage",
+      "visible_if": "{{ block.settings.show_sale_badge }}"
     },
     {
       "type": "header",

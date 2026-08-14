@@ -172,6 +172,7 @@
     "price": {
       "regular_price": "Regular price",
       "sale_price": "Sale price",
+      "save": "Save {{ savings }}",
       "from_price": "From {{ price }}",
       "duties_and_taxes_included": "Duties and taxes included.",
       "taxes_included": "Taxes included.",

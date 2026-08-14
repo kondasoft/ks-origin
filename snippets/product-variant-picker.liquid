@@ -3,29 +3,14 @@ Renders product options, swatches, and variant data for the shared variant picke
 
 @param {product} product - Product whose variants should be rendered.
 @param {string} id - Unique identifier used by option controls.
-@param {string} context - Either "product" or "quick-add".
 @param {string} option_style - Whether standard options use select fields or radio buttons.
 @param {number} swatch_size - Swatch diameter in pixels.
 {% enddoc %}
 
 {% liquid
   assign picker_product_gid = 'gid://shopify/Product/' | append: product.id
-
-  case context
-    when 'product'
-      assign picker_option_style = option_style
-      assign picker_swatch_size = swatch_size
-      assign picker_update_url = true
-    when 'quick-add'
-      assign picker_option_style = option_style
-      assign picker_swatch_size = swatch_size
-      assign picker_update_url = false
-  endcase
-
-  assign picker_option_style = picker_option_style | default: 'radio'
-  assign picker_swatch_size = picker_swatch_size | default: 32
-  assign picker_update_url = picker_update_url | default: false
-
+  assign picker_option_style = option_style | default: 'radio'
+  assign picker_swatch_size = swatch_size | default: 32
   assign picker_swatch_image_size = picker_swatch_size | times: 2
 %}
 
@@ -36,7 +21,6 @@ Renders product options, swatches, and variant data for the shared variant picke
     data-product-title="{{ product.title | escape }}"
     data-product-handle="{{ product.handle | escape }}"
     data-currency-code="{{ cart.currency.iso_code }}"
-    data-update-url="{{ picker_update_url }}"
     style="--swatch-size: {{ picker_swatch_size }}px;"
   >
     <div class="product-main-variant-picker-options">
@@ -143,6 +127,15 @@ Renders product options, swatches, and variant data for the shared variant picke
           {% liquid
             assign variant_gid = 'gid://shopify/ProductVariant/' | append: variant.id
             assign variant_cart_quantity = cart | item_count_for_variant: variant.id
+            assign variant_sale_badge_percentage = ''
+            assign variant_sale_badge_value = ''
+
+            if variant.compare_at_price > variant.price
+              assign variant_sale_percentage = variant.compare_at_price | minus: variant.price | times: 100.0 | divided_by: variant.compare_at_price | round | append: '%'
+              assign variant_sale_value = variant.compare_at_price | minus: variant.price | money_without_trailing_zeros
+              assign variant_sale_badge_percentage = 'products.price.save' | t: savings: variant_sale_percentage
+              assign variant_sale_badge_value = 'products.price.save' | t: savings: variant_sale_value
+            endif
           %}
           {
             "id": {{ variant.id | json }},
@@ -154,6 +147,8 @@ Renders product options, swatches, and variant data for the shared variant picke
             "priceMoney": {{ variant.price | money | json }},
             "compareAtPrice": {{ variant.compare_at_price | json }},
             "compareAtPriceMoney": {{ variant.compare_at_price | money | json }},
+            "saleBadgePercentage": {{ variant_sale_badge_percentage | json }},
+            "saleBadgeValue": {{ variant_sale_badge_value | json }},
             "options": {{ variant.options | json }},
             "featuredMediaId": {{ variant.featured_media.id | json }},
             "sku": {{ variant.sku | json }},

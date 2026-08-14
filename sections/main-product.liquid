@@ -5,6 +5,7 @@
   <div
     class="main-product section-spacing"
     data-product-root
+    data-update-product-url="true"
     style="
       --color-background: {{ section.settings.background_color.red }} {{ section.settings.background_color.green }} {{ section.settings.background_color.blue }};
       --color-text: {{ section.settings.text_color.red }} {{ section.settings.text_color.green }} {{ section.settings.text_color.blue }};
@@ -234,6 +235,8 @@
             "price_size": "fs-xl",
             "show_installments": true,
             "show_tax_information": true,
+            "show_sale_badge": true,
+            "sale_badge_type": "percentage",
             "pt": 0,
             "pb": 24
           }
