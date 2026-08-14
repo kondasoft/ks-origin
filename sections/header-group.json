@@ -28,11 +28,6 @@
     "header": {
       "type": "header",
       "settings": {
-        "background_color": "{{ settings.colors.background }}",
-        "text_color": "{{ settings.colors.text }}",
-        "accent_color": "{{ settings.colors.accent }}",
-        "header_behavior": "reveal",
-        "bottom_decoration": "box-shadow",
         "mobile_logo": "shopify://shop_images/logo.png",
         "mobile_logo_height": 30,
         "mobile_menu": "main-menu",
@@ -40,6 +35,11 @@
         "desktop_logo_height": 32,
         "desktop_menu": "main-menu",
         "megamenu_image_ratio": "adapt",
+        "background_color": "{{ settings.colors.background }}",
+        "text_color": "{{ settings.colors.text }}",
+        "accent_color": "{{ settings.colors.accent }}",
+        "header_behavior": "reveal",
+        "bottom_decoration": "box-shadow",
         "pt": 8,
         "pb": 8
       }
