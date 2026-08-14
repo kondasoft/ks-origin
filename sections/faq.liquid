@@ -4,14 +4,10 @@
 
 <div
   class="faq section-spacing"
-  data-mobile-text-alignment="{{ section.settings.mobile_text_alignment }}"
-  data-desktop-text-alignment="{{ section.settings.desktop_text_alignment }}"
   style="
     --color-background: {{ section.settings.background_color.red }} {{ section.settings.background_color.green }} {{ section.settings.background_color.blue }};
     --color-text: {{ section.settings.text_color.red }} {{ section.settings.text_color.green }} {{ section.settings.text_color.blue }};
     --color-accent: {{ section.settings.accent_color.red }} {{ section.settings.accent_color.green }} {{ section.settings.accent_color.blue }};
-    --mobile-text-alignment: {{ section.settings.mobile_text_alignment }};
-    --desktop-text-alignment: {{ section.settings.desktop_text_alignment }};
     --pt: {{ section.settings.pt | divided_by: 16.0 | append: 'em' }};
     --pb: {{ section.settings.pb | divided_by: 16.0 | append: 'em' }};
   "
@@ -22,6 +18,8 @@
   {% endif %}
 >
   <div class="container container-content">
+    {% content_for 'block', type: 'group', id: 'header' %}
+
     {% content_for 'blocks' %}
   </div>
 </div>
@@ -52,22 +50,6 @@
       "id": "accent_color",
       "label": "Accent color",
       "default": "{{ settings.colors.accent }}"
-    },
-    {
-      "type": "header",
-      "content": "Layout"
-    },
-    {
-      "type": "text_alignment",
-      "id": "mobile_text_alignment",
-      "label": "Mobile text alignment",
-      "default": "center"
-    },
-    {
-      "type": "text_alignment",
-      "id": "desktop_text_alignment",
-      "label": "Desktop text alignment",
-      "default": "center"
     },
     {
       "type": "header",
@@ -106,9 +88,6 @@
     }
   ],
   "blocks": [
-    { "type": "subheading" },
-    { "type": "heading" },
-    { "type": "text" },
     { "type": "collapse" }
   ],
   "disabled_on": {
@@ -120,18 +99,43 @@
       "category": "Text",
       "blocks": [
         {
-          "type": "heading",
+          "type": "group",
+          "id": "header",
+          "static": true,
+          "name": "Header",
           "settings": {
-            "heading": "FAQs",
-            "pb": 6
-          }
-        },
-        {
-          "type": "text",
-          "settings": {
-            "text": "<p>Find quick answers to common questions about ordering, delivery, and returns.</p>",
-            "pb": 24
-          }
+            "mobile_content_direction": "column",
+            "mobile_gap": 0,
+            "mobile_alignment": "inherit",
+            "desktop_content_direction": "column",
+            "desktop_gap": 0,
+            "desktop_alignment": "inherit",
+            "pt": 0,
+            "pb": 28,
+            "pl": 0,
+            "pr": 0
+          },
+          "blocks": [
+            {
+              "type": "heading",
+              "settings": {
+                "heading": "FAQs",
+                "heading_tag": "2",
+                "heading_size": "h2",
+                "pt": 0,
+                "pb": 0
+              }
+            },
+            {
+              "type": "text",
+              "settings": {
+                "text": "<p>Find quick answers to common questions about ordering, delivery, and returns.</p>",
+                "text_size": "fs-md",
+                "pt": 6,
+                "pb": 0
+              }
+            }
+          ]
         },
         {
           "type": "collapse",

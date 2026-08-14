@@ -40,7 +40,7 @@
     gap: var(--desktop-gap);
   }
 
-  .image-with-text-media {
+  .image-with-text[data-desktop-image-position="left"] .image-with-text-media {
     order: 0;
   }
 

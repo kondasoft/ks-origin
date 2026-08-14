@@ -509,6 +509,7 @@ button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  width: fit-content;
   gap: 0.5em;
   box-sizing: border-box;
   padding: 0.6em 1.25em;
@@ -1209,10 +1210,34 @@ select.input-lg {
   justify-content: flex-end;
 }
 
+.group-block[data-mobile-alignment="left"] {
+  align-items: flex-start;
+  justify-content: flex-start;
+  text-align: left;
+}
+
+.group-block[data-mobile-alignment="center"] {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.group-block[data-mobile-alignment="right"] {
+  align-items: flex-end;
+  justify-content: flex-end;
+  text-align: right;
+}
+
 @media (min-width: 1200px) {
   .group-block {
     flex-direction: var(--desktop-content-direction);
     gap: var(--desktop-gap);
+  }
+
+  .group-block[data-desktop-alignment="inherit"] {
+    align-items: normal;
+    justify-content: normal;
+    text-align: inherit;
   }
 
   [data-desktop-text-alignment="left"] .group-block {
@@ -1229,36 +1254,77 @@ select.input-lg {
     align-items: flex-end;
     justify-content: flex-end;
   }
+
+  .group-block[data-desktop-alignment="left"] {
+    align-items: flex-start;
+    justify-content: flex-start;
+    text-align: left;
+  }
+
+  .group-block[data-desktop-alignment="center"] {
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .group-block[data-desktop-alignment="right"] {
+    align-items: flex-end;
+    justify-content: flex-end;
+    text-align: right;
+  }
 }
 
 
 /* Image block */
 .image-block {
+  width: 100%;
   min-width: 0;
   max-width: 100%;
 }
 
 .image-block-media {
   display: inline-block;
-  width: min(100%, var(--image-width));
+  width: 100%;
   vertical-align: middle;
 }
 
 .image-block-image {
+  width: 100%;
   border-radius: var(--border-radius);
+}
+
+.image-section[data-container-width="full"] .image-block-image {
+  border-radius: 0;
 }
 
 
 /* Video block */
 .video-block {
+  width: 100%;
   min-width: 0;
   max-width: 100%;
 }
 
 .video-block-media {
   display: inline-block;
-  width: min(100%, var(--video-width));
+  width: 100%;
   vertical-align: middle;
+}
+
+.video-section[data-container-width="full"] .video-media-video {
+  border-radius: 0;
+}
+
+.video-section[data-container-width="full"] .video-media-poster {
+  border-radius: 0;
+}
+
+.video-section[data-container-width="full"] .video-media-poster-image {
+  border-radius: 0;
+}
+
+.video-section[data-container-width="full"] .video-media-placeholder::after {
+  border-radius: 0;
 }
 
 

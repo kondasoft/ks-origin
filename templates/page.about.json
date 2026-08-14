@@ -98,8 +98,10 @@
             "accent_color": "{{ settings.colors.accent }}",
             "mobile_content_direction": "column",
             "mobile_gap": 0,
+            "mobile_alignment": "inherit",
             "desktop_content_direction": "column",
             "desktop_gap": 0,
+            "desktop_alignment": "inherit",
             "pt": 16,
             "pb": 16,
             "pl": 16,
@@ -111,7 +113,6 @@
               "settings": {
                 "image": "shopify://shop_images/team-maya-chen.jpg",
                 "image_ratio": "adapt",
-                "image_width": 800,
                 "pt": 0,
                 "pb": 20
               },
@@ -155,8 +156,10 @@
             "accent_color": "{{ settings.colors.accent }}",
             "mobile_content_direction": "column",
             "mobile_gap": 0,
+            "mobile_alignment": "inherit",
             "desktop_content_direction": "column",
             "desktop_gap": 0,
+            "desktop_alignment": "inherit",
             "pt": 20,
             "pb": 20,
             "pl": 20,
@@ -168,7 +171,6 @@
               "settings": {
                 "image": "shopify://shop_images/team-daniel-brooks.jpg",
                 "image_ratio": "adapt",
-                "image_width": 800,
                 "pt": 0,
                 "pb": 20
               },
@@ -212,8 +214,10 @@
             "accent_color": "{{ settings.colors.accent }}",
             "mobile_content_direction": "column",
             "mobile_gap": 0,
+            "mobile_alignment": "inherit",
             "desktop_content_direction": "column",
             "desktop_gap": 0,
+            "desktop_alignment": "inherit",
             "pt": 20,
             "pb": 20,
             "pl": 20,
@@ -225,7 +229,6 @@
               "settings": {
                 "image": "shopify://shop_images/team-sofia-rivera.jpg",
                 "image_ratio": "adapt",
-                "image_width": 800,
                 "pt": 0,
                 "pb": 20
               },
@@ -270,8 +273,10 @@
             "accent_color": "{{ settings.colors.accent }}",
             "mobile_content_direction": "column",
             "mobile_gap": 0,
+            "mobile_alignment": "inherit",
             "desktop_content_direction": "column",
             "desktop_gap": 0,
+            "desktop_alignment": "inherit",
             "pt": 0,
             "pb": 28,
             "pl": 0,
@@ -284,7 +289,7 @@
                 "subheading": "The people behind the store",
                 "subheading_size": "fs-md",
                 "pt": 0,
-                "pb": 0
+                "pb": 12
               },
               "blocks": {}
             },
@@ -382,8 +387,10 @@
             "accent_color": "{{ settings.colors.accent }}",
             "mobile_content_direction": "column",
             "mobile_gap": 8,
+            "mobile_alignment": "inherit",
             "desktop_content_direction": "row",
             "desktop_gap": 10,
+            "desktop_alignment": "inherit",
             "pt": 0,
             "pb": 0,
             "pl": 0,

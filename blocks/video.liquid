@@ -1,6 +1,13 @@
 {% liquid
   assign video_loading = 'lazy'
-  assign video_sizes = 'min(' | append: block.settings.video_width | append: 'px, 100vw)'
+  assign video_media_width = 2400
+  assign video_sizes = '100vw'
+
+  if section.settings.mobile_columns != blank and section.settings.desktop_columns != blank
+    assign mobile_video_size = 100.0 | divided_by: section.settings.mobile_columns | append: 'vw'
+    assign desktop_video_size = 100.0 | divided_by: section.settings.desktop_columns | append: 'vw'
+    assign video_sizes = '(min-width: 1200px) ' | append: desktop_video_size | append: ', ' | append: mobile_video_size
+  endif
 
   if section.index == 1
     assign video_loading = 'eager'
@@ -12,7 +19,6 @@
 <div
   class="video-block block-spacing"
   style="
-    --video-width: {{ block.settings.video_width | append: 'px' }};
     --pt: {{ block.settings.pt | divided_by: 16.0 | append: 'em' }};
     --pb: {{ block.settings.pb | divided_by: 16.0 | append: 'em' }};
   "
@@ -29,7 +35,7 @@
       muted: block.settings.muted,
       loop: block.settings.loop,
       show_controls: block.settings.show_controls,
-      media_width: block.settings.video_width,
+      media_width: video_media_width,
       sizes: video_sizes,
       loading: video_loading,
       section_index: section.index
@@ -107,16 +113,6 @@
       "label": "Show controls",
       "default": true,
       "visible_if": "{{ block.settings.source == 'uploaded' }}"
-    },
-    {
-      "type": "range",
-      "id": "video_width",
-      "label": "Width",
-      "min": 100,
-      "max": 2400,
-      "step": 50,
-      "unit": "px",
-      "default": 800
     },
     {
       "type": "header",

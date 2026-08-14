@@ -52,8 +52,10 @@
             "accent_color": "{{ settings.colors.accent }}",
             "mobile_content_direction": "column",
             "mobile_gap": 10,
+            "mobile_alignment": "inherit",
             "desktop_content_direction": "row",
             "desktop_gap": 10,
+            "desktop_alignment": "inherit",
             "pt": 0,
             "pb": 0,
             "pl": 0,
@@ -119,8 +121,8 @@
       "blocks": {
         "header": {
           "type": "group",
-          "static": true,
           "name": "Header",
+          "static": true,
           "settings": {
             "custom_colors": false,
             "background_color": "{{ settings.colors.background }}",
@@ -128,10 +130,12 @@
             "accent_color": "{{ settings.colors.accent }}",
             "mobile_content_direction": "column",
             "mobile_gap": 0,
+            "mobile_alignment": "inherit",
             "desktop_content_direction": "column",
             "desktop_gap": 0,
+            "desktop_alignment": "inherit",
             "pt": 0,
-            "pb": 0,
+            "pb": 28,
             "pl": 0,
             "pr": 0
           },
@@ -143,7 +147,7 @@
                 "heading_tag": "2",
                 "heading_size": "h2",
                 "pt": 0,
-                "pb": 6
+                "pb": 0
               },
               "blocks": {}
             },
@@ -152,7 +156,7 @@
               "settings": {
                 "text": "<p>Explore featured new arrivals, customer favorites, and everyday essentials</p>",
                 "text_size": "fs-md",
-                "pt": 0,
+                "pt": 6,
                 "pb": 0
               },
               "blocks": {}
@@ -257,8 +261,6 @@
         "background_color": "{{ settings.colors.background }}",
         "text_color": "{{ settings.colors.text }}",
         "accent_color": "{{ settings.colors.accent }}",
-        "header_mobile_text_alignment": "left",
-        "header_desktop_text_alignment": "left",
         "layout": "carousel",
         "carousel_partial_slide_mobile": true,
         "carousel_show_navigation": true,
@@ -277,26 +279,53 @@
     "collection_list_6dLrBL": {
       "type": "collection-list",
       "blocks": {
-        "heading_PBqBaJ": {
-          "type": "heading",
+        "header": {
+          "type": "group",
+          "name": "Header",
+          "static": true,
           "settings": {
-            "heading": "Shop by collection",
-            "heading_tag": "2",
-            "heading_size": "h2",
+            "custom_colors": false,
+            "background_color": "{{ settings.colors.background }}",
+            "text_color": "{{ settings.colors.text }}",
+            "accent_color": "{{ settings.colors.accent }}",
+            "mobile_content_direction": "column",
+            "mobile_gap": 0,
+            "mobile_alignment": "inherit",
+            "desktop_content_direction": "column",
+            "desktop_gap": 0,
+            "desktop_alignment": "inherit",
             "pt": 0,
-            "pb": 6
+            "pb": 28,
+            "pl": 0,
+            "pr": 0
           },
-          "blocks": {}
-        },
-        "text_9XXnKh": {
-          "type": "text",
-          "settings": {
-            "text": "<p>Explore collections created to help customers find the products that suit them best.</p>",
-            "text_size": "fs-md",
-            "pt": 0,
-            "pb": 0
+          "blocks": {
+            "heading_PBqBaJ": {
+              "type": "heading",
+              "settings": {
+                "heading": "Shop by collection",
+                "heading_tag": "2",
+                "heading_size": "h2",
+                "pt": 0,
+                "pb": 0
+              },
+              "blocks": {}
+            },
+            "text_9XXnKh": {
+              "type": "text",
+              "settings": {
+                "text": "<p>Explore collections created to help customers find the products that suit them best.</p>",
+                "text_size": "fs-md",
+                "pt": 6,
+                "pb": 0
+              },
+              "blocks": {}
+            }
           },
-          "blocks": {}
+          "block_order": [
+            "heading_PBqBaJ",
+            "text_9XXnKh"
+          ]
         },
         "collection-card": {
           "type": "collection-card",
@@ -343,10 +372,6 @@
           ]
         }
       },
-      "block_order": [
-        "heading_PBqBaJ",
-        "text_9XXnKh"
-      ],
       "name": "Collection list",
       "settings": {
         "collections": [
@@ -360,8 +385,6 @@
         "background_color": "{{ settings.colors.surface }}",
         "text_color": "{{ settings.colors.text }}",
         "accent_color": "{{ settings.colors.accent }}",
-        "header_mobile_text_alignment": "left",
-        "header_desktop_text_alignment": "left",
         "layout": "grid",
         "carousel_partial_slide_mobile": true,
         "carousel_show_navigation": true,
@@ -373,57 +396,275 @@
         "pb": 60
       }
     },
-    "contact_form_jN7QXd": {
-      "type": "contact-form",
+    "image_xRkeM4": {
+      "type": "image",
       "blocks": {
-        "heading_yUXnBx": {
+        "heading_khrHfX": {
           "type": "heading",
           "settings": {
-            "heading": "Contact us",
+            "heading": "Image",
             "heading_tag": "2",
             "heading_size": "h2",
             "pt": 0,
-            "pb": 6
+            "pb": 24
           },
           "blocks": {}
         },
-        "text_qpEw6A": {
-          "type": "text",
+        "image_KH4Eq3": {
+          "type": "image",
           "settings": {
-            "text": "<p>Have a question or need help? Send us a message and we'll get back to you as soon as possible.</p>",
-            "text_size": "fs-md",
+            "image": "shopify://shop_images/markos-mant-Ln9wvXBDqr0-unsplash.jpg",
+            "image_ratio": "widescreen",
             "pt": 0,
             "pb": 0
           },
           "blocks": {}
         },
-        "contact_form_aNzjxg": {
-          "type": "contact-form",
+        "text_tptKnx": {
+          "type": "text",
           "settings": {
-            "pt": 32,
-            "pb": 0
+            "text": "<p>Highlight a visual with a short description and a clear action.</p>",
+            "text_size": "fs-md",
+            "pt": 18,
+            "pb": 20
+          },
+          "blocks": {}
+        },
+        "button_g3Nieq": {
+          "type": "button",
+          "settings": {
+            "label": "Shop now",
+            "link": "shopify://collections/all",
+            "style": "btn-accent-solid",
+            "size": "btn-md"
           },
           "blocks": {}
         }
       },
       "block_order": [
-        "heading_yUXnBx",
-        "text_qpEw6A",
-        "contact_form_aNzjxg"
+        "heading_khrHfX",
+        "image_KH4Eq3",
+        "text_tptKnx",
+        "button_g3Nieq"
       ],
-      "name": "Contact form",
+      "name": "Image",
       "settings": {
         "background_color": "{{ settings.colors.background }}",
         "text_color": "{{ settings.colors.text }}",
         "accent_color": "{{ settings.colors.accent }}",
+        "container_width": "site",
         "mobile_text_alignment": "left",
         "desktop_text_alignment": "left",
         "pt": 60,
         "pb": 60
       }
     },
+    "divider_CpGVPV": {
+      "type": "divider",
+      "name": "Divider",
+      "settings": {
+        "background_color": "{{ settings.colors.background }}",
+        "line_color": "{{ settings.colors.text }}",
+        "custom_line_opacity": false,
+        "line_opacity": 20,
+        "container_width": "site",
+        "pt": 0,
+        "pb": 0
+      }
+    },
+    "video_MJhzDH": {
+      "type": "video",
+      "blocks": {
+        "heading_39hgjL": {
+          "type": "heading",
+          "settings": {
+            "heading": "Video",
+            "heading_tag": "2",
+            "heading_size": "h2",
+            "pt": 0,
+            "pb": 24
+          },
+          "blocks": {}
+        },
+        "video_ET8WPi": {
+          "type": "video",
+          "settings": {
+            "source": "uploaded",
+            "video": "shopify://files/videos/13237112-hd_1920_1080_30fps.mp4",
+            "external_video": "",
+            "external_video_alt": "",
+            "autoplay": false,
+            "muted": false,
+            "loop": false,
+            "show_controls": true,
+            "pt": 0,
+            "pb": 0
+          },
+          "blocks": {}
+        },
+        "text_P8diQy": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Share a product story or campaign with a short description and a clear action.</p>",
+            "text_size": "fs-md",
+            "pt": 18,
+            "pb": 20
+          },
+          "blocks": {}
+        },
+        "button_ENKiLY": {
+          "type": "button",
+          "settings": {
+            "label": "Shop now",
+            "link": "shopify://collections/all",
+            "style": "btn-accent-solid",
+            "size": "btn-md"
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "heading_39hgjL",
+        "video_ET8WPi",
+        "text_P8diQy",
+        "button_ENKiLY"
+      ],
+      "name": "Video",
+      "settings": {
+        "background_color": "{{ settings.colors.background }}",
+        "text_color": "{{ settings.colors.text }}",
+        "accent_color": "{{ settings.colors.accent }}",
+        "container_width": "site",
+        "mobile_text_alignment": "left",
+        "desktop_text_alignment": "left",
+        "pt": 60,
+        "pb": 60
+      }
+    },
+    "contact_form_jN7QXd": {
+      "type": "contact-form",
+      "blocks": {
+        "contact_form_aNzjxg": {
+          "type": "contact-form",
+          "settings": {
+            "pt": 0,
+            "pb": 0
+          },
+          "blocks": {}
+        },
+        "header": {
+          "type": "group",
+          "name": "Header",
+          "static": true,
+          "settings": {
+            "custom_colors": false,
+            "background_color": "{{ settings.colors.background }}",
+            "text_color": "{{ settings.colors.text }}",
+            "accent_color": "{{ settings.colors.accent }}",
+            "mobile_content_direction": "column",
+            "mobile_gap": 0,
+            "mobile_alignment": "inherit",
+            "desktop_content_direction": "column",
+            "desktop_gap": 0,
+            "desktop_alignment": "inherit",
+            "pt": 0,
+            "pb": 28,
+            "pl": 0,
+            "pr": 0
+          },
+          "blocks": {
+            "heading_yUXnBx": {
+              "type": "heading",
+              "settings": {
+                "heading": "Contact us",
+                "heading_tag": "2",
+                "heading_size": "h2",
+                "pt": 0,
+                "pb": 0
+              },
+              "blocks": {}
+            },
+            "text_qpEw6A": {
+              "type": "text",
+              "settings": {
+                "text": "<p>Have a question or need help? Send us a message and we'll get back to you as soon as possible.</p>",
+                "text_size": "fs-md",
+                "pt": 6,
+                "pb": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "heading_yUXnBx",
+            "text_qpEw6A"
+          ]
+        }
+      },
+      "block_order": [
+        "contact_form_aNzjxg"
+      ],
+      "name": "Contact form",
+      "settings": {
+        "background_color": "{{ settings.colors.surface }}",
+        "text_color": "{{ settings.colors.text }}",
+        "accent_color": "{{ settings.colors.accent }}",
+        "pt": 60,
+        "pb": 60
+      }
+    },
     "liquid_html_6ttYfG": {
       "type": "liquid-html",
+      "blocks": {
+        "header": {
+          "type": "group",
+          "name": "Header",
+          "static": true,
+          "settings": {
+            "custom_colors": false,
+            "background_color": "{{ settings.colors.background }}",
+            "text_color": "{{ settings.colors.text }}",
+            "accent_color": "{{ settings.colors.accent }}",
+            "mobile_content_direction": "column",
+            "mobile_gap": 0,
+            "mobile_alignment": "inherit",
+            "desktop_content_direction": "column",
+            "desktop_gap": 0,
+            "desktop_alignment": "inherit",
+            "pt": 0,
+            "pb": 28,
+            "pl": 0,
+            "pr": 0
+          },
+          "blocks": {
+            "heading": {
+              "type": "heading",
+              "settings": {
+                "heading": "Liquid / HTML",
+                "heading_tag": "2",
+                "heading_size": "h2",
+                "pt": 0,
+                "pb": 0
+              },
+              "blocks": {}
+            },
+            "text": {
+              "type": "text",
+              "settings": {
+                "text": "<p>Add custom Liquid or HTML to create flexible storefront content.</p>",
+                "text_size": "fs-md",
+                "pt": 6,
+                "pb": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "heading",
+            "text"
+          ]
+        }
+      },
       "name": "Liquid / HTML",
       "settings": {
         "custom_liquid": "<p class=\"alert\">Today's date: {{ 'now' | date: '%B %d, %Y' }}",
@@ -437,132 +678,253 @@
         "pb": 60
       }
     },
-    "image_4hw3MC": {
-      "type": "image",
+    "columns_ADQtND": {
+      "type": "columns",
       "blocks": {
-        "heading_6mByj7": {
-          "type": "heading",
+        "group_iUcCYd": {
+          "type": "group",
+          "name": "Column 1",
           "settings": {
-            "heading": "Image",
-            "heading_tag": "2",
-            "heading_size": "h2",
+            "custom_colors": false,
+            "background_color": "{{ settings.colors.background }}",
+            "text_color": "{{ settings.colors.text }}",
+            "accent_color": "{{ settings.colors.accent }}",
+            "mobile_content_direction": "column",
+            "mobile_gap": 0,
+            "mobile_alignment": "inherit",
+            "desktop_content_direction": "column",
+            "desktop_gap": 0,
+            "desktop_alignment": "inherit",
+            "pt": 16,
+            "pb": 16,
+            "pl": 16,
+            "pr": 16
+          },
+          "blocks": {
+            "image_4W6nAm": {
+              "type": "image",
+              "name": "Image",
+              "settings": {
+                "image": "shopify://shop_images/ashwin-raj-cWcIGikS30E-unsplash.jpg",
+                "image_ratio": "adapt",
+                "pt": 0,
+                "pb": 16
+              },
+              "blocks": {}
+            },
+            "heading_8jDCrz": {
+              "type": "heading",
+              "settings": {
+                "heading": "Intentional design",
+                "heading_tag": "2",
+                "heading_size": "h4",
+                "pt": 0,
+                "pb": 0
+              },
+              "blocks": {}
+            },
+            "text_7Wy9e3": {
+              "type": "text",
+              "settings": {
+                "text": "<p>Thoughtful products designed to solve everyday needs with clarity, purpose, lasting quality, and ease.</p>",
+                "text_size": "fs-md",
+                "pt": 8,
+                "pb": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "image_4W6nAm",
+            "heading_8jDCrz",
+            "text_7Wy9e3"
+          ]
+        },
+        "group_XYpPm3": {
+          "type": "group",
+          "name": "Column 2",
+          "settings": {
+            "custom_colors": false,
+            "background_color": "{{ settings.colors.background }}",
+            "text_color": "{{ settings.colors.text }}",
+            "accent_color": "{{ settings.colors.accent }}",
+            "mobile_content_direction": "column",
+            "mobile_gap": 0,
+            "mobile_alignment": "inherit",
+            "desktop_content_direction": "column",
+            "desktop_gap": 0,
+            "desktop_alignment": "inherit",
+            "pt": 16,
+            "pb": 16,
+            "pl": 16,
+            "pr": 16
+          },
+          "blocks": {
+            "image_column_two": {
+              "type": "image",
+              "name": "Image",
+              "settings": {
+                "image": "shopify://shop_images/marti-sierra-FTpidUJZfkY-unsplash.jpg",
+                "image_ratio": "adapt",
+                "pt": 0,
+                "pb": 16
+              },
+              "blocks": {}
+            },
+            "heading_NGmMgx": {
+              "type": "heading",
+              "settings": {
+                "heading": "Quality first",
+                "heading_tag": "2",
+                "heading_size": "h4",
+                "pt": 0,
+                "pb": 0
+              },
+              "blocks": {}
+            },
+            "text_FErCbT": {
+              "type": "text",
+              "settings": {
+                "text": "<p>Carefully selected materials shaped with precision to provide lasting quality, reliable performance, and comfort.</p>",
+                "text_size": "fs-md",
+                "pt": 8,
+                "pb": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "image_column_two",
+            "heading_NGmMgx",
+            "text_FErCbT"
+          ]
+        },
+        "group_3MMkQ7": {
+          "type": "group",
+          "name": "Column 3",
+          "settings": {
+            "custom_colors": false,
+            "background_color": "{{ settings.colors.background }}",
+            "text_color": "{{ settings.colors.text }}",
+            "accent_color": "{{ settings.colors.accent }}",
+            "mobile_content_direction": "column",
+            "mobile_gap": 0,
+            "mobile_alignment": "inherit",
+            "desktop_content_direction": "column",
+            "desktop_gap": 0,
+            "desktop_alignment": "inherit",
+            "pt": 16,
+            "pb": 16,
+            "pl": 16,
+            "pr": 16
+          },
+          "blocks": {
+            "image_column_three": {
+              "type": "image",
+              "name": "Image",
+              "settings": {
+                "image": "shopify://shop_images/markos-mant-Ln9wvXBDqr0-unsplash.jpg",
+                "image_ratio": "adapt",
+                "pt": 0,
+                "pb": 16
+              },
+              "blocks": {}
+            },
+            "heading_zcNUQz": {
+              "type": "heading",
+              "settings": {
+                "heading": "Customer care",
+                "heading_tag": "2",
+                "heading_size": "h4",
+                "pt": 0,
+                "pb": 0
+              },
+              "blocks": {}
+            },
+            "text_c7rxGW": {
+              "type": "text",
+              "settings": {
+                "text": "<p>Helpful customer support providing clear guidance and thoughtful assistance before, during, and after every purchase.</p>",
+                "text_size": "fs-md",
+                "pt": 8,
+                "pb": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "image_column_three",
+            "heading_zcNUQz",
+            "text_c7rxGW"
+          ]
+        },
+        "header": {
+          "type": "group",
+          "name": "Header",
+          "static": true,
+          "settings": {
+            "custom_colors": false,
+            "background_color": "{{ settings.colors.background }}",
+            "text_color": "{{ settings.colors.text }}",
+            "accent_color": "{{ settings.colors.accent }}",
+            "mobile_content_direction": "column",
+            "mobile_gap": 0,
+            "mobile_alignment": "inherit",
+            "desktop_content_direction": "column",
+            "desktop_gap": 0,
+            "desktop_alignment": "inherit",
             "pt": 0,
-            "pb": 16
+            "pb": 28,
+            "pl": 0,
+            "pr": 0
           },
-          "blocks": {}
-        },
-        "image_VH9bfR": {
-          "type": "image",
-          "settings": {
-            "image_ratio": "widescreen",
-            "image_width": 1200,
-            "pt": 0,
-            "pb": 0
+          "blocks": {
+            "heading_aUWPDM": {
+              "type": "heading",
+              "settings": {
+                "heading": "Section name",
+                "heading_tag": "2",
+                "heading_size": "h2",
+                "pt": 0,
+                "pb": 0
+              },
+              "blocks": {}
+            },
+            "text_6UqHEC": {
+              "type": "text",
+              "settings": {
+                "text": "<p>Organize related content into flexible columns to highlight features, services, or key information.</p>",
+                "text_size": "fs-md",
+                "pt": 6,
+                "pb": 0
+              },
+              "blocks": {}
+            }
           },
-          "blocks": {}
-        },
-        "text_RMBRUE": {
-          "type": "text",
-          "settings": {
-            "text": "<p>Highlight a visual with a short description and a clear action.</p>",
-            "text_size": "fs-md",
-            "pt": 18,
-            "pb": 20
-          },
-          "blocks": {}
-        },
-        "button_L4AVj3": {
-          "type": "button",
-          "settings": {
-            "label": "Shop now",
-            "link": "shopify://collections/all",
-            "style": "btn-accent-solid",
-            "size": "btn-md"
-          },
-          "blocks": {}
+          "block_order": [
+            "heading_aUWPDM",
+            "text_6UqHEC"
+          ]
         }
       },
       "block_order": [
-        "heading_6mByj7",
-        "image_VH9bfR",
-        "text_RMBRUE",
-        "button_L4AVj3"
+        "group_iUcCYd",
+        "group_XYpPm3",
+        "group_3MMkQ7"
       ],
-      "name": "Image",
+      "name": "Columns",
       "settings": {
-        "background_color": "{{ settings.colors.background }}",
+        "background_color": "{{ settings.colors.surface }}",
+        "column_background_color": "{{ settings.colors.background }}",
         "text_color": "{{ settings.colors.text }}",
         "accent_color": "{{ settings.colors.accent }}",
-        "mobile_text_alignment": "left",
-        "desktop_text_alignment": "left",
-        "pt": 60,
-        "pb": 60
-      }
-    },
-    "video_DJLR97": {
-      "type": "video",
-      "blocks": {
-        "heading_KxpmGf": {
-          "type": "heading",
-          "settings": {
-            "heading": "Video",
-            "heading_tag": "2",
-            "heading_size": "h2",
-            "pt": 0,
-            "pb": 16
-          },
-          "blocks": {}
-        },
-        "video_QLERf4": {
-          "type": "video",
-          "settings": {
-            "source": "uploaded",
-            "external_video": "",
-            "external_video_alt": "",
-            "autoplay": false,
-            "muted": false,
-            "loop": false,
-            "show_controls": true,
-            "video_width": 1200,
-            "pt": 0,
-            "pb": 0
-          },
-          "blocks": {}
-        },
-        "text_zHBXBH": {
-          "type": "text",
-          "settings": {
-            "text": "<p>Share a product story or campaign with a short description and a clear action.</p>",
-            "text_size": "fs-md",
-            "pt": 18,
-            "pb": 20
-          },
-          "blocks": {}
-        },
-        "button_7tXwzK": {
-          "type": "button",
-          "settings": {
-            "label": "Shop now",
-            "link": "shopify://collections/all",
-            "style": "btn-accent-solid",
-            "size": "btn-md"
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "heading_KxpmGf",
-        "video_QLERf4",
-        "text_zHBXBH",
-        "button_7tXwzK"
-      ],
-      "name": "Video",
-      "settings": {
-        "background_color": "{{ settings.colors.background }}",
-        "text_color": "{{ settings.colors.text }}",
-        "accent_color": "{{ settings.colors.accent }}",
-        "mobile_text_alignment": "left",
-        "desktop_text_alignment": "left",
+        "mobile_columns": 1,
+        "mobile_scroll": false,
+        "mobile_text_alignment": "center",
+        "mobile_gap": 24,
+        "desktop_columns": 3,
+        "desktop_text_alignment": "center",
+        "desktop_gap": 24,
         "pt": 60,
         "pb": 60
       }
@@ -576,7 +938,7 @@
             "subheading": "Pair imagery with content",
             "subheading_size": "fs-sm",
             "pt": 0,
-            "pb": 0
+            "pb": 12
           },
           "blocks": {}
         },
@@ -587,7 +949,7 @@
             "heading_tag": "2",
             "heading_size": "h2",
             "pt": 0,
-            "pb": 6
+            "pb": 12
           },
           "blocks": {}
         },
@@ -597,7 +959,7 @@
             "text": "<p>Combine an image with supporting content and an optional action in a responsive two-column layout.</p>",
             "text_size": "fs-md",
             "pt": 0,
-            "pb": 20
+            "pb": 26
           },
           "blocks": {}
         },
@@ -610,8 +972,10 @@
             "accent_color": "{{ settings.colors.accent }}",
             "mobile_content_direction": "column",
             "mobile_gap": 8,
+            "mobile_alignment": "inherit",
             "desktop_content_direction": "row",
             "desktop_gap": 10,
+            "desktop_alignment": "inherit",
             "pt": 0,
             "pb": 0,
             "pl": 0,
@@ -645,7 +1009,8 @@
         "background_color": "{{ settings.colors.background }}",
         "text_color": "{{ settings.colors.text }}",
         "accent_color": "{{ settings.colors.accent }}",
-        "image_ratio": "adapt",
+        "image": "shopify://shop_images/ashwin-raj-cWcIGikS30E-unsplash.jpg",
+        "image_ratio": "widescreen",
         "mobile_image_position": "top",
         "mobile_text_alignment": "left",
         "mobile_gap": 24,
@@ -653,7 +1018,119 @@
         "desktop_text_alignment": "left",
         "desktop_gap": 40,
         "pt": 60,
+        "pb": 30
+      }
+    },
+    "video_with_text_mUK9FU": {
+      "type": "video-with-text",
+      "blocks": {
+        "subheading_VbpWiG": {
+          "type": "subheading",
+          "settings": {
+            "subheading": "Pair video with content",
+            "subheading_size": "fs-sm",
+            "pt": 0,
+            "pb": 12
+          },
+          "blocks": {}
+        },
+        "heading_zcAbcY": {
+          "type": "heading",
+          "settings": {
+            "heading": "Video with text",
+            "heading_tag": "2",
+            "heading_size": "h2",
+            "pt": 0,
+            "pb": 12
+          },
+          "blocks": {}
+        },
+        "text_J8DhmV": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Combine an uploaded or external video with supporting content and an optional action in a responsive two-column layout.</p>",
+            "text_size": "fs-md",
+            "pt": 0,
+            "pb": 28
+          },
+          "blocks": {}
+        },
+        "group_QUxPxt": {
+          "type": "group",
+          "settings": {
+            "custom_colors": false,
+            "background_color": "{{ settings.colors.background }}",
+            "text_color": "{{ settings.colors.text }}",
+            "accent_color": "{{ settings.colors.accent }}",
+            "mobile_content_direction": "column",
+            "mobile_gap": 8,
+            "mobile_alignment": "inherit",
+            "desktop_content_direction": "row",
+            "desktop_gap": 10,
+            "desktop_alignment": "inherit",
+            "pt": 0,
+            "pb": 0,
+            "pl": 0,
+            "pr": 0
+          },
+          "blocks": {
+            "button_Ni9kf6": {
+              "type": "button",
+              "settings": {
+                "label": "Learn more",
+                "link": "",
+                "style": "btn-accent-solid",
+                "size": "btn-md"
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "button_Ni9kf6"
+          ]
+        }
+      },
+      "block_order": [
+        "subheading_VbpWiG",
+        "heading_zcAbcY",
+        "text_J8DhmV",
+        "group_QUxPxt"
+      ],
+      "name": "Video with text",
+      "settings": {
+        "background_color": "{{ settings.colors.background }}",
+        "text_color": "{{ settings.colors.text }}",
+        "accent_color": "{{ settings.colors.accent }}",
+        "source": "uploaded",
+        "video": "shopify://files/videos/13237112-hd_1920_1080_30fps.mp4",
+        "external_video": "",
+        "video_ratio": "widescreen",
+        "external_video_alt": "",
+        "autoplay": false,
+        "muted": false,
+        "loop": false,
+        "show_controls": true,
+        "mobile_video_position": "top",
+        "mobile_text_alignment": "left",
+        "mobile_gap": 24,
+        "desktop_video_position": "right",
+        "desktop_text_alignment": "right",
+        "desktop_gap": 40,
+        "pt": 30,
         "pb": 60
+      }
+    },
+    "divider_zzViAJ": {
+      "type": "divider",
+      "name": "Divider",
+      "settings": {
+        "background_color": "{{ settings.colors.background }}",
+        "line_color": "{{ settings.colors.text }}",
+        "custom_line_opacity": false,
+        "line_opacity": 20,
+        "container_width": "site",
+        "pt": 0,
+        "pb": 0
       }
     },
     "custom_section_cVKwjJ": {
@@ -668,10 +1145,12 @@
             "accent_color": "{{ settings.colors.accent }}",
             "mobile_content_direction": "column",
             "mobile_gap": 0,
+            "mobile_alignment": "inherit",
             "desktop_content_direction": "column",
             "desktop_gap": 0,
+            "desktop_alignment": "inherit",
             "pt": 0,
-            "pb": 20,
+            "pb": 30,
             "pl": 0,
             "pr": 0
           },
@@ -682,7 +1161,7 @@
                 "subheading": "Build a flexible layout",
                 "subheading_size": "fs-sm",
                 "pt": 0,
-                "pb": 0
+                "pb": 12
               },
               "blocks": {}
             },
@@ -693,7 +1172,7 @@
                 "heading_tag": "2",
                 "heading_size": "h2",
                 "pt": 0,
-                "pb": 6
+                "pb": 0
               },
               "blocks": {}
             },
@@ -702,7 +1181,7 @@
               "settings": {
                 "text": "<p>Add, remove, and rearrange reusable blocks to create a section tailored to your content and layout needs.</p>",
                 "text_size": "fs-md",
-                "pt": 0,
+                "pt": 12,
                 "pb": 0
               },
               "blocks": {}
@@ -717,8 +1196,8 @@
         "image_BrMJEK": {
           "type": "image",
           "settings": {
-            "image_ratio": "adapt",
-            "image_width": 800,
+            "image": "shopify://shop_images/marti-sierra-FTpidUJZfkY-unsplash.jpg",
+            "image_ratio": "widescreen",
             "pt": 0,
             "pb": 0
           },
@@ -733,9 +1212,11 @@
             "accent_color": "{{ settings.colors.accent }}",
             "mobile_content_direction": "column",
             "mobile_gap": 10,
+            "mobile_alignment": "inherit",
             "desktop_content_direction": "row",
             "desktop_gap": 10,
-            "pt": 24,
+            "desktop_alignment": "inherit",
+            "pt": 30,
             "pb": 0,
             "pl": 0,
             "pr": 0
@@ -785,13 +1266,13 @@
         "pb": 60
       }
     },
-    "faq_yDtf3p": {
-      "type": "faq",
+    "email_signup_Ffm6w8": {
+      "type": "email-signup",
       "blocks": {
-        "heading_d47BVd": {
+        "heading_VRizy4": {
           "type": "heading",
           "settings": {
-            "heading": "FAQs",
+            "heading": "Join our newsletter",
             "heading_tag": "2",
             "heading_size": "h2",
             "pt": 0,
@@ -799,16 +1280,56 @@
           },
           "blocks": {}
         },
-        "text_EHpGfa": {
+        "text_8XRWyf": {
           "type": "text",
           "settings": {
-            "text": "<p>Find quick answers to common questions about ordering, delivery, and returns.</p>",
+            "text": "<p>Sign up for new arrivals, exclusive offers, inspiring updates delivered to your inbox.</p>",
             "text_size": "fs-md",
             "pt": 0,
-            "pb": 24
+            "pb": 20
           },
           "blocks": {}
         },
+        "email_signup_form_q7GU6R": {
+          "type": "email-signup-form",
+          "settings": {
+            "input_size": "lg",
+            "pt": 0,
+            "pb": 0
+          },
+          "blocks": {}
+        },
+        "social_icons_PTP4CC": {
+          "type": "social-icons",
+          "name": "Social icons",
+          "settings": {
+            "icon_size": 18,
+            "pt": 22,
+            "pb": 0
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "heading_VRizy4",
+        "text_8XRWyf",
+        "email_signup_form_q7GU6R",
+        "social_icons_PTP4CC"
+      ],
+      "name": "Email signup",
+      "settings": {
+        "background_color": "{{ settings.colors.surface }}",
+        "text_color": "{{ settings.colors.text }}",
+        "accent_color": "{{ settings.colors.accent }}",
+        "mobile_text_alignment": "center",
+        "desktop_text_alignment": "center",
+        "pt": 60,
+        "pb": 60
+      }
+    },
+    "faq_yDtf3p": {
+      "type": "faq",
+      "blocks": {
         "collapse_zjWgxx": {
           "type": "collapse",
           "settings": {
@@ -928,11 +1449,57 @@
             "pb": 0
           },
           "blocks": {}
+        },
+        "header": {
+          "type": "group",
+          "name": "Header",
+          "static": true,
+          "settings": {
+            "custom_colors": false,
+            "background_color": "{{ settings.colors.background }}",
+            "text_color": "{{ settings.colors.text }}",
+            "accent_color": "{{ settings.colors.accent }}",
+            "mobile_content_direction": "column",
+            "mobile_gap": 0,
+            "mobile_alignment": "inherit",
+            "desktop_content_direction": "column",
+            "desktop_gap": 0,
+            "desktop_alignment": "inherit",
+            "pt": 0,
+            "pb": 28,
+            "pl": 0,
+            "pr": 0
+          },
+          "blocks": {
+            "heading_d47BVd": {
+              "type": "heading",
+              "settings": {
+                "heading": "FAQs",
+                "heading_tag": "2",
+                "heading_size": "h2",
+                "pt": 0,
+                "pb": 0
+              },
+              "blocks": {}
+            },
+            "text_EHpGfa": {
+              "type": "text",
+              "settings": {
+                "text": "<p>Find quick answers to common questions about ordering, delivery, and returns.</p>",
+                "text_size": "fs-md",
+                "pt": 6,
+                "pb": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "heading_d47BVd",
+            "text_EHpGfa"
+          ]
         }
       },
       "block_order": [
-        "heading_d47BVd",
-        "text_EHpGfa",
         "collapse_zjWgxx",
         "collapse_ar7GH3",
         "collapse_AgxQYR",
@@ -947,11 +1514,22 @@
         "background_color": "{{ settings.colors.background }}",
         "text_color": "{{ settings.colors.text }}",
         "accent_color": "{{ settings.colors.accent }}",
-        "mobile_text_alignment": "center",
-        "desktop_text_alignment": "center",
         "enable_faq_structured_data": true,
         "pt": 60,
         "pb": 60
+      }
+    },
+    "divider_VaHCkb": {
+      "type": "divider",
+      "name": "Divider",
+      "settings": {
+        "background_color": "{{ settings.colors.background }}",
+        "line_color": "{{ settings.colors.text }}",
+        "custom_line_opacity": false,
+        "line_opacity": 20,
+        "container_width": "site",
+        "pt": 0,
+        "pb": 0
       }
     },
     "rich_text_Yt7LTn": {
@@ -963,7 +1541,7 @@
             "subheading": "Share a focused message",
             "subheading_size": "fs-sm",
             "pt": 0,
-            "pb": 0
+            "pb": 12
           },
           "blocks": {}
         },
@@ -974,7 +1552,7 @@
             "heading_tag": "2",
             "heading_size": "h2",
             "pt": 0,
-            "pb": 6
+            "pb": 0
           },
           "blocks": {}
         },
@@ -983,8 +1561,8 @@
           "settings": {
             "text": "<p>Present a clear message with supporting text and calls to action in a focused, easy-to-read layout.</p>",
             "text_size": "fs-md",
-            "pt": 0,
-            "pb": 24
+            "pt": 12,
+            "pb": 0
           },
           "blocks": {}
         },
@@ -997,9 +1575,11 @@
             "accent_color": "{{ settings.colors.accent }}",
             "mobile_content_direction": "column",
             "mobile_gap": 8,
+            "mobile_alignment": "inherit",
             "desktop_content_direction": "row",
             "desktop_gap": 10,
-            "pt": 0,
+            "desktop_alignment": "inherit",
+            "pt": 28,
             "pb": 0,
             "pl": 0,
             "pr": 0
@@ -1045,678 +1625,60 @@
         "accent_color": "{{ settings.colors.accent }}",
         "mobile_text_alignment": "center",
         "desktop_text_alignment": "center",
-        "pt": 60,
-        "pb": 60
-      }
-    },
-    "video_TetJLA": {
-      "type": "video",
-      "blocks": {
-        "heading_E8TGqG": {
-          "type": "heading",
-          "settings": {
-            "heading": "Video",
-            "heading_tag": "2",
-            "heading_size": "h2",
-            "pt": 0,
-            "pb": 16
-          },
-          "blocks": {}
-        },
-        "video_aNEGy6": {
-          "type": "video",
-          "settings": {
-            "source": "uploaded",
-            "external_video": "",
-            "external_video_alt": "",
-            "autoplay": false,
-            "muted": false,
-            "loop": false,
-            "show_controls": true,
-            "video_width": 1200,
-            "pt": 0,
-            "pb": 0
-          },
-          "blocks": {}
-        },
-        "text_FUMbFU": {
-          "type": "text",
-          "settings": {
-            "text": "<p>Share a product story or campaign with a short description and a clear action.</p>",
-            "text_size": "fs-md",
-            "pt": 18,
-            "pb": 20
-          },
-          "blocks": {}
-        },
-        "button_ybdH6Q": {
-          "type": "button",
-          "settings": {
-            "label": "Shop now",
-            "link": "shopify://collections/all",
-            "style": "btn-accent-solid",
-            "size": "btn-md"
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "heading_E8TGqG",
-        "video_aNEGy6",
-        "text_FUMbFU",
-        "button_ybdH6Q"
-      ],
-      "name": "Video",
-      "settings": {
-        "background_color": "{{ settings.colors.background }}",
-        "text_color": "{{ settings.colors.text }}",
-        "accent_color": "{{ settings.colors.accent }}",
-        "mobile_text_alignment": "left",
-        "desktop_text_alignment": "left",
-        "pt": 60,
-        "pb": 60
-      }
-    },
-    "columns_xVQnwK": {
-      "type": "columns",
-      "blocks": {
-        "group_UnRVfz": {
-          "type": "group",
-          "name": "Column 1",
-          "settings": {
-            "custom_colors": false,
-            "background_color": "{{ settings.colors.background }}",
-            "text_color": "{{ settings.colors.text }}",
-            "accent_color": "{{ settings.colors.accent }}",
-            "mobile_content_direction": "column",
-            "mobile_gap": 0,
-            "desktop_content_direction": "column",
-            "desktop_gap": 0,
-            "pt": 0,
-            "pb": 0,
-            "pl": 0,
-            "pr": 0
-          },
-          "blocks": {
-            "image_f7WyFx": {
-              "type": "image",
-              "name": "Image",
-              "settings": {
-                "image_ratio": "adapt",
-                "image_width": 800,
-                "pt": 0,
-                "pb": 0
-              },
-              "blocks": {}
-            },
-            "group_8XVNAF": {
-              "type": "group",
-              "name": "Group",
-              "settings": {
-                "custom_colors": false,
-                "background_color": "{{ settings.colors.background }}",
-                "text_color": "{{ settings.colors.text }}",
-                "accent_color": "{{ settings.colors.accent }}",
-                "mobile_content_direction": "column",
-                "mobile_gap": 10,
-                "desktop_content_direction": "column",
-                "desktop_gap": 10,
-                "pt": 18,
-                "pb": 16,
-                "pl": 16,
-                "pr": 16
-              },
-              "blocks": {
-                "heading_cWQ9j8": {
-                  "type": "heading",
-                  "name": "Heading",
-                  "settings": {
-                    "heading": "A thoughtful heading",
-                    "heading_tag": "3",
-                    "heading_size": "h4",
-                    "pt": 0,
-                    "pb": 0
-                  },
-                  "blocks": {}
-                },
-                "text_UamhKU": {
-                  "type": "text",
-                  "name": "Text",
-                  "settings": {
-                    "text": "<p>Share information about your brand with your customers. Share information about your brand with your customers.</p>",
-                    "text_size": "fs-md",
-                    "pt": 0,
-                    "pb": 0
-                  },
-                  "blocks": {}
-                }
-              },
-              "block_order": [
-                "heading_cWQ9j8",
-                "text_UamhKU"
-              ]
-            }
-          },
-          "block_order": [
-            "image_f7WyFx",
-            "group_8XVNAF"
-          ]
-        },
-        "group_chdhGG": {
-          "type": "group",
-          "name": "Column 2",
-          "settings": {
-            "custom_colors": true,
-            "background_color": "{{ settings.colors.surface }}",
-            "text_color": "{{ settings.colors.text }}",
-            "accent_color": "{{ settings.colors.accent }}",
-            "mobile_content_direction": "column",
-            "mobile_gap": 0,
-            "desktop_content_direction": "column",
-            "desktop_gap": 0,
-            "pt": 0,
-            "pb": 0,
-            "pl": 0,
-            "pr": 0
-          },
-          "blocks": {
-            "heading_XPBJD8": {
-              "type": "heading",
-              "settings": {
-                "heading": "Quality first",
-                "heading_tag": "2",
-                "heading_size": "h4",
-                "pt": 0,
-                "pb": 6
-              },
-              "blocks": {}
-            },
-            "text_3GDKeJ": {
-              "type": "text",
-              "settings": {
-                "text": "<p>Carefully selected materials and close attention to every detail.</p>",
-                "text_size": "fs-md",
-                "pt": 0,
-                "pb": 0
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "heading_XPBJD8",
-            "text_3GDKeJ"
-          ]
-        },
-        "group_mznWLa": {
-          "type": "group",
-          "name": "Column 3",
-          "settings": {
-            "custom_colors": false,
-            "background_color": "{{ settings.colors.background }}",
-            "text_color": "{{ settings.colors.text }}",
-            "accent_color": "{{ settings.colors.accent }}",
-            "mobile_content_direction": "column",
-            "mobile_gap": 0,
-            "desktop_content_direction": "column",
-            "desktop_gap": 0,
-            "pt": 0,
-            "pb": 0,
-            "pl": 0,
-            "pr": 0
-          },
-          "blocks": {
-            "heading_pL79Rr": {
-              "type": "heading",
-              "settings": {
-                "heading": "Customer care",
-                "heading_tag": "2",
-                "heading_size": "h4",
-                "pt": 0,
-                "pb": 6
-              },
-              "blocks": {}
-            },
-            "text_Tjm3YQ": {
-              "type": "text",
-              "settings": {
-                "text": "<p>Helpful support before, during, and after every purchase.</p>",
-                "text_size": "fs-md",
-                "pt": 0,
-                "pb": 0
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "heading_pL79Rr",
-            "text_Tjm3YQ"
-          ]
-        },
-        "header": {
-          "type": "group",
-          "static": true,
-          "settings": {
-            "custom_colors": false,
-            "background_color": "{{ settings.colors.background }}",
-            "text_color": "{{ settings.colors.text }}",
-            "accent_color": "{{ settings.colors.accent }}",
-            "mobile_content_direction": "column",
-            "mobile_gap": 10,
-            "desktop_content_direction": "column",
-            "desktop_gap": 10,
-            "pt": 0,
-            "pb": 0,
-            "pl": 0,
-            "pr": 0
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "group_UnRVfz",
-        "group_chdhGG",
-        "group_mznWLa"
-      ],
-      "name": "Columns",
-      "settings": {
-        "background_color": "{{ settings.colors.surface }}",
-        "column_background_color": "{{ settings.colors.background }}",
-        "text_color": "{{ settings.colors.text }}",
-        "accent_color": "{{ settings.colors.accent }}",
-        "mobile_columns": 1,
-        "mobile_scroll": true,
-        "mobile_text_alignment": "center",
-        "mobile_gap": 24,
-        "desktop_columns": 3,
-        "desktop_text_alignment": "center",
-        "desktop_gap": 24,
-        "pt": 60,
-        "pb": 60
-      }
-    },
-    "video_with_text_mUK9FU": {
-      "type": "video-with-text",
-      "blocks": {
-        "subheading_VbpWiG": {
-          "type": "subheading",
-          "settings": {
-            "subheading": "Pair video with content",
-            "subheading_size": "fs-sm",
-            "pt": 0,
-            "pb": 0
-          },
-          "blocks": {}
-        },
-        "heading_zcAbcY": {
-          "type": "heading",
-          "settings": {
-            "heading": "Video with text",
-            "heading_tag": "2",
-            "heading_size": "h2",
-            "pt": 0,
-            "pb": 6
-          },
-          "blocks": {}
-        },
-        "text_J8DhmV": {
-          "type": "text",
-          "settings": {
-            "text": "<p>Combine an uploaded or external video with supporting content and an optional action in a responsive two-column layout.</p>",
-            "text_size": "fs-md",
-            "pt": 0,
-            "pb": 20
-          },
-          "blocks": {}
-        },
-        "group_QUxPxt": {
-          "type": "group",
-          "settings": {
-            "custom_colors": false,
-            "background_color": "{{ settings.colors.background }}",
-            "text_color": "{{ settings.colors.text }}",
-            "accent_color": "{{ settings.colors.accent }}",
-            "mobile_content_direction": "column",
-            "mobile_gap": 8,
-            "desktop_content_direction": "row",
-            "desktop_gap": 10,
-            "pt": 0,
-            "pb": 0,
-            "pl": 0,
-            "pr": 0
-          },
-          "blocks": {
-            "button_Ni9kf6": {
-              "type": "button",
-              "settings": {
-                "label": "Learn more",
-                "link": "",
-                "style": "btn-accent-solid",
-                "size": "btn-md"
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "button_Ni9kf6"
-          ]
-        }
-      },
-      "block_order": [
-        "subheading_VbpWiG",
-        "heading_zcAbcY",
-        "text_J8DhmV",
-        "group_QUxPxt"
-      ],
-      "name": "Video with text",
-      "settings": {
-        "background_color": "{{ settings.colors.background }}",
-        "text_color": "{{ settings.colors.text }}",
-        "accent_color": "{{ settings.colors.accent }}",
-        "source": "uploaded",
-        "external_video": "",
-        "external_video_alt": "",
-        "autoplay": false,
-        "muted": false,
-        "loop": false,
-        "show_controls": true,
-        "mobile_video_position": "top",
-        "mobile_text_alignment": "left",
-        "mobile_gap": 24,
-        "desktop_video_position": "left",
-        "desktop_text_alignment": "left",
-        "desktop_gap": 40,
-        "pt": 60,
-        "pb": 60
-      }
-    },
-    "email_signup_Ffm6w8": {
-      "type": "email-signup",
-      "blocks": {
-        "heading_VRizy4": {
-          "type": "heading",
-          "settings": {
-            "heading": "Join our newsletter",
-            "heading_tag": "2",
-            "heading_size": "h2",
-            "pt": 0,
-            "pb": 6
-          },
-          "blocks": {}
-        },
-        "text_8XRWyf": {
-          "type": "text",
-          "settings": {
-            "text": "<p>Sign up for new arrivals, exclusive offers, inspiring updates delivered to your inbox.</p>",
-            "text_size": "fs-md",
-            "pt": 0,
-            "pb": 20
-          },
-          "blocks": {}
-        },
-        "email_signup_form_q7GU6R": {
-          "type": "email-signup-form",
-          "settings": {
-            "input_size": "lg",
-            "pt": 0,
-            "pb": 0
-          },
-          "blocks": {}
-        },
-        "social_icons_PTP4CC": {
-          "type": "social-icons",
-          "name": "Social icons",
-          "settings": {
-            "icon_size": 18,
-            "pt": 22,
-            "pb": 0
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "heading_VRizy4",
-        "text_8XRWyf",
-        "email_signup_form_q7GU6R",
-        "social_icons_PTP4CC"
-      ],
-      "name": "Email signup",
-      "settings": {
-        "background_color": "{{ settings.colors.surface }}",
-        "text_color": "{{ settings.colors.text }}",
-        "accent_color": "{{ settings.colors.accent }}",
-        "mobile_text_alignment": "center",
-        "desktop_text_alignment": "center",
-        "pt": 60,
-        "pb": 60
-      }
-    },
-    "columns_4nFedD": {
-      "type": "columns",
-      "blocks": {
-        "group_jhmFUk": {
-          "type": "group",
-          "name": "Column 1",
-          "settings": {
-            "custom_colors": false,
-            "background_color": "{{ settings.colors.background }}",
-            "text_color": "{{ settings.colors.text }}",
-            "accent_color": "{{ settings.colors.accent }}",
-            "mobile_content_direction": "column",
-            "mobile_gap": 0,
-            "desktop_content_direction": "column",
-            "desktop_gap": 0,
-            "pt": 24,
-            "pb": 24,
-            "pl": 24,
-            "pr": 24
-          },
-          "blocks": {
-            "icon_G3c3kt": {
-              "type": "icon",
-              "name": "Icon",
-              "settings": {
-                "icon": "shopify://shop_images/hat.png",
-                "icon_size": 32,
-                "pt": 0,
-                "pb": 18
-              },
-              "blocks": {}
-            },
-            "heading_pa8U9B": {
-              "type": "heading",
-              "settings": {
-                "heading": "Intentional design",
-                "heading_tag": "2",
-                "heading_size": "h4",
-                "pt": 0,
-                "pb": 6
-              },
-              "blocks": {}
-            },
-            "text_3Hzei4": {
-              "type": "text",
-              "settings": {
-                "text": "<p>Thoughtful products designed to solve real needs with clarity and purpose.</p>",
-                "text_size": "fs-md",
-                "pt": 0,
-                "pb": 0
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "icon_G3c3kt",
-            "heading_pa8U9B",
-            "text_3Hzei4"
-          ]
-        },
-        "group_7idWUc": {
-          "type": "group",
-          "name": "Column 2",
-          "settings": {
-            "custom_colors": true,
-            "background_color": "{{ settings.colors.background }}",
-            "text_color": "{{ settings.colors.text }}",
-            "accent_color": "{{ settings.colors.accent }}",
-            "mobile_content_direction": "column",
-            "mobile_gap": 0,
-            "desktop_content_direction": "column",
-            "desktop_gap": 0,
-            "pt": 24,
-            "pb": 24,
-            "pl": 24,
-            "pr": 24
-          },
-          "blocks": {
-            "icon_wqHDMh": {
-              "type": "icon",
-              "name": "Icon",
-              "settings": {
-                "icon": "shopify://shop_images/icon-bag.svg",
-                "icon_size": 32,
-                "pt": 0,
-                "pb": 18
-              },
-              "blocks": {}
-            },
-            "heading_dPYzJF": {
-              "type": "heading",
-              "settings": {
-                "heading": "Quality first",
-                "heading_tag": "2",
-                "heading_size": "h4",
-                "pt": 0,
-                "pb": 6
-              },
-              "blocks": {}
-            },
-            "text_LGMLpt": {
-              "type": "text",
-              "settings": {
-                "text": "<p>Carefully selected materials and close attention to every detail.</p>",
-                "text_size": "fs-md",
-                "pt": 0,
-                "pb": 0
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "icon_wqHDMh",
-            "heading_dPYzJF",
-            "text_LGMLpt"
-          ]
-        },
-        "group_Rwjkzf": {
-          "type": "group",
-          "name": "Column 3",
-          "settings": {
-            "custom_colors": false,
-            "background_color": "{{ settings.colors.background }}",
-            "text_color": "{{ settings.colors.text }}",
-            "accent_color": "{{ settings.colors.accent }}",
-            "mobile_content_direction": "column",
-            "mobile_gap": 0,
-            "desktop_content_direction": "column",
-            "desktop_gap": 0,
-            "pt": 24,
-            "pb": 24,
-            "pl": 24,
-            "pr": 24
-          },
-          "blocks": {
-            "heading_Rxxwg3": {
-              "type": "heading",
-              "settings": {
-                "heading": "Customer care",
-                "heading_tag": "2",
-                "heading_size": "h4",
-                "pt": 0,
-                "pb": 6
-              },
-              "blocks": {}
-            },
-            "text_PQKjxb": {
-              "type": "text",
-              "settings": {
-                "text": "<p>Helpful support before, during, and after every purchase.</p>",
-                "text_size": "fs-md",
-                "pt": 0,
-                "pb": 0
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "heading_Rxxwg3",
-            "text_PQKjxb"
-          ]
-        },
-        "header": {
-          "type": "group",
-          "static": true,
-          "settings": {
-            "custom_colors": false,
-            "background_color": "{{ settings.colors.background }}",
-            "text_color": "{{ settings.colors.text }}",
-            "accent_color": "{{ settings.colors.accent }}",
-            "mobile_content_direction": "column",
-            "mobile_gap": 10,
-            "desktop_content_direction": "column",
-            "desktop_gap": 10,
-            "pt": 0,
-            "pb": 0,
-            "pl": 0,
-            "pr": 0
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "group_jhmFUk",
-        "group_7idWUc",
-        "group_Rwjkzf"
-      ],
-      "name": "Columns",
-      "settings": {
-        "background_color": "{{ settings.colors.surface }}",
-        "column_background_color": "{{ settings.colors.background }}",
-        "text_color": "{{ settings.colors.text }}",
-        "accent_color": "{{ settings.colors.accent }}",
-        "mobile_columns": 1,
-        "mobile_scroll": false,
-        "mobile_text_alignment": "center",
-        "mobile_gap": 24,
-        "desktop_columns": 3,
-        "desktop_text_alignment": "center",
-        "desktop_gap": 24,
-        "pt": 60,
-        "pb": 60
+        "pt": 80,
+        "pb": 82
       }
     },
     "blog_posts_TbccFM": {
       "type": "blog-posts",
       "blocks": {
-        "heading_dQPte6": {
-          "type": "heading",
+        "header": {
+          "type": "group",
+          "name": "Header",
+          "static": true,
           "settings": {
-            "heading": "From the blog",
-            "heading_tag": "2",
-            "heading_size": "h2",
+            "custom_colors": false,
+            "background_color": "{{ settings.colors.background }}",
+            "text_color": "{{ settings.colors.text }}",
+            "accent_color": "{{ settings.colors.accent }}",
+            "mobile_content_direction": "column",
+            "mobile_gap": 0,
+            "mobile_alignment": "inherit",
+            "desktop_content_direction": "column",
+            "desktop_gap": 0,
+            "desktop_alignment": "inherit",
             "pt": 0,
-            "pb": 6
+            "pb": 28,
+            "pl": 0,
+            "pr": 0
           },
-          "blocks": {}
-        },
-        "text_d4aL4z": {
-          "type": "text",
-          "settings": {
-            "text": "<p>Discover useful guides, fresh ideas, and stories from our latest articles.</p>",
-            "text_size": "fs-md",
-            "pt": 0,
-            "pb": 0
+          "blocks": {
+            "heading_dQPte6": {
+              "type": "heading",
+              "settings": {
+                "heading": "From the blog",
+                "heading_tag": "2",
+                "heading_size": "h2",
+                "pt": 0,
+                "pb": 0
+              },
+              "blocks": {}
+            },
+            "text_d4aL4z": {
+              "type": "text",
+              "settings": {
+                "text": "<p>Discover useful guides, fresh ideas, and stories from our latest articles.</p>",
+                "text_size": "fs-md",
+                "pt": 6,
+                "pb": 0
+              },
+              "blocks": {}
+            }
           },
-          "blocks": {}
+          "block_order": [
+            "heading_dQPte6",
+            "text_d4aL4z"
+          ]
         },
         "article-card": {
           "type": "article-card",
@@ -1796,10 +1758,6 @@
           ]
         }
       },
-      "block_order": [
-        "heading_dQPte6",
-        "text_d4aL4z"
-      ],
       "name": "Blog posts",
       "settings": {
         "blog": "news",
@@ -1807,8 +1765,6 @@
         "background_color": "{{ settings.colors.surface }}",
         "text_color": "{{ settings.colors.text }}",
         "accent_color": "{{ settings.colors.accent }}",
-        "header_mobile_text_alignment": "left",
-        "header_desktop_text_alignment": "left",
         "layout": "carousel",
         "carousel_partial_slide_mobile": true,
         "carousel_show_navigation": true,
@@ -1829,19 +1785,20 @@
     "hero_epRUea",
     "featured_collection_zBQiyp",
     "collection_list_6dLrBL",
+    "image_xRkeM4",
+    "divider_CpGVPV",
+    "video_MJhzDH",
     "contact_form_jN7QXd",
     "liquid_html_6ttYfG",
-    "image_4hw3MC",
-    "video_DJLR97",
+    "columns_ADQtND",
     "image_with_text_CMaCke",
-    "custom_section_cVKwjJ",
-    "faq_yDtf3p",
-    "rich_text_Yt7LTn",
-    "video_TetJLA",
-    "columns_xVQnwK",
     "video_with_text_mUK9FU",
+    "divider_zzViAJ",
+    "custom_section_cVKwjJ",
     "email_signup_Ffm6w8",
-    "columns_4nFedD",
+    "faq_yDtf3p",
+    "divider_VaHCkb",
+    "rich_text_Yt7LTn",
     "blog_posts_TbccFM"
   ]
 }

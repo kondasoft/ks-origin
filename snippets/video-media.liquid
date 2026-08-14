@@ -16,6 +16,7 @@ Renders uploaded or external video media with poster and deferred-loading behavi
 @param {string} [loading] - The media loading behavior: eager or lazy.
 @param {number} [section_index] - The section position used for deferred autoplay.
 @param {string} [placeholder_svg] - The Shopify placeholder SVG name.
+@param {string} [aspect_ratio] - An optional fixed aspect ratio name; adapt preserves the media ratio.
 
 @example
 {% render 'video-media', source: 'uploaded', uploaded_video: section.settings.video, media_width: 1200 %}
@@ -65,6 +66,21 @@ Renders uploaded or external video media with poster and deferred-loading behavi
     assign has_video = true
     assign video_preview_image = cover_image
   endif
+
+  assign video_display_aspect_ratio = video_intrinsic_width | append: ' / ' | append: video_intrinsic_height
+
+  case aspect_ratio
+    when 'square'
+      assign video_display_aspect_ratio = '1 / 1'
+    when 'landscape'
+      assign video_display_aspect_ratio = '4 / 3'
+    when 'widescreen'
+      assign video_display_aspect_ratio = '16 / 9'
+    when 'portrait'
+      assign video_display_aspect_ratio = '3 / 4'
+    when 'vertical'
+      assign video_display_aspect_ratio = '9 / 16'
+  endcase
 
   if autoplay
     if section_index > 1
@@ -145,7 +161,7 @@ Renders uploaded or external video media with poster and deferred-loading behavi
 
 <div
   class="video-media"
-  style="--video-aspect-ratio: {{ video_intrinsic_width }} / {{ video_intrinsic_height }};"
+  style="--video-aspect-ratio: {{ video_display_aspect_ratio }};"
 >
   {% if has_video and defer_video %}
     <deferred-video

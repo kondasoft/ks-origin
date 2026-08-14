@@ -38,7 +38,9 @@
         --desktop-gap: {{ section.settings.desktop_gap | divided_by: 16.0 | append: 'em' }};
       "
     >
-      <div class="video-with-text-media">
+      <div
+        class="video-with-text-media{% unless section.settings.video_ratio == 'adapt' %} aspect-ratio aspect-ratio-{{ section.settings.video_ratio }}{% endunless %}"
+      >
         {% render 'video-media',
           source: section.settings.source,
           uploaded_video: section.settings.video,
@@ -52,7 +54,8 @@
           media_width: 1200,
           sizes: video_sizes,
           loading: video_loading,
-          section_index: section.index
+          section_index: section.index,
+          aspect_ratio: section.settings.video_ratio
         %}
       </div>
 
@@ -117,6 +120,20 @@
       "accept": ["youtube", "vimeo"],
       "info": "Supports YouTube and Vimeo URLs.",
       "visible_if": "{{ section.settings.source == 'url' }}"
+    },
+    {
+      "type": "select",
+      "id": "video_ratio",
+      "label": "Aspect ratio",
+      "options": [
+        { "group": "Adapt", "value": "adapt", "label": "Adapt to video" },
+        { "group": "Square", "value": "square", "label": "Square (1:1)" },
+        { "group": "Horizontal", "value": "landscape", "label": "Landscape (4:3)" },
+        { "group": "Horizontal", "value": "widescreen", "label": "Widescreen (16:9)" },
+        { "group": "Vertical", "value": "portrait", "label": "Portrait (3:4)" },
+        { "group": "Vertical", "value": "vertical", "label": "Vertical (9:16)" }
+      ],
+      "default": "adapt"
     },
     {
       "type": "image_picker",
@@ -270,21 +287,22 @@
         {
           "type": "subheading",
           "settings": {
-            "subheading": "Pair video with content"
+            "subheading": "Pair video with content",
+            "pb": 12
           }
         },
         {
           "type": "heading",
           "settings": {
             "heading": "Video with text",
-            "pb": 6
+            "pb": 12
           }
         },
         {
           "type": "text",
           "settings": {
             "text": "<p>Combine an uploaded or external video with supporting content and an optional action in a responsive two-column layout.</p>",
-            "pb": 20
+            "pb": 26
           }
         },
         {

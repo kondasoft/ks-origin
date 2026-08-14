@@ -16,6 +16,8 @@
     {% endif %}
   "
   data-custom-colors="{{ block.settings.custom_colors }}"
+  data-mobile-alignment="{{ block.settings.mobile_alignment }}"
+  data-desktop-alignment="{{ block.settings.desktop_alignment }}"
   {{ block.shopify_attributes }}
 >
   {% content_for 'blocks' %}
@@ -75,12 +77,24 @@
     {
       "type": "range",
       "id": "mobile_gap",
-      "label": "Mobile gap",
+      "label": "Gap",
       "min": 0,
       "max": 40,
       "step": 2,
       "unit": "px",
       "default": 10
+    },
+    {
+      "type": "select",
+      "id": "mobile_alignment",
+      "label": "Alignment",
+      "options": [
+        { "value": "inherit", "label": "Inherit" },
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "inherit"
     },
     {
       "type": "header",
@@ -99,12 +113,24 @@
     {
       "type": "range",
       "id": "desktop_gap",
-      "label": "Desktop gap",
+      "label": "Gap",
       "min": 0,
       "max": 40,
       "step": 2,
       "unit": "px",
       "default": 10
+    },
+    {
+      "type": "select",
+      "id": "desktop_alignment",
+      "label": "Alignment",
+      "options": [
+        { "value": "inherit", "label": "Inherit" },
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "inherit"
     },
     {
       "type": "header",

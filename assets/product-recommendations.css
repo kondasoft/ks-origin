@@ -10,10 +10,6 @@
   background-color: rgb(var(--color-background));
 }
 
-.product-recommendations-header {
-  margin-bottom: 1.75rem;
-}
-
 .product-recommendations-grid {
   display: grid;
   grid-template-columns: repeat(var(--mobile-columns), minmax(0, 1fr));
@@ -74,10 +70,6 @@
 }
 
 @media (min-width: 1200px) {
-  .product-recommendations-header {
-    margin-bottom: 2rem;
-  }
-
   .product-recommendations-grid {
     grid-template-columns: repeat(var(--desktop-columns), minmax(0, 1fr));
     gap: 2.5rem 1.5rem;

@@ -12,26 +12,53 @@
     "faq_DEgyQk": {
       "type": "faq",
       "blocks": {
-        "heading_d3B4V9": {
-          "type": "heading",
+        "header": {
+          "type": "group",
+          "name": "Header",
+          "static": true,
           "settings": {
-            "heading": "FAQs",
-            "heading_tag": "2",
-            "heading_size": "h2",
+            "custom_colors": false,
+            "background_color": "{{ settings.colors.background }}",
+            "text_color": "{{ settings.colors.text }}",
+            "accent_color": "{{ settings.colors.accent }}",
+            "mobile_content_direction": "column",
+            "mobile_gap": 0,
+            "mobile_alignment": "inherit",
+            "desktop_content_direction": "column",
+            "desktop_gap": 0,
+            "desktop_alignment": "inherit",
             "pt": 0,
-            "pb": 0
+            "pb": 28,
+            "pl": 0,
+            "pr": 0
           },
-          "blocks": {}
-        },
-        "text_RLfqpY": {
-          "type": "text",
-          "settings": {
-            "text": "<p>Find quick answers to common questions about ordering, delivery, and returns.</p>",
-            "text_size": "fs-md",
-            "pt": 0,
-            "pb": 30
+          "blocks": {
+            "heading_d3B4V9": {
+              "type": "heading",
+              "settings": {
+                "heading": "FAQs",
+                "heading_tag": "2",
+                "heading_size": "h2",
+                "pt": 0,
+                "pb": 0
+              },
+              "blocks": {}
+            },
+            "text_RLfqpY": {
+              "type": "text",
+              "settings": {
+                "text": "<p>Find quick answers to common questions about ordering, delivery, and returns.</p>",
+                "text_size": "fs-md",
+                "pt": 6,
+                "pb": 0
+              },
+              "blocks": {}
+            }
           },
-          "blocks": {}
+          "block_order": [
+            "heading_d3B4V9",
+            "text_RLfqpY"
+          ]
         },
         "collapse_XiyJd7": {
           "type": "collapse",
@@ -123,8 +150,6 @@
         }
       },
       "block_order": [
-        "heading_d3B4V9",
-        "text_RLfqpY",
         "collapse_XiyJd7",
         "collapse_mtTMTy",
         "collapse_BYPbb9",
@@ -139,8 +164,6 @@
         "background_color": "{{ settings.colors.background }}",
         "text_color": "{{ settings.colors.text }}",
         "accent_color": "{{ settings.colors.accent }}",
-        "mobile_text_alignment": "left",
-        "desktop_text_alignment": "left",
         "enable_faq_structured_data": true,
         "pt": 60,
         "pb": 60

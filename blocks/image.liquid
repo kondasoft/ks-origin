@@ -7,8 +7,14 @@
   endunless
 
   assign placeholder_class = image_class | append: ' placeholder-svg'
-  assign image_render_width = block.settings.image_width | times: 2
-  assign image_sizes = 'min(' | append: block.settings.image_width | append: 'px, 100vw)'
+  assign image_render_width = 3200
+  assign image_sizes = '100vw'
+
+  if section.settings.mobile_columns != blank and section.settings.desktop_columns != blank
+    assign mobile_image_size = 100.0 | divided_by: section.settings.mobile_columns | append: 'vw'
+    assign desktop_image_size = 100.0 | divided_by: section.settings.desktop_columns | append: 'vw'
+    assign image_sizes = '(min-width: 1200px) ' | append: desktop_image_size | append: ', ' | append: mobile_image_size
+  endif
 
   if section.index == 1
     assign image_loading = 'eager'
@@ -20,7 +26,6 @@
 <div
   class="image-block block-spacing"
   style="
-    --image-width: {{ block.settings.image_width | append: 'px' }};
     --pt: {{ block.settings.pt | divided_by: 16.0 | append: 'em' }};
     --pb: {{ block.settings.pb | divided_by: 16.0 | append: 'em' }};
   "
@@ -65,16 +70,6 @@
         { "group": "Vertical", "value": "vertical", "label": "Vertical (9:16)" }
       ],
       "default": "adapt"
-    },
-    {
-      "type": "range",
-      "id": "image_width",
-      "label": "Width",
-      "min": 100,
-      "max": 2400,
-      "step": 50,
-      "unit": "px",
-      "default": 800
     },
     {
       "type": "header",

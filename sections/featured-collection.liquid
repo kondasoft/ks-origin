@@ -25,15 +25,7 @@
   data-section-css="{{ 'featured-collection.css' | asset_url }}, {{ 'product-card.css' | asset_url }}"
 >
   <div class="container {{ settings.container_width }}">
-    <div
-      class="featured-collection-header responsive-text-alignment"
-      data-mobile-text-alignment="{{ section.settings.header_mobile_text_alignment }}"
-      data-desktop-text-alignment="{{ section.settings.header_desktop_text_alignment }}"
-      style="
-        --mobile-text-alignment: {{ section.settings.header_mobile_text_alignment }};
-        --desktop-text-alignment: {{ section.settings.header_desktop_text_alignment }};
-      "
-    >
+    <div class="featured-collection-header">
       {% content_for 'block', type: 'group', id: 'header' %}
     </div>
 
@@ -182,22 +174,6 @@
       "id": "accent_color",
       "label": "Accent color",
       "default": "{{ settings.colors.accent }}"
-    },
-    {
-      "type": "header",
-      "content": "Header"
-    },
-    {
-      "type": "text_alignment",
-      "id": "header_mobile_text_alignment",
-      "label": "Mobile text alignment",
-      "default": "left"
-    },
-    {
-      "type": "text_alignment",
-      "id": "header_desktop_text_alignment",
-      "label": "Desktop text alignment",
-      "default": "left"
     },
     {
       "type": "header",
@@ -356,10 +332,12 @@
           "settings": {
             "mobile_content_direction": "column",
             "mobile_gap": 0,
+            "mobile_alignment": "inherit",
             "desktop_content_direction": "column",
             "desktop_gap": 0,
+            "desktop_alignment": "inherit",
             "pt": 0,
-            "pb": 0,
+            "pb": 28,
             "pl": 0,
             "pr": 0
           },
@@ -371,15 +349,15 @@
                 "heading_tag": "2",
                 "heading_size": "h2",
                 "pt": 0,
-                "pb": 6
+                "pb": 0
               }
             },
             {
               "type": "text",
               "settings": {
-                "text": "<p>Explore featured new arrivals, customer favorites, and everyday essentials.</p>",
+                "text": "<p>Explore featured new arrivals, customer favorites, and everyday essentials</p>",
                 "text_size": "fs-md",
-                "pt": 0,
+                "pt": 6,
                 "pb": 0
               }
             }

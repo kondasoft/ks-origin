@@ -16,9 +16,6 @@
     assign has_recommendations = true
   endif
 
-  capture header_content
-    content_for 'blocks'
-  endcapture
 %}
 
 <script src="{{ 'product-recommendations.js' | asset_url }}" type="module" fetchpriority="low"></script>
@@ -50,19 +47,9 @@
   {% if recommendations.performed and has_recommendations == false %}hidden{% endif %}
 >
   <div class="container {{ settings.container_width }}">
-    {% if header_content != blank %}
-      <div
-        class="product-recommendations-header responsive-text-alignment"
-        data-mobile-text-alignment="{{ section.settings.header_mobile_text_alignment }}"
-        data-desktop-text-alignment="{{ section.settings.header_desktop_text_alignment }}"
-        style="
-          --mobile-text-alignment: {{ section.settings.header_mobile_text_alignment }};
-          --desktop-text-alignment: {{ section.settings.header_desktop_text_alignment }};
-        "
-      >
-        {{ header_content }}
-      </div>
-    {% endif %}
+    <div class="product-recommendations-header">
+      {% content_for 'block', type: 'group', id: 'header' %}
+    </div>
 
     {% if recommendations.performed %}
       {% if layout == 'carousel' %}
@@ -216,22 +203,6 @@
     },
     {
       "type": "header",
-      "content": "Header"
-    },
-    {
-      "type": "text_alignment",
-      "id": "header_mobile_text_alignment",
-      "label": "Mobile text alignment",
-      "default": "left"
-    },
-    {
-      "type": "text_alignment",
-      "id": "header_desktop_text_alignment",
-      "label": "Desktop text alignment",
-      "default": "left"
-    },
-    {
-      "type": "header",
       "content": "Layout"
     },
     {
@@ -338,14 +309,34 @@
       "category": "Products",
       "blocks": [
         {
-          "type": "heading",
+          "type": "group",
+          "id": "header",
+          "static": true,
+          "name": "Header",
           "settings": {
-            "heading": "You may also like",
-            "heading_tag": "2",
-            "heading_size": "h2",
+            "mobile_content_direction": "column",
+            "mobile_gap": 0,
+            "mobile_alignment": "inherit",
+            "desktop_content_direction": "column",
+            "desktop_gap": 0,
+            "desktop_alignment": "inherit",
             "pt": 0,
-            "pb": 0
-          }
+            "pb": 28,
+            "pl": 0,
+            "pr": 0
+          },
+          "blocks": [
+            {
+              "type": "heading",
+              "settings": {
+                "heading": "You may also like",
+                "heading_tag": "2",
+                "heading_size": "h2",
+                "pt": 0,
+                "pb": 0
+              }
+            }
+          ]
         },
         {
           "type": "product-card",

@@ -1,5 +1,16 @@
+{% liquid
+  assign container_class = 'image-section-content'
+
+  if section.settings.container_width == 'site'
+    assign container_class = container_class | append: ' container ' | append: settings.container_width
+  elsif section.settings.container_width == 'narrow'
+    assign container_class = container_class | append: ' container container-content'
+  endif
+%}
+
 <div
   class="image-section responsive-text-alignment section-spacing"
+  data-container-width="{{ section.settings.container_width }}"
   data-mobile-text-alignment="{{ section.settings.mobile_text_alignment }}"
   data-desktop-text-alignment="{{ section.settings.desktop_text_alignment }}"
   style="
@@ -14,7 +25,7 @@
     background-color: rgb(var(--color-background));
   "
 >
-  <div class="container {{ settings.container_width }}">
+  <div class="{{ container_class }}">
     {% content_for 'blocks' %}
   </div>
 </div>
@@ -49,6 +60,17 @@
     {
       "type": "header",
       "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "container_width",
+      "label": "Container",
+      "options": [
+        { "value": "full", "label": "Full width" },
+        { "value": "site", "label": "Site container" },
+        { "value": "narrow", "label": "Narrow container" }
+      ],
+      "default": "site"
     },
     {
       "type": "text_alignment",
@@ -111,6 +133,9 @@
     {
       "name": "Image",
       "category": "Image",
+      "settings": {
+        "container_width": "site"
+      },
       "blocks": [
         {
           "type": "heading",
@@ -118,14 +143,13 @@
             "heading": "Image",
             "heading_tag": "2",
             "heading_size": "h2",
-            "pb": 16
+            "pb": 24
           }
         },
         {
           "type": "image",
           "settings": {
-            "image_ratio": "widescreen",
-            "image_width": 1200
+            "image_ratio": "widescreen"
           }
         },
         {

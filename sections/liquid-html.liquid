@@ -10,6 +10,8 @@
 
 <div
   class="liquid-html responsive-text-alignment section-spacing"
+  data-mobile-text-alignment="{{ section.settings.mobile_text_alignment }}"
+  data-desktop-text-alignment="{{ section.settings.desktop_text_alignment }}"
   style="
     --color-background: {{ section.settings.background_color.red }} {{ section.settings.background_color.green }} {{ section.settings.background_color.blue }};
     --color-text: {{ section.settings.text_color.red }} {{ section.settings.text_color.green }} {{ section.settings.text_color.blue }};
@@ -23,6 +25,8 @@
   "
 >
   <div class="{{ container_class }}">
+    {% content_for 'block', type: 'group', id: 'header' %}
+
     {{ section.settings.custom_liquid }}
   </div>
 </div>
@@ -116,13 +120,62 @@
       "default": 60
     }
   ],
+  "blocks": [
+    {
+      "type": "@theme"
+    },
+    {
+      "type": "@app"
+    }
+  ],
   "disabled_on": {
     "groups": ["header", "footer"]
   },
   "presets": [
     {
       "name": "Liquid / HTML",
-      "category": "Custom"
+      "category": "Custom",
+      "blocks": [
+        {
+          "type": "group",
+          "id": "header",
+          "static": true,
+          "name": "Header",
+          "settings": {
+            "mobile_content_direction": "column",
+            "mobile_gap": 0,
+            "mobile_alignment": "inherit",
+            "desktop_content_direction": "column",
+            "desktop_gap": 0,
+            "desktop_alignment": "inherit",
+            "pt": 0,
+            "pb": 28,
+            "pl": 0,
+            "pr": 0
+          },
+          "blocks": [
+            {
+              "type": "heading",
+              "settings": {
+                "heading": "Liquid / HTML",
+                "heading_tag": "2",
+                "heading_size": "h2",
+                "pt": 0,
+                "pb": 0
+              }
+            },
+            {
+              "type": "text",
+              "settings": {
+                "text": "<p>Add custom Liquid or HTML to create flexible storefront content.</p>",
+                "text_size": "fs-md",
+                "pt": 6,
+                "pb": 0
+              }
+            }
+          ]
+        }
+      ]
     }
   ]
 }

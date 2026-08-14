@@ -400,16 +400,42 @@
     "recommendations": {
       "type": "product-recommendations",
       "blocks": {
-        "heading": {
-          "type": "heading",
+        "header": {
+          "type": "group",
+          "name": "Header",
+          "static": true,
           "settings": {
-            "heading": "You may also like",
-            "heading_tag": "2",
-            "heading_size": "h2",
+            "custom_colors": false,
+            "background_color": "{{ settings.colors.background }}",
+            "text_color": "{{ settings.colors.text }}",
+            "accent_color": "{{ settings.colors.accent }}",
+            "mobile_content_direction": "column",
+            "mobile_gap": 0,
+            "mobile_alignment": "inherit",
+            "desktop_content_direction": "column",
+            "desktop_gap": 0,
+            "desktop_alignment": "inherit",
             "pt": 0,
-            "pb": 0
+            "pb": 28,
+            "pl": 0,
+            "pr": 0
           },
-          "blocks": {}
+          "blocks": {
+            "heading": {
+              "type": "heading",
+              "settings": {
+                "heading": "You may also like",
+                "heading_tag": "2",
+                "heading_size": "h2",
+                "pt": 0,
+                "pb": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "heading"
+          ]
         },
         "product-card": {
           "type": "product-card",
@@ -497,17 +523,12 @@
           ]
         }
       },
-      "block_order": [
-        "heading"
-      ],
       "settings": {
         "recommendation_type": "related",
         "products_to_show": 8,
         "background_color": "{{ settings.colors.background }}",
         "text_color": "{{ settings.colors.text }}",
         "accent_color": "{{ settings.colors.accent }}",
-        "header_mobile_text_alignment": "left",
-        "header_desktop_text_alignment": "left",
         "layout": "carousel",
         "carousel_partial_slide_mobile": true,
         "carousel_show_navigation": true,

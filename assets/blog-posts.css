@@ -9,10 +9,6 @@
   background-color: rgb(var(--color-background));
 }
 
-.blog-posts-header {
-  margin-bottom: 1.75rem;
-}
-
 .blog-posts-grid {
   display: grid;
   grid-template-columns: repeat(var(--mobile-columns), minmax(0, 1fr));
@@ -43,10 +39,6 @@
 }
 
 @media (min-width: 1200px) {
-  .blog-posts-header {
-    margin-bottom: 2rem;
-  }
-
   .blog-posts-grid {
     grid-template-columns: repeat(var(--desktop-columns), minmax(0, 1fr));
     gap: 2.5rem 1.5rem;
