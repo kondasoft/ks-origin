@@ -39,6 +39,14 @@ Developers who want the source code can clone this repository instead. Continue 
 - AJAX-powered collection, product, and cart interactions
 - Clear conventions designed for custom development and AI-assisted extension
 
+## Built for agentic commerce
+
+![KS Origin uses Shopify storefront events and actions to connect with AI shopping agents](https://cdn.shopify.com/s/files/1/0288/2872/9453/files/ks-origin-ai-shopping-agents.png?v=1786804270)
+
+KS Origin uses Shopify's latest storefront standards so apps and AI shopping agents can work
+naturally with your store. They can understand key shopping activity and perform actions such as
+updating the cart, while customers continue to see the storefront experience you designed.
+
 ## Storefront features
 
 KS Origin includes the essential commerce experiences needed for a modern Shopify storefront.
