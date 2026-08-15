@@ -24,6 +24,7 @@
         "product-main-title": {
           "type": "_product-main-title",
           "settings": {
+            "heading_tag": "1",
             "heading_size": "h2",
             "pt": 0,
             "pb": 8
@@ -386,10 +387,10 @@
             "reviews_to_display": "",
             "default_tab": "automatic",
             "only_photos": false,
-            "aggregated": false,
+            "aggregated": true,
             "limit": 20,
             "hide_thumbnails": false,
-            "maxwidth": 1080,
+            "maxwidth": 1040,
             "is_sample": true
           }
         }

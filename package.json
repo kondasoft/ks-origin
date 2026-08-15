@@ -1,6 +1,7 @@
 {
   "name": "ks-origin",
   "private": true,
+  "license": "MIT",
   "scripts": {
     "dev": "dotenv -e .env -- shopify theme dev --theme-editor-sync",
     "lint": "eslint \"**/*.{js,liquid}\"",

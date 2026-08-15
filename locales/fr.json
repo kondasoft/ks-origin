@@ -53,15 +53,17 @@
       "copied": "Copié"
     },
     "localization": {
-      "country": "Pays",
-      "countries": "Pays",
-      "filter_countries": "Filtrer les pays",
+      "country": "Pays/région",
+      "countries": "Pays et régions",
+      "choose_location": "Choisissez votre pays ou région",
+      "filter_countries": "Rechercher un pays ou une région",
       "country_results": {
-        "one": "{{ count }} pays trouvé",
-        "other": "{{ count }} pays trouvés"
+        "one": "{{ count }} résultat trouvé",
+        "other": "{{ count }} résultats trouvés"
       },
       "language": "Langue",
       "languages": "Langues",
+      "choose_language": "Choisissez votre langue",
       "no_results": "Aucun résultat trouvé"
     },
     "contact": {
