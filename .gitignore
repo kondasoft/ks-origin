@@ -36,6 +36,7 @@ Thumbs.db
 # Build and cache output
 dist/
 build/
+/ks-origin-*.zip
 .cache/
 .parcel-cache/
 .eslintcache

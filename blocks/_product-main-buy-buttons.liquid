@@ -31,92 +31,104 @@
   "
   {{ block.shopify_attributes }}
 >
-  <theme-product-form data-source="product-main">
-    {% form 'product', product,
-      id: product_form_id,
-      class: 'product-main-buy-buttons-form'
-    %}
-      <p class="alert alert-with-icon alert-warning" data-cart-inventory-message{% unless all_inventory_in_cart %} hidden{% endunless %}>
-        {{ 'products.form.all_inventory_in_cart' | t }}
-      </p>
+  {% if product == blank %}
+    <div class="product-main-buy-buttons-primary">
+      <button
+        type="button"
+        class="btn {{ block.settings.add_to_cart_size }} {{ block.settings.button_style }}"
+        disabled
+      >
+        {{ 'products.form.add_to_cart' | t }}
+      </button>
+    </div>
+  {% else %}
+    <theme-product-form data-source="product-main">
+      {% form 'product', product,
+        id: product_form_id,
+        class: 'product-main-buy-buttons-form'
+      %}
+        <p class="alert alert-with-icon alert-warning" data-cart-inventory-message{% unless all_inventory_in_cart %} hidden{% endunless %}>
+          {{ 'products.form.all_inventory_in_cart' | t }}
+        </p>
 
-      <input type="hidden" name="id" value="{{ selected_variant.id }}" data-product-variant-input>
+        <input type="hidden" name="id" value="{{ selected_variant.id }}" data-product-variant-input>
 
-      {% if show_gift_card_recipient_form %}
-        {% render 'gift-card-recipient-form', form: form, block: block %}
-      {% endif %}
-
-      <div class="product-main-buy-buttons-primary">
-        {% if block.settings.show_quantity %}
-          <quantity-input class="quantity-input" role="group" aria-label="{{ 'products.quantity.label' | t }}">
-            <button
-              type="button"
-              class="quantity-input-button quantity-input-button-decrease"
-              aria-label="{{ 'products.quantity.decrease' | t }}"
-              data-quantity-decrease
-              disabled
-            >
-              {% render 'svg-icons', icon: 'minus', icon_size: 16 %}
-            </button>
-            <input
-              class="input"
-              type="number"
-              name="quantity"
-              value="1"
-              min="1"
-              step="1"
-              {% if quantity_max != blank %}max="{{ quantity_max }}"{% endif %}
-              {% unless selected_variant.available %}disabled{% endunless %}
-              aria-label="{{ 'products.quantity.label' | t }}"
-              data-quantity-input
-            >
-            <button
-              type="button"
-              class="quantity-input-button quantity-input-button-increase"
-              aria-label="{{ 'products.quantity.increase' | t }}"
-              data-quantity-increase
-              {% if quantity_max == 1 %}disabled{% endif %}
-            >
-              {% render 'svg-icons', icon: 'plus', icon_size: 16 %}
-            </button>
-          </quantity-input>
+        {% if show_gift_card_recipient_form %}
+          {% render 'gift-card-recipient-form', form: form, block: block %}
         {% endif %}
 
-        <button
-          type="submit"
-          name="add"
-          class="btn {{ block.settings.add_to_cart_size }} {{ block.settings.button_style }}"
-          data-add-to-cart-button
-          {% unless selected_variant.available %}disabled{% endunless %}
-        >
-          <span data-add-to-cart-text>
-            {% if selected_variant.available %}
-              {{ 'products.form.add_to_cart' | t }}
-            {% else %}
-              {{ 'products.form.sold_out' | t }}
-            {% endif %}
-          </span>
-        </button>
-      </div>
+        <div class="product-main-buy-buttons-primary">
+          {% if block.settings.show_quantity %}
+            <quantity-input class="quantity-input" role="group" aria-label="{{ 'products.quantity.label' | t }}">
+              <button
+                type="button"
+                class="quantity-input-button quantity-input-button-decrease"
+                aria-label="{{ 'products.quantity.decrease' | t }}"
+                data-quantity-decrease
+                disabled
+              >
+                {% render 'svg-icons', icon: 'minus', icon_size: 16 %}
+              </button>
+              <input
+                class="input"
+                type="number"
+                name="quantity"
+                value="1"
+                min="1"
+                step="1"
+                {% if quantity_max != blank %}max="{{ quantity_max }}"{% endif %}
+                {% unless selected_variant.available %}disabled{% endunless %}
+                aria-label="{{ 'products.quantity.label' | t }}"
+                data-quantity-input
+              >
+              <button
+                type="button"
+                class="quantity-input-button quantity-input-button-increase"
+                aria-label="{{ 'products.quantity.increase' | t }}"
+                data-quantity-increase
+                {% if quantity_max == 1 %}disabled{% endif %}
+              >
+                {% render 'svg-icons', icon: 'plus', icon_size: 16 %}
+              </button>
+            </quantity-input>
+          {% endif %}
 
-      {% if block.settings.show_buy_it_now and show_gift_card_recipient_form == false %}
-        <theme-buy-it-now data-cart-url="{{ routes.cart_url }}">
-          <a
-            href="{{ routes.cart_url }}/{{ selected_variant.id }}:1"
-            class="btn {{ block.settings.buy_it_now_size }} {{ block.settings.buy_it_now_style }}"
-            data-buy-it-now
-            {% unless selected_variant.available %}aria-disabled="true" tabindex="-1"{% endunless %}
+          <button
+            type="submit"
+            name="add"
+            class="btn {{ block.settings.add_to_cart_size }} {{ block.settings.button_style }}"
+            data-add-to-cart-button
+            {% unless selected_variant.available %}disabled{% endunless %}
           >
-            {{ 'products.form.buy_it_now' | t }}
-          </a>
-        </theme-buy-it-now>
-      {% endif %}
+            <span data-add-to-cart-text>
+              {% if selected_variant.available %}
+                {{ 'products.form.add_to_cart' | t }}
+              {% else %}
+                {{ 'products.form.sold_out' | t }}
+              {% endif %}
+            </span>
+          </button>
+        </div>
 
-      {% if block.settings.show_dynamic_checkout and selected_variant.available %}
-        {{ form | payment_button }}
-      {% endif %}
-    {% endform %}
-  </theme-product-form>
+        {% if block.settings.show_buy_it_now and show_gift_card_recipient_form == false %}
+          <theme-buy-it-now data-cart-url="{{ routes.cart_url }}">
+            <a
+              href="{{ routes.cart_url }}/{{ selected_variant.id }}:1"
+              class="btn {{ block.settings.buy_it_now_size }} {{ block.settings.buy_it_now_style }}"
+              data-buy-it-now
+              {% unless selected_variant.available %}aria-disabled="true" tabindex="-1"{% endunless %}
+            >
+              {{ 'products.form.buy_it_now' | t }}
+            </a>
+          </theme-buy-it-now>
+        {% endif %}
+
+        {% if block.settings.show_dynamic_checkout and selected_variant.available %}
+          {{ form | payment_button }}
+        {% endif %}
+      {% endform %}
+    </theme-product-form>
+  {% endif %}
 </div>
 
 {% schema %}

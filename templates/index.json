@@ -728,7 +728,6 @@
           "type": "video",
           "settings": {
             "source": "uploaded",
-            "video": "shopify://files/videos/13237112-hd_1920_1080_30fps.mp4",
             "external_video": "",
             "external_video_alt": "",
             "autoplay": false,
@@ -995,7 +994,6 @@
       ],
       "name": "Featured product",
       "settings": {
-        "product": "watch-series-1",
         "gallery_media_ratio": "adapt",
         "gallery_transition": "slide",
         "gallery_show_navigation": true,
@@ -1255,7 +1253,6 @@
         "text_color": "{{ settings.colors.text }}",
         "accent_color": "{{ settings.colors.accent }}",
         "source": "uploaded",
-        "video": "shopify://files/videos/13237112-hd_1920_1080_30fps.mp4",
         "external_video": "",
         "video_ratio": "widescreen",
         "external_video_alt": "",
