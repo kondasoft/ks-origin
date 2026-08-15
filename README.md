@@ -14,6 +14,20 @@ work is done by a developer or with an AI coding agent.
 
 Demo password: `ks`
 
+## Download and install
+
+The easiest way to install KS Origin is to download the free, Shopify-ready package from
+[KondaSoft](https://www.kondasoft.com/collections/shopify-themes/products/ks-origin):
+
+1. Add KS Origin to your cart and complete the free checkout.
+2. Download the theme `.zip` file from your order. Do not extract it.
+3. In your Shopify admin, go to **Online Store → Themes**.
+4. Choose **Import theme → Upload zip file**, then select the downloaded package.
+5. Open the theme editor to customize and preview the theme before publishing it.
+
+Developers who want the source code can clone this repository instead. Continue to
+[Local development](#local-development) for setup instructions.
+
 ## Highlights
 
 - Mobile-first, modular architecture
@@ -26,6 +40,9 @@ Demo password: `ks`
 - Clear conventions designed for custom development and AI-assisted extension
 
 ## Storefront features
+
+KS Origin includes the essential commerce experiences needed for a modern Shopify storefront.
+Each area is merchant-configurable and built around native Shopify behavior.
 
 ### Product experience
 
