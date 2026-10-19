@@ -28,6 +28,11 @@ Work planned for 1.1.0 is tracked in the
 
 ### Fixed
 
+- Collection filters and sorting respect per-page settings on every store, ignore hash-only navigation, normalize prices, and preserve typing during updates; sorting, variant selection and predictive search work when Shopify analytics is blocked (#92).
+- The search page keeps its search box and heading in sync with results, including Back and Forward (#112).
+- Article cards fill their grid or carousel cell, with Read more aligned at the bottom (#104).
+- Sort options inherit the body font weight (#87).
+- Filters introduced by an AJAX search retain their drawer, including when returning from a search without filters.
 - Cart quantity changes made during an update are applied instead of ignored (#117).
 - Focus moves to a nearby control after removing a cart line (#118).
 - The checkout button waits for cart updates to finish (#119).

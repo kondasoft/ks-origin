@@ -5,12 +5,23 @@
   variant-dependent product details.
 */
 
-import { ProductSelectEvent } from "@shopify/standard-events";
+let standardEventsPromise;
+
+// Analytics is optional; a blocked CDN must not prevent variant selection.
+function loadStandardEvents() {
+  standardEventsPromise ??= import("@shopify/standard-events").catch((error) => {
+    console.warn("Shopify standard events are unavailable", error);
+    return {};
+  });
+
+  return standardEventsPromise;
+}
 
 class ProductVariantPicker extends HTMLElement {
   connectedCallback() {
     if (this.isInitialized) return;
 
+    loadStandardEvents();
     this.productElement = this.closest("[data-product-root]");
     this.optionGroups = Array.from(this.querySelectorAll("[data-variant-option-group]"));
     this.variants = this.parseVariants();
@@ -46,23 +57,29 @@ class ProductVariantPicker extends HTMLElement {
     }
   }
 
-  onOptionChange(event) {
+  async onOptionChange(event) {
     if (!event.target.matches("[data-variant-option]")) return;
 
-    const selectedOptions = this.getSelectedOptions();
-    const deferred = ProductSelectEvent.createPromise();
+    const { ProductSelectEvent } = await loadStandardEvents();
 
-    this.productElement.dispatchEvent(
-      new ProductSelectEvent({
-        product: {
-          id: this.dataset.productId,
-          title: this.dataset.productTitle,
-          handle: this.dataset.productHandle,
-        },
-        selectedOptions,
-        promise: deferred.promise,
-      }),
-    );
+    if (!this.isConnected) return;
+
+    const selectedOptions = this.getSelectedOptions();
+    const deferred = ProductSelectEvent?.createPromise();
+
+    if (ProductSelectEvent) {
+      this.productElement.dispatchEvent(
+        new ProductSelectEvent({
+          product: {
+            id: this.dataset.productId,
+            title: this.dataset.productTitle,
+            handle: this.dataset.productHandle,
+          },
+          selectedOptions,
+          promise: deferred.promise,
+        }),
+      );
+    }
 
     try {
       const variant = this.findVariant(selectedOptions);
@@ -72,11 +89,11 @@ class ProductVariantPicker extends HTMLElement {
       }
       this.updateProduct(variant, selectedOptions);
 
-      deferred.resolve({
+      deferred?.resolve({
         variant: this.toStandardVariant(variant, selectedOptions),
       });
     } catch (error) {
-      deferred.reject(error);
+      deferred?.reject(error);
     }
   }
 

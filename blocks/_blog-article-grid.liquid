@@ -6,10 +6,6 @@ Renders the paginated blog article grid and its reusable article cards.
   assign articles_per_page = block.settings.articles_per_page | default: 24
   assign pagination_previous = 'general.pagination.previous' | t
   assign pagination_next = 'general.pagination.next' | t
-
-  if shop.permanent_domain contains 'ks-'
-    assign articles_per_page = 9
-  endif
 %}
 
 <div

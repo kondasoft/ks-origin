@@ -4,15 +4,13 @@
   This file initializes Shopify's standard storefront events that apply globally.
 */
 
-import { createViewEventElement, PageViewEvent } from "@shopify/standard-events";
+// Keep global analytics optional, just like the events emitted by individual components.
+import("@shopify/standard-events").then(({ createViewEventElement, PageViewEvent }) => {
+  if (!customElements.get("s-view-event")) {
+    customElements.define("s-view-event", createViewEventElement());
+  }
 
-if (!customElements.get("s-view-event")) {
-  customElements.define("s-view-event", createViewEventElement());
-}
-
-document.addEventListener(
-  "DOMContentLoaded",
-  () => {
+  const dispatchPageView = () => {
     document.dispatchEvent(
       new PageViewEvent({
         page: {
@@ -22,6 +20,14 @@ document.addEventListener(
         },
       }),
     );
-  },
-  { once: true },
-);
+  };
+
+  // Dynamic imports can finish after DOMContentLoaded, unlike the original static module dependency.
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", dispatchPageView, { once: true });
+  } else {
+    dispatchPageView();
+  }
+}).catch((error) => {
+  console.warn("Shopify standard events are unavailable", error);
+});

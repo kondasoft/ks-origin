@@ -4,12 +4,23 @@
   This file owns predictive-search requests, result rendering, loading state, and combobox keyboard interaction.
 */
 
-import { SearchUpdateEvent } from "@shopify/standard-events";
+let standardEventsPromise;
+
+// Analytics is optional; a blocked CDN must not prevent search interactions.
+function loadStandardEvents() {
+  standardEventsPromise ??= import("@shopify/standard-events").catch((error) => {
+    console.warn("Shopify standard events are unavailable", error);
+    return {};
+  });
+
+  return standardEventsPromise;
+}
 
 class PredictiveSearch extends HTMLElement {
   connectedCallback() {
     if (this.isInitialized) return;
 
+    loadStandardEvents();
     this.form = this.querySelector(".predictive-search-form");
     this.input = this.querySelector(".predictive-search-input");
     this.resetButton = this.querySelector(".predictive-search-reset");
@@ -161,18 +172,26 @@ class PredictiveSearch extends HTMLElement {
       return;
     }
 
-    const deferred = SearchUpdateEvent.createPromise();
+    const searchVersion = this.searchVersion;
+    const { SearchUpdateEvent } = await loadStandardEvents();
 
-    this.form.dispatchEvent(
-      new SearchUpdateEvent({
-        search: {
-          query: url.searchParams.get("q") || "",
-          productFilters: SearchUpdateEvent.parseProductFilters(url.searchParams),
-          sortKey: SearchUpdateEvent.getSortKey(url.searchParams) || "RELEVANCE",
-        },
-        promise: deferred.promise,
-      }),
-    );
+    // Import completion must not revive a search cancelled by typing, closing, or removing the dialog.
+    if (!this.isConnected || this.searchVersion !== searchVersion) return;
+
+    const deferred = SearchUpdateEvent?.createPromise();
+
+    if (SearchUpdateEvent) {
+      this.form.dispatchEvent(
+        new SearchUpdateEvent({
+          search: {
+            query: url.searchParams.get("q") || "",
+            productFilters: SearchUpdateEvent.parseProductFilters(url.searchParams),
+            sortKey: SearchUpdateEvent.getSortKey(url.searchParams) || "RELEVANCE",
+          },
+          promise: deferred.promise,
+        }),
+      );
+    }
 
     this.requestController = new AbortController();
     const requestController = this.requestController;
@@ -191,10 +210,10 @@ class PredictiveSearch extends HTMLElement {
 
       if (!resultsGrid) throw new Error("Failed to find the submitted search results");
 
-      deferred.resolve({ totalCount: Number(resultsGrid.dataset.resultCount) || 0 });
+      deferred?.resolve({ totalCount: Number(resultsGrid.dataset.resultCount) || 0 });
       window.location.assign(url.toString());
     } catch (error) {
-      deferred.reject(error);
+      deferred?.reject(error);
 
       if (error.name !== "AbortError") {
         console.error(error);

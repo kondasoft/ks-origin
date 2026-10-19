@@ -21,6 +21,11 @@
   assign price_to_label = 'general.facets.price_to' | t
   assign clear_filters_label = 'general.facets.clear_filters' | t
 
+  assign decimal_separator = '.'
+  if shop.money_format contains 'comma_separator' or shop.money_format contains 'amount_with_space_separator'
+    assign decimal_separator = ','
+  endif
+
   if context == 'search'
     assign show_results_label = 'search.show_results' | t: count: result_count
   else
@@ -55,6 +60,7 @@
         action="{{ form_action }}"
         method="get"
         data-facets-form
+        data-decimal-separator="{{ decimal_separator }}"
       >
         {% if context == 'search' %}
           <input type="hidden" name="q" value="{{ search_terms | escape }}">
@@ -185,6 +191,14 @@
                           if filter.max_value.value == nil
                             assign range_max_value = range_max
                           endif
+
+                          # Plain decimal values, since money formats can use commas the filter URL can't parse
+                          capture min_input_value
+                            render 'facets-price-value', cents: filter.min_value.value
+                          endcapture
+                          capture max_input_value
+                            render 'facets-price-value', cents: filter.max_value.value
+                          endcapture
                         %}
                         <div class="facets-price-filter" data-price-range>
                           <div class="facets-price-range">
@@ -197,7 +211,7 @@
                                   type="text"
                                   inputmode="decimal"
                                   name="{{ filter.min_value.param_name }}"
-                                  value="{% if filter.min_value.value %}{{ filter.min_value.value | money_without_currency }}{% endif %}"
+                                  value="{{ min_input_value | strip }}"
                                   placeholder="0"
                                   data-price-input="min"
                                 >
@@ -213,7 +227,7 @@
                                   type="text"
                                   inputmode="decimal"
                                   name="{{ filter.max_value.param_name }}"
-                                  value="{% if filter.max_value.value %}{{ filter.max_value.value | money_without_currency }}{% endif %}"
+                                  value="{{ max_input_value | strip }}"
                                   placeholder="{{ filter.range_max | money_without_currency }}"
                                   data-price-input="max"
                                 >

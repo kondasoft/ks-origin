@@ -7,10 +7,6 @@ Renders paginated search results using the reusable product and article cards.
   assign escaped_search_terms = search.terms | escape
   assign pagination_previous = 'general.pagination.previous' | t
   assign pagination_next = 'general.pagination.next' | t
-
-  if shop.permanent_domain contains 'ks-'
-    assign results_per_page = 12
-  endif
 %}
 
 <div

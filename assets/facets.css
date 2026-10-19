@@ -41,6 +41,7 @@
 
 .facets-sort-option {
   display: flex;
+  font-weight: inherit;
   align-items: center;
   gap: 0.5em;
   padding: 0.5em 1em;

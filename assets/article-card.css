@@ -4,9 +4,16 @@
   This file owns the reusable layout and presentation styles for article cards and their inner content blocks.
 */
 
+
+/*
+  Card layout
+*/
 .article-card {
   position: relative;
-  display: grid;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  height: 100%;
   min-width: 0;
   padding-top: calc(var(--card-pt) * var(--spacing-scale));
   padding-right: calc(var(--card-pr) * var(--spacing-scale));
@@ -15,6 +22,10 @@
   color: rgb(var(--color-text));
   text-align: left;
   border-radius: var(--border-radius);
+}
+
+.article-card > * {
+  min-width: 0;
 }
 
 .article-card:not([data-border-opacity="0"]) {
@@ -37,6 +48,10 @@
   text-align: right;
 }
 
+
+/*
+  Card content
+*/
 .article-card-image-block {
   position: relative;
 }
@@ -128,10 +143,15 @@
   line-height: normal;
 }
 
-.article-card-read-more-block {
+.article-card .article-card-read-more-block {
+  margin-top: auto;
   pointer-events: none;
 }
 
+
+/*
+  Interaction and motion
+*/
 @media (hover: hover) {
   .article-card:has(.article-card-heading-link:hover) .article-card-image {
     opacity: 0.85;

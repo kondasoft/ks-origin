@@ -1,0 +1,18 @@
+{% doc %}
+  Outputs a price filter value as a plain decimal number for filter URLs.
+  Outputs nothing when the value is blank. Capture and strip the output.
+
+  @param {number} [cents] - The price value in cents.
+{% enddoc %}
+
+{%- liquid
+  if cents != nil
+    assign cents_remainder = cents | modulo: 100
+
+    if cents_remainder == 0
+      echo cents | divided_by: 100
+    else
+      echo cents | divided_by: 100.0
+    endif
+  endif
+-%}

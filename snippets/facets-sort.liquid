@@ -55,18 +55,26 @@
                 <input type="hidden" name="{{ filter_value.param_name }}" value="{{ filter_value.value }}">
               {% endfor %}
             {% when 'price_range' %}
+              {% liquid
+                capture min_value
+                  render 'facets-price-value', cents: filter.min_value.value
+                endcapture
+                capture max_value
+                  render 'facets-price-value', cents: filter.max_value.value
+                endcapture
+              %}
               {% if filter.min_value.value %}
                 <input
                   type="hidden"
                   name="{{ filter.min_value.param_name }}"
-                  value="{{ filter.min_value.value | money_without_currency }}"
+                  value="{{ min_value | strip }}"
                 >
               {% endif %}
               {% if filter.max_value.value %}
                 <input
                   type="hidden"
                   name="{{ filter.max_value.param_name }}"
-                  value="{{ filter.max_value.value | money_without_currency }}"
+                  value="{{ max_value | strip }}"
                 >
               {% endif %}
           {% endcase %}

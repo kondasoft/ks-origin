@@ -4,12 +4,31 @@
   This file owns shared AJAX filtering, sorting, pagination, history, and interaction state for product-result pages.
 */
 
-import { CollectionUpdateEvent, SearchUpdateEvent } from "@shopify/standard-events";
+let standardEventsPromise;
+
+// Load standard events lazily so filtering, sorting, and pagination still work if the module is blocked.
+function loadStandardEvents() {
+  standardEventsPromise ??= import("@shopify/standard-events").catch((error) => {
+    console.warn("Shopify standard events are unavailable", error);
+    return {};
+  });
+
+  return standardEventsPromise;
+}
+
+function getUrlWithoutHash(url) {
+  const nextUrl = new URL(url, window.location.origin);
+
+  nextUrl.hash = "";
+  return nextUrl.toString();
+}
 
 class FacetedResults extends HTMLElement {
   connectedCallback() {
     if (this.isInitialized) return;
 
+    loadStandardEvents();
+    this.currentUrl = getUrlWithoutHash(window.location.href);
     this.listenerController = new AbortController();
     window.addEventListener("popstate", this.onPopState.bind(this), {
       signal: this.listenerController.signal,
@@ -31,6 +50,9 @@ class FacetedResults extends HTMLElement {
   }
 
   onPopState() {
+    // Fragment links, such as the skip link, fire popstate without changing the results.
+    if (getUrlWithoutHash(window.location.href) === this.currentUrl) return;
+
     this.update(new URL(window.location.href), { updateHistory: false });
   }
 
@@ -80,7 +102,6 @@ class FacetedResults extends HTMLElement {
     const navigationUrl = new URL(url, window.location.origin);
     const requestUrl = new URL(navigationUrl);
     const currentResultsGrid = this.querySelector("[data-faceted-results-grid]");
-    const filterState = this.captureFilterState();
 
     this.requestController?.abort();
     this.requestController = new AbortController();
@@ -114,6 +135,9 @@ class FacetedResults extends HTMLElement {
         return false;
       }
 
+      // Capture filter state after the response so input typed during the request is kept.
+      const filterState = this.captureFilterState();
+
       currentResultsGrid.replaceWith(nextResultsGrid);
       this.replaceFilters(nextView, filterState);
       this.refreshDialogTriggers();
@@ -121,6 +145,9 @@ class FacetedResults extends HTMLElement {
       if (updateHistory) {
         window.history.pushState({}, "", navigationUrl.toString());
       }
+
+      this.currentUrl = getUrlWithoutHash(navigationUrl);
+      this.syncSearchState(navigationUrl, nextView);
 
       this.announceResultCount();
 
@@ -153,64 +180,65 @@ class FacetedResults extends HTMLElement {
     if (!this.dataset.collectionHandle) return this.update(url, options);
 
     const navigationUrl = new URL(url, window.location.origin);
-    const deferred = CollectionUpdateEvent.createPromise();
+    const { CollectionUpdateEvent } = await loadStandardEvents();
+    const deferred = CollectionUpdateEvent?.createPromise();
     const collectionId = Number(this.dataset.collectionId) || null;
 
-    eventTarget.dispatchEvent(
-      new CollectionUpdateEvent({
-        collection: {
-          id: collectionId,
-          handle: this.dataset.collectionHandle,
-          productsCount: Number(this.dataset.collectionProductsCount) || 0,
-        },
-        productFilters: CollectionUpdateEvent.parseProductFilters(navigationUrl.searchParams),
-        sortKey: CollectionUpdateEvent.getSortKey(navigationUrl.searchParams),
-        promise: deferred.promise,
-      }),
-    );
+    if (CollectionUpdateEvent) {
+      eventTarget.dispatchEvent(
+        new CollectionUpdateEvent({
+          collection: {
+            id: collectionId,
+            handle: this.dataset.collectionHandle,
+            productsCount: Number(this.dataset.collectionProductsCount) || 0,
+          },
+          productFilters: CollectionUpdateEvent.parseProductFilters(navigationUrl.searchParams),
+          sortKey: CollectionUpdateEvent.getSortKey(navigationUrl.searchParams),
+          promise: deferred.promise,
+        }),
+      );
+    }
 
     try {
       await this.update(navigationUrl, { ...options, throwOnError: true });
 
       const productsCount = Number(this.querySelector("[data-faceted-results-grid]")?.dataset.resultCount) || 0;
 
-      deferred.resolve({ productsCount });
+      deferred?.resolve({ productsCount });
       return true;
     } catch (error) {
-      deferred.reject(error);
+      deferred?.reject(error);
       return false;
     }
   }
 
   async updateSearch(url, options = {}, eventTarget = this) {
     const navigationUrl = new URL(url, window.location.origin);
-    const deferred = SearchUpdateEvent.createPromise();
+    const { SearchUpdateEvent } = await loadStandardEvents();
+    const deferred = SearchUpdateEvent?.createPromise();
 
-    eventTarget.dispatchEvent(
-      new SearchUpdateEvent({
-        search: {
-          query: navigationUrl.searchParams.get("q") || this.dataset.searchQuery,
-          productFilters: SearchUpdateEvent.parseProductFilters(navigationUrl.searchParams),
-          sortKey: SearchUpdateEvent.getSortKey(navigationUrl.searchParams) || "RELEVANCE",
-        },
-        promise: deferred.promise,
-      }),
-    );
+    if (SearchUpdateEvent) {
+      eventTarget.dispatchEvent(
+        new SearchUpdateEvent({
+          search: {
+            query: navigationUrl.searchParams.get("q") || "",
+            productFilters: SearchUpdateEvent.parseProductFilters(navigationUrl.searchParams),
+            sortKey: SearchUpdateEvent.getSortKey(navigationUrl.searchParams) || "RELEVANCE",
+          },
+          promise: deferred.promise,
+        }),
+      );
+    }
 
     try {
       await this.update(navigationUrl, { ...options, throwOnError: true });
 
       const totalCount = Number(this.querySelector("[data-faceted-results-grid]")?.dataset.resultCount) || 0;
 
-      this.dataset.searchQuery = navigationUrl.searchParams.get("q") || "";
-      const heading = this.querySelector("[data-search-heading]");
-
-      if (heading?.dataset.resultsTitle) heading.textContent = heading.dataset.resultsTitle;
-
-      deferred.resolve({ totalCount });
+      deferred?.resolve({ totalCount });
       return true;
     } catch (error) {
-      deferred.reject(error);
+      deferred?.reject(error);
       return false;
     }
   }
@@ -220,6 +248,19 @@ class FacetedResults extends HTMLElement {
     if (this.dataset.searchQuery !== undefined) return this.updateSearch(url, options, eventTarget);
 
     return this.update(url, options);
+  }
+
+  syncSearchState(url, nextView) {
+    if (this.dataset.searchQuery === undefined) return;
+
+    // The header lives outside the replaced grid, including when restoring an unperformed search from history.
+    this.dataset.searchQuery = url.searchParams.get("q") || "";
+    const input = this.querySelector('[data-search-submit-form] [name="q"]');
+    const heading = this.querySelector("[data-search-heading]");
+    const nextHeading = nextView.querySelector("[data-search-heading]");
+
+    if (input) input.value = this.dataset.searchQuery;
+    if (heading && nextHeading) heading.textContent = nextHeading.textContent;
   }
 
   captureFilterState() {
@@ -265,7 +306,15 @@ class FacetedResults extends HTMLElement {
     }
 
     if (!currentFilters) {
-      this.append(nextFilters);
+      // A first search can introduce filters; retain their dialog and replace any empty drawer left by history.
+      const nextDialog = nextFilters.closest("theme-dialog");
+      const currentDialog = this.querySelector(".facets-dialog")?.closest("theme-dialog");
+
+      if (currentDialog && nextDialog) {
+        currentDialog.replaceWith(nextDialog);
+      } else {
+        this.append(nextDialog || nextFilters);
+      }
       return;
     }
 
@@ -299,6 +348,12 @@ class FacetedResults extends HTMLElement {
     matchingInput?.focus({ preventScroll: true });
 
     if (matchingInput?.type === "text") {
+      // Keep text typed while the request was in flight and queue another update for it.
+      if (matchingInput.value !== filterState.activeValue) {
+        matchingInput.value = filterState.activeValue;
+        matchingInput.dispatchEvent(new Event("input", { bubbles: true }));
+      }
+
       matchingInput.setSelectionRange(matchingInput.value.length, matchingInput.value.length);
     }
   }
@@ -430,7 +485,10 @@ class FacetFilters extends HTMLElement {
   getPriceNumber(value, fallback = 0) {
     if (value === null || value === undefined || value === "") return fallback;
 
-    const compactValue = String(value).trim().replace(/\s/g, "").replace(/[^\d,.-]/g, "");
+    const compactValue = String(value).trim().replace(/[^\d,.-]/g, "");
+
+    if (!/\d/.test(compactValue)) return fallback;
+
     const commaIndex = compactValue.lastIndexOf(",");
     const dotIndex = compactValue.lastIndexOf(".");
     let normalizedValue = compactValue;
@@ -439,8 +497,14 @@ class FacetFilters extends HTMLElement {
       normalizedValue = commaIndex > dotIndex
         ? compactValue.replace(/\./g, "").replace(",", ".")
         : compactValue.replace(/,/g, "");
-    } else if (commaIndex > -1) {
-      normalizedValue = compactValue.replace(",", ".");
+    } else if (commaIndex > -1 || dotIndex > -1) {
+      const separator = commaIndex > -1 ? "," : ".";
+      const parts = compactValue.split(separator);
+      const isStoreDecimal = separator === this.form?.dataset.decimalSeparator;
+      // A single separator followed by exactly three digits is a thousands separator, unless it's the store's decimal.
+      const isThousands = parts.length > 2 || (!isStoreDecimal && parts[1].length === 3);
+
+      normalizedValue = isThousands ? parts.join("") : parts.join(".");
     }
 
     const number = Number(normalizedValue);
@@ -514,9 +578,20 @@ class FacetFilters extends HTMLElement {
   getUrl() {
     const url = new URL(this.form.action, window.location.origin);
     const formData = new FormData(this.form);
+    const priceInputNames = new Set(
+      Array.from(this.form.querySelectorAll("[data-price-input]"), (input) => input.name),
+    );
 
     for (const [name, value] of formData.entries()) {
       if (typeof value !== "string" || value.trim() === "") continue;
+
+      if (priceInputNames.has(name)) {
+        // Filter URLs need plain decimal prices, whatever the shopper typed.
+        const price = this.getPriceNumber(value, null);
+
+        if (price !== null) url.searchParams.append(name, String(price));
+        continue;
+      }
 
       url.searchParams.append(name, value);
     }
@@ -536,7 +611,15 @@ class FacetFilters extends HTMLElement {
       return;
     }
 
-    if (url.toString() === window.location.href) {
+    const currentUrl = new URL(window.location.href);
+
+    // Parameter order and fragments do not change the normalized filters restored after a request.
+    currentUrl.searchParams.sort();
+    const normalizedUrl = new URL(url);
+
+    normalizedUrl.searchParams.sort();
+
+    if (getUrlWithoutHash(normalizedUrl) === getUrlWithoutHash(currentUrl)) {
       if (closeDialog) this.closeDialogAndScroll(dialog, view);
       return;
     }
