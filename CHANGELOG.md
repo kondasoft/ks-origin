@@ -35,6 +35,7 @@ Work planned for 1.1.0 is tracked in the
 
 ### Fixed
 
+- Long text logos are shortened with an ellipsis on mobile instead of pushing the header icons off the screen (#76).
 - Variant pickers on the same page no longer affect each other (#108).
 - Uploaded files use native product submission, and Buy it now is disabled for products with customisations or a selling plan (#109).
 - Products requiring a subscription plan open the product page from cards; product prices identify subscription adjustments separately (#61).
