@@ -52,7 +52,7 @@
           "settings": {
             "mobile_columns": 2,
             "desktop_columns": 4,
-            "products_per_page": 24,
+            "products_per_page": 12,
             "pt": 0,
             "pb": 60
           },
