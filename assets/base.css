@@ -1169,16 +1169,18 @@ select.input-lg {
   letter-spacing: var(--ls-loose);
 }
 
+/* Keep this at single-class specificity, before .badge-light: tinted badges (.badge-light, .article-tag,
+   the sale badge) set their own accent text colour and must keep overriding this solid-badge default. */
+@supports (color: lch(from red l c h)) {
+  .badge {
+    color: lch(from rgb(var(--color-accent)) calc((49.44 - l) * infinity) 0 0);
+  }
+}
+
 .badge-light {
   color: rgb(var(--color-accent));
   background-color: rgb(var(--color-accent) / 0.1);
   border: 0;
-}
-
-@supports (color: lch(from red l c h)) {
-  .badge:not(.badge-light) {
-    color: lch(from rgb(var(--color-accent)) calc((49.44 - l) * infinity) 0 0);
-  }
 }
 
 
