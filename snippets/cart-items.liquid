@@ -23,14 +23,21 @@
     <div class="cart-empty">
       {% render 'svg-icons', icon: 'bag', icon_size: 26 %}
       <p>{{ 'cart.empty' | t }}</p>
-      <a class="btn btn-wide btn-text-outline" href="{{ routes.all_products_collection_url }}">
+      <a
+        class="btn btn-wide btn-text-outline"
+        href="{{ routes.all_products_collection_url }}"
+        data-cart-focus-id="empty"
+      >
         {{ 'cart.continue_shopping' | t }}
       </a>
     </div>
   {% else %}
     <ul class="cart-items-list" aria-label="{{ 'accessibility.cart' | t }}">
       {% for line_item in cart.items %}
-        <li class="cart-item" data-cart-line-id="{{ line_item.key | escape }}">
+        <li
+          class="cart-item{% if line_item.parent_relationship %} cart-item-child{% endif %}"
+          data-cart-line-id="{{ line_item.key | escape }}"
+        >
           <a class="cart-item-image-link" href="{{ line_item.url }}" tabindex="-1" aria-hidden="true">
             <span class="{{ cart_item_image_class }}">
               {% if line_item.image %}
@@ -58,19 +65,28 @@
                 <a href="{{ line_item.url }}">{{ line_item.title }}</a>
               </h3>
 
-              <button
-                type="button"
-                class="icon-button cart-item-remove"
-                data-cart-line-remove
-                data-cart-line-id="{{ line_item.key | escape }}"
-                aria-label="{{ 'cart.remove_item' | t: item: line_item.title | escape }}"
-              >
-                <span class="cart-item-remove-icon" aria-hidden="true">
-                  <span class="cart-item-remove-icon-lid"></span>
-                  <span class="cart-item-remove-icon-bin"></span>
-                </span>
-              </button>
+              {% if line_item.instructions.can_remove %}
+                <button
+                  type="button"
+                  class="icon-button cart-item-remove"
+                  data-cart-line-remove
+                  data-cart-focus-id="remove-{{ line_item.key | escape }}"
+                  data-cart-line-id="{{ line_item.key | escape }}"
+                  aria-label="{{ 'cart.remove_item' | t: item: line_item.title | escape }}"
+                >
+                  <span class="cart-item-remove-icon" aria-hidden="true">
+                    <span class="cart-item-remove-icon-lid"></span>
+                    <span class="cart-item-remove-icon-bin"></span>
+                  </span>
+                </button>
+              {% endif %}
             </div>
+
+            {% if line_item.parent_relationship %}
+              <p class="visually-hidden">
+                {{ 'cart.for_parent' | t: parent: line_item.parent_relationship.parent.title | escape }}
+              </p>
+            {% endif %}
 
             {% unless line_item.product.has_only_default_variant %}
               <ul class="cart-item-options">
@@ -123,44 +139,56 @@
               </ul>
             {% endif %}
 
+            {% if line_item.error_message != blank %}
+              <p class="cart-item-error alert alert-error fs-sm">{{ line_item.error_message | escape }}</p>
+            {% endif %}
+
             <div class="cart-item-actions">
-              <quantity-input
-                class="quantity-input cart-item-quantity"
-                role="group"
-                aria-label="{{ 'cart.quantity.label' | t: item: line_item.title | escape }}"
-              >
-                <button
-                  type="button"
-                  class="quantity-input-button quantity-input-button-decrease"
-                  data-quantity-decrease
-                  aria-label="{{ 'cart.quantity.decrease' | t: item: line_item.title | escape }}"
-                >
-                  {% render 'svg-icons', icon: 'minus', icon_size: 16 %}
-                </button>
-                <input
-                  id="CartQuantity-{{ cart_items_id }}-{{ forloop.index }}"
-                  class="input"
-                  type="number"
-                  name="updates[]"
-                  value="{{ line_item.quantity }}"
-                  min="0"
-                  step="1"
-                  inputmode="numeric"
+              {% if line_item.instructions.can_update_quantity %}
+                <quantity-input
+                  class="quantity-input cart-item-quantity"
+                  role="group"
                   aria-label="{{ 'cart.quantity.label' | t: item: line_item.title | escape }}"
-                  data-quantity-input
-                  data-cart-line-quantity
-                  data-cart-line-id="{{ line_item.key | escape }}"
-                  data-cart-focus-id="quantity-{{ line_item.key | escape }}"
                 >
-                <button
-                  type="button"
-                  class="quantity-input-button quantity-input-button-increase"
-                  data-quantity-increase
-                  aria-label="{{ 'cart.quantity.increase' | t: item: line_item.title | escape }}"
-                >
-                  {% render 'svg-icons', icon: 'plus', icon_size: 16 %}
-                </button>
-              </quantity-input>
+                  <button
+                    type="button"
+                    class="quantity-input-button quantity-input-button-decrease"
+                    data-quantity-decrease
+                    aria-label="{{ 'cart.quantity.decrease' | t: item: line_item.title | escape }}"
+                  >
+                    {% render 'svg-icons', icon: 'minus', icon_size: 16 %}
+                  </button>
+                  {% comment %}A quantity of zero removes the line even when its remove button is hidden.{% endcomment %}
+                  <input
+                    id="CartQuantity-{{ cart_items_id }}-{{ forloop.index }}"
+                    class="input"
+                    type="number"
+                    name="updates[]"
+                    value="{{ line_item.quantity }}"
+                    min="{% if line_item.instructions.can_remove %}0{% else %}1{% endif %}"
+                    step="1"
+                    inputmode="numeric"
+                    aria-label="{{ 'cart.quantity.label' | t: item: line_item.title | escape }}"
+                    data-quantity-input
+                    data-cart-line-quantity
+                    data-cart-line-id="{{ line_item.key | escape }}"
+                    data-cart-focus-id="quantity-{{ line_item.key | escape }}"
+                  >
+                  <button
+                    type="button"
+                    class="quantity-input-button quantity-input-button-increase"
+                    data-quantity-increase
+                    aria-label="{{ 'cart.quantity.increase' | t: item: line_item.title | escape }}"
+                  >
+                    {% render 'svg-icons', icon: 'plus', icon_size: 16 %}
+                  </button>
+                </quantity-input>
+              {% else %}
+                <span class="cart-item-quantity-static">
+                  <span class="visually-hidden">{{ 'cart.quantity.static_label' | t }}</span>
+                  {{ line_item.quantity }}
+                </span>
+              {% endif %}
 
               <p class="cart-item-price">
                 {% if line_item.original_price > line_item.final_price %}

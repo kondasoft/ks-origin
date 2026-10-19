@@ -13,6 +13,7 @@ Work planned for 1.1.0 is tracked in the
 
 ### Added
 
+- Nested cart lines respect Shopify's remove and quantity rules and show their parent (#33).
 - Trust badges offer built-in icons, with a custom image option (#96).
 - Gallery videos offer fit or fill in Adapt to media mode (#103).
 - The browser console shows the theme name and version (#95).
@@ -27,6 +28,9 @@ Work planned for 1.1.0 is tracked in the
 
 ### Fixed
 
+- Cart quantity changes made during an update are applied instead of ignored (#117).
+- Focus moves to a nearby control after removing a cart line (#118).
+- The checkout button waits for cart updates to finish (#119).
 - Autoplay videos respect reduced motion, and looping videos without controls get a pause button (#105).
 - Partly visible carousel cards can be tapped, and keyboard users can reach every card (#113).
 - Solid accent buttons, badges and checkbox marks choose black or white for contrast, with opaque button hover and active states (#78).

@@ -209,7 +209,9 @@
     "remove_item": "Remove {{ item }}",
     "applied_discounts": "Applied discounts",
     "percentage_off": "{{ value }}% off",
+    "for_parent": "For {{ parent }}",
     "quantity": {
+      "static_label": "Quantity",
       "label": "Quantity for {{ item }}",
       "decrease": "Decrease quantity for {{ item }}",
       "increase": "Increase quantity for {{ item }}"

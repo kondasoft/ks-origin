@@ -448,6 +448,9 @@ class CartItems extends HTMLElement {
     if (this.isInitialized) return;
 
     this.interactedByPointer = false;
+    this.quantityQueue = new Map();
+    this.pendingUpdates = 0;
+    this.lineRequestPending = false;
     this.listenerController = new AbortController();
     this.addEventListener("pointerdown", () => {
       this.interactedByPointer = true;
@@ -467,6 +470,9 @@ class CartItems extends HTMLElement {
     document.addEventListener("shopify:cart:discount-update", this.onCartDiscountUpdate.bind(this), {
       signal: this.listenerController.signal,
     });
+    document.addEventListener("submit", this.onCheckoutSubmit.bind(this), {
+      signal: this.listenerController.signal,
+    });
     this.isInitialized = true;
   }
 
@@ -479,24 +485,21 @@ class CartItems extends HTMLElement {
     const removeButton = event.target.closest("[data-cart-line-remove]");
     const lineId = removeButton?.dataset.cartLineId;
 
-    if (!lineId || !window.Shopify?.actions?.updateCart || this.getAttribute("aria-busy") === "true") return;
+    if (!lineId || !window.Shopify?.actions?.updateCart) return;
 
-    try {
-      await window.Shopify.actions.updateCart(
-        { lines: [{ id: lineId, quantity: 0 }] },
-        {
-          event: {
-            context: this.dataset.context === "drawer" ? "dialog" : "cart",
-            detail: { source: "cart-remove" },
-          },
-        },
-      );
-    } catch (error) {
-      console.error("[Cart] Line remove failed", error);
+    this.setPendingFocus(removeButton, true);
+
+    // Busy carts stay clickable for the quantity queue, so a removal waits there instead of being dropped.
+    if (this.getAttribute("aria-busy") === "true") {
+      this.quantityQueue.set(lineId, 0);
+      this.syncBusyState();
+      return;
     }
+
+    await this.updateLines([{ id: lineId, quantity: 0 }], "cart-remove");
   }
 
-  async onQuantityChange(event) {
+  onQuantityChange(event) {
     const quantityInput = event.target.closest("[data-cart-line-quantity]");
     const lineId = quantityInput?.dataset.cartLineId;
     const quantity = Number.parseInt(quantityInput?.value, 10);
@@ -505,31 +508,108 @@ class CartItems extends HTMLElement {
       !lineId ||
       !Number.isFinite(quantity) ||
       quantity < 0 ||
-      !window.Shopify?.actions?.updateCart ||
-      this.getAttribute("aria-busy") === "true"
+      !window.Shopify?.actions?.updateCart
     ) {
       return;
     }
 
-    this.pendingFocusId = quantityInput.dataset.cartFocusId;
+    this.setPendingFocus(quantityInput, quantity === 0);
+    this.quantityQueue.set(lineId, quantity);
+    this.flushQuantityQueue();
+    this.syncBusyState();
+  }
+
+  setPendingFocus(control, removing) {
+    this.pendingFocusId = control.dataset.cartFocusId;
     this.pendingFocusFromPointer = this.interactedByPointer;
+
+    if (!removing) return;
+
+    const lines = Array.from(this.querySelectorAll(".cart-item"));
+    const index = lines.indexOf(control.closest(".cart-item"));
+    const nearbyLines = [...lines.slice(index + 1), ...lines.slice(0, index).reverse()];
+
+    // A parent removal can delete queued child lines, so keep these fallbacks through later quantity edits.
+    this.pendingRemovalFocusIds = nearbyLines
+      .map((line) => line.querySelector("[data-cart-line-remove]")?.dataset.cartFocusId)
+      .filter(Boolean);
+  }
+
+  flushQuantityQueue() {
+    if (this.pendingUpdates || this.lineRequestPending || !this.quantityQueue.size) return;
+
+    const lines = Array.from(this.quantityQueue, ([id, quantity]) => ({ id, quantity })).filter(({ id }) =>
+      this.querySelector(`.cart-item[data-cart-line-id="${CSS.escape(id)}"]`),
+    );
+
+    this.quantityQueue.clear();
+
+    // Only the fresh markup can confirm that a queued line survived a parent removal.
+    if (lines.length) void this.updateLines(lines, "cart-quantity");
+  }
+
+  async updateLines(lines, source) {
+    this.lineRequestPending = true;
+    this.syncBusyState();
+
     try {
       await window.Shopify.actions.updateCart(
-        { lines: [{ id: lineId, quantity }] },
+        { lines },
         {
           event: {
             context: this.dataset.context === "drawer" ? "dialog" : "cart",
-            detail: { source: "cart-quantity" },
+            detail: { source },
           },
         },
       );
     } catch (error) {
-      console.error("[Cart] Line quantity update failed", error);
+      console.error("[Cart] Line update failed", error);
+    } finally {
+      this.lineRequestPending = false;
+      this.flushQuantityQueue();
+      this.syncBusyState();
     }
   }
 
+  syncBusyState() {
+    const busy = this.pendingUpdates > 0 || this.lineRequestPending || this.quantityQueue.size > 0;
+    const summary = document.querySelector(
+      `[data-cart-summary][data-context="${CSS.escape(this.dataset.context)}"]`,
+    );
+    const checkout = summary?.querySelector('[name="checkout"]');
+
+    if (busy) {
+      this.setAttribute("aria-busy", "true");
+      checkout?.setAttribute("aria-disabled", "true");
+    } else {
+      this.removeAttribute("aria-busy");
+      checkout?.removeAttribute("aria-disabled");
+      this.pendingFocusId = null;
+      this.pendingRemovalFocusIds = [];
+    }
+  }
+
+  onCheckoutSubmit(event) {
+    const summary = event.target.closest("[data-cart-summary]");
+
+    if (
+      event.target.matches("[data-cart-checkout-form]") &&
+      summary?.dataset.context === this.dataset.context &&
+      this.getAttribute("aria-busy") === "true"
+    ) {
+      event.preventDefault();
+    }
+  }
+
+  finishUpdate() {
+    this.pendingUpdates -= 1;
+    this.flushQuantityQueue();
+    this.syncBusyState();
+  }
+
   async onCartLinesUpdate(event) {
-    this.setAttribute("aria-busy", "true");
+    this.pendingUpdates += 1;
+    this.syncBusyState();
 
     try {
       let result;
@@ -538,26 +618,25 @@ class CartItems extends HTMLElement {
         result = await event.promise;
       } catch (error) {
         console.error("[Cart] Cart update failed", error);
-        return;
       }
 
-      const { cart, userErrors = [], warnings = [] } = result;
+      const { cart, userErrors = [], warnings = [] } = result || {};
       const hasIssues = userErrors.length > 0 || warnings.length > 0;
 
-      if (!cart) return;
+      if (cart) {
+        updateCartDrawerViewPayload(cart);
 
-      updateCartDrawerViewPayload(cart);
+        const cartOptions = document.querySelector(
+          `[data-cart-options][data-context="${CSS.escape(this.dataset.context)}"]`,
+        );
+        const cartHeading = document.querySelector("[data-cart-heading]");
 
-      const cartOptions = document.querySelector(
-        `[data-cart-options][data-context="${CSS.escape(this.dataset.context)}"]`,
-      );
-      const cartHeading = document.querySelector("[data-cart-heading]");
-
-      if (cartOptions) cartOptions.hidden = cart.totalQuantity === 0;
-      if (cartHeading) cartHeading.classList.toggle("visually-hidden", cart.totalQuantity === 0);
+        if (cartOptions) cartOptions.hidden = cart.totalQuantity === 0;
+        if (cartHeading) cartHeading.classList.toggle("visually-hidden", cart.totalQuantity === 0);
+      }
 
       try {
-        if (this.dataset.context === "drawer" && event.action === "add" && !hasIssues) {
+        if (cart && this.dataset.context === "drawer" && event.action === "add" && !hasIssues) {
           const cartDialog = document.getElementById("cart-dialog")?.closest("theme-dialog");
 
           if (cartDialog) {
@@ -568,6 +647,7 @@ class CartItems extends HTMLElement {
           await window.Shopify.actions.openCart();
         }
 
+        // Failed mutations also need fresh markup to restore the server quantity before draining the queue.
         await this.render();
       } catch (error) {
         console.error("[Cart] Cart rendering failed", error);
@@ -575,12 +655,13 @@ class CartItems extends HTMLElement {
         document.dispatchEvent(new CustomEvent("theme:cart:render-error"));
       }
     } finally {
-      this.removeAttribute("aria-busy");
+      this.finishUpdate();
     }
   }
 
   async onCartDiscountUpdate(event) {
-    this.setAttribute("aria-busy", "true");
+    this.pendingUpdates += 1;
+    this.syncBusyState();
 
     try {
       let result;
@@ -604,7 +685,7 @@ class CartItems extends HTMLElement {
         document.dispatchEvent(new CustomEvent("theme:cart:render-error"));
       }
     } finally {
-      this.removeAttribute("aria-busy");
+      this.finishUpdate();
     }
   }
 
@@ -646,8 +727,6 @@ class CartItems extends HTMLElement {
 
     const renderedId = nextCartItems.id;
 
-    nextCartItems.id = this.id;
-    nextCartItems.dataset.context = this.dataset.context;
     nextCartItems.querySelectorAll("[id]").forEach((element) => {
       element.id = element.id.replace(renderedId, this.id);
     });
@@ -660,10 +739,24 @@ class CartItems extends HTMLElement {
     const restoreFocusFromPointer = this.pendingFocusFromPointer;
 
     currentCartSummary.replaceWith(nextCartSummary);
-    this.replaceWith(nextCartItems);
+    // Keep the queue and event listeners alive across every full line-list replacement.
+    this.replaceChildren(...nextCartItems.childNodes);
+    this.syncBusyState();
+
+    this.quantityQueue.forEach((quantity, id) => {
+      const input = this.querySelector(`[data-cart-line-quantity][data-cart-line-id="${CSS.escape(id)}"]`);
+
+      if (!input) return;
+
+      input.value = String(quantity);
+      input.closest("quantity-input")?.sync();
+    });
 
     if (focusId) {
-      const focusElement = nextCartItems.querySelector(`[data-cart-focus-id="${CSS.escape(focusId)}"]`);
+      const focusIds = [focusId, ...(this.pendingRemovalFocusIds || [])];
+      const focusElement = focusIds
+        .map((id) => this.querySelector(`[data-cart-focus-id="${CSS.escape(id)}"]`))
+        .find(Boolean) || this.querySelector('[data-cart-focus-id="empty"], .cart-item-title a');
 
       if (focusElement && restoreFocusFromPointer) {
         focusElement.dataset.focusedBy = "pointer";

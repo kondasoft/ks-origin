@@ -71,7 +71,7 @@
   </div>
 {% endif %}
 
-<form class="cart-summary-form" action="{{ routes.cart_url }}" method="post">
+<form class="cart-summary-form" action="{{ routes.cart_url }}" method="post" data-cart-checkout-form>
   <button
     class="cart-summary-checkout btn {{ settings.cart_checkout_button_color }} {{ settings.cart_checkout_button_size }}"
     type="submit"
