@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
           const cartDialogElement = document.getElementById("cart-dialog");
           const cartDialog = cartDialogElement?.closest("theme-dialog");
 
-          if (cartDialog && !cartDialogElement.open) cartDialog.openDialog();
+          cartDialog?.openDialog();
           return;
         }
 

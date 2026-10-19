@@ -165,6 +165,11 @@ function updateRevealHeaders() {
     return;
   }
 
+  if (currentScrollY === previousScrollY) {
+    headerScrollFrame = null;
+    return;
+  }
+
   const isScrollingDown = currentScrollY > previousScrollY;
 
   document.querySelectorAll('#header-group[data-header-behavior="reveal"]').forEach((header) => {

@@ -115,12 +115,21 @@ class CartFeedback extends HTMLElement {
   }
 
   show(message, type) {
-    if (this.cartDialog?.open && this.drawerAlert && this.drawerAlertMessage) {
+    const toast = document.querySelector("theme-toast");
+
+    toast?.syncDialog();
+
+    if (
+      this.cartDialog?.open &&
+      (!toast || toast.closest("dialog") === this.cartDialog) &&
+      this.drawerAlert &&
+      this.drawerAlertMessage
+    ) {
       this.showDrawerAlert(message, type);
       return;
     }
 
-    document.querySelector("theme-toast")?.show(message, type);
+    toast?.show(message, type);
   }
 
   showDrawerAlert(message, type) {

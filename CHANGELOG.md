@@ -11,6 +11,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 Work planned for 1.1.0 is tracked in the
 [v1.1.0 milestone](https://github.com/kondasoft/ks-origin/milestone/1).
 
+### Changed
+
+- Modals open with a subtle upward fade and close immediately, while drawers retain animated closing (#83).
+
+### Fixed
+
+- Dialogs preserve return focus, reopen during closing, and keep page scrolling locked while another dialog is open (#93).
+- Closing dialogs restores focus without scrolling or revealing the header when the scroll position is unchanged (#124).
+- Cart errors and announcements remain visible and accessible inside the active dialog (#106).
+
 ## [1.0.0] - 2026-08-15
 
 Initial release.

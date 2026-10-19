@@ -30,11 +30,6 @@
   will-change: transform;
 }
 
-.dialog.is-closing {
-  --dialog-transition-duration: 180ms;
-  --dialog-transition-easing: cubic-bezier(0.4, 0, 1, 1);
-}
-
 .dialog:not([open]) {
   display: none !important;
 }
@@ -48,10 +43,6 @@
 
 .dialog[open]::backdrop {
   opacity: 1;
-}
-
-.dialog[open].is-closing::backdrop {
-  opacity: 0;
 }
 
 @starting-style {
@@ -108,13 +99,8 @@
 @starting-style {
   .modal[open] {
     opacity: 0;
-    transform: scale(0.95);
+    transform: translateY(8px);
   }
-}
-
-.modal[open].is-closing {
-  opacity: 0;
-  transform: scale(0.95);
 }
 
 .drawer {
@@ -123,6 +109,15 @@
   height: 100dvh;
   max-height: none;
   overflow: visible;
+}
+
+.drawer.is-closing {
+  --dialog-transition-duration: 180ms;
+  --dialog-transition-easing: cubic-bezier(0.4, 0, 1, 1);
+}
+
+.drawer[open].is-closing::backdrop {
+  opacity: 0;
 }
 
 .drawer-right {
@@ -176,6 +171,15 @@
 
 .drawer-bottom[open].is-closing {
   transform: translateY(100%);
+}
+
+
+/* Dialog feedback */
+.dialog > .theme-toast {
+  position: absolute;
+  bottom: 1em;
+  right: 1em;
+  width: min(420px, calc(100% - 2em));
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -530,18 +534,6 @@ predictive-search {
   max-height: calc(100dvh - 2rem);
   overflow: hidden;
   transform: none;
-}
-
-@starting-style {
-  .localization-dialog[open] {
-    opacity: 0;
-    transform: translateY(0.5rem);
-  }
-}
-
-.localization-dialog[open].is-closing {
-  opacity: 0;
-  transform: translateY(0.5rem);
 }
 
 .localization-dialog .dialog-body {

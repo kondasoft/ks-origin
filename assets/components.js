@@ -329,7 +329,11 @@ class ThemeDialog extends HTMLElement {
   }
 
   disconnectedCallback() {
-    this.unlockPageScroll();
+    // Keep the page locked while another modal dialog is still open.
+    if (!document.querySelector("dialog:modal")) {
+      this.unlockPageScroll();
+    }
+
     this.listenerController?.abort();
     window.clearTimeout(this.closeTimer);
     this.isInitialized = false;
@@ -337,6 +341,12 @@ class ThemeDialog extends HTMLElement {
 
   onTriggerClick(trigger, event) {
     event.preventDefault();
+
+    if (this.dialog.open && !this.isClosing) {
+      this.requestClose();
+      return;
+    }
+
     this.lastTrigger = trigger;
     this.openedByPointer = event.detail !== 0;
     this.openDialog();
@@ -348,7 +358,8 @@ class ThemeDialog extends HTMLElement {
 
   openDialog() {
     if (this.dialog.open) {
-      this.requestClose();
+      // Reopening during the close animation keeps the dialog open instead of ignoring the request.
+      if (this.isClosing) this.cancelClose();
       return;
     }
 
@@ -357,6 +368,7 @@ class ThemeDialog extends HTMLElement {
     this.isClosing = false;
     this.dialog.dataset.openedBy = this.openedByPointer ? "pointer" : "keyboard";
     this.dialog.showModal();
+    document.querySelector("theme-toast")?.syncDialog(this.dialog);
     this.setExpandedState(true);
     this.lockPageScroll();
   }
@@ -384,7 +396,8 @@ class ThemeDialog extends HTMLElement {
       returnFocusElement.addEventListener("blur", () => delete returnFocusElement.dataset.focusedBy, { once: true });
     }
 
-    returnFocusElement?.focus();
+    returnFocusElement?.focus({ preventScroll: true });
+    document.querySelector("theme-toast")?.syncDialog();
   }
 
   onDialogCancel(event) {
@@ -436,7 +449,19 @@ class ThemeDialog extends HTMLElement {
     this.closeTimer = window.setTimeout(() => this.dialog.close(), closeDurationMs);
   }
 
+  cancelClose() {
+    window.clearTimeout(this.closeTimer);
+    this.closeTimer = null;
+    this.isClosing = false;
+    this.dialog.classList.remove("is-closing");
+  }
+
   getCloseDurationMs() {
+    // Opt-in dialogs supply their own .is-closing styles and --dialog-transition-duration.
+    const animatesClose = this.dialog.classList.contains("drawer") || this.dialog.hasAttribute("data-animated-close");
+
+    if (!animatesClose) return 0;
+
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const designMode = document.documentElement.dataset.designMode === "true";
 
@@ -463,6 +488,11 @@ class ThemeDialog extends HTMLElement {
       if (openDialog === this.dialog) return;
 
       const dialogHost = openDialog.closest("theme-dialog");
+
+      // Focus can't return into a dialog that is closing, so use that dialog's own return target instead.
+      if (this.lastTrigger && openDialog.contains(this.lastTrigger)) {
+        this.lastTrigger = dialogHost?.lastTrigger || null;
+      }
 
       if (dialogHost?.requestClose) {
         dialogHost.requestClose();
@@ -1623,6 +1653,7 @@ class ThemeToast extends HTMLElement {
   connectedCallback() {
     if (this.isInitialized) return;
 
+    this.homeParent = this.parentElement;
     this.alert = this.querySelector(".theme-toast-alert");
     this.message = this.querySelector("[data-theme-toast-message]");
     this.closeButton = this.querySelector("[data-theme-toast-close]");
@@ -1636,14 +1667,42 @@ class ThemeToast extends HTMLElement {
       signal: this.listenerController.signal,
     });
     this.isInitialized = true;
+    this.syncDialog();
   }
 
   disconnectedCallback() {
+    // Reparenting into the top layer must preserve pending feedback and its listeners.
+    if (this.isRelocating) return;
+
+    if (this.homeParent?.isConnected && this.parentElement !== this.homeParent) {
+      this.syncDialog();
+      return;
+    }
+
     this.listenerController?.abort();
     window.clearTimeout(this.hideTimer);
     cancelAnimationFrame(this.showFrame);
     cancelAnimationFrame(this.announcementFrame);
     this.isInitialized = false;
+  }
+
+  syncDialog(dialog) {
+    if (!this.isInitialized) return;
+
+    const activeDialog = document.activeElement?.closest("dialog:modal");
+    const currentDialog = this.isConnected ? this.closest("dialog:modal") : null;
+    const targetDialog =
+      dialog || activeDialog || currentDialog || [...document.querySelectorAll("dialog:modal")].at(-1);
+    const parent = targetDialog || this.homeParent;
+
+    if (!parent || this.parentElement === parent) return;
+
+    this.statusRegion.textContent = "";
+    this.alertRegion.textContent = "";
+    this.liveRegionsMoved = true;
+    this.isRelocating = true;
+    parent.append(this);
+    this.isRelocating = false;
   }
 
   show(message, type = "success") {
@@ -1667,12 +1726,22 @@ class ThemeToast extends HTMLElement {
   announce(message, type = "status") {
     if (!message || !this.statusRegion || !this.alertRegion) return;
 
+    this.syncDialog();
     const region = type === "alert" ? this.alertRegion : this.statusRegion;
 
     cancelAnimationFrame(this.announcementFrame);
     this.statusRegion.textContent = "";
     this.alertRegion.textContent = "";
     this.announcementFrame = requestAnimationFrame(() => {
+      // A cart opening between frames can move the live region; let it enter the accessibility tree first.
+      this.syncDialog();
+
+      if (this.liveRegionsMoved) {
+        this.liveRegionsMoved = false;
+        this.announce(message, type);
+        return;
+      }
+
       region.textContent = message;
     });
   }
