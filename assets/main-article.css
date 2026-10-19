@@ -1,7 +1,7 @@
 /*
   Main article stylesheet
 
-  This file owns the article page layout and the presentation of its resource-specific content blocks.
+  This file owns the article page layout and presentation of its content blocks and reader discussions.
 */
 
 
@@ -238,5 +238,62 @@
 @media (prefers-reduced-motion: reduce) {
   .article-navigation-link {
     transition: none;
+  }
+}
+
+
+/*
+  Article comments
+*/
+.article-comments {
+  margin-top: 3em;
+  padding-top: 2em;
+  border-top: 1px solid rgb(var(--color-text) / var(--border-opacity));
+  text-align: left;
+  overflow-wrap: anywhere;
+}
+
+.article-comments-list {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.article-comment {
+  padding: 1.5em 0;
+  border-bottom: 1px solid rgb(var(--color-text) / var(--border-opacity));
+}
+
+.article-comment-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5em 1em;
+  margin-top: 1em;
+  color: rgb(var(--color-text) / 0.7);
+}
+
+
+/* Comment form */
+.article-comment-form {
+  margin-top: 2em;
+}
+
+.article-comment-form-row {
+  display: grid;
+  gap: 1em;
+}
+
+.article-comment-status {
+  margin: 1.25em 0;
+}
+
+.article-comment-status ul {
+  padding-left: 1.25em;
+  margin: 0;
+}
+
+@media (min-width: 600px) {
+  .article-comment-form-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }

@@ -13,6 +13,10 @@ Work planned for 1.1.0 is tracked in the
 
 ### Added
 
+- Product pages and Featured product output product structured data for search engines (#91).
+- The password page shows the visitor message from Online Store preferences, with a block to control its placement (#101).
+- Custom Liquid blocks can be added wherever app blocks are supported (#120).
+- Articles show blog comments with pagination, a comment form and moderation messages (#122).
 - Mega menu product links show the product's featured image, like collection links (#77).
 - Nested cart lines respect Shopify's remove and quantity rules and show their parent (#33).
 - Trust badges offer built-in icons, with a custom image option (#96).
@@ -30,6 +34,7 @@ Work planned for 1.1.0 is tracked in the
 
 ### Fixed
 
+- Liquid / HTML, Blog posts, Collection list, Featured collection and Product recommendations render added blocks and preserve card settings across layouts (#121).
 - Changing language or country keeps the visitor on the current page (#115).
 - Collection filters and sorting respect per-page settings on every store, ignore hash-only navigation, normalize prices, and preserve typing during updates; sorting, variant selection and predictive search work when Shopify analytics is blocked (#92).
 - The search page keeps its search box and heading in sync with results, including Back and Forward (#112).

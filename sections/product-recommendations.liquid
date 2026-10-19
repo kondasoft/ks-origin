@@ -49,9 +49,22 @@
   <div class="container">
     <div class="product-recommendations-header">
       {% content_for 'block', type: 'group', id: 'header' %}
+      {% content_for 'blocks', closest.product: product %}
     </div>
 
     {% if recommendations.performed %}
+      {% comment %}Keep one static declaration so both layouts retain the saved product-card settings.{% endcomment %}
+      {% capture cards %}
+        {% for recommended_product in recommended_products limit: products_to_show %}
+          <li
+            class="product-recommendations-item{% if layout == 'carousel' %} theme-carousel-item{% endif %}"
+            {% if layout == 'carousel' %}data-carousel-item{% endif %}
+          >
+            {% content_for 'block', type: 'product-card', id: 'product-card', closest.product: recommended_product %}
+          </li>
+        {% endfor %}
+      {% endcapture %}
+
       {% if layout == 'carousel' %}
         <theme-carousel
           class="theme-carousel"
@@ -75,11 +88,7 @@
               tabindex="0"
               data-carousel-track
             >
-              {% for recommended_product in recommended_products limit: products_to_show %}
-                <li class="product-recommendations-item theme-carousel-item" data-carousel-item>
-                  {% content_for 'block', type: 'product-card', id: 'product-card', closest.product: recommended_product %}
-                </li>
-              {% endfor %}
+              {{ cards }}
             </ul>
 
             {% if section.settings.carousel_show_navigation %}
@@ -121,11 +130,7 @@
             --desktop-columns: {{ section.settings.desktop_columns }};
           "
         >
-          {% for recommended_product in recommended_products limit: products_to_show %}
-            <li class="product-recommendations-item">
-              {% content_for 'block', type: 'product-card', id: 'product-card', closest.product: recommended_product %}
-            </li>
-          {% endfor %}
+          {{ cards }}
         </ul>
       {% endif %}
     {% else %}

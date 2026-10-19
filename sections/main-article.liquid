@@ -16,6 +16,9 @@
   <div class="container">
     <div class="main-article-blocks">
       {% content_for 'blocks', closest.article: article %}
+      {% if blog.comments_enabled? and section.settings.show_comments %}
+        {% render 'article-comments', article: article, blog: blog, comment: comment, section_id: section.id %}
+      {% endif %}
     </div>
   </div>
 </article>
@@ -29,6 +32,13 @@
   "name": "Article",
   "tag": "section",
   "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_comments",
+      "label": "Show comments",
+      "info": "Comments must also be enabled in the blog settings.",
+      "default": true
+    },
     {
       "type": "header",
       "content": "Colors"
@@ -127,6 +137,9 @@
     },
     {
       "type": "_article-navigation"
+    },
+    {
+      "type": "custom-liquid"
     },
     {
       "type": "@app"

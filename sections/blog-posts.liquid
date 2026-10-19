@@ -28,7 +28,36 @@
   <div class="container">
     <div class="blog-posts-header">
       {% content_for 'block', type: 'group', id: 'header' %}
+      {% content_for 'blocks' %}
     </div>
+
+    {% liquid
+      assign card_items = section.settings.blog.articles
+      assign has_items = false
+      if card_items != blank
+        assign has_items = true
+      else
+        assign card_items = (1..articles_to_show)
+      endif
+    %}
+
+    {% comment %}Declare the static card once to keep its saved ID across layouts and placeholders.{% endcomment %}
+    {% capture cards %}
+      {% for card_item in card_items limit: articles_to_show %}
+        {% liquid
+          assign card_resource = null
+          if has_items
+            assign card_resource = card_item
+          endif
+        %}
+        <li
+          class="blog-posts-item{% if layout == 'carousel' %} theme-carousel-item{% endif %}"
+          {% if layout == 'carousel' %}data-carousel-item{% endif %}
+        >
+          {% content_for 'block', type: 'article-card', id: 'article-card', closest.article: card_resource %}
+        </li>
+      {% endfor %}
+    {% endcapture %}
 
     {% if layout == 'carousel' %}
       <theme-carousel
@@ -53,17 +82,7 @@
             tabindex="0"
             data-carousel-track
           >
-            {% for article in section.settings.blog.articles limit: articles_to_show %}
-              <li class="blog-posts-item theme-carousel-item" data-carousel-item>
-                {% content_for 'block', type: 'article-card', id: 'article-card', closest.article: article %}
-              </li>
-            {% else %}
-              {% for index in (1..articles_to_show) %}
-                <li class="blog-posts-item theme-carousel-item" data-carousel-item>
-                  {% content_for 'block', type: 'article-card', id: 'article-card', closest.article: null %}
-                </li>
-              {% endfor %}
-            {% endfor %}
+            {{ cards }}
           </ul>
 
           {% if section.settings.carousel_show_navigation %}
@@ -105,17 +124,7 @@
           --desktop-columns: {{ section.settings.desktop_columns }};
         "
       >
-        {% for article in section.settings.blog.articles limit: articles_to_show %}
-          <li class="blog-posts-item">
-            {% content_for 'block', type: 'article-card', id: 'article-card', closest.article: article %}
-          </li>
-        {% else %}
-          {% for index in (1..articles_to_show) %}
-            <li class="blog-posts-item">
-              {% content_for 'block', type: 'article-card', id: 'article-card', closest.article: null %}
-            </li>
-          {% endfor %}
-        {% endfor %}
+        {{ cards }}
       </ul>
     {% endif %}
 

@@ -244,6 +244,20 @@
     "error": "Impossible de mettre à jour votre panier. Veuillez réessayer."
   },
   "blogs": {
+    "comments": {
+      "count": {
+        "one": "{{ count }} commentaire",
+        "other": "{{ count }} commentaires"
+      },
+      "form_title": "Laisser un commentaire",
+      "name": "Nom",
+      "email": "E-mail",
+      "message": "Commentaire",
+      "submit": "Publier le commentaire",
+      "success": "Votre commentaire a été publié avec succès.",
+      "success_moderated": "Votre commentaire a été envoyé et sera publié après approbation.",
+      "moderation_notice": "Les commentaires sont vérifiés avant leur publication."
+    },
     "empty": "Aucun article trouvé.",
     "articles_count": {
       "one": "{{ count }} article",

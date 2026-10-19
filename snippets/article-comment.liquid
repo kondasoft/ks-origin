@@ -1,0 +1,16 @@
+{% doc %}
+Renders a comment's public content and attribution within the article comments list.
+
+@param {comment} comment - The comment to display.
+@param {string} section_id - Section ID used to scope the comment anchor.
+{% enddoc %}
+
+<li id="Comment-{{ section_id }}-{{ comment.id }}" class="article-comment">
+  <div class="rte">
+    {{ comment.content }}
+  </div>
+  <div class="article-comment-meta">
+    <span>{{ comment.author | escape }}</span>
+    {{ comment.created_at | time_tag: format: 'date' }}
+  </div>
+</li>

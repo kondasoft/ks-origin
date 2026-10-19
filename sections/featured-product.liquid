@@ -33,6 +33,15 @@
   </div>
 </div>
 
+{% if featured_product != blank %}
+  {% comment %}The main product section owns the current product's graph on product pages.{% endcomment %}
+  {% unless request.page_type == 'product' and featured_product.id == product.id %}
+    <script type="application/ld+json">
+      {{ featured_product | structured_data }}
+    </script>
+  {% endunless %}
+{% endif %}
+
 {% schema %}
 {
   "name": "Featured product",

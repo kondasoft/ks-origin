@@ -26,6 +26,7 @@
 >
   <div class="{{ container_class }}">
     {% content_for 'block', type: 'group', id: 'header' %}
+    {% content_for 'blocks' %}
 
     {{ section.settings.custom_liquid }}
   </div>

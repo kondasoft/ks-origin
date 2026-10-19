@@ -22,7 +22,36 @@
   <div class="container">
     <div class="collection-list-header">
       {% content_for 'block', type: 'group', id: 'header' %}
+      {% content_for 'blocks' %}
     </div>
+
+    {% liquid
+      assign card_items = section.settings.collections
+      assign has_items = false
+      if card_items != blank
+        assign has_items = true
+      else
+        assign card_items = (1..placeholder_count)
+      endif
+    %}
+
+    {% comment %}Declare the static card once to keep its saved ID across layouts and placeholders.{% endcomment %}
+    {% capture cards %}
+      {% for card_item in card_items %}
+        {% liquid
+          assign card_resource = null
+          if has_items
+            assign card_resource = card_item
+          endif
+        %}
+        <li
+          class="collection-list-item{% if layout == 'carousel' %} theme-carousel-item{% endif %}"
+          {% if layout == 'carousel' %}data-carousel-item{% endif %}
+        >
+          {% content_for 'block', type: 'collection-card', id: 'collection-card', closest.collection: card_resource %}
+        </li>
+      {% endfor %}
+    {% endcapture %}
 
     {% if layout == 'carousel' %}
       <theme-carousel
@@ -47,17 +76,7 @@
             tabindex="0"
             data-carousel-track
           >
-            {% for collection in section.settings.collections %}
-              <li class="collection-list-item theme-carousel-item" data-carousel-item>
-                {% content_for 'block', type: 'collection-card', id: 'collection-card', closest.collection: collection %}
-              </li>
-            {% else %}
-              {% for index in (1..placeholder_count) %}
-                <li class="collection-list-item theme-carousel-item" data-carousel-item>
-                  {% content_for 'block', type: 'collection-card', id: 'collection-card', closest.collection: null %}
-                </li>
-              {% endfor %}
-            {% endfor %}
+            {{ cards }}
           </ul>
 
           {% if section.settings.carousel_show_navigation %}
@@ -99,17 +118,7 @@
           --desktop-columns: {{ section.settings.desktop_columns }};
         "
       >
-        {% for collection in section.settings.collections %}
-          <li class="collection-list-item">
-            {% content_for 'block', type: 'collection-card', id: 'collection-card', closest.collection: collection %}
-          </li>
-        {% else %}
-          {% for index in (1..placeholder_count) %}
-            <li class="collection-list-item">
-              {% content_for 'block', type: 'collection-card', id: 'collection-card', closest.collection: null %}
-            </li>
-          {% endfor %}
-        {% endfor %}
+        {{ cards }}
       </ul>
     {% endif %}
   </div>

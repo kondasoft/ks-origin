@@ -1,0 +1,162 @@
+{% doc %}
+Renders paginated article comments and the comment form when called by the article section.
+
+@param {article} article - The current article.
+@param {blog} blog - The parent blog, including its moderation settings.
+@param {comment} [comment] - The visitor's newly submitted comment, if present.
+@param {string} section_id - Section ID used to scope form fields and anchors.
+{% enddoc %}
+
+{% liquid
+  assign form_id = 'ArticleCommentForm-' | append: section_id
+  assign pagination_previous = 'general.pagination.previous' | t
+  assign pagination_next = 'general.pagination.next' | t
+%}
+
+<section class="article-comments" aria-labelledby="ArticleComments-{{ section_id }}">
+  <h2 id="ArticleComments-{{ section_id }}">
+    {{ 'blogs.comments.count' | t: count: article.comments_count }}
+  </h2>
+
+  {% paginate article.comments by 10 %}
+    {% liquid
+      assign published_comment_ids = article.comments | map: 'id'
+      assign show_pending_comment = false
+      if blog.moderated? == false and comment.status == 'pending' and comment.content != blank
+        unless published_comment_ids contains comment.id
+          assign show_pending_comment = true
+        endunless
+      endif
+    %}
+
+    {% if article.comments.size > 0 or show_pending_comment %}
+      <ol class="article-comments-list" role="list">
+        {% comment %}Shopify can return the visitor's pending comment before it reaches the published list.{% endcomment %}
+        {% if show_pending_comment %}
+          {% render 'article-comment', comment: comment, section_id: section_id %}
+        {% endif %}
+        {% for published_comment in article.comments %}
+          {% render 'article-comment', comment: published_comment, section_id: section_id %}
+        {% endfor %}
+      </ol>
+    {% endif %}
+
+    {% if paginate.pages > 1 %}
+      <nav class="pagination" aria-label="{{ 'accessibility.pagination' | t }}">
+        {{ paginate | default_pagination: previous: pagination_previous, next: pagination_next }}
+      </nav>
+    {% endif %}
+  {% endpaginate %}
+
+  {% form 'new_comment', article, id: form_id, class: 'article-comment-form' %}
+    <h2>{{ 'blogs.comments.form_title' | t }}</h2>
+
+    {% if form.errors %}
+      <div
+        id="{{ form_id }}-errors"
+        class="article-comment-status alert alert-with-icon alert-error"
+        role="alert"
+        tabindex="-1"
+        autofocus
+      >
+        <ul>
+          {% for field in form.errors %}
+            <li id="{{ form_id }}-{{ field }}-error">
+              {% if field == 'author' or field == 'email' or field == 'body' %}
+                <a href="#{{ form_id }}-{{ field }}">
+                  {{ form.errors.translated_fields[field] | capitalize | escape }}
+                  {{ form.errors.messages[field] | escape }}
+                </a>
+              {% else %}
+                {{ form.errors.translated_fields[field] | capitalize | escape }}
+                {{ form.errors.messages[field] | escape }}
+              {% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% elsif form.posted_successfully? %}
+      <div
+        class="article-comment-status alert alert-with-icon alert-success"
+        role="status"
+        tabindex="-1"
+        autofocus
+      >
+        {% if blog.moderated? and comment.status == 'unapproved' %}
+          {{ 'blogs.comments.success_moderated' | t }}
+        {% else %}
+          {{ 'blogs.comments.success' | t }}
+        {% endif %}
+      </div>
+    {% endif %}
+
+    <div class="article-comment-form-row">
+      <div class="input-group">
+        <label for="{{ form_id }}-author">
+          {{ 'blogs.comments.name' | t }} <span aria-hidden="true">*</span>
+        </label>
+        <input
+          id="{{ form_id }}-author"
+          class="input"
+          type="text"
+          name="comment[author]"
+          autocomplete="name"
+          value="{{ form.author | escape }}"
+          required
+          aria-required="true"
+          {% if form.errors contains 'author' %}
+            aria-invalid="true"
+            aria-describedby="{{ form_id }}-author-error"
+          {% endif %}
+        >
+      </div>
+      <div class="input-group">
+        <label for="{{ form_id }}-email">
+          {{ 'blogs.comments.email' | t }} <span aria-hidden="true">*</span>
+        </label>
+        <input
+          id="{{ form_id }}-email"
+          class="input"
+          type="email"
+          name="comment[email]"
+          autocomplete="email"
+          autocapitalize="off"
+          spellcheck="false"
+          value="{{ form.email | escape }}"
+          required
+          aria-required="true"
+          {% if form.errors contains 'email' %}
+            aria-invalid="true"
+            aria-describedby="{{ form_id }}-email-error"
+          {% endif %}
+        >
+      </div>
+    </div>
+
+    <div class="input-group">
+      <label for="{{ form_id }}-body">
+        {{ 'blogs.comments.message' | t }} <span aria-hidden="true">*</span>
+      </label>
+      <textarea
+        id="{{ form_id }}-body"
+        class="input"
+        name="comment[body]"
+        rows="8"
+        required
+        aria-required="true"
+        {% if form.errors contains 'body' %}
+          aria-invalid="true"
+          aria-describedby="{{ form_id }}-body-error"
+        {% endif %}
+      >{{ form.body | escape }}</textarea>
+    </div>
+
+    {% if blog.moderated? %}
+      <p>{{ 'blogs.comments.moderation_notice' | t }}</p>
+    {% endif %}
+
+    <button class="btn btn-wide btn-md btn-accent-solid" type="submit">
+      {{ 'blogs.comments.submit' | t }}
+    </button>
+  {% endform %}
+</section>

@@ -27,7 +27,36 @@
   <div class="container">
     <div class="featured-collection-header">
       {% content_for 'block', type: 'group', id: 'header' %}
+      {% content_for 'blocks' %}
     </div>
+
+    {% liquid
+      assign card_items = section.settings.collection.products
+      assign has_items = false
+      if card_items != blank
+        assign has_items = true
+      else
+        assign card_items = (1..products_to_show)
+      endif
+    %}
+
+    {% comment %}Declare the static card once to keep its saved ID across layouts and placeholders.{% endcomment %}
+    {% capture cards %}
+      {% for card_item in card_items limit: products_to_show %}
+        {% liquid
+          assign card_resource = null
+          if has_items
+            assign card_resource = card_item
+          endif
+        %}
+        <li
+          class="featured-collection-item{% if layout == 'carousel' %} theme-carousel-item{% endif %}"
+          {% if layout == 'carousel' %}data-carousel-item{% endif %}
+        >
+          {% content_for 'block', type: 'product-card', id: 'product-card', closest.product: card_resource %}
+        </li>
+      {% endfor %}
+    {% endcapture %}
 
     {% if layout == 'carousel' %}
       <theme-carousel
@@ -52,17 +81,7 @@
             tabindex="0"
             data-carousel-track
           >
-            {% for product in section.settings.collection.products limit: products_to_show %}
-              <li class="featured-collection-item theme-carousel-item" data-carousel-item>
-                {% content_for 'block', type: 'product-card', id: 'product-card', closest.product: product %}
-              </li>
-            {% else %}
-              {% for index in (1..products_to_show) %}
-                <li class="featured-collection-item theme-carousel-item" data-carousel-item>
-                  {% content_for 'block', type: 'product-card', id: 'product-card', closest.product: null %}
-                </li>
-              {% endfor %}
-            {% endfor %}
+            {{ cards }}
           </ul>
 
           {% if section.settings.carousel_show_navigation %}
@@ -104,17 +123,7 @@
           --desktop-columns: {{ section.settings.desktop_columns }};
         "
       >
-        {% for product in section.settings.collection.products limit: products_to_show %}
-          <li class="featured-collection-item">
-            {% content_for 'block', type: 'product-card', id: 'product-card', closest.product: product %}
-          </li>
-        {% else %}
-          {% for index in (1..products_to_show) %}
-            <li class="featured-collection-item">
-              {% content_for 'block', type: 'product-card', id: 'product-card', closest.product: null %}
-            </li>
-          {% endfor %}
-        {% endfor %}
+        {{ cards }}
       </ul>
     {% endif %}
 

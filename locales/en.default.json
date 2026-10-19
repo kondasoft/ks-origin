@@ -244,6 +244,20 @@
     "error": "Unable to update your cart. Please try again."
   },
   "blogs": {
+    "comments": {
+      "count": {
+        "one": "{{ count }} comment",
+        "other": "{{ count }} comments"
+      },
+      "form_title": "Leave a comment",
+      "name": "Name",
+      "email": "Email",
+      "message": "Comment",
+      "submit": "Post comment",
+      "success": "Your comment was posted successfully.",
+      "success_moderated": "Your comment was posted and will be published after approval.",
+      "moderation_notice": "Comments are reviewed before they are published."
+    },
     "empty": "No articles found.",
     "articles_count": {
       "one": "{{ count }} article",
