@@ -12,7 +12,7 @@ Renders product options, swatches, and variant data for the shared variant picke
   assign picker_id = section.id | append: '-' | append: id | append: '-' | append: product.id
   assign picker_option_style = option_style | default: 'radio'
   assign picker_swatch_size = swatch_size | default: 32
-  assign picker_swatch_image_size = picker_swatch_size | times: 2
+  assign product_colors = product.metafields.shopify['color-pattern'].value
 %}
 
 {% unless product == blank or product.has_only_default_variant %}
@@ -31,7 +31,12 @@ Renders product options, swatches, and variant data for the shared variant picke
           assign selected_option_value = product_option.selected_value | default: product_option.values.first
 
           for option_value in product_option.values
-            if option_value.swatch != blank
+            capture swatch_source
+              render 'product-option-swatch', option_value: option_value, product_colors: product_colors, output: 'source'
+            endcapture
+            assign swatch_source = swatch_source | strip
+
+            if swatch_source != blank
               assign option_has_swatches = true
               break
             endif
@@ -77,11 +82,17 @@ Renders product options, swatches, and variant data for the shared variant picke
               {% unless option_has_swatches %}data-variant-button-group{% endunless %}
             >
               {% for option_value in product_option.values %}
-                {% assign option_id = 'ProductOption-' | append: picker_id | append: '-' | append: product_option.position | append: '-' | append: forloop.index %}
+                {% liquid
+                  assign option_id = 'ProductOption-' | append: picker_id | append: '-' | append: product_option.position | append: '-' | append: forloop.index
+                  capture swatch_markup
+                    render 'product-option-swatch', option_value: option_value, product_colors: product_colors, size: picker_swatch_size, swatch_class: 'product-main-variant-picker-swatch'
+                  endcapture
+                  assign swatch_markup = swatch_markup | strip
+                %}
                 <label
-                  class="product-main-variant-picker-radio{% if option_value.swatch != blank %} product-main-variant-picker-radio-swatch{% endif %}"
+                  class="product-main-variant-picker-radio{% if swatch_markup != blank %} product-main-variant-picker-radio-swatch{% endif %}"
                   for="{{ option_id }}"
-                  {% if option_value.swatch != blank %}title="{{ option_value | escape }}"{% endif %}
+                  {% if swatch_markup != blank %}title="{{ option_value | escape }}"{% endif %}
                 >
                   <input
                     id="{{ option_id }}"
@@ -93,26 +104,8 @@ Renders product options, swatches, and variant data for the shared variant picke
                     {% unless option_value.available %}aria-disabled="true"{% endunless %}
                     {% if option_value.selected %}checked{% endif %}
                   >
-                  {% if option_value.swatch != blank %}
-                    <span
-                      class="product-main-variant-picker-swatch"
-                      style="--swatch-color: {% if option_value.swatch.color %}rgb({{ option_value.swatch.color.rgb }}){% else %}transparent{% endif %};"
-                      aria-hidden="true"
-                    >
-                      {% if option_value.swatch.image %}
-                        {{
-                          option_value.swatch.image
-                          | image_url: width: picker_swatch_image_size, height: picker_swatch_image_size, crop: 'center'
-                          | image_tag:
-                            loading: 'lazy',
-                            width: picker_swatch_size,
-                            height: picker_swatch_size,
-                            alt: ''
-                        }}
-                      {% endif %}
-                    </span>
-                  {% endif %}
-                  <span {% if option_value.swatch != blank %}class="visually-hidden"{% endif %}>
+                  {{ swatch_markup }}
+                  <span {% if swatch_markup != blank %}class="visually-hidden"{% endif %}>
                     {{ option_value | escape }}
                   </span>
                 </label>

@@ -147,6 +147,55 @@
     ]
   },
   {
+    "name": "Product cards",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Appearance"
+      },
+      {
+        "type": "text_alignment",
+        "id": "product_card_text_alignment",
+        "label": "Text alignment",
+        "default": "left"
+      },
+      {
+        "type": "range",
+        "id": "product_card_border_opacity",
+        "label": "Border opacity",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "%",
+        "default": 0
+      },
+      {
+        "type": "checkbox",
+        "id": "product_card_show_box_shadow",
+        "label": "Show box shadow",
+        "default": false
+      },
+      {
+        "type": "header",
+        "content": "Image"
+      },
+      {
+        "type": "select",
+        "id": "product_card_image_ratio",
+        "label": "Aspect ratio",
+        "options": [
+          { "group": "Adapt", "value": "adapt", "label": "Adapt to image" },
+          { "group": "Square", "value": "square", "label": "Square (1:1)" },
+          { "group": "Horizontal", "value": "landscape", "label": "Landscape (4:3)" },
+          { "group": "Horizontal", "value": "widescreen", "label": "Widescreen (16:9)" },
+          { "group": "Vertical", "value": "portrait", "label": "Portrait (3:4)" },
+          { "group": "Vertical", "value": "vertical", "label": "Vertical (9:16)" }
+        ],
+        "default": "square"
+      }
+    ]
+  },
+  {
     "name": "Quick add",
     "settings": [
       {
@@ -297,7 +346,7 @@
         "max": 50,
         "step": 2,
         "unit": "px",
-        "default": 32
+        "default": 28
       },
       {
         "type": "header",

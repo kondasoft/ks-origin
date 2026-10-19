@@ -14,10 +14,16 @@ class QuickAdd extends HTMLElement {
     if (!this.dialogHost || !this.content) return;
 
     this.cache = new Map();
+    this.cacheVersion = 0;
     this.listenerController = new AbortController();
     document.addEventListener("click", this.onDocumentClick.bind(this), {
       signal: this.listenerController.signal,
     });
+    for (const eventName of ["shopify:cart:lines-update", "shopify:cart:discount-update"]) {
+      document.addEventListener(eventName, this.onCartUpdate.bind(this), {
+        signal: this.listenerController.signal,
+      });
+    }
     this.isInitialized = true;
   }
 
@@ -25,6 +31,21 @@ class QuickAdd extends HTMLElement {
     this.listenerController?.abort();
     this.requestController?.abort();
     this.isInitialized = false;
+  }
+
+  async onCartUpdate(event) {
+    // Cart events fire before the mutation; also clear anything fetched while it was pending.
+    this.cacheVersion += 1;
+    this.cache.clear();
+
+    try {
+      await event.promise;
+    } catch {
+      // A failed mutation can still supersede an older quick-add request.
+    } finally {
+      this.cacheVersion += 1;
+      this.cache.clear();
+    }
   }
 
   async onDocumentClick(event) {
@@ -77,6 +98,8 @@ class QuickAdd extends HTMLElement {
 
     if (this.cache.has(url.href)) return this.cache.get(url.href);
 
+    const cacheVersion = this.cacheVersion;
+
     this.requestController = new AbortController();
     const response = await fetch(url, { signal: this.requestController.signal });
 
@@ -86,7 +109,7 @@ class QuickAdd extends HTMLElement {
 
     if (!html.includes("data-quick-add-product")) throw new Error("Quick add product markup was not returned");
 
-    this.cache.set(url.href, html);
+    if (cacheVersion === this.cacheVersion) this.cache.set(url.href, html);
     return html;
   }
 

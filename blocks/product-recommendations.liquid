@@ -60,6 +60,24 @@ Renders related or complementary product recommendations inside product content.
   {% endif %}
 
   {% if recommendations.performed %}
+    {% comment %}Keep one static declaration so both layouts retain the saved product-card settings.{% endcomment %}
+    {% capture cards %}
+      {% for recommended_product in recommended_products limit: products_to_show %}
+        <li
+          class="product-recommendations-block-item{% if layout == 'carousel' %} theme-carousel-item{% endif %}"
+          {% if layout == 'carousel' %}data-carousel-item{% endif %}
+        >
+          {% content_for 'block',
+            type: 'product-card',
+            id: 'product-card',
+            closest.product: recommended_product,
+            card_grid_settings: block.settings,
+            narrow_card_grid: true
+          %}
+        </li>
+      {% endfor %}
+    {% endcapture %}
+
     {% if layout == 'carousel' %}
       <theme-carousel
         class="theme-carousel"
@@ -83,15 +101,7 @@ Renders related or complementary product recommendations inside product content.
             tabindex="0"
             data-carousel-track
           >
-            {% for recommended_product in recommended_products limit: products_to_show %}
-              <li class="product-recommendations-block-item theme-carousel-item" data-carousel-item>
-                {% content_for 'block',
-                  type: 'product-card',
-                  id: 'product-card',
-                  closest.product: recommended_product
-                %}
-              </li>
-            {% endfor %}
+            {{ cards }}
           </ul>
 
           {% if block.settings.carousel_show_navigation %}
@@ -133,15 +143,7 @@ Renders related or complementary product recommendations inside product content.
           --desktop-columns: {{ block.settings.desktop_columns }};
         "
       >
-        {% for recommended_product in recommended_products limit: products_to_show %}
-          <li class="product-recommendations-block-item">
-            {% content_for 'block',
-              type: 'product-card',
-              id: 'product-card',
-              closest.product: recommended_product
-            %}
-          </li>
-        {% endfor %}
+        {{ cards }}
       </ul>
     {% endif %}
   {% else %}
@@ -317,9 +319,11 @@ Renders related or complementary product recommendations inside product content.
           "type": "product-card",
           "id": "product-card",
           "static": true,
+          "settings": { "use_global_appearance_settings": true },
           "blocks": [
             {
-              "type": "_product-card-image"
+              "type": "_product-card-image",
+              "settings": { "use_global_image_settings": true }
             },
             {
               "type": "_product-card-title"

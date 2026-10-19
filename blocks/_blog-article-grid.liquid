@@ -30,7 +30,7 @@ Renders the paginated blog article grid and its reusable article cards.
         >
           {% for article in blog.articles %}
             <li class="article-grid-item">
-              {% content_for 'block', type: 'article-card', id: 'article-card', closest.article: article %}
+              {% content_for 'block', type: 'article-card', id: 'article-card', closest.article: article, card_grid_settings: block.settings %}
             </li>
           {% endfor %}
         </ul>

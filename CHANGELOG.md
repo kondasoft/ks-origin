@@ -13,6 +13,7 @@ Work planned for 1.1.0 is tracked in the
 
 ### Added
 
+- Theme settings → Product cards: global appearance and image defaults, with per-block overrides (#82).
 - Product pages and Featured product output product structured data for search engines (#91).
 - The password page shows the visitor message from Online Store preferences, with a block to control its placement (#101).
 - Custom Liquid blocks can be added wherever app blocks are supported (#120).
@@ -25,6 +26,7 @@ Work planned for 1.1.0 is tracked in the
 
 ### Changed
 
+- Quick add swatches default to 28px, like the product page (#81).
 - The header account icon uses Shopify's account component and is hidden when customer accounts are turned off (#114).
 - Announcement bar text uses a tighter line height, so wrapped announcements take less space on mobile (#72).
 - Mobile product gallery thumbnails are smaller and more compact (#89).
@@ -35,6 +37,10 @@ Work planned for 1.1.0 is tracked in the
 
 ### Fixed
 
+- Colour-only swatches on product cards show their colour, and cards, quick add and the product page share one swatch rendering (#80).
+- Card images download sizes that match the grid in all browsers (#116).
+- Quick add and quantity limits reflect the current cart after adding to cart (#63).
+- Inline product recommendations share one saved product-card declaration across grid and carousel layouts (#121).
 - Long text logos are shortened with an ellipsis on mobile instead of pushing the header icons off the screen (#76).
 - Variant pickers on the same page no longer affect each other (#108).
 - Uploaded files use native product submission, and Buy it now is disabled for products with customisations or a selling plan (#109).

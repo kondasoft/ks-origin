@@ -71,7 +71,8 @@
                 "pt": 0,
                 "pb": 0,
                 "pl": 0,
-                "pr": 0
+                "pr": 0,
+                "use_global_appearance_settings": true
               },
               "blocks": {
                 "product-card-image": {
@@ -79,7 +80,8 @@
                   "settings": {
                     "image_ratio": "square",
                     "pt": 0,
-                    "pb": 12
+                    "pb": 12,
+                    "use_global_image_settings": true
                   },
                   "blocks": {}
                 },

@@ -1,0 +1,64 @@
+{% doc %}
+Calculates responsive card image sizes from the containing grid and optionally applies them to rendered card content.
+
+@param {object} grid_settings - Settings from the containing grid block or section.
+@param {boolean} [custom_colors] - Whether the card makes the grid use its compact gap.
+@param {boolean} [narrow_grid] - Whether the grid sits in a product details column on desktop.
+@param {string} [content] - Rendered card content whose conservative image sizes should be replaced.
+{% enddoc %}
+{%- liquid
+  assign grid = grid_settings
+  assign mobile_columns = grid.mobile_columns | default: 2
+  assign desktop_columns = grid.desktop_columns | default: 3
+  assign desktop_gap = 1.5
+  assign container_width = 1440
+
+  case settings.container_width
+    when 'container-normal'
+      assign container_width = 1920
+    when 'container-wide'
+      assign container_width = 2400
+  endcase
+
+  if grid.layout == 'carousel'
+    assign desktop_gap = 1
+    if grid.carousel_partial_slide_mobile
+      assign mobile_columns = mobile_columns | plus: 0.18
+    endif
+  elsif custom_colors or narrow_grid or grid.results_per_page != blank
+    # Mixed search results share the smaller gap when either card type uses custom colours.
+    assign desktop_gap = 1
+  endif
+
+  assign mobile_gutters = mobile_columns | minus: 1 | plus: 2
+  assign desktop_gutters = desktop_columns | minus: 1 | times: desktop_gap | plus: 4
+
+  # Product details occupy half the container after the 2rem gallery/details gap.
+  if narrow_grid
+    assign desktop_columns = desktop_columns | times: 2
+    assign desktop_gutters = desktop_gutters | minus: 4 | times: 2 | plus: 6
+  endif
+
+  capture image_sizes
+    echo 'auto, (min-width: 1200px) calc((min(100vw, '
+    echo container_width
+    echo 'px) - '
+    echo desktop_gutters
+    echo 'rem) / '
+    echo desktop_columns
+    echo '), (min-width: 600px) calc((min(100vw, 800px) - 3rem) / 2), calc((100vw - '
+    echo mobile_gutters
+    echo 'rem) / '
+    echo mobile_columns
+    echo ')'
+  endcapture
+
+  if content != nil
+    # Dynamic child blocks cannot receive custom parameters; replace only the card image sizes contract.
+    assign fallback_attribute = 'sizes="auto, (min-width: 1200px) 33vw, 50vw"'
+    assign sizes_attribute = image_sizes | prepend: 'sizes="' | append: '"'
+    echo content | replace: fallback_attribute, sizes_attribute
+  else
+    echo image_sizes
+  endif
+-%}

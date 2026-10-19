@@ -1,13 +1,21 @@
 {% liquid
   assign product = closest.product
   assign swatch_option = null
-  assign swatch_image_width = block.settings.swatch_size | times: 2
+  assign linked_swatch_option = null
+  assign product_colors = product.metafields.shopify['color-pattern'].value
 
   for product_option in product.options_with_values
     for option_value in product_option.values
-      if option_value.swatch != blank
+      capture swatch_source
+        render 'product-option-swatch', option_value: option_value, product_colors: product_colors, output: 'source'
+      endcapture
+      assign swatch_source = swatch_source | strip
+
+      if swatch_source == 'native'
         assign swatch_option = product_option
         break
+      elsif swatch_source == 'linked' and linked_swatch_option == blank
+        assign linked_swatch_option = product_option
       endif
     endfor
 
@@ -15,6 +23,8 @@
       break
     endif
   endfor
+
+  assign swatch_option = swatch_option | default: linked_swatch_option
 %}
 
 {% if swatch_option != blank %}
@@ -33,17 +43,20 @@
       style="--product-card-swatch-size: {{ block.settings.swatch_size }}px;"
     >
       {% for option_value in swatch_option.values %}
-        {% if option_value.swatch != blank %}
-          {% liquid
-            assign swatch_variant = option_value.variant
-            assign variant_image = swatch_variant.featured_media.preview_image
-            assign variant_image_alt = variant_image.alt | default: product.title
-          %}
+        {% liquid
+          assign swatch_variant = option_value.variant
+          assign variant_image = swatch_variant.featured_media.preview_image
+          assign variant_image_alt = variant_image.alt | default: product.title
+          capture swatch_markup
+            render 'product-option-swatch', option_value: option_value, product_colors: product_colors, size: block.settings.swatch_size, swatch_class: 'product-card-swatch-fill', image_class: 'product-card-swatch-image'
+          endcapture
+          assign swatch_markup = swatch_markup | strip
+        %}
+        {% if swatch_markup != blank %}
           <li class="product-card-swatch-item">
             <label
               class="product-card-swatch"
               title="{{ option_value | escape }}"
-              style="--swatch-color: {% if option_value.swatch.color %}rgb({{ option_value.swatch.color.rgb }}){% else %}transparent{% endif %};"
             >
               <input
                 class="visually-hidden"
@@ -54,16 +67,7 @@
                 data-variant-url="{{ swatch_variant.url }}"
                 {% if option_value.selected %}checked{% endif %}
               >
-              {% if option_value.swatch.image %}
-                {{
-                  option_value.swatch.image
-                  | image_url: width: swatch_image_width
-                  | image_tag:
-                    alt: '',
-                    class: 'product-card-swatch-image',
-                    loading: 'lazy'
-                }}
-              {% endif %}
+              {{ swatch_markup }}
               <span class="visually-hidden">{{ option_value | escape }}</span>
             </label>
 
@@ -76,7 +80,7 @@
                     alt: variant_image_alt,
                     class: 'product-card-image',
                     widths: '320, 640, 960, 1280, 1600, 2000, 2400',
-                    sizes: 'auto, 100vw',
+                    sizes: 'auto, (min-width: 1200px) 33vw, 50vw',
                     loading: 'lazy'
                 }}
               </template>

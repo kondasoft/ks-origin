@@ -1,0 +1,55 @@
+{% doc %}
+  Resolves and renders a product option swatch from native or linked color data.
+  Outputs nothing when neither source has a usable color or image.
+
+  @param {product_option_value} option_value - Option value to resolve.
+  @param {metaobject[]} [product_colors] - Entries from the product's Shopify color-pattern metafield.
+  @param {string} [output] - Use source to return native or linked instead of markup.
+  @param {number} [size] - Swatch diameter in pixels.
+  @param {string} [swatch_class] - CSS class for the swatch wrapper.
+  @param {string} [image_class] - CSS class for the swatch image.
+{% enddoc %}
+{%- liquid
+  assign swatch_color = option_value.swatch.color
+  assign swatch_image = option_value.swatch.image
+  assign swatch_source = 'native'
+
+  if swatch_color == blank and swatch_image == blank
+    # Labels are only a fallback for linked Shopify colour data, never CSS colour names.
+    assign option_label = option_value.name | default: option_value | downcase | strip
+    for product_color in product_colors
+      assign color_label = product_color.label.value | downcase | strip
+      if color_label == option_label
+        assign swatch_color = product_color.color.value
+        assign swatch_image = product_color.image.value.preview_image | default: product_color.image.value
+        assign swatch_source = 'linked'
+        break
+      endif
+    endfor
+  endif
+-%}
+{%- if swatch_color != blank or swatch_image != blank -%}
+  {%- if output == 'source' -%}
+    {{- swatch_source -}}
+  {%- else -%}
+    {%- assign swatch_size = size | default: 28 -%}
+    {%- assign swatch_image_size = swatch_size | times: 2 -%}
+    <span
+      class="{{ swatch_class }}"
+      style="--swatch-color: {{ swatch_color | default: 'transparent' }};"
+      aria-hidden="true"
+    >
+      {%- if swatch_image != blank -%}
+        {{- swatch_image
+          | image_url: width: swatch_image_size, height: swatch_image_size, crop: 'center'
+          | image_tag:
+            class: image_class,
+            width: swatch_size,
+            height: swatch_size,
+            loading: 'lazy',
+            alt: ''
+        -}}
+      {%- endif -%}
+    </span>
+  {%- endif -%}
+{%- endif -%}

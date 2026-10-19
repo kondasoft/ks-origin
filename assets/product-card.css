@@ -188,6 +188,15 @@
   outline-color: rgb(var(--color-text));
 }
 
+.product-card-swatch-fill {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--swatch-color, transparent);
+  border-radius: 50%;
+}
+
 .product-card-swatch-image {
   display: block;
   width: 100%;

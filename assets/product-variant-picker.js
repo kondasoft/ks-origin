@@ -6,6 +6,42 @@
 */
 
 let standardEventsPromise;
+const cartQuantitiesByUpdate = new WeakMap();
+
+async function getCartQuantities(cart, updatePromise) {
+  if (!cartQuantitiesByUpdate.has(updatePromise)) {
+    cartQuantitiesByUpdate.set(updatePromise, (async () => {
+      let lines = cart.lines;
+
+      if (!Array.isArray(lines)) return null;
+
+      // Standard cart lines expose IDs and quantities, but no variant ID. Ajax keys start with that ID.
+      if (lines.some((line) => !/^\d+(?::|$)/.test(line.id))) {
+        const cartUrl = document.documentElement.dataset.cartUrl;
+        const response = await fetch(`${cartUrl}.js`, { cache: "no-store" });
+
+        if (!response.ok) return null;
+
+        const ajaxCart = await response.json();
+
+        lines = ajaxCart.items?.map((item) => ({ id: String(item.variant_id), quantity: item.quantity }));
+        if (!Array.isArray(lines)) return null;
+      }
+
+      const quantities = new Map();
+
+      for (const line of lines) {
+        const variantId = String(line.id).split(":")[0];
+
+        quantities.set(variantId, (quantities.get(variantId) || 0) + line.quantity);
+      }
+
+      return quantities;
+    })());
+  }
+
+  return cartQuantitiesByUpdate.get(updatePromise);
+}
 
 // Analytics is optional; a blocked CDN must not prevent variant selection.
 function loadStandardEvents() {
@@ -35,6 +71,12 @@ class ProductVariantPicker extends HTMLElement {
     window.addEventListener("resize", this.updateActiveButtonIndicators.bind(this), {
       signal: this.listenerController.signal,
     });
+    for (const eventName of ["shopify:cart:lines-update", "shopify:cart:discount-update"]) {
+      document.addEventListener(eventName, this.onCartUpdate.bind(this), {
+        signal: this.listenerController.signal,
+      });
+    }
+    this.updateBuyButtons(this.findVariant(this.getSelectedOptions()));
     this.updateOptionAvailability();
     this.updateActiveButtonIndicators();
     this.enableActiveButtonTransitions();
@@ -46,7 +88,32 @@ class ProductVariantPicker extends HTMLElement {
 
   disconnectedCallback() {
     this.listenerController?.abort();
+    this.cartUpdateToken = null;
     this.isInitialized = false;
+  }
+
+  async onCartUpdate(event) {
+    const updateToken = {};
+
+    this.cartUpdateToken = updateToken;
+
+    try {
+      const result = await event.promise;
+
+      if (!result?.cart) return;
+
+      const quantities = await getCartQuantities(result.cart, event.promise);
+
+      if (!quantities || !this.isConnected || this.cartUpdateToken !== updateToken) return;
+
+      for (const variant of this.variants) {
+        variant.cartQuantity = quantities.get(String(variant.id)) || 0;
+      }
+
+      this.updateBuyButtons(this.findVariant(this.getSelectedOptions()));
+    } catch {
+      // Keep the last known limits if the cart mutation or optional Ajax lookup fails.
+    }
   }
 
   parseVariants() {
@@ -267,14 +334,14 @@ class ProductVariantPicker extends HTMLElement {
       variant?.inventoryQuantity > 0 &&
       variant?.cartQuantity >= variant?.inventoryQuantity;
 
-    if (addToCart) addToCart.disabled = !available;
+    if (addToCart) addToCart.disabled = !available || maximum === 0;
     if (addToCartText) {
       addToCartText.textContent = available ? buyButtons.dataset.addToCartText : buyButtons.dataset.soldOutText;
     }
     if (inventoryMessage) inventoryMessage.hidden = !allInventoryInCart;
 
     if (quantity) {
-      quantity.disabled = !available;
+      quantity.disabled = !available || maximum === 0;
 
       if (maximum === null || maximum < 1) {
         quantity.removeAttribute("max");
@@ -293,7 +360,7 @@ class ProductVariantPicker extends HTMLElement {
   getQuantityMaximum(variant) {
     if (!variant || variant.inventoryManagement === null || variant.inventoryPolicy !== "deny") return null;
 
-    return variant.inventoryQuantity > 0 ? variant.inventoryQuantity : 0;
+    return Math.max(0, variant.inventoryQuantity - variant.cartQuantity);
   }
 
   updateGallery(variant) {

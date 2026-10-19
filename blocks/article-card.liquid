@@ -1,9 +1,13 @@
 {% doc %}
 Renders the ordered inner blocks shared by every article card in an article grid.
 
+@param {object} [card_grid_settings] - Settings from a containing grid block.
+
 @example
 {% content_for 'block', type: 'article-card', id: 'article-card', closest.article: article %}
 {% enddoc %}
+
+{% assign card_grid_settings = card_grid_settings | default: section.settings %}
 
 <article
   class="article-card"
@@ -25,7 +29,14 @@ Renders the ordered inner blocks shared by every article card in an article grid
   data-text-alignment="{{ block.settings.text_alignment }}"
   {{ block.shopify_attributes }}
 >
-  {% content_for 'blocks', closest.article: closest.article %}
+  {% capture card_content %}
+    {% content_for 'blocks', closest.article: closest.article %}
+  {% endcapture %}
+  {% render 'card-image-sizes',
+    grid_settings: card_grid_settings,
+    custom_colors: block.settings.custom_colors,
+    content: card_content
+  %}
 </article>
 
 {% schema %}

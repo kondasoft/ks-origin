@@ -25,7 +25,14 @@ Renders the ordered inner blocks shared by every collection card in a collection
   data-text-alignment="{{ block.settings.text_alignment }}"
   {{ block.shopify_attributes }}
 >
-  {% content_for 'blocks', closest.collection: closest.collection %}
+  {% capture card_content %}
+    {% content_for 'blocks', closest.collection: closest.collection %}
+  {% endcapture %}
+  {% render 'card-image-sizes',
+    grid_settings: section.settings,
+    custom_colors: block.settings.custom_colors,
+    content: card_content
+  %}
 </article>
 
 {% schema %}

@@ -1,12 +1,25 @@
 {% doc %}
 Renders the ordered inner blocks shared by every product card in a product grid.
 
+@param {object} [card_grid_settings] - Settings from a containing grid block.
+@param {boolean} [narrow_card_grid] - Whether the grid sits in a product details column.
+
 @example
 {% content_for 'block', type: 'product-card', id: 'product-card', closest.product: product %}
 {% enddoc %}
 
 {% liquid
+  assign card_grid_settings = card_grid_settings | default: section.settings
   assign product_view_context = 'page'
+  assign card_text_alignment = block.settings.text_alignment
+  assign card_border_opacity = block.settings.border_opacity
+  assign card_show_box_shadow = block.settings.show_box_shadow
+
+  if block.settings.use_global_appearance_settings
+    assign card_text_alignment = settings.product_card_text_alignment
+    assign card_border_opacity = settings.product_card_border_opacity
+    assign card_show_box_shadow = settings.product_card_show_box_shadow
+  endif
 
   if recommendations.performed
     assign product_view_context = 'recommendation'
@@ -27,7 +40,7 @@ Renders the ordered inner blocks shared by every product card in a product grid.
   <article
     class="product-card"
     style="
-      --card-border-opacity: {{ block.settings.border_opacity | divided_by: 100.0 }};
+      --card-border-opacity: {{ card_border_opacity | divided_by: 100.0 }};
       --card-pt: {{ block.settings.pt | divided_by: 16.0 | append: 'em' }};
       --card-pb: {{ block.settings.pb | divided_by: 16.0 | append: 'em' }};
       --card-pl: {{ block.settings.pl | divided_by: 16.0 | append: 'em' }};
@@ -38,13 +51,21 @@ Renders the ordered inner blocks shared by every product card in a product grid.
         --color-accent: {{ block.settings.accent_color.red }} {{ block.settings.accent_color.green }} {{ block.settings.accent_color.blue }};
       {% endif %}
     "
-    data-border-opacity="{{ block.settings.border_opacity }}"
+    data-border-opacity="{{ card_border_opacity }}"
     data-custom-colors="{{ block.settings.custom_colors }}"
-    data-box-shadow="{{ block.settings.show_box_shadow }}"
-    data-text-alignment="{{ block.settings.text_alignment }}"
+    data-box-shadow="{{ card_show_box_shadow }}"
+    data-text-alignment="{{ card_text_alignment }}"
     {{ block.shopify_attributes }}
   >
-    {% content_for 'blocks', closest.product: closest.product %}
+    {% capture card_content %}
+      {% content_for 'blocks', closest.product: closest.product %}
+    {% endcapture %}
+    {% render 'card-image-sizes',
+      grid_settings: card_grid_settings,
+      custom_colors: block.settings.custom_colors,
+      narrow_grid: narrow_card_grid,
+      content: card_content
+    %}
   </article>
 </s-view-event>
 
@@ -90,10 +111,17 @@ Renders the ordered inner blocks shared by every product card in a product grid.
       "content": "Appearance"
     },
     {
+      "type": "checkbox",
+      "id": "use_global_appearance_settings",
+      "label": "Use global appearance settings",
+      "default": false
+    },
+    {
       "type": "text_alignment",
       "id": "text_alignment",
       "label": "Text alignment",
-      "default": "left"
+      "default": "left",
+      "visible_if": "{{ block.settings.use_global_appearance_settings == false }}"
     },
     {
       "type": "range",
@@ -103,13 +131,15 @@ Renders the ordered inner blocks shared by every product card in a product grid.
       "max": 100,
       "step": 5,
       "unit": "%",
-      "default": 0
+      "default": 0,
+      "visible_if": "{{ block.settings.use_global_appearance_settings == false }}"
     },
     {
       "type": "checkbox",
       "id": "show_box_shadow",
       "label": "Show box shadow",
-      "default": false
+      "default": false,
+      "visible_if": "{{ block.settings.use_global_appearance_settings == false }}"
     },
     {
       "type": "header",

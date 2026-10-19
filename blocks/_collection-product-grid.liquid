@@ -30,7 +30,7 @@ Renders the paginated collection product grid and its reusable product cards.
         >
           {% for product in collection.products %}
             <li class="product-grid-item">
-              {% content_for 'block', type: 'product-card', id: 'product-card', closest.product: product %}
+              {% content_for 'block', type: 'product-card', id: 'product-card', closest.product: product, card_grid_settings: block.settings %}
             </li>
           {% endfor %}
         </ul>
