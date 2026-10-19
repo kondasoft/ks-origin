@@ -38,9 +38,6 @@
   flex-direction: column;
 }
 
-.cart-dialog .dialog-footer {
-}
-
 @media (prefers-reduced-motion: reduce) {
   .cart-items-component {
     transition: none;
@@ -89,9 +86,6 @@
   animation: cart-empty-icon 1s linear alternate infinite both;
 }
 
-.cart-empty p {
-}
-
 @keyframes cart-empty-icon {
   from { transform: translateX(-4px); }
   to { transform: translateX(4px); }
@@ -124,10 +118,6 @@
 
 .cart-item + .cart-item {
   padding-top: 1rem;
-}
-
-.cart-item:last-child {
-  /* border-bottom: 0; */
 }
 
 .cart-item-image-link {

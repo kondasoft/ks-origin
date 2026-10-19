@@ -44,7 +44,7 @@
   data-section-css="{{ 'footer.css' | asset_url }}"
   data-section-js="{{ 'footer.js' | asset_url }}"
 >
-  <div class="container {{ settings.container_width }}">
+  <div class="container">
     {% if section.blocks.size > 0 %}
       <footer-blocks class="footer-blocks">
         {% for block in section.blocks %}

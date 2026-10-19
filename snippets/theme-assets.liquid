@@ -1,4 +1,13 @@
 {% liquid
+  case settings.container_width
+    when 'container-normal'
+      assign container_width = 1920
+    when 'container-wide'
+      assign container_width = 2400
+    else
+      assign container_width = 1440
+  endcase
+
   assign heading_size_scale = settings.heading_size_scale | divided_by: 100.0
   assign body_size_scale = settings.body_size_scale | divided_by: 100.0
 
@@ -27,6 +36,9 @@
     --color-text: {{ settings.color_text.red }} {{ settings.color_text.green }} {{ settings.color_text.blue }};
     --color-surface: {{ settings.color_surface.red }} {{ settings.color_surface.green }} {{ settings.color_surface.blue }};
     --color-accent: {{ settings.color_accent.red }} {{ settings.color_accent.green }} {{ settings.color_accent.blue }};
+
+    /* Layout */
+    --container-width: {{ container_width | append: 'px' }};
 
     /* Alerts */
     --alert-error-color: 158 8 18;

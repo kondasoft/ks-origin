@@ -20,7 +20,7 @@ Renders the paginated blog article grid and its reusable article cards.
   "
   {{ block.shopify_attributes }}
 >
-  <div class="container {{ settings.container_width }}">
+  <div class="container">
     {% paginate blog.articles by articles_per_page %}
       {% if blog.articles.size > 0 %}
         <ul

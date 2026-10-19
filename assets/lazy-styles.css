@@ -344,9 +344,6 @@ predictive-search {
   list-style: none;
 }
 
-.predictive-search-option {
-}
-
 .predictive-search-option[aria-selected="true"] {
   background-color: rgb(var(--color-surface));
 }

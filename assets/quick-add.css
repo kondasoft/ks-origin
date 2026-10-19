@@ -25,11 +25,13 @@
   Gallery
 */
 .quick-add-media {
+  width: calc(100% + 2rem);
+  margin: -1rem -1rem 0;
   display: block;
   min-width: 0;
   overflow: hidden;
   background-color: rgb(var(--color-surface));
-  border-radius: var(--border-radius);
+  border-radius: 0;
 }
 
 .quick-add-gallery-stage {
@@ -131,11 +133,11 @@
   font-size: var(--fs-sm);
 }
 
-@media (max-width: 599px) {
+@media (min-width: 600px) {
   .quick-add-media {
-    width: calc(100% + 2rem);
-    margin: -1rem -1rem 0;
-    border-radius: 0;
+    width: auto;
+    margin: 0;
+    border-radius: var(--border-radius);
   }
 }
 

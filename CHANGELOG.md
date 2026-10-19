@@ -13,6 +13,8 @@ Work planned for 1.1.0 is tracked in the
 
 ### Changed
 
+- `.container` follows the global `--container-width` variable; sections and apps no longer need the removed `container-narrow`, `container-normal`, or `container-wide` classes (#84).
+- Removed leftover commented-out and empty CSS rules and aligned stylesheets with the theme's CSS conventions (#102, #107).
 - Modals open with a subtle upward fade and close immediately, while drawers retain animated closing (#83).
 
 ### Fixed

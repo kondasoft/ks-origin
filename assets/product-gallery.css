@@ -15,9 +15,11 @@
 }
 
 .product-gallery-stage {
+  width: calc(100% + 2rem);
+  margin: -1rem -1rem 0;
   position: relative;
   overflow: hidden;
-  border-radius: var(--border-radius);
+  border-radius: 0;
   outline: 2px solid transparent;
   outline-offset: 2px;
   touch-action: pan-y pinch-zoom;
@@ -105,11 +107,11 @@
   pointer-events: auto;
 }
 
-@media (max-width: 599px) {
+@media (min-width: 600px) {
   .product-gallery-stage {
-    width: calc(100% + 2rem);
-    margin: -1rem -1rem 0;
-    border-radius: 0;
+    width: auto;
+    margin: 0;
+    border-radius: var(--border-radius);
   }
 }
 

@@ -29,7 +29,7 @@ Renders the collection page heading, description, breadcrumbs, and optional coll
   "
   {{ block.shopify_attributes }}
 >
-  <div class="container {{ settings.container_width }}">
+  <div class="container">
     <header
       class="main-collection-header responsive-text-alignment{% if block.settings.show_image and collection.image != blank %} main-collection-header-with-image{% endif %}"
       data-mobile-text-alignment="{{ block.settings.mobile_text_alignment }}"

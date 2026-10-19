@@ -9,9 +9,6 @@
   background-color: rgb(var(--color-background));
 }
 
-.featured-collection-header {
-}
-
 .featured-collection-grid {
   display: grid;
   grid-template-columns: repeat(var(--mobile-columns), minmax(0, 1fr));

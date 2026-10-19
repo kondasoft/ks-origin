@@ -110,9 +110,6 @@
   outline-offset: -2px;
 }
 
-.product-card-title-link:hover {
-}
-
 .product-card-title-link:focus-visible {
   outline-color: transparent;
 }

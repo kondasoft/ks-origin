@@ -21,7 +21,7 @@ Renders paginated search results using the reusable product and article cards.
   "
   {{ block.shopify_attributes }}
 >
-  <div class="container {{ settings.container_width }}">
+  <div class="container">
     {% if search.performed %}
       {% paginate search.results by results_per_page %}
         {% if search.results_count > 0 %}

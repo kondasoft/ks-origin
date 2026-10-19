@@ -20,7 +20,7 @@ Renders the paginated collection product grid and its reusable product cards.
   "
   {{ block.shopify_attributes }}
 >
-  <div class="container {{ settings.container_width }}">
+  <div class="container">
     {% paginate collection.products by products_per_page %}
       {% if collection.products.size > 0 %}
         <ul

@@ -5,6 +5,10 @@ These instructions apply to any developer or AI coding agent working on KS Origi
 ## General
 
 - Do not make silent fixes outside the scope of the current request. If you notice an unrelated issue, point it out and ask before changing it.
+- Write comments for the next reader, whether a developer or an AI agent: explain *why*, not *what*. Add an inline comment when the code could otherwise be misread or "fixed" incorrectly, such as a Shopify platform constraint, a browser workaround, an ordering or timing dependency, a contract that other code or apps rely on (data attributes, events), or a deliberate trade-off.
+- Don't add comments that restate the code or narrate changes. Put units and meaning in names instead (e.g. `durationMs`).
+- Update or remove a comment when its reason changes.
+- File-purpose comments, CSS group comments and Liquid `{% doc %}` blocks are still required.
 - Before introducing a new theme architecture pattern, confirm that it already exists in this theme. If it does not, ask before introducing it.
 - Preserve unrelated changes in the working tree. Do not restore or rewrite edits you did not make.
 - Do not commit or push unless asked.

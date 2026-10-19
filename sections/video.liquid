@@ -2,7 +2,7 @@
   assign container_class = 'video-section-content'
 
   if section.settings.container_width == 'site'
-    assign container_class = container_class | append: ' container ' | append: settings.container_width
+    assign container_class = container_class | append: ' container'
   elsif section.settings.container_width == 'narrow'
     assign container_class = container_class | append: ' container container-content'
   endif

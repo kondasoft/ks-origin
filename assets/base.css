@@ -46,9 +46,6 @@ s-view-event {
   margin-left: auto;
 }
 
-.container-narrow { --container-width: 1440px; }
-.container-normal { --container-width: 1920px; }
-.container-wide { --container-width: 2400px; }
 .container-content { --container-width: 720px; }
 
 @media (min-width: 1200px) {
@@ -1525,10 +1522,6 @@ select.input-lg {
 
 .theme-collapse-summary:hover {
   color: rgb(var(--color-text) / 0.8);
-}
-
-.theme-collapse-details[open] .theme-collapse-summary {
-  /* color: rgb(var(--color-accent)); */
 }
 
 .theme-collapse-summary:focus-visible {
