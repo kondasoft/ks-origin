@@ -57,6 +57,21 @@ s-view-event {
 }
 
 
+/* Shopify policy pages */
+/* Shopify loads its policy margins after this stylesheet, so the main ancestor raises specificity. */
+main .shopify-policy__container {
+  margin-top: 2.8125em;
+  margin-bottom: 2.8125em;
+}
+
+@media (min-width: 600px) {
+  main .shopify-policy__container {
+    margin-top: 3.75em;
+    margin-bottom: 3.75em;
+  }
+}
+
+
 /* Hidden content */
 [hidden] {
   display: none !important;
@@ -210,6 +225,11 @@ a:focus-visible {
   margin: 1.5em 0;
 }
 
+.rte ul:last-child,
+.rte ol:last-child {
+  margin-bottom: 0;
+}
+
 .rte ul > li,
 .rte ol > li {
   line-height: 1.6;
@@ -275,11 +295,15 @@ thead th {
 
 .table-responsive {
   width: 100%;
-  margin: 1.5em 0 0;
+  margin: 1.5em 0;
   overflow-x: auto;
   border: 1px solid rgb(var(--color-text) / var(--border-opacity));
   border-radius: var(--border-radius);
   -webkit-overflow-scrolling: touch;
+}
+
+.table-responsive:has(+ .table-caption) {
+  margin-bottom: 0;
 }
 
 .table {
@@ -808,6 +832,44 @@ input[type='radio']:not(.visually-hidden):disabled {
   opacity: 0.4;
 }
 
+
+/* File inputs */
+input[type='file'] {
+  font: inherit;
+  color: inherit;
+  max-width: 100%;
+  outline: 1px solid transparent;
+  outline-offset: 0;
+}
+
+input[type='file']:focus-visible {
+  outline-color: rgb(var(--color-text));
+}
+
+input[type='file']::file-selector-button {
+  padding: 0.6em 1.25em;
+  margin-right: 0.5em;
+  border: 1px solid rgb(var(--color-text));
+  border-radius: var(--border-radius);
+  color: rgb(var(--color-text));
+  background-color: transparent;
+  font: inherit;
+  font-weight: 500;
+  line-height: normal;
+  cursor: pointer;
+  transition:
+    background-color 200ms ease-out,
+    border-color 200ms ease-out,
+    color 200ms ease-out;
+}
+
+input[type='file']:not(:disabled)::file-selector-button:hover {
+  color: rgb(var(--color-text) / 0.8);
+  background-color: transparent;
+}
+
+
+/* Range inputs */
 input[type='range'] {
   width: 100%;
   height: 8px;
@@ -879,7 +941,6 @@ input[type='range']::-moz-range-thumb {
 }
 
 select.input {
-  min-height: calc(1.7em + 1.5em);
   padding-right: 2em;
   appearance: none;
 }
@@ -904,7 +965,6 @@ textarea.input {
 }
 
 select.input-sm {
-  min-height: 0;
   padding-right: 2em;
 }
 
@@ -914,7 +974,6 @@ select.input-sm {
 }
 
 select.input-lg {
-  min-height: 0;
   padding-right: 2em;
 }
 

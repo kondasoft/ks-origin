@@ -54,7 +54,7 @@
           type="text"
           name="contact[name]"
           autocomplete="name"
-          value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}"
+          value="{% if form.name %}{{ form.name | escape }}{% elsif customer %}{{ customer.name | escape }}{% endif %}"
         >
       </div>
 
@@ -71,7 +71,7 @@
           autocomplete="email"
           autocapitalize="off"
           spellcheck="false"
-          value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+          value="{% if form.email %}{{ form.email | escape }}{% elsif customer %}{{ customer.email | escape }}{% endif %}"
           aria-required="true"
           required
           {% if form.errors contains 'email' and form_matches %}
@@ -90,7 +90,7 @@
         type="tel"
         name="contact[phone]"
         autocomplete="tel"
-        value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}"
+        value="{% if form.phone %}{{ form.phone | escape }}{% elsif customer %}{{ customer.phone | escape }}{% endif %}"
       >
     </div>
 
@@ -101,7 +101,7 @@
         class="input"
         name="contact[body]"
         rows="8"
-      >{{ form.body }}</textarea>
+      >{{ form.body | escape }}</textarea>
     </div>
 
     <button class="btn btn-wide btn-md btn-accent-solid" type="submit">

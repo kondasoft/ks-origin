@@ -553,7 +553,7 @@ predictive-search {
 }
 
 .localization-list li {
-  border-bottom: 1px dotted rgb(var(--color-text) / 0.2);
+  border-bottom: 1px dotted rgb(var(--color-text) / var(--border-opacity));
 }
 
 .localization-option {

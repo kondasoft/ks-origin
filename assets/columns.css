@@ -69,3 +69,18 @@
     scroll-snap-type: none;
   } 
 }
+
+
+/* Vertical card alignment */
+@media (max-width: 1199px) {
+  /* Bound the mobile override so horizontal desktop cards retain the shared Group alignment rules. */
+  .columns .columns-grid > .group-block[data-mobile-content-direction="column"] {
+    justify-content: flex-start;
+  }
+}
+
+@media (min-width: 1200px) {
+  .columns .columns-grid > .group-block[data-desktop-content-direction="column"] {
+    justify-content: flex-start;
+  }
+}
