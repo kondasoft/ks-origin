@@ -9,6 +9,8 @@
   Gallery layout
 */
 .product-gallery {
+  --product-gallery-video-fit: contain;
+
   display: block;
   width: 100%;
   min-width: 0;
@@ -23,6 +25,14 @@
   outline: 2px solid transparent;
   outline-offset: 2px;
   touch-action: pan-y pinch-zoom;
+}
+
+.product-gallery[data-media-ratio="adapt"][data-video-fit="cover"] {
+  --product-gallery-video-fit: cover;
+}
+
+.product-gallery:not([data-media-ratio="adapt"]) {
+  --product-gallery-video-fit: cover;
 }
 
 .product-gallery[data-media-ratio="adapt"] .product-gallery-stage {
@@ -70,22 +80,14 @@
 .product-gallery-slide .video-media-video {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: var(--product-gallery-video-fit);
 }
 
 .product-gallery-slide .video-media-poster-image {
-  object-fit: contain;
+  object-fit: var(--product-gallery-video-fit);
 }
 
 .product-gallery:not([data-media-ratio="adapt"]) .product-gallery-image {
-  object-fit: cover;
-}
-
-.product-gallery:not([data-media-ratio="adapt"]) .video-media-video {
-  object-fit: cover;
-}
-
-.product-gallery:not([data-media-ratio="adapt"]) .video-media-poster-image {
   object-fit: cover;
 }
 
@@ -172,9 +174,10 @@
   Gallery thumbnails
 */
 .product-gallery-thumbnails {
-  --product-gallery-thumbnail-gap: 0.5rem;
-  --product-gallery-thumbnail-min: 50px;
-  --product-gallery-thumbnail-max: 140px;
+  --product-gallery-thumbnail-gap: 0.375em;
+  --product-gallery-thumbnail-min: 44px;
+  /* Cap fitted mobile thumbnails so galleries with few media do not grow oversized. */
+  --product-gallery-thumbnail-max: 56px;
   --product-gallery-thumbnail-size: var(--product-gallery-thumbnail-min);
 
   display: flex;
@@ -233,6 +236,14 @@
   width: 28px;
   pointer-events: none;
   transition: none;
+}
+
+@media (min-width: 600px) {
+  .product-gallery-thumbnails {
+    --product-gallery-thumbnail-gap: 0.5rem;
+    --product-gallery-thumbnail-min: 50px;
+    --product-gallery-thumbnail-max: 140px;
+  }
 }
 
 @media (min-width: 1200px) {

@@ -184,16 +184,25 @@
   text-align: left;
 }
 
+.product-main-trust-badge-icon {
+  display: flex;
+  width: var(--trust-badge-icon-size);
+  height: var(--trust-badge-icon-size);
+  flex-shrink: 0;
+  color: inherit;
+}
+
+.product-main-trust-badge-icon .svg-icon {
+  width: 100%;
+  height: 100%;
+}
+
 .product-main-trust-badge-image {
   display: block;
   width: var(--trust-badge-icon-size);
   height: auto;
   flex-shrink: 0;
   color: inherit;
-}
-
-.product-main-trust-badge-text {
-  line-height: 1.2;
 }
 
 .product-main-trust-badge-text > :first-child {

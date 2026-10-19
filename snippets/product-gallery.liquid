@@ -46,6 +46,7 @@ Renders the main product media gallery with images, Shopify-hosted videos, contr
   class="product-gallery"
   data-transition="{{ section.settings.gallery_transition }}"
   data-media-ratio="{{ gallery_media_ratio }}"
+  data-video-fit="{{ section.settings.gallery_video_fit | default: 'contain' }}"
   data-video-autoplay="{{ section.settings.gallery_video_autoplay }}"
   style="--product-gallery-aspect-ratio: {{ gallery_aspect_ratio }};"
 >

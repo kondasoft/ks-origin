@@ -1,3 +1,14 @@
+{% doc %}
+Renders a decorative theme icon that inherits the surrounding text color.
+
+@param {string} icon - The icon name.
+@param {number} [icon_size] - The base size in pixels, scaled with the global body size.
+@param {number} [stroke_width] - The SVG stroke width.
+
+@example
+{% render 'svg-icons', icon: 'truck', icon_size: 24 %}
+{% enddoc %}
+
 {% liquid
   assign icon_size = icon_size | default: 22
   assign body_size_scale = settings.body_size_scale | default: 100 | divided_by: 100.0
@@ -94,6 +105,29 @@
     <svg aria-hidden="true" class="svg-icon svg-icon-gift" width="{{ scaled_icon_size }}" height="{{ scaled_icon_size }}" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M20 12v10H4V12M2 7h20v5H2Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="{{ stroke_width }}"></path>
       <path d="M12 22V7m0 0H7.5A2.5 2.5 0 1 1 10 4.5C10 7 12 7 12 7Zm0 0h4.5A2.5 2.5 0 1 0 14 4.5C14 7 12 7 12 7Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="{{ stroke_width }}"></path>
+    </svg>
+  {% when 'heart' %}
+    <svg aria-hidden="true" class="svg-icon svg-icon-heart" width="{{ scaled_icon_size }}" height="{{ scaled_icon_size }}" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M10 17 3.5 10.5C-1 6 5.5 0 10 5c4.5-5 11 1 6.5 5.5Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="{{ stroke_width }}"></path>
+    </svg>
+  {% when 'map-pin' %}
+    <svg aria-hidden="true" class="svg-icon svg-icon-map-pin" width="{{ scaled_icon_size }}" height="{{ scaled_icon_size }}" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="{{ stroke_width }}"></path>
+      <circle cx="12" cy="10" r="3" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="{{ stroke_width }}"></circle>
+    </svg>
+  {% when 'clock' %}
+    <svg aria-hidden="true" class="svg-icon svg-icon-clock" width="{{ scaled_icon_size }}" height="{{ scaled_icon_size }}" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="{{ stroke_width }}"></circle>
+      <polyline points="12 6 12 12 16 14" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="{{ stroke_width }}"></polyline>
+    </svg>
+  {% when 'phone' %}
+    <svg aria-hidden="true" class="svg-icon svg-icon-phone" width="{{ scaled_icon_size }}" height="{{ scaled_icon_size }}" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="{{ stroke_width }}"></path>
+    </svg>
+  {% when 'mail' %}
+    <svg aria-hidden="true" class="svg-icon svg-icon-mail" width="{{ scaled_icon_size }}" height="{{ scaled_icon_size }}" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="{{ stroke_width }}"></path>
+      <polyline points="22 6 12 13 2 6" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="{{ stroke_width }}"></polyline>
     </svg>
   {% when 'help-circle' %}
     <svg aria-hidden="true" class="svg-icon svg-icon-help-circle" width="{{ scaled_icon_size }}" height="{{ scaled_icon_size }}" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

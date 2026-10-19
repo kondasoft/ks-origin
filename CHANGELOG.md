@@ -11,8 +11,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 Work planned for 1.1.0 is tracked in the
 [v1.1.0 milestone](https://github.com/kondasoft/ks-origin/milestone/1).
 
+### Added
+
+- Trust badges offer built-in icons, with a custom image option (#96).
+- Gallery videos offer fit or fill in Adapt to media mode (#103).
+- The browser console shows the theme name and version (#95).
+
 ### Changed
 
+- Mobile product gallery thumbnails are smaller and more compact (#89).
 - File upload fields use the theme's typography, focus outline and button style (#74).
 - `.container` follows the global `--container-width` variable; sections and apps no longer need the removed `container-narrow`, `container-normal`, or `container-wide` classes (#84).
 - Removed leftover commented-out and empty CSS rules and aligned stylesheets with the theme's CSS conventions (#102, #107).
@@ -20,6 +27,7 @@ Work planned for 1.1.0 is tracked in the
 
 ### Fixed
 
+- Trust badge text inherits the theme's line height (#73).
 - Tables without a caption keep their spacing to the following content (#97).
 - Rich text ending in a list no longer leaves extra space below it (#98).
 - Dropdowns match the height of text inputs and buttons (#100).

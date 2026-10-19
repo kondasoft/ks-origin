@@ -389,3 +389,17 @@ function initHeaderDesktopMenu() {
 
 initHeaderDesktopMenu();
 document.addEventListener("shopify:section:load", initHeaderDesktopMenu);
+
+
+/*
+  Theme info
+*/
+const { schema_name: themeName = "KS Origin", schema_version: themeVersion } = window.Shopify?.theme ?? {};
+
+console.info(
+  `%c${themeName} theme%c${themeVersion ? ` v${themeVersion}` : ""} %cby KondaSoft%c https://kondasoft.com`,
+  "background:#020617;color:#f9fafb;padding:2px 8px;border-radius:4px;font-weight:700;",
+  "font-weight:700;",
+  "",
+  "",
+);

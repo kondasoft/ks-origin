@@ -1,11 +1,30 @@
+{% doc %}
+Renders product trust badges with built-in icons or merchant-uploaded images.
+
+@example
+{% content_for 'block', type: '_product-main-trust-badges', id: 'trust-badges' %}
+{% enddoc %}
+
 {% liquid
   assign badge_count = 0
 
   for index in (1..6)
+    assign icon_key = 'icon_' | append: index
     assign image_key = 'image_' | append: index
     assign text_key = 'text_' | append: index
+    # Saved blocks lack icon_N, so custom preserves their uploaded images and text-only badges.
+    assign icon = block.settings[icon_key] | default: 'custom'
+    assign has_icon = false
 
-    if block.settings[image_key] != blank or block.settings[text_key] != blank
+    if icon == 'custom'
+      if block.settings[image_key] != blank
+        assign has_icon = true
+      endif
+    elsif icon != 'none'
+      assign has_icon = true
+    endif
+
+    if has_icon or block.settings[text_key] != blank
       assign badge_count = badge_count | plus: 1
     endif
   endfor
@@ -27,10 +46,22 @@
     <ul class="product-main-trust-badges-list" data-layout="{{ block.settings.layout }}">
       {% for index in (1..6) %}
         {% liquid
+          assign icon_key = 'icon_' | append: index
+          assign icon = block.settings[icon_key] | default: 'custom'
           assign image_key = 'image_' | append: index
           assign text_key = 'text_' | append: index
           assign image = block.settings[image_key]
           assign text = block.settings[text_key]
+          assign has_icon = false
+
+          if icon == 'custom'
+            if image != blank
+              assign has_icon = true
+            endif
+          elsif icon != 'none'
+            assign has_icon = true
+          endif
+
           assign image_width = block.settings.icon_size | times: 2
           assign image_height = block.settings.icon_size
 
@@ -39,18 +70,24 @@
           endif
         %}
 
-        {% if image != blank or text != blank %}
+        {% if has_icon or text != blank %}
           <li class="product-main-trust-badge">
-            {% if image != blank %}
-              <img
-                class="product-main-trust-badge-image"
-                src="{{ image | image_url: width: image_width }}"
-                alt="{{ image.alt | escape }}"
-                width="{{ block.settings.icon_size }}"
-                height="{{ image_height }}"
-                loading="lazy"
-                data-transform-svg-inline
-              >
+            {% if has_icon %}
+              {% if icon == 'custom' %}
+                <img
+                  class="product-main-trust-badge-image"
+                  src="{{ image | image_url: width: image_width }}"
+                  alt="{{ image.alt | escape }}"
+                  width="{{ block.settings.icon_size }}"
+                  height="{{ image_height }}"
+                  loading="lazy"
+                  data-transform-svg-inline
+                >
+              {% else %}
+                <span class="product-main-trust-badge-icon">
+                  {% render 'svg-icons', icon: icon, icon_size: block.settings.icon_size %}
+                </span>
+              {% endif %}
             {% endif %}
 
             {% if text != blank %}
@@ -108,10 +145,37 @@
       "content": "Badge 1"
     },
     {
+      "type": "select",
+      "id": "icon_1",
+      "label": "Icon",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "truck", "label": "Shipping" },
+        { "value": "package", "label": "Package" },
+        { "value": "refresh", "label": "Returns" },
+        { "value": "lock", "label": "Secure checkout" },
+        { "value": "shield", "label": "Protection" },
+        { "value": "credit-card", "label": "Payment" },
+        { "value": "award", "label": "Warranty" },
+        { "value": "gift", "label": "Gift" },
+        { "value": "tag", "label": "Offer" },
+        { "value": "heart", "label": "Heart" },
+        { "value": "star-outline", "label": "Star" },
+        { "value": "clock", "label": "Clock" },
+        { "value": "map-pin", "label": "Store location" },
+        { "value": "phone", "label": "Phone" },
+        { "value": "mail", "label": "Email" },
+        { "value": "help-circle", "label": "Help" },
+        { "value": "custom", "label": "Custom image" }
+      ],
+      "default": "custom"
+    },
+    {
       "type": "image_picker",
       "id": "image_1",
-      "label": "Icon",
-      "info": "For best results, upload an SVG. SVG icons inherit the section's text color."
+      "label": "Custom image",
+      "info": "For best results, upload an SVG. SVG icons inherit the section's text color.",
+      "visible_if": "{{ block.settings.icon_1 == 'custom' }}"
     },
     {
       "type": "richtext",
@@ -124,10 +188,37 @@
       "content": "Badge 2"
     },
     {
+      "type": "select",
+      "id": "icon_2",
+      "label": "Icon",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "truck", "label": "Shipping" },
+        { "value": "package", "label": "Package" },
+        { "value": "refresh", "label": "Returns" },
+        { "value": "lock", "label": "Secure checkout" },
+        { "value": "shield", "label": "Protection" },
+        { "value": "credit-card", "label": "Payment" },
+        { "value": "award", "label": "Warranty" },
+        { "value": "gift", "label": "Gift" },
+        { "value": "tag", "label": "Offer" },
+        { "value": "heart", "label": "Heart" },
+        { "value": "star-outline", "label": "Star" },
+        { "value": "clock", "label": "Clock" },
+        { "value": "map-pin", "label": "Store location" },
+        { "value": "phone", "label": "Phone" },
+        { "value": "mail", "label": "Email" },
+        { "value": "help-circle", "label": "Help" },
+        { "value": "custom", "label": "Custom image" }
+      ],
+      "default": "custom"
+    },
+    {
       "type": "image_picker",
       "id": "image_2",
-      "label": "Icon",
-      "info": "For best results, upload an SVG. SVG icons inherit the section's text color."
+      "label": "Custom image",
+      "info": "For best results, upload an SVG. SVG icons inherit the section's text color.",
+      "visible_if": "{{ block.settings.icon_2 == 'custom' }}"
     },
     {
       "type": "richtext",
@@ -140,10 +231,37 @@
       "content": "Badge 3"
     },
     {
+      "type": "select",
+      "id": "icon_3",
+      "label": "Icon",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "truck", "label": "Shipping" },
+        { "value": "package", "label": "Package" },
+        { "value": "refresh", "label": "Returns" },
+        { "value": "lock", "label": "Secure checkout" },
+        { "value": "shield", "label": "Protection" },
+        { "value": "credit-card", "label": "Payment" },
+        { "value": "award", "label": "Warranty" },
+        { "value": "gift", "label": "Gift" },
+        { "value": "tag", "label": "Offer" },
+        { "value": "heart", "label": "Heart" },
+        { "value": "star-outline", "label": "Star" },
+        { "value": "clock", "label": "Clock" },
+        { "value": "map-pin", "label": "Store location" },
+        { "value": "phone", "label": "Phone" },
+        { "value": "mail", "label": "Email" },
+        { "value": "help-circle", "label": "Help" },
+        { "value": "custom", "label": "Custom image" }
+      ],
+      "default": "custom"
+    },
+    {
       "type": "image_picker",
       "id": "image_3",
-      "label": "Icon",
-      "info": "For best results, upload an SVG. SVG icons inherit the section's text color."
+      "label": "Custom image",
+      "info": "For best results, upload an SVG. SVG icons inherit the section's text color.",
+      "visible_if": "{{ block.settings.icon_3 == 'custom' }}"
     },
     {
       "type": "richtext",
@@ -156,10 +274,37 @@
       "content": "Badge 4"
     },
     {
+      "type": "select",
+      "id": "icon_4",
+      "label": "Icon",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "truck", "label": "Shipping" },
+        { "value": "package", "label": "Package" },
+        { "value": "refresh", "label": "Returns" },
+        { "value": "lock", "label": "Secure checkout" },
+        { "value": "shield", "label": "Protection" },
+        { "value": "credit-card", "label": "Payment" },
+        { "value": "award", "label": "Warranty" },
+        { "value": "gift", "label": "Gift" },
+        { "value": "tag", "label": "Offer" },
+        { "value": "heart", "label": "Heart" },
+        { "value": "star-outline", "label": "Star" },
+        { "value": "clock", "label": "Clock" },
+        { "value": "map-pin", "label": "Store location" },
+        { "value": "phone", "label": "Phone" },
+        { "value": "mail", "label": "Email" },
+        { "value": "help-circle", "label": "Help" },
+        { "value": "custom", "label": "Custom image" }
+      ],
+      "default": "custom"
+    },
+    {
       "type": "image_picker",
       "id": "image_4",
-      "label": "Icon",
-      "info": "For best results, upload an SVG. SVG icons inherit the section's text color."
+      "label": "Custom image",
+      "info": "For best results, upload an SVG. SVG icons inherit the section's text color.",
+      "visible_if": "{{ block.settings.icon_4 == 'custom' }}"
     },
     {
       "type": "richtext",
@@ -171,10 +316,37 @@
       "content": "Badge 5"
     },
     {
+      "type": "select",
+      "id": "icon_5",
+      "label": "Icon",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "truck", "label": "Shipping" },
+        { "value": "package", "label": "Package" },
+        { "value": "refresh", "label": "Returns" },
+        { "value": "lock", "label": "Secure checkout" },
+        { "value": "shield", "label": "Protection" },
+        { "value": "credit-card", "label": "Payment" },
+        { "value": "award", "label": "Warranty" },
+        { "value": "gift", "label": "Gift" },
+        { "value": "tag", "label": "Offer" },
+        { "value": "heart", "label": "Heart" },
+        { "value": "star-outline", "label": "Star" },
+        { "value": "clock", "label": "Clock" },
+        { "value": "map-pin", "label": "Store location" },
+        { "value": "phone", "label": "Phone" },
+        { "value": "mail", "label": "Email" },
+        { "value": "help-circle", "label": "Help" },
+        { "value": "custom", "label": "Custom image" }
+      ],
+      "default": "custom"
+    },
+    {
       "type": "image_picker",
       "id": "image_5",
-      "label": "Icon",
-      "info": "For best results, upload an SVG. SVG icons inherit the section's text color."
+      "label": "Custom image",
+      "info": "For best results, upload an SVG. SVG icons inherit the section's text color.",
+      "visible_if": "{{ block.settings.icon_5 == 'custom' }}"
     },
     {
       "type": "richtext",
@@ -186,10 +358,37 @@
       "content": "Badge 6"
     },
     {
+      "type": "select",
+      "id": "icon_6",
+      "label": "Icon",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "truck", "label": "Shipping" },
+        { "value": "package", "label": "Package" },
+        { "value": "refresh", "label": "Returns" },
+        { "value": "lock", "label": "Secure checkout" },
+        { "value": "shield", "label": "Protection" },
+        { "value": "credit-card", "label": "Payment" },
+        { "value": "award", "label": "Warranty" },
+        { "value": "gift", "label": "Gift" },
+        { "value": "tag", "label": "Offer" },
+        { "value": "heart", "label": "Heart" },
+        { "value": "star-outline", "label": "Star" },
+        { "value": "clock", "label": "Clock" },
+        { "value": "map-pin", "label": "Store location" },
+        { "value": "phone", "label": "Phone" },
+        { "value": "mail", "label": "Email" },
+        { "value": "help-circle", "label": "Help" },
+        { "value": "custom", "label": "Custom image" }
+      ],
+      "default": "custom"
+    },
+    {
       "type": "image_picker",
       "id": "image_6",
-      "label": "Icon",
-      "info": "For best results, upload an SVG. SVG icons inherit the section's text color."
+      "label": "Custom image",
+      "info": "For best results, upload an SVG. SVG icons inherit the section's text color.",
+      "visible_if": "{{ block.settings.icon_6 == 'custom' }}"
     },
     {
       "type": "richtext",
@@ -224,7 +423,12 @@
   "presets": [
     {
       "name": "Trust badges",
-      "category": "Product"
+      "category": "Product",
+      "settings": {
+        "icon_1": "truck",
+        "icon_2": "lock",
+        "icon_3": "refresh"
+      }
     }
   ]
 }

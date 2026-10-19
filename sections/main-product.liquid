@@ -106,6 +106,17 @@
       "default": true
     },
     {
+      "type": "select",
+      "id": "gallery_video_fit",
+      "label": "Video fit",
+      "options": [
+        { "value": "contain", "label": "Fit (show whole video)" },
+        { "value": "cover", "label": "Fill (crop to frame)" }
+      ],
+      "default": "contain",
+      "visible_if": "{{ section.settings.gallery_media_ratio == 'adapt' }}"
+    },
+    {
       "type": "checkbox",
       "id": "gallery_video_autoplay",
       "label": "Autoplay videos",
@@ -271,11 +282,11 @@
             "layout": "horizontal",
             "icon_size": 24,
             "text_size": "fs-sm",
-            "image_1": "shopify://shop_images/icon-truck.svg",
+            "icon_1": "truck",
             "text_1": "<p>Fast shipping</p>",
-            "image_2": "shopify://shop_images/icon-shield-check.svg",
+            "icon_2": "lock",
             "text_2": "<p>Secure checkout</p>",
-            "image_3": "shopify://shop_images/icon-arrow-counterclockwise.svg",
+            "icon_3": "refresh",
             "text_3": "<p>Easy returns</p>",
             "pt": 0,
             "pb": 30
