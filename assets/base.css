@@ -611,14 +611,12 @@ button {
   --button-focus-color: rgb(var(--color-accent));
 }
 
-@supports (color: color(from red srgb-linear round(nearest, r, 1) g b)) {
+@supports (color: lch(from red l c h)) {
   .btn-accent-solid {
-    /* Linear-sRGB luminance crosses equal black/white WCAG contrast at sqrt(0.0525) - 0.05.
-       Round the offset luminance to select exactly 0 or 1; resolve here so local accents always win. */
-    --accent-text-channel: round(nearest, 0.6791287847 - (r * 0.2126 + g * 0.7152 + b * 0.0722), 1);
-    --button-color: color(from rgb(var(--color-accent)) srgb-linear
-      var(--accent-text-channel) var(--accent-text-channel) var(--accent-text-channel));
-    --button-shade: rgb(from var(--button-color) calc(255 - r) calc(255 - g) calc(255 - b));
+    /* White text below LCH lightness 49.44 (equal black/white contrast), black above; the infinite
+       multiplier clamps lightness to 0 or 100. Resolved here so local accent overrides always win. */
+    --button-color: lch(from rgb(var(--color-accent)) calc((49.44 - l) * infinity) 0 0);
+    --button-shade: lch(from rgb(var(--color-accent)) calc((l - 49.44) * infinity) 0 0);
     --button-hover-background: color-mix(in srgb, rgb(var(--color-accent)) 85%, var(--button-shade));
     --button-active-background: color-mix(in srgb, rgb(var(--color-accent)) 70%, var(--button-shade));
   }
@@ -810,11 +808,9 @@ input[type='checkbox']:not(.visually-hidden):checked::after {
   transform: rotate(45deg);
 }
 
-@supports (color: color(from red srgb-linear round(nearest, r, 1) g b)) {
+@supports (color: lch(from red l c h)) {
   input[type='checkbox']:not(.visually-hidden):checked::after {
-    --accent-text-channel: round(nearest, 0.6791287847 - (r * 0.2126 + g * 0.7152 + b * 0.0722), 1);
-    border-color: color(from rgb(var(--color-accent)) srgb-linear
-      var(--accent-text-channel) var(--accent-text-channel) var(--accent-text-channel));
+    border-color: lch(from rgb(var(--color-accent)) calc((49.44 - l) * infinity) 0 0);
   }
 }
 
@@ -1179,11 +1175,9 @@ select.input-lg {
   border: 0;
 }
 
-@supports (color: color(from red srgb-linear round(nearest, r, 1) g b)) {
+@supports (color: lch(from red l c h)) {
   .badge:not(.badge-light) {
-    --accent-text-channel: round(nearest, 0.6791287847 - (r * 0.2126 + g * 0.7152 + b * 0.0722), 1);
-    color: color(from rgb(var(--color-accent)) srgb-linear
-      var(--accent-text-channel) var(--accent-text-channel) var(--accent-text-channel));
+    color: lch(from rgb(var(--color-accent)) calc((49.44 - l) * infinity) 0 0);
   }
 }
 

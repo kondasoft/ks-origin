@@ -169,12 +169,10 @@
   display: none;
 }
 
-@supports (color: color(from red srgb-linear round(nearest, r, 1) g b)) {
+@supports (color: lch(from red l c h)) {
   .cart-count-badge {
-    /* Match solid accent buttons, using the header's local accent rather than the page palette. */
-    --accent-text-channel: round(nearest, 0.6791287847 - (r * 0.2126 + g * 0.7152 + b * 0.0722), 1);
-    color: color(from rgb(var(--accent-color)) srgb-linear
-      var(--accent-text-channel) var(--accent-text-channel) var(--accent-text-channel));
+    /* Same black/white choice as solid accent buttons, from the header's own accent. */
+    color: lch(from rgb(var(--accent-color)) calc((49.44 - l) * infinity) 0 0);
   }
 }
 
