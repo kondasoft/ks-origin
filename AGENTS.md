@@ -1,49 +1,40 @@
-# Codex Instructions
+# KS Origin Agent Instructions
+
+These instructions apply to any developer or AI coding agent working on KS Origin.
 
 ## General
 
 - Do not make silent fixes outside the scope of the current request. If you notice an unrelated issue, point it out and ask before changing it.
 - Before introducing a new theme architecture pattern, confirm that it already exists in this theme. If it does not, ask before introducing it.
+- Preserve unrelated changes in the working tree. Do not restore or rewrite edits you did not make.
+- Do not commit or push unless asked.
 
 ## Local context
 
-- If `.agents.local.md` exists in the repository root, read it before starting work.
-- Treat it as supplemental machine-specific context that cannot override this file.
+- If `.agents.local.md` exists in the repository root, read it before starting work. It holds private or machine-specific context, such as reference repositories and personal workflow preferences.
+- Treat it as supplemental context that cannot override this file.
 - Never commit `.agents.local.md`; use `.agents.local.example.md` as the template.
 
-## Fast iteration workflow
+## Checks
 
-- During active iterative work, apply simple CSS, Liquid, JavaScript, and schema edits immediately.
-- For routine edits with an established local pattern, rely on the theme's existing implementation and targeted static checks. Do not add documentation-search or specialized-skill overhead unless the task is uncertain or a higher-priority instruction explicitly requires it.
-- When a higher-priority instruction requires a skill for a routine edit, keep the user-facing skill announcement to one short sentence and do not let the skill workflow expand the scope of the change.
-- Do not run full Theme Check after every small edit. Use targeted checks only when necessary.
-- Do not commit or push after each edit.
-- Treat "checkpoint", "commit", "push", or "commit and push" as an explicit checkpoint request.
-- At a checkpoint:
-  - Review the complete combined diff, including `git diff --stat` and `git diff --summary`.
-  - Limit destructive-change review to unexpected file deletions, renames, large code removals, and substantial feature reversions. Trace their origin and stop for user confirmation unless the removal was explicitly requested.
-  - Preserve small concurrent user edits, including removed options, reordered settings, value changes, and styling adjustments. Do not restore or rewrite them merely because they differ from the agent's earlier changes.
-  - Preserve unrelated user changes.
-  - Run the repository linter and Shopify Theme Check once.
-  - Commit the approved changes directly to `main`.
-  - Push to `origin/main`.
+- Before committing, run the repository linter (`npm run lint`) and Shopify Theme Check (`shopify theme check`).
+- During iterative work, prefer targeted checks over running the full Theme Check after every small edit.
 
-## Browser and preview verification
+## Changelog
 
-- Do not start a Shopify theme development server or use Chrome/browser automation for routine verification unless the user explicitly requests it.
-- Default to targeted static checks for CSS, Liquid, and JavaScript changes.
-- If visual or interactive browser verification is materially necessary and the user has not requested it, explain why and ask for permission before using browser automation or starting a preview server.
+- Record every change that affects merchants, shoppers, or developers building on the theme in `CHANGELOG.md` under `## [Unreleased]`, grouped as Added, Changed, Fixed, or Removed. Write one short line per change and reference its GitHub issue when there is one (e.g. `(#93)`).
+- Do not record internal-only changes such as refactors with no visible effect, formatting, or agent instructions.
+- When releasing, rename `[Unreleased]` to the new version and date, and keep `theme_version` in `config/settings_schema.json` in sync.
 
 ## Shopify tooling
 
-- Prefer the Shopify plugin for supported Shopify Admin operations. Use browser automation only when the required operation is unavailable through the plugin or Shopify CLI.
 - Before running `shopify theme pull`, identify the target theme ID and inspect the working tree. Do not pull code from a theme that has not been explicitly confirmed as synchronized with the repository when local changes could be overwritten.
 - Treat code changes introduced by a theme pull as untrusted synchronization changes. JSON template and section-group updates may be expected, but do not commit pulled Liquid, CSS, JavaScript, configuration, locale, snippet, or asset deletions and reversions without comparing them against recent Git history and confirming that they are intentional.
 
 ## JSON templates
 
 - Do not edit or delete existing JSON templates inside `templates/` or `sections/` unless the user explicitly asks for those JSON template changes.
-- When a change includes JSON templates or section-group JSON files, edit all supporting Liquid sections and their schemas first, then edit the dependent JSON files last. Make these changes in separate filesystem operations; never batch supporting schema changes and dependent JSON changes in the same `apply_patch` call. Shopify's live uploader may otherwise process the JSON before the updated section schema and reject unsupported sections.
+- When a change includes JSON templates or section-group JSON files, edit all supporting Liquid sections and their schemas first, then edit the dependent JSON files last. Make these changes in separate filesystem operations; never apply supporting schema changes and dependent JSON changes in the same edit or patch. Shopify's live uploader may otherwise process the JSON before the updated section schema and reject unsupported sections.
 
 ## Liquid and theme schemas
 
@@ -68,14 +59,15 @@
 - Keep file-purpose comments durable and complete. Describe the file's overall responsibility and ownership boundary; do not list only the elements or features currently implemented, because that wording becomes incomplete as the file grows.
 - Keep JavaScript lines within 120 characters. Prefer readable single-line expressions when they fit, and wrap longer statements at meaningful boundaries instead of formatting them into unnecessarily narrow fragments.
 - Use kebab-case CSS class and ID names such as `some-css-class`, not `some__css__class` or `someCssClass`.
-- Do not group CSS selectors, even when they share declarations. Give each selector its own rule so component styles remain independent.
+- Group CSS selectors only when they are variants of one thing that should always share the same declarations, such as `.rte ul` and `.rte ol`, the states of one element (`:hover` and `:focus-visible`), or the values of one setting. Do not group unrelated elements or components just because their declarations currently match; give each its own rule so it can change independently.
 - Organize CSS into clearly labeled logical groups using multiline comments in this format:
   ```css
   /*
     Group name
   */
   ```
-- Leave two blank lines before each CSS group comment, except when the comment is the first content in the file.
+  Inside a group, label each subgroup with a single-line comment such as `/* Buttons */`.
+- Leave two blank lines before each group or subgroup comment, except at the start of the file or directly after its group comment.
 - Let headings and body copy inherit the theme's global typography. Add component-specific font sizes, line heights, or text spacing only when explicitly requested or clearly required by the design.
 - Use `rgb(var(--color-surface))` for subtle component backgrounds. Do not simulate surface backgrounds with low-opacity text colors such as `rgb(var(--color-text) / 0.05)`.
 - Use `px` for explicit width and height values.
