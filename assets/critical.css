@@ -98,6 +98,37 @@
   position: relative;
 }
 
+
+/* Account component */
+.header-account {
+  --shopify-account-avatar-size: 40px;
+  --shopify-account-signed-in-avatar-size: calc(22px * var(--body-size-scale));
+}
+
+/* The trigger lives in Shopify's shadow DOM, so theme button rules must target its public part. */
+.header-account::part(signed-out-avatar) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  outline: 2px solid transparent;
+  outline-offset: -2px;
+}
+
+.header-account::part(signed-out-avatar):focus-visible {
+  outline-color: currentcolor;
+}
+
+
+/* Localization trigger */
 .localization-country-code {
   display: inline-flex;
   align-items: center;

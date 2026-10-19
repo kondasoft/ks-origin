@@ -565,6 +565,14 @@ predictive-search {
   padding: 0.75em 0;
   color: rgb(var(--color-text));
   text-decoration: none;
+  text-align: start;
+  background: transparent;
+  border: 0;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  outline: 2px solid transparent;
+  outline-offset: -2px;
+  transition: color 200ms ease-out;
 }
 
 .localization-option:hover {
@@ -573,6 +581,10 @@ predictive-search {
 
 .localization-option.active {
   color: rgb(var(--color-accent));
+}
+
+.localization-option:focus-visible {
+  outline-color: currentcolor;
 }
 
 .localization-option-image {

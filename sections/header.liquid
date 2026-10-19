@@ -66,13 +66,14 @@
     </a>
 
     <div class="header-icons header-icons-right">
-      <a
-        class="icon-button header-icon-link"
-        href="{{ routes.account_url }}"
-        aria-label="{{ 'accessibility.account' | t }}"
-      >
-        {% render 'svg-icons', icon: 'account' %}
-      </a>
+      {% if shop.customer_accounts_enabled %}
+        <shopify-account class="icon-button header-icon-link header-account" menu="customer-account-main-menu">
+          <span slot="signed-out-avatar">
+            {% render 'svg-icons', icon: 'account' %}
+            <span class="visually-hidden">{{ 'accessibility.account' | t }}</span>
+          </span>
+        </shopify-account>
+      {% endif %}
 
       <a
         class="icon-button header-icon-link header-cart-link"
@@ -156,13 +157,14 @@
         {% render 'svg-icons', icon: 'search' %}
       </a>
 
-      <a
-        class="icon-button header-icon-link"
-        href="{{ routes.account_url }}"
-        aria-label="{{ 'accessibility.account' | t }}"
-      >
-        {% render 'svg-icons', icon: 'account' %}
-      </a>
+      {% if shop.customer_accounts_enabled %}
+        <shopify-account class="icon-button header-icon-link header-account" menu="customer-account-main-menu">
+          <span slot="signed-out-avatar">
+            {% render 'svg-icons', icon: 'account' %}
+            <span class="visually-hidden">{{ 'accessibility.account' | t }}</span>
+          </span>
+        </shopify-account>
+      {% endif %}
 
       <a
         class="icon-button header-icon-link header-cart-link"

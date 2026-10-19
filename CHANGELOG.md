@@ -13,6 +13,7 @@ Work planned for 1.1.0 is tracked in the
 
 ### Added
 
+- Mega menu product links show the product's featured image, like collection links (#77).
 - Nested cart lines respect Shopify's remove and quantity rules and show their parent (#33).
 - Trust badges offer built-in icons, with a custom image option (#96).
 - Gallery videos offer fit or fill in Adapt to media mode (#103).
@@ -20,6 +21,7 @@ Work planned for 1.1.0 is tracked in the
 
 ### Changed
 
+- The header account icon uses Shopify's account component and is hidden when customer accounts are turned off (#114).
 - Mobile product gallery thumbnails are smaller and more compact (#89).
 - File upload fields use the theme's typography, focus outline and button style (#74).
 - `.container` follows the global `--container-width` variable; sections and apps no longer need the removed `container-narrow`, `container-normal`, or `container-wide` classes (#84).
@@ -28,6 +30,7 @@ Work planned for 1.1.0 is tracked in the
 
 ### Fixed
 
+- Changing language or country keeps the visitor on the current page (#115).
 - Collection filters and sorting respect per-page settings on every store, ignore hash-only navigation, normalize prices, and preserve typing during updates; sorting, variant selection and predictive search work when Shopify analytics is blocked (#92).
 - The search page keeps its search box and heading in sync with results, including Back and Forward (#112).
 - Article cards fill their grid or carousel cell, with Read more aligned at the bottom (#104).

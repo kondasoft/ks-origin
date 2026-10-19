@@ -1,3 +1,9 @@
+{% doc %}
+Renders the desktop navigation, including dropdowns and mega menu image cards.
+
+@param {linklist} menu - The navigation menu to render.
+{% enddoc %}
+
 <nav class="header-desktop-menu" aria-label="{{ 'accessibility.navigation' | t }}">
   <ul class="header-menu-list">
     {% for link in menu.links %}
@@ -83,6 +89,8 @@
                       if childlink_image_filename != blank
                         assign childlink_image_url = childlink_image_filename | file_url
                       elsif childlink.type == 'collection_link' and childlink.object.featured_image != blank
+                        assign childlink_image_url = childlink.object.featured_image | image_url: width: 720
+                      elsif childlink.type == 'product_link' and childlink.object.featured_image != blank
                         assign childlink_image_url = childlink.object.featured_image | image_url: width: 720
                       endif
                     %}
