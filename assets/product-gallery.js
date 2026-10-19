@@ -147,7 +147,11 @@ class ProductGallery extends HTMLElement {
 
       if (!isActive) {
         slide.querySelector("video")?.pause();
-      } else if (this.videoAutoplay) {
+      } else if (
+        this.videoAutoplay &&
+        !window.matchMedia("(prefers-reduced-motion: reduce)").matches &&
+        !slide.querySelector("deferred-video[data-user-paused]")
+      ) {
         const video = slide.querySelector("video");
 
         if (video) {

@@ -27,6 +27,9 @@ Work planned for 1.1.0 is tracked in the
 
 ### Fixed
 
+- Autoplay videos respect reduced motion, and looping videos without controls get a pause button (#105).
+- Partly visible carousel cards can be tapped, and keyboard users can reach every card (#113).
+- Solid accent buttons, badges and checkbox marks choose black or white for contrast, with opaque button hover and active states (#78).
 - Trust badge text inherits the theme's line height (#73).
 - Tables without a caption keep their spacing to the following content (#97).
 - Rich text ending in a list no longer leaves extra space below it (#98).

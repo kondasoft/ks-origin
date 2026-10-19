@@ -77,6 +77,8 @@
 }
 
 .hero .video-media-poster {
+  /* Avoid trapping the corner play icon in a stacking context below the hero content. */
+  z-index: auto;
   width: 100%;
   height: 100%;
 }
@@ -85,6 +87,31 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+
+/* Video playback access */
+/* The full-size content layer must pass pointer input through to the poster beneath it. */
+.hero:has(.video-media) .hero-content-container {
+  pointer-events: none;
+}
+
+.hero:has(.video-media) .hero-content {
+  pointer-events: auto;
+}
+
+.hero .video-media-poster .video-play-button {
+  position: absolute;
+  top: 0.75em;
+  right: 0.75em;
+  left: auto;
+  z-index: 3;
+  transform: none;
+}
+
+.hero .video-media-poster:focus-visible .video-play-button {
+  outline: 2px solid currentcolor;
+  outline-offset: 2px;
 }
 
 .hero .placeholder-svg {

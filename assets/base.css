@@ -434,6 +434,25 @@ video {
   border-radius: var(--border-radius);
 }
 
+
+/* Video playback controls */
+.video-media-deferred .video-media-toggle {
+  --icon-button-color: 255 255 255;
+  position: absolute;
+  top: 0.75em;
+  right: 0.75em;
+  z-index: 3;
+  background: #000;
+  border-radius: 50%;
+}
+
+.video-media-deferred[data-paused="true"] .video-media-toggle .svg-icon-pause,
+.video-media-deferred:not([data-paused="true"]) .video-media-toggle .svg-icon-play {
+  display: none;
+}
+
+
+/* Video placeholders */
 .video-media-placeholder {
   position: relative;
 }
@@ -586,10 +605,23 @@ button {
 .btn-accent-solid {
   --button-color: rgb(var(--color-background));
   --button-background: rgb(var(--color-accent));
-  --button-hover-background: rgb(var(--color-accent) / 0.85);
-  --button-active-background: rgb(var(--color-accent) / 0.7);
+  --button-hover-background: rgb(var(--color-accent));
+  --button-active-background: rgb(var(--color-accent));
   --button-border-color: rgb(var(--color-accent));
   --button-focus-color: rgb(var(--color-accent));
+}
+
+@supports (color: color(from red srgb-linear round(nearest, r, 1) g b)) {
+  .btn-accent-solid {
+    /* Linear-sRGB luminance crosses equal black/white WCAG contrast at sqrt(0.0525) - 0.05.
+       Round the offset luminance to select exactly 0 or 1; resolve here so local accents always win. */
+    --accent-text-channel: round(nearest, 0.6791287847 - (r * 0.2126 + g * 0.7152 + b * 0.0722), 1);
+    --button-color: color(from rgb(var(--color-accent)) srgb-linear
+      var(--accent-text-channel) var(--accent-text-channel) var(--accent-text-channel));
+    --button-shade: rgb(from var(--button-color) calc(255 - r) calc(255 - g) calc(255 - b));
+    --button-hover-background: color-mix(in srgb, rgb(var(--color-accent)) 85%, var(--button-shade));
+    --button-active-background: color-mix(in srgb, rgb(var(--color-accent)) 70%, var(--button-shade));
+  }
 }
 
 .btn-accent-outline {
@@ -776,6 +808,14 @@ input[type='checkbox']:not(.visually-hidden):checked::after {
   border: solid rgb(var(--color-background));
   border-width: 0 2px 2px 0;
   transform: rotate(45deg);
+}
+
+@supports (color: color(from red srgb-linear round(nearest, r, 1) g b)) {
+  input[type='checkbox']:not(.visually-hidden):checked::after {
+    --accent-text-channel: round(nearest, 0.6791287847 - (r * 0.2126 + g * 0.7152 + b * 0.0722), 1);
+    border-color: color(from rgb(var(--color-accent)) srgb-linear
+      var(--accent-text-channel) var(--accent-text-channel) var(--accent-text-channel));
+  }
 }
 
 input[type='checkbox']:not(.visually-hidden):disabled {
@@ -1137,6 +1177,14 @@ select.input-lg {
   color: rgb(var(--color-accent));
   background-color: rgb(var(--color-accent) / 0.1);
   border: 0;
+}
+
+@supports (color: color(from red srgb-linear round(nearest, r, 1) g b)) {
+  .badge:not(.badge-light) {
+    --accent-text-channel: round(nearest, 0.6791287847 - (r * 0.2126 + g * 0.7152 + b * 0.0722), 1);
+    color: color(from rgb(var(--color-accent)) srgb-linear
+      var(--accent-text-channel) var(--accent-text-channel) var(--accent-text-channel));
+  }
 }
 
 

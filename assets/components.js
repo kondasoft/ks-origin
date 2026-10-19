@@ -127,16 +127,25 @@ class DeferredVideo extends HTMLElement {
     if (!this.posterButton || !this.videoTemplate) return;
 
     this.listenerController = new AbortController();
+    this.reduceMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    this.toggleButton = this.querySelector("[data-video-toggle]");
     this.posterButton.addEventListener("click", this.onPosterClick.bind(this), {
       signal: this.listenerController.signal,
     });
+    this.toggleButton?.addEventListener("click", this.onToggleClick.bind(this), {
+      signal: this.listenerController.signal,
+    });
 
-    if (this.hasAttribute("autoplay")) {
+    const media = this.querySelector("video, iframe");
+
+    if (media) this.bindPlaybackEvents(media);
+
+    if (this.hasAttribute("autoplay") && !this.reduceMotionQuery.matches) {
       this.addEventListener("theme:intersection", this.onIntersection.bind(this), {
         signal: this.listenerController.signal,
       });
 
-      if (this.dataset.intersectionState === "entered") {
+      if (this.hasAttribute("data-autoplay-immediate") || this.dataset.intersectionState === "entered") {
         this.showVideo();
       }
     }
@@ -161,7 +170,7 @@ class DeferredVideo extends HTMLElement {
 
   onPosterClick() {
     this.shouldMoveMediaFocus = true;
-    this.showVideo();
+    this.showVideo(true);
   }
 
   onIntersection(event) {
@@ -170,7 +179,10 @@ class DeferredVideo extends HTMLElement {
     }
   }
 
-  showVideo() {
+  showVideo(userInitiated = false) {
+    // Keep automatic callers (including the product gallery) behind the same preference and pause guard.
+    if (!userInitiated && (this.reduceMotionQuery.matches || this.hasAttribute("data-user-paused"))) return;
+
     if (this.dataset.mediaLoading === "true" || this.dataset.mediaLoaded === "true") {
       return;
     }
@@ -185,6 +197,7 @@ class DeferredVideo extends HTMLElement {
     this.mediaController?.abort();
     this.mediaController = new AbortController();
     this.activeMedia = media;
+    this.bindPlaybackEvents(media);
 
     const readyEvent = media instanceof HTMLVideoElement ? "playing" : "load";
     const listenerOptions = {
@@ -199,6 +212,56 @@ class DeferredVideo extends HTMLElement {
     if (media instanceof HTMLVideoElement) {
       media.play().catch(() => this.onMediaError(media));
     }
+  }
+
+  bindPlaybackEvents(media) {
+    if (!(media instanceof HTMLVideoElement)) return;
+
+    media.addEventListener("play", () => this.updatePlaybackState(false), {
+      signal: this.listenerController.signal,
+    });
+    media.addEventListener("pause", () => this.updatePlaybackState(true), {
+      signal: this.listenerController.signal,
+    });
+  }
+
+  onToggleClick() {
+    const media = this.querySelector("video, iframe");
+
+    if (!media) return;
+
+    const shouldPlay = this.dataset.paused === "true";
+
+    this.toggleAttribute("data-user-paused", !shouldPlay);
+
+    if (media instanceof HTMLVideoElement) {
+      if (shouldPlay) {
+        media.play().catch(() => this.updatePlaybackState(true));
+      } else {
+        media.pause();
+      }
+    } else {
+      const origin = new URL(media.src).origin;
+      // Provider APIs control cross-origin players without reloading the iframe or losing its position.
+      const command =
+        origin === "https://www.youtube.com"
+          ? { event: "command", func: shouldPlay ? "playVideo" : "pauseVideo", args: [] }
+          : { method: shouldPlay ? "play" : "pause" };
+
+      media.contentWindow?.postMessage(JSON.stringify(command), origin);
+      this.updatePlaybackState(!shouldPlay);
+    }
+  }
+
+  updatePlaybackState(paused) {
+    this.dataset.paused = String(paused);
+
+    if (!this.toggleButton) return;
+
+    this.toggleButton.setAttribute(
+      "aria-label",
+      paused ? this.toggleButton.dataset.playLabel : this.toggleButton.dataset.pauseLabel,
+    );
   }
 
   onMediaReady(media) {
@@ -216,8 +279,16 @@ class DeferredVideo extends HTMLElement {
     this.posterButton.setAttribute("aria-hidden", "true");
     this.activeMedia = undefined;
     this.shouldMoveMediaFocus = false;
+    this.updatePlaybackState(media instanceof HTMLVideoElement ? media.paused : false);
+
+    if (this.toggleButton) this.toggleButton.hidden = false;
 
     if (!shouldMoveMediaFocus) return;
+
+    if (this.toggleButton) {
+      this.toggleButton.focus({ preventScroll: true });
+      return;
+    }
 
     if (media instanceof HTMLVideoElement && !media.controls) {
       media.tabIndex = -1;
@@ -953,6 +1024,9 @@ class ThemeCarousel extends HTMLElement {
     this.track.addEventListener("keydown", this.onKeydown.bind(this), {
       signal: this.listenerController.signal,
     });
+    this.track.addEventListener("focusin", this.onFocusIn.bind(this), {
+      signal: this.listenerController.signal,
+    });
     window.addEventListener("resize", this.scheduleUpdate.bind(this), {
       signal: this.listenerController.signal,
     });
@@ -1018,6 +1092,21 @@ class ThemeCarousel extends HTMLElement {
     const index = this.items.indexOf(item);
 
     if (index >= 0) {
+      this.goTo(index, false);
+    }
+  }
+
+  onFocusIn(event) {
+    const item = event.target.closest("[data-carousel-item]");
+    const index = this.items.indexOf(item);
+
+    if (index < 0) return;
+
+    const itemBounds = item.getBoundingClientRect();
+    const trackBounds = this.track.getBoundingClientRect();
+
+    // Reveal the whole card, even when native focus scrolling only reveals its focused link.
+    if (itemBounds.left < trackBounds.left || itemBounds.right > trackBounds.right) {
       this.goTo(index, false);
     }
   }
@@ -1111,33 +1200,6 @@ class ThemeCarousel extends HTMLElement {
     this.nextButton.style.top = `${controlTop}px`;
   }
 
-  updateItemAccessibility() {
-    const firstItem = this.items[0];
-
-    if (!firstItem) return;
-
-    const gap = Number.parseFloat(getComputedStyle(this.track).columnGap) || 0;
-    const itemWidth = firstItem.getBoundingClientRect().width;
-
-    if (itemWidth <= 0 || this.track.clientWidth <= 0) return;
-
-    const visibleItemCount = Math.max(1, Math.round((this.track.clientWidth + gap) / (itemWidth + gap)));
-    const maxStartIndex = Math.max(0, this.items.length - visibleItemCount);
-    const startIndex = Math.min(this.getCurrentIndex(), maxStartIndex);
-    const endIndex = startIndex + visibleItemCount;
-
-    this.items.forEach((item, index) => {
-      const isVisible = index >= startIndex && index < endIndex;
-
-      if (!isVisible && item.contains(document.activeElement)) {
-        this.track.focus({ preventScroll: true });
-      }
-
-      item.toggleAttribute("inert", !isVisible);
-      item.setAttribute("aria-hidden", String(!isVisible));
-    });
-  }
-
   updateProgress() {
     if (!this.progressBar || this.track.scrollWidth <= 0) return;
 
@@ -1156,7 +1218,7 @@ class ThemeCarousel extends HTMLElement {
 
     this.dataset.scrollable = String(isScrollable);
     this.positionControls();
-    this.updateItemAccessibility();
+    // Cards remain interactive and exposed to assistive technology regardless of their scroll position.
     this.updateProgress();
   }
 }

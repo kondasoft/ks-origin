@@ -1,5 +1,5 @@
 {% doc %}
-Renders uploaded or external video media with poster and deferred-loading behavior.
+Renders uploaded or external video media with posters, deferred loading and shared playback controls.
 
 @param {string} source - The video source type: uploaded or url.
 @param {video} [uploaded_video] - The Shopify-hosted video.
@@ -82,12 +82,17 @@ Renders uploaded or external video media with poster and deferred-loading behavi
       assign video_display_aspect_ratio = '9 / 16'
   endcase
 
+  # Keep autoplay media inert until JavaScript checks reduced motion, including the first section.
   if autoplay
+    assign defer_video = true
     if section_index > 1
-      assign defer_video = true
       assign observe_video = true
     endif
   elsif video_preview_image != blank
+    assign defer_video = true
+  endif
+
+  if loop and show_controls != true
     assign defer_video = true
   endif
 
@@ -116,6 +121,7 @@ Renders uploaded or external video media with poster and deferred-loading behavi
       assign external_video_src = external_video_src | append: '&mute=' | append: autoplay_value
       assign external_video_src = external_video_src | append: '&controls=' | append: controls_value
       assign external_video_src = external_video_src | append: '&playsinline=1'
+      assign external_video_src = external_video_src | append: '&enablejsapi=1'
 
       if loop
         assign external_video_src = external_video_src | append: '&loop=1&playlist=' | append: external_video.id
@@ -166,10 +172,14 @@ Renders uploaded or external video media with poster and deferred-loading behavi
   {% if has_video and defer_video %}
     <deferred-video
       class="video-media-deferred"
-      {% if observe_video %}
+      {% if autoplay and defer_loading != true %}
         autoplay
-        data-intersection-observer
-        data-intersection-root-margin="300px 0px"
+        {% if observe_video %}
+          data-intersection-observer
+          data-intersection-root-margin="300px 0px"
+        {% else %}
+          data-autoplay-immediate
+        {% endif %}
       {% endif %}
     >
       <button
@@ -197,6 +207,20 @@ Renders uploaded or external video media with poster and deferred-loading behavi
       <template>
         {{ video_content }}
       </template>
+      {% if loop and show_controls != true %}
+        <button
+          class="icon-button video-media-toggle"
+          type="button"
+          aria-label="{{ 'accessibility.pause_video' | t }}"
+          data-video-toggle
+          data-play-label="{{ 'accessibility.play_video' | t }}"
+          data-pause-label="{{ 'accessibility.pause_video' | t }}"
+          hidden
+        >
+          {% render 'svg-icons', icon: 'pause', icon_size: 20 %}
+          {% render 'svg-icons', icon: 'play', icon_size: 20 %}
+        </button>
+      {% endif %}
     </deferred-video>
   {% elsif has_video %}
     {{ video_content }}

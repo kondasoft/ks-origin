@@ -138,6 +138,15 @@
   display: none;
 }
 
+@supports (color: color(from red srgb-linear round(nearest, r, 1) g b)) {
+  .cart-count-badge {
+    /* Match solid accent buttons, using the header's local accent rather than the page palette. */
+    --accent-text-channel: round(nearest, 0.6791287847 - (r * 0.2126 + g * 0.7152 + b * 0.0722), 1);
+    color: color(from rgb(var(--accent-color)) srgb-linear
+      var(--accent-text-channel) var(--accent-text-channel) var(--accent-text-channel));
+  }
+}
+
 @media (max-width: 1199px) {
   .header-menu-button .svg-icon-menu line {
     opacity: 1;
