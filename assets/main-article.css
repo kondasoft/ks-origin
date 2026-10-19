@@ -253,6 +253,10 @@
   overflow-wrap: anywhere;
 }
 
+.article-comments-empty {
+  color: rgb(var(--color-text) / 0.7);
+}
+
 .article-comments-list {
   padding: 0;
   margin: 0;

@@ -250,6 +250,8 @@
         "one": "{{ count }} commentaire",
         "other": "{{ count }} commentaires"
       },
+      "empty_title": "Aucun commentaire",
+      "empty_description": "Soyez le premier à partager votre avis sur cet article.",
       "form_title": "Laisser un commentaire",
       "name": "Nom",
       "email": "E-mail",

@@ -250,6 +250,8 @@
         "one": "{{ count }} comment",
         "other": "{{ count }} comments"
       },
+      "empty_title": "No comments",
+      "empty_description": "Be the first to share your thoughts on this article.",
       "form_title": "Leave a comment",
       "name": "Name",
       "email": "Email",

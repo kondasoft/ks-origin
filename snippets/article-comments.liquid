@@ -11,12 +11,23 @@ Renders paginated article comments and the comment form when called by the artic
   assign form_id = 'ArticleCommentForm-' | append: section_id
   assign pagination_previous = 'general.pagination.previous' | t
   assign pagination_next = 'general.pagination.next' | t
+  assign comments_count = article.comments_count
+
+  # An unmoderated blog shows the visitor's new comment before Shopify counts it.
+  if blog.moderated? == false and comment.status == 'pending' and comment.content != blank
+    assign comments_count = comments_count | at_least: 1
+  endif
 %}
 
 <section class="article-comments" aria-labelledby="ArticleComments-{{ section_id }}">
-  <h2 id="ArticleComments-{{ section_id }}">
-    {{ 'blogs.comments.count' | t: count: article.comments_count }}
-  </h2>
+  {% if comments_count == 0 %}
+    <h2 id="ArticleComments-{{ section_id }}">{{ 'blogs.comments.empty_title' | t }}</h2>
+    <p class="article-comments-empty">{{ 'blogs.comments.empty_description' | t }}</p>
+  {% else %}
+    <h2 id="ArticleComments-{{ section_id }}">
+      {{ 'blogs.comments.count' | t: count: comments_count }}
+    </h2>
+  {% endif %}
 
   {% paginate article.comments by 10 %}
     {% liquid
