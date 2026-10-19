@@ -9,6 +9,7 @@ Renders product options, swatches, and variant data for the shared variant picke
 
 {% liquid
   assign picker_product_gid = 'gid://shopify/Product/' | append: product.id
+  assign picker_id = section.id | append: '-' | append: id | append: '-' | append: product.id
   assign picker_option_style = option_style | default: 'radio'
   assign picker_swatch_size = swatch_size | default: 32
   assign picker_swatch_image_size = picker_swatch_size | times: 2
@@ -42,12 +43,12 @@ Renders product options, swatches, and variant data for the shared variant picke
             data-variant-option-group
             data-option-name="{{ product_option.name | escape }}"
           >
-            <label for="ProductOption-{{ id }}-{{ product_option.position }}">
+            <label for="ProductOption-{{ picker_id }}-{{ product_option.position }}">
               {{ product_option.name | escape }}
             </label>
             <div class="input-wrapper">
               <select
-                id="ProductOption-{{ id }}-{{ product_option.position }}"
+                id="ProductOption-{{ picker_id }}-{{ product_option.position }}"
                 class="input"
                 name="options[{{ product_option.name | escape }}]"
                 data-variant-option
@@ -62,6 +63,7 @@ Renders product options, swatches, and variant data for the shared variant picke
             </div>
           </div>
         {% else %}
+          {% comment %}These radios sit outside a form; scope their browser group to this picker instance.{% endcomment %}
           <fieldset
             class="product-main-variant-picker-option"
             data-variant-option-group
@@ -75,7 +77,7 @@ Renders product options, swatches, and variant data for the shared variant picke
               {% unless option_has_swatches %}data-variant-button-group{% endunless %}
             >
               {% for option_value in product_option.values %}
-                {% assign option_id = 'ProductOption-' | append: id | append: '-' | append: product_option.position | append: '-' | append: forloop.index %}
+                {% assign option_id = 'ProductOption-' | append: picker_id | append: '-' | append: product_option.position | append: '-' | append: forloop.index %}
                 <label
                   class="product-main-variant-picker-radio{% if option_value.swatch != blank %} product-main-variant-picker-radio-swatch{% endif %}"
                   for="{{ option_id }}"
@@ -85,7 +87,7 @@ Renders product options, swatches, and variant data for the shared variant picke
                     id="{{ option_id }}"
                     class="visually-hidden{% unless option_value.available %} disabled{% endunless %}"
                     type="radio"
-                    name="options[{{ product_option.name | escape }}]"
+                    name="{{ product_option.name | escape }}-{{ picker_id }}-{{ product_option.position }}"
                     value="{{ option_value | escape }}"
                     data-variant-option
                     {% unless option_value.available %}aria-disabled="true"{% endunless %}

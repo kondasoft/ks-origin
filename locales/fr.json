@@ -177,6 +177,7 @@
       "sale_price": "Prix promotionnel",
       "save": "Économisez {{ savings }}",
       "from_price": "À partir de {{ price }}",
+      "before_subscription_adjustments": "Prix avant ajustements liés à l’abonnement. Consultez les options d’abonnement pour les tarifs.",
       "duties_and_taxes_included": "Droits et taxes inclus.",
       "taxes_included": "Taxes incluses.",
       "duties_included": "Droits inclus.",

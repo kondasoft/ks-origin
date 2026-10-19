@@ -963,8 +963,16 @@ class ThemeBuyItNow extends HTMLElement {
     this.listenerController = new AbortController();
     const listenerOptions = { signal: this.listenerController.signal };
 
-    this.variantInput.addEventListener("change", this.updateLink.bind(this), listenerOptions);
-    this.quantityInput?.addEventListener("input", this.updateLink.bind(this), listenerOptions);
+    // App inputs can be added later or live outside the form with a form attribute.
+    const onFormInput = (event) => {
+      const productRoot = this.closest("[data-product-root]");
+
+      // Subscription widgets may update a hidden form input from a radio in a sibling app block.
+      if (event.target.form === this.form || productRoot?.contains(event.target)) this.updateLink();
+    };
+
+    document.addEventListener("input", onFormInput, listenerOptions);
+    document.addEventListener("change", onFormInput, listenerOptions);
     this.link.addEventListener("click", this.onClick.bind(this), listenerOptions);
     this.updateLink();
     this.isInitialized = true;
@@ -978,11 +986,29 @@ class ThemeBuyItNow extends HTMLElement {
   updateLink() {
     const variantId = this.variantInput.value;
     const quantity = Math.max(1, Number.parseInt(this.quantityInput?.value, 10) || 1);
+    const formData = new FormData(this.form);
+    const hasCustomisations = Array.from(formData).some(([key, value]) => {
+      if (key !== "selling_plan" && !/^properties\[.+]$/.test(key)) return false;
+
+      return typeof value === "string" ? value !== "" : value.name !== "";
+    });
+    const unavailable = !variantId || this.form.querySelector('[name="add"]')?.disabled;
+
+    // Cart permalinks cannot carry properties or selling plans.
+    if (unavailable || hasCustomisations) {
+      this.link.setAttribute("aria-disabled", "true");
+      this.link.tabIndex = -1;
+    } else {
+      this.link.removeAttribute("aria-disabled");
+      this.link.removeAttribute("tabindex");
+    }
 
     if (variantId) this.link.href = `${this.dataset.cartUrl}/${encodeURIComponent(variantId)}:${quantity}`;
   }
 
   onClick(event) {
+    // Recheck values set by apps without an input/change event before following the permalink.
+    this.updateLink();
     if (this.link.getAttribute("aria-disabled") === "true" || !this.form.reportValidity()) event.preventDefault();
   }
 }

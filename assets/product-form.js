@@ -41,7 +41,12 @@ class ThemeProductForm extends HTMLElement {
       return;
     }
 
-    const line = this.createCartLine(new FormData(this.form));
+    const formData = new FormData(this.form);
+
+    // The cart action only accepts string attributes; native multipart submission preserves uploaded files.
+    if (Array.from(formData.values()).some((value) => value instanceof File && value.name !== "")) return;
+
+    const line = this.createCartLine(formData);
 
     if (!line) return;
 

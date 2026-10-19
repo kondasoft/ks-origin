@@ -34,6 +34,9 @@ Work planned for 1.1.0 is tracked in the
 
 ### Fixed
 
+- Variant pickers on the same page no longer affect each other (#108).
+- Uploaded files use native product submission, and Buy it now is disabled for products with customisations or a selling plan (#109).
+- Products requiring a subscription plan open the product page from cards; product prices identify subscription adjustments separately (#61).
 - Liquid / HTML, Blog posts, Collection list, Featured collection and Product recommendations render added blocks and preserve card settings across layouts (#121).
 - Changing language or country keeps the visitor on the current page (#115).
 - Collection filters and sorting respect per-page settings on every store, ignore hash-only navigation, normalize prices, and preserve typing during updates; sorting, variant selection and predictive search work when Shopify analytics is blocked (#92).

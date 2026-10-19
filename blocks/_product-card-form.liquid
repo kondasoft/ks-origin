@@ -27,7 +27,16 @@
     >
       {{ 'products.form.sold_out' | t }}
     </button>
-  {% elsif product.variants.size == 1 and product.requires_selling_plan == false %}
+  {% elsif product.requires_selling_plan %}
+    {% comment %}Quick add has no app blocks to choose a required subscription plan.{% endcomment %}
+    <a
+      href="{{ product.url }}"
+      class="btn {{ block.settings.button_size }} {{ block.settings.button_style }}"
+      data-product-card-link
+    >
+      {{ 'products.form.select_options' | t }}
+    </a>
+  {% elsif product.variants.size == 1 %}
     <theme-product-form data-source="product-card">
       {% form 'product', product,
         id: product_form_id,

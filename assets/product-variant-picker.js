@@ -257,7 +257,7 @@ class ProductVariantPicker extends HTMLElement {
     const available = Boolean(variant?.available);
     const addToCart = buyButtons.querySelector("[data-add-to-cart-button]");
     const addToCartText = buyButtons.querySelector("[data-add-to-cart-text]");
-    const buyItNow = buyButtons.querySelector("[data-buy-it-now]");
+    const buyItNow = buyButtons.querySelector("theme-buy-it-now");
     const quantity = buyButtons.querySelector("[data-quantity-input]");
     const inventoryMessage = buyButtons.querySelector("[data-cart-inventory-message]");
     const maximum = this.getQuantityMaximum(variant);
@@ -270,13 +270,6 @@ class ProductVariantPicker extends HTMLElement {
     if (addToCart) addToCart.disabled = !available;
     if (addToCartText) {
       addToCartText.textContent = available ? buyButtons.dataset.addToCartText : buyButtons.dataset.soldOutText;
-    }
-    if (buyItNow && available) {
-      buyItNow.removeAttribute("aria-disabled");
-      buyItNow.removeAttribute("tabindex");
-    } else if (buyItNow) {
-      buyItNow.setAttribute("aria-disabled", "true");
-      buyItNow.tabIndex = -1;
     }
     if (inventoryMessage) inventoryMessage.hidden = !allInventoryInCart;
 
@@ -292,6 +285,9 @@ class ProductVariantPicker extends HTMLElement {
 
       quantity.closest("quantity-input")?.sync();
     }
+
+    // Availability changes must preserve the permalink's customisation restrictions.
+    buyItNow?.updateLink?.();
   }
 
   getQuantityMaximum(variant) {

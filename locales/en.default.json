@@ -177,6 +177,7 @@
       "sale_price": "Sale price",
       "save": "Save {{ savings }}",
       "from_price": "From {{ price }}",
+      "before_subscription_adjustments": "Price before subscription adjustments. See subscription options for plan prices.",
       "duties_and_taxes_included": "Duties and taxes included.",
       "taxes_included": "Taxes included.",
       "duties_included": "Duties included.",

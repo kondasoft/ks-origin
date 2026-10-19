@@ -80,6 +80,12 @@
     {% endif %}
   </p>
 
+  {% if product.selling_plan_groups.size > 0 %}
+    <p class="product-main-price-subscription-information fs-sm">
+      {{ 'products.price.before_subscription_adjustments' | t }}
+    </p>
+  {% endif %}
+
   {% if block.settings.show_tax_information and tax_information != blank %}
     <p class="product-main-price-tax-information fs-sm">{{ tax_information }}</p>
   {% endif %}
