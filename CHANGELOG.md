@@ -26,6 +26,7 @@ Work planned for 1.1.0 is tracked in the
 ### Changed
 
 - The header account icon uses Shopify's account component and is hidden when customer accounts are turned off (#114).
+- Announcement bar text uses a tighter line height, so wrapped announcements take less space on mobile (#72).
 - Mobile product gallery thumbnails are smaller and more compact (#89).
 - File upload fields use the theme's typography, focus outline and button style (#74).
 - `.container` follows the global `--container-width` variable; sections and apps no longer need the removed `container-narrow`, `container-normal`, or `container-wide` classes (#84).

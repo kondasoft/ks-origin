@@ -14,6 +14,8 @@
 
 .announcement-bar-text {
   margin: 0;
+  /* Condensed so announcements that wrap to two lines on mobile don't take extra space. */
+  line-height: 1.2;
 }
 
 .announcement-bar-link {
