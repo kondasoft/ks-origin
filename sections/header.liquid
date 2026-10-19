@@ -67,7 +67,7 @@
 
     <div class="header-icons header-icons-right">
       {% if shop.customer_accounts_enabled %}
-        <shopify-account class="icon-button header-icon-link header-account" menu="customer-account-main-menu">
+        <shopify-account class="icon-button header-icon-link header-account">
           <span slot="signed-out-avatar">
             {% render 'svg-icons', icon: 'account' %}
             <span class="visually-hidden">{{ 'accessibility.account' | t }}</span>
@@ -158,7 +158,7 @@
       </a>
 
       {% if shop.customer_accounts_enabled %}
-        <shopify-account class="icon-button header-icon-link header-account" menu="customer-account-main-menu">
+        <shopify-account class="icon-button header-icon-link header-account">
           <span slot="signed-out-avatar">
             {% render 'svg-icons', icon: 'account' %}
             <span class="visually-hidden">{{ 'accessibility.account' | t }}</span>
