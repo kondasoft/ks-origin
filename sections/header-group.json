@@ -21,8 +21,8 @@
         "letter_spacing": "ls-loose",
         "background_color": "{{ settings.colors.text }}",
         "text_color": "{{ settings.colors.background }}",
-        "pt": 8,
-        "pb": 8
+        "pt": 10,
+        "pb": 10
       }
     },
     "header": {
