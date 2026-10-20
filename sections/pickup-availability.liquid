@@ -1,0 +1,13 @@
+{% comment %}
+  Render-only section. The pickup availability block fetches it for a variant URL when the shopper changes variant.
+{% endcomment %}
+
+<div data-pickup-availability-content>
+  {% render 'pickup-availability', variant: product_variant %}
+</div>
+
+{% schema %}
+{
+  "name": "Pickup render"
+}
+{% endschema %}

@@ -1,0 +1,70 @@
+{% liquid
+  assign product = closest.product
+  assign variant = product.selected_or_first_available_variant
+  assign pickup_locations = variant.store_availabilities | where: 'pick_up_enabled', true
+  assign pickup_dialog_id = 'PickupAvailability-' | append: section.id | append: '-' | append: block.id
+%}
+
+{% unless product == blank %}
+  <script src="{{ 'product-pickup-availability.js' | asset_url }}" type="module" fetchpriority="low"></script>
+
+  <product-pickup-availability
+    class="product-main-pickup-availability-block block-spacing"
+    style="
+      --pt: {{ block.settings.pt | divided_by: 16.0 | append: 'em' }};
+      --pb: {{ block.settings.pb | divided_by: 16.0 | append: 'em' }};
+    "
+    {% if variant == blank or variant.available == false or pickup_locations.size == 0 %}hidden{% endif %}
+    data-dialog-id="{{ pickup_dialog_id }}"
+    data-root-url="{{ routes.root_url }}"
+    data-variant-id="{{ variant.id }}"
+    {{ block.shopify_attributes }}
+  >
+    <div data-pickup-availability-content>
+      {% render 'pickup-availability', variant: variant, pickup_dialog_id: pickup_dialog_id %}
+    </div>
+  </product-pickup-availability>
+{% endunless %}
+
+{% schema %}
+{
+  "name": "Pickup availability",
+  "tag": null,
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Shows whether the selected variant can be picked up at your locations. It only appears when local pickup is enabled for at least one location in Settings > Shipping and delivery."
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pt",
+      "label": "Top",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "pb",
+      "label": "Bottom",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 24
+    }
+  ],
+  "presets": [
+    {
+      "name": "Pickup availability",
+      "category": "Product"
+    }
+  ]
+}
+{% endschema %}

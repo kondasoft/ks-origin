@@ -134,6 +134,27 @@
     }
   },
   "products": {
+    "inventory": {
+      "in_stock": "In stock",
+      "in_stock_count": {
+        "one": "{{ count }} in stock",
+        "other": "{{ count }} in stock"
+      },
+      "low_stock": "Low stock",
+      "low_stock_count": {
+        "one": "Only {{ count }} left",
+        "other": "Only {{ count }} left"
+      },
+      "sold_out": "Sold out"
+    },
+    "pickup": {
+      "heading": "Pickup availability",
+      "available_at_html": "Pickup available at <strong>{{ location }}</strong>",
+      "available": "Pickup available",
+      "unavailable": "Pickup currently unavailable",
+      "check_other_stores": "Check availability at other stores",
+      "view_store_information": "View store information"
+    },
     "quick_add": {
       "title": "Quick add",
       "button": "Choose options",

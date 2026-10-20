@@ -13,6 +13,8 @@ Work planned for 1.1.0 is tracked in the
 
 ### Added
 
+- Inventory status block for the product page: in stock, low stock and sold out, with an optional quantity (#40).
+- Pickup availability block for the product page, with a store locations dialog, updated per variant (#110).
 - B2B quantity rules (minimum, increment, maximum) on the product page, quick add, product cards and cart lines (#32).
 - Unit prices on the product page, product cards, quick add and cart (#31).
 - Theme settings → Product cards: global appearance and image defaults, with per-block overrides (#82).
@@ -39,6 +41,7 @@ Work planned for 1.1.0 is tracked in the
 
 ### Fixed
 
+- The Shop Pay Installments message reserves space while loading to reduce product page layout shifts (#68).
 - Colour-only swatches on product cards show their colour, and cards, quick add and the product page share one swatch rendering (#80).
 - Card images download sizes that match the grid in all browsers (#116).
 - Quick add and quantity limits reflect the current cart after adding to cart (#63).

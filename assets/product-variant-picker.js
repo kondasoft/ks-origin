@@ -266,6 +266,8 @@ class ProductVariantPicker extends HTMLElement {
     this.updateVariantInputs(variant);
     this.updatePrice(variant);
     this.updateSku(variant);
+    this.updateInventory(variant);
+    this.updatePickupAvailability(variant);
     this.updateBuyButtons(variant);
     this.updateGallery(variant);
     this.updateProductDetailsLink(variant);
@@ -324,6 +326,41 @@ class ProductVariantPicker extends HTMLElement {
 
     skuBlock.hidden = !variant?.sku;
     sku.textContent = variant?.sku ? sku.dataset.template.replace("[sku]", variant.sku) : "";
+  }
+
+  updateInventory(variant) {
+    this.productElement.querySelectorAll("[data-product-inventory]").forEach((block) => {
+      const tracked = Boolean(variant?.inventoryManagement) && variant?.inventoryPolicy === "deny";
+      const quantity = variant?.inventoryQuantity || 0;
+      let state = "in-stock";
+      let textKey = "textInStock";
+
+      if (!variant?.available) {
+        state = "sold-out";
+        textKey = "textSoldOut";
+      } else if (tracked) {
+        const lowStock = quantity <= Number(block.dataset.lowStockThreshold);
+
+        if (lowStock) {
+          state = "low-stock";
+          textKey = "textLowStock";
+        }
+        if (block.dataset.showQuantity === "always" || (lowStock && block.dataset.showQuantity !== "never")) {
+          textKey += quantity === 1 ? "CountOne" : "CountOther";
+        }
+      }
+
+      block.dataset.state = state;
+      block.querySelector("[data-inventory-text]").textContent = block.dataset[textKey].replace("[count]", quantity);
+    });
+  }
+
+  updatePickupAvailability(variant) {
+    this.productElement.querySelectorAll("product-pickup-availability").forEach((pickup) => {
+      // The block's module may load after the picker. Its connection consumes the most recent selection.
+      pickup.pendingVariant = variant;
+      pickup.updateVariant?.(variant);
+    });
   }
 
   updateBuyButtons(variant) {

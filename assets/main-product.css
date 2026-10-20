@@ -115,6 +115,11 @@
 }
 
 .product-main-price-installments {
+  display: block;
+}
+
+.product-main-price-installments[data-loading],
+.product-main-price-installments[data-has-content] {
   margin-top: 0.5em;
 }
 
@@ -124,6 +129,194 @@
 
 .product-main-price-payment-terms {
   margin: 0;
+}
+
+.product-main-price-installments[data-loading] {
+  position: relative;
+  /* Shopify's message measured 47-48px (two lines) on phones and 26px (one line) from tablet up. */
+  min-height: 48px;
+}
+
+.product-main-price-installments[data-loading]::before {
+  position: absolute;
+  inset: 0 auto auto 0;
+  width: 100%;
+  max-width: 360px;
+  height: 48px;
+  content: "";
+  background-color: rgb(var(--color-surface));
+  border-radius: var(--border-radius);
+  animation: product-payment-terms-pulse 1.4s ease-in-out infinite;
+}
+
+.product-main-price-installments[data-loading] .product-main-price-payment-terms {
+  visibility: hidden;
+}
+
+@keyframes product-payment-terms-pulse {
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@media (min-width: 600px) {
+  .product-main-price-installments[data-loading] {
+    min-height: 26px;
+  }
+
+  .product-main-price-installments[data-loading]::before {
+    height: 26px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .product-main-price-installments[data-loading]::before {
+    animation: none;
+  }
+}
+
+
+/*
+  Inventory status
+*/
+.product-main-inventory-block {
+  --inventory-color: var(--status-success-color);
+}
+
+.product-main-inventory-block[data-state="low-stock"] {
+  --inventory-color: var(--status-warning-color);
+}
+
+.product-main-inventory-block[data-state="sold-out"] {
+  --inventory-color: var(--status-error-color);
+}
+
+.product-main-inventory-status {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  margin: 0;
+}
+
+.product-main-inventory-dot {
+  flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  background-color: rgb(var(--inventory-color));
+  border-radius: 50%;
+}
+
+
+/*
+  Pickup availability
+*/
+.product-main-pickup-availability-block {
+  display: block;
+}
+
+.pickup-availability {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75em;
+  padding: 1em;
+  background-color: rgb(var(--color-surface));
+  border-radius: var(--border-radius);
+}
+
+.pickup-availability-icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  /* One line box tall, so the icon centres on the first line of the status text however the font size scales. */
+  height: 1lh;
+}
+
+.pickup-availability-status {
+  margin: 0;
+}
+
+.pickup-availability-time {
+  margin: 0;
+  color: rgb(var(--color-text) / 0.7);
+}
+
+.pickup-availability-link {
+  padding: 0;
+  margin-top: 0.25em;
+  color: inherit;
+  font-family: inherit;
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.pickup-availability-link:focus-visible {
+  outline-color: currentcolor;
+}
+
+.pickup-availability-product {
+  display: flex;
+  flex-direction: column;
+  margin: 0 0 1em;
+  padding-bottom: 1em;
+  border-bottom: 1px var(--divider-style, dotted) rgb(var(--color-text) / var(--border-opacity));
+}
+
+.pickup-availability-variant {
+  color: rgb(var(--color-text) / 0.7);
+}
+
+.pickup-availability-list {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.pickup-availability-location {
+  --pickup-color: var(--status-success-color);
+}
+
+/* The dialog header already draws a border above the first location, and the dialog body pads the list. */
+.pickup-availability-location + .pickup-availability-location {
+  margin-top: 1em;
+  padding-top: 1em;
+  border-top: 1px var(--divider-style, dotted) rgb(var(--color-text) / var(--border-opacity));
+}
+
+.pickup-availability-location[data-available="false"] {
+  --pickup-color: var(--status-error-color);
+}
+
+.pickup-availability-location-name {
+  margin: 0 0 0.25em;
+}
+
+.pickup-availability-location-status {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  margin: 0 0 0.5em;
+}
+
+.pickup-availability-dot {
+  flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  background-color: rgb(var(--pickup-color));
+  border-radius: 50%;
+}
+
+.pickup-availability-address {
+  font-style: normal;
+  color: rgb(var(--color-text) / 0.7);
+}
+
+.pickup-availability-phone {
+  margin: 0.5em 0 0;
 }
 
 

@@ -134,6 +134,27 @@
     }
   },
   "products": {
+    "inventory": {
+      "in_stock": "En stock",
+      "in_stock_count": {
+        "one": "{{ count }} en stock",
+        "other": "{{ count }} en stock"
+      },
+      "low_stock": "Stock limité",
+      "low_stock_count": {
+        "one": "Plus que {{ count }} en stock",
+        "other": "Plus que {{ count }} en stock"
+      },
+      "sold_out": "Épuisé"
+    },
+    "pickup": {
+      "heading": "Disponibilité du retrait",
+      "available_at_html": "Retrait disponible à <strong>{{ location }}</strong>",
+      "available": "Retrait disponible",
+      "unavailable": "Retrait actuellement indisponible",
+      "check_other_stores": "Vérifier la disponibilité dans d’autres magasins",
+      "view_store_information": "Voir les informations du magasin"
+    },
     "quick_add": {
       "title": "Ajout rapide",
       "button": "Choisir les options",

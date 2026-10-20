@@ -96,13 +96,14 @@
   {% endif %}
 
   {% if block.settings.show_installments and selected_variant != blank %}
-    <div class="product-main-price-installments fs-sm">
+    <script src="{{ 'product-payment-terms.js' | asset_url }}" type="module" fetchpriority="low"></script>
+    <product-payment-terms class="product-main-price-installments fs-sm" data-loading aria-busy="true">
       {% assign installment_form_id = 'product-main-installments-' | append: block.id %}
       {% form 'product', product, id: installment_form_id, class: 'product-main-price-payment-terms' %}
         <input type="hidden" name="id" value="{{ selected_variant.id }}" data-product-variant-input>
         {{ form | payment_terms }}
       {% endform %}
-    </div>
+    </product-payment-terms>
   {% endif %}
 </div>
 

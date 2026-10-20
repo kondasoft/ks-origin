@@ -65,6 +65,25 @@
           },
           "blocks": {}
         },
+        "product-main-inventory": {
+          "type": "_product-main-inventory",
+          "settings": {
+            "low_stock_threshold": 5,
+            "show_quantity": "low",
+            "text_size": "fs-sm",
+            "pt": 0,
+            "pb": 24
+          },
+          "blocks": {}
+        },
+        "product-main-pickup-availability": {
+          "type": "_product-main-pickup-availability",
+          "settings": {
+            "pt": 0,
+            "pb": 24
+          },
+          "blocks": {}
+        },
         "product-main-buy-buttons": {
           "type": "_product-main-buy-buttons",
           "settings": {
@@ -351,7 +370,9 @@
         "product-main-rating",
         "product-main-price",
         "product-main-variant-picker",
+        "product-main-inventory",
         "product-main-buy-buttons",
+        "product-main-pickup-availability",
         "product-main-trust-badges",
         "divider_6jkQPj",
         "product-main-description",

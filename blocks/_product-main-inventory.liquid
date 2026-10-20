@@ -1,0 +1,134 @@
+{% liquid
+  assign product = closest.product
+  assign variant = product.selected_or_first_available_variant
+  assign threshold = block.settings.low_stock_threshold
+  assign show_quantity = block.settings.show_quantity
+  assign state = 'in-stock'
+  assign is_tracked = false
+
+  if variant.inventory_management != blank and variant.inventory_policy == 'deny'
+    assign is_tracked = true
+  endif
+
+  if product != blank and variant == blank or variant.available == false
+    assign state = 'sold-out'
+    assign status_text = 'products.inventory.sold_out' | t
+  elsif is_tracked == false
+    assign status_text = 'products.inventory.in_stock' | t
+  elsif variant.inventory_quantity <= threshold
+    assign state = 'low-stock'
+    assign status_text = 'products.inventory.low_stock' | t
+
+    if show_quantity != 'never'
+      assign status_text = 'products.inventory.low_stock_count' | t: count: variant.inventory_quantity
+    endif
+  else
+    assign status_text = 'products.inventory.in_stock' | t
+
+    if show_quantity == 'always'
+      assign status_text = 'products.inventory.in_stock_count' | t: count: variant.inventory_quantity
+    endif
+  endif
+%}
+
+<div
+  class="product-main-inventory-block block-spacing"
+  style="
+    --pt: {{ block.settings.pt | divided_by: 16.0 | append: 'em' }};
+    --pb: {{ block.settings.pb | divided_by: 16.0 | append: 'em' }};
+  "
+  data-product-inventory
+  data-state="{{ state }}"
+  data-low-stock-threshold="{{ threshold }}"
+  data-show-quantity="{{ show_quantity }}"
+  data-text-in-stock="{{ 'products.inventory.in_stock' | t | escape }}"
+  data-text-in-stock-count-one="{{ 'products.inventory.in_stock_count' | t: count: 1 | replace: '1', '[count]' | escape }}"
+  data-text-in-stock-count-other="{{ 'products.inventory.in_stock_count' | t: count: 2 | replace: '2', '[count]' | escape }}"
+  data-text-low-stock="{{ 'products.inventory.low_stock' | t | escape }}"
+  data-text-low-stock-count-one="{{ 'products.inventory.low_stock_count' | t: count: 1 | replace: '1', '[count]' | escape }}"
+  data-text-low-stock-count-other="{{ 'products.inventory.low_stock_count' | t: count: 2 | replace: '2', '[count]' | escape }}"
+  data-text-sold-out="{{ 'products.inventory.sold_out' | t | escape }}"
+  {{ block.shopify_attributes }}
+>
+  <p class="product-main-inventory-status {{ block.settings.text_size }}" role="status">
+    <span class="product-main-inventory-dot" aria-hidden="true"></span>
+    <span data-inventory-text>{{ status_text }}</span>
+  </p>
+</div>
+
+{% schema %}
+{
+  "name": "Inventory status",
+  "tag": null,
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Shows whether the selected variant is in stock, low in stock, or sold out. Quantities only apply to variants that track inventory and stop selling when out of stock."
+    },
+    {
+      "type": "range",
+      "id": "low_stock_threshold",
+      "label": "Low stock threshold",
+      "min": 1,
+      "max": 20,
+      "step": 1,
+      "default": 5,
+      "info": "At or below this quantity the status switches to low stock."
+    },
+    {
+      "type": "select",
+      "id": "show_quantity",
+      "label": "Show quantity",
+      "options": [
+        { "value": "low", "label": "Only when stock is low" },
+        { "value": "always", "label": "Always" },
+        { "value": "never", "label": "Never" }
+      ],
+      "default": "low"
+    },
+    {
+      "type": "select",
+      "id": "text_size",
+      "label": "Text size",
+      "options": [
+        { "value": "fs-xs", "label": "Extra small" },
+        { "value": "fs-sm", "label": "Small" },
+        { "value": "fs-md", "label": "Medium" },
+        { "value": "fs-lg", "label": "Large" },
+        { "value": "fs-xl", "label": "Extra large" }
+      ],
+      "default": "fs-sm"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pt",
+      "label": "Top",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "pb",
+      "label": "Bottom",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 24
+    }
+  ],
+  "presets": [
+    {
+      "name": "Inventory status",
+      "category": "Product"
+    }
+  ]
+}
+{% endschema %}

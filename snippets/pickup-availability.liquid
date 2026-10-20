@@ -1,0 +1,102 @@
+{% doc %}
+Renders local pickup availability for a product variant, with a dialog that lists every pickup location.
+Used by the pickup availability block for the first render and by the render-only section when the variant changes.
+
+@param {variant} variant - The variant to show pickup availability for.
+@param {string} [pickup_dialog_id] - Unique block dialog ID; remapped before inserting a render-only response.
+
+@example
+{% render 'pickup-availability', variant: product.selected_or_first_available_variant %}
+{% enddoc %}
+
+{% liquid
+  assign pickup_locations = variant.store_availabilities | where: 'pick_up_enabled', true
+  assign primary_location = pickup_locations | where: 'available', true | first
+  assign pickup_dialog_id = pickup_dialog_id | default: 'PickupAvailability-render'
+%}
+
+{% if variant.available and pickup_locations.size > 0 %}
+  <div class="pickup-availability" data-available="{{ primary_location.available }}">
+    <span class="pickup-availability-icon" aria-hidden="true">
+      {% render 'svg-icons', icon: 'map-pin', icon_size: 18 %}
+    </span>
+
+    <div class="pickup-availability-info">
+      <p class="pickup-availability-status">
+        {% if primary_location.available %}
+          {% assign location_name = primary_location.location.name | escape %}
+          {{ 'products.pickup.available_at_html' | t: location: location_name }}
+        {% else %}
+          {{ 'products.pickup.unavailable' | t }}
+        {% endif %}
+      </p>
+
+      {% if primary_location.available and primary_location.pick_up_time != blank %}
+        <p class="pickup-availability-time fs-sm">{{ primary_location.pick_up_time }}</p>
+      {% endif %}
+
+      <button class="pickup-availability-link fs-sm" type="button" data-toggle="{{ pickup_dialog_id }}">
+        {% if pickup_locations.size > 1 %}
+          {{ 'products.pickup.check_other_stores' | t }}
+        {% else %}
+          {{ 'products.pickup.view_store_information' | t }}
+        {% endif %}
+      </button>
+    </div>
+  </div>
+
+  <theme-dialog>
+    <dialog id="{{ pickup_dialog_id }}" class="dialog modal" aria-labelledby="{{ pickup_dialog_id }}-title">
+      <div class="dialog-header">
+        <h2 id="{{ pickup_dialog_id }}-title" class="dialog-title">{{ 'products.pickup.heading' | t }}</h2>
+
+        <button
+          class="icon-button dialog-close"
+          type="button"
+          data-dialog-close
+          aria-label="{{ 'accessibility.close' | t }}"
+        >
+          {% render 'svg-icons', icon: 'close' %}
+        </button>
+      </div>
+
+      <div class="dialog-body">
+        <p class="pickup-availability-product">
+          {{ variant.product.title | escape }}
+          {% unless variant.product.has_only_default_variant %}
+            <span class="pickup-availability-variant fs-sm">{{ variant.title | escape }}</span>
+          {% endunless %}
+        </p>
+
+        <ul class="pickup-availability-list" role="list">
+          {% for pickup_location in pickup_locations %}
+            <li class="pickup-availability-location" data-available="{{ pickup_location.available }}">
+              <h3 class="pickup-availability-location-name h6">{{ pickup_location.location.name | escape }}</h3>
+
+              <p class="pickup-availability-location-status fs-sm">
+                <span class="pickup-availability-dot" aria-hidden="true"></span>
+                {% if pickup_location.available %}
+                  {{ 'products.pickup.available' | t }}{% if pickup_location.pick_up_time != blank %} · {{ pickup_location.pick_up_time }}{% endif %}
+                {% else %}
+                  {{ 'products.pickup.unavailable' | t }}
+                {% endif %}
+              </p>
+
+              <address class="pickup-availability-address fs-sm">
+                {{ pickup_location.location.address | format_address }}
+              </address>
+
+              {% if pickup_location.location.address.phone != blank %}
+                <p class="pickup-availability-phone fs-sm">
+                  <a href="tel:{{ pickup_location.location.address.phone | remove: ' ' | escape }}">
+                    {{- pickup_location.location.address.phone | escape -}}
+                  </a>
+                </p>
+              {% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </dialog>
+  </theme-dialog>
+{% endif %}
