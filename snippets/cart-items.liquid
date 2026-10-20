@@ -158,15 +158,29 @@
                   >
                     {% render 'svg-icons', icon: 'minus', icon_size: 16 %}
                   </button>
-                  {% comment %}A quantity of zero removes the line even when its remove button is hidden.{% endcomment %}
+                  {% liquid
+                    assign quantity_min = line_item.variant.quantity_rule.min | default: 1
+                    assign quantity_increment = line_item.variant.quantity_rule.increment | default: 1
+                    assign quantity_max = line_item.variant.quantity_rule.max
+                    assign variant_cart_quantity = cart | item_count_for_variant: line_item.variant_id
+                    assign other_lines_quantity = variant_cart_quantity | minus: line_item.quantity
+                    # The rule caps the variant total, including lines split by properties or selling plans.
+                    if quantity_max != null
+                      assign quantity_max = quantity_max | minus: other_lines_quantity | at_least: 0
+                      assign quantity_max = quantity_max | divided_by: quantity_increment | times: quantity_increment
+                    endif
+                  %}
+                  {% comment %}Native min stays zero for removable lines; the shared component enforces the positive rule minimum.{% endcomment %}
                   <input
                     id="CartQuantity-{{ cart_items_id }}-{{ forloop.index }}"
                     class="input"
                     type="number"
                     name="updates[]"
                     value="{{ line_item.quantity }}"
-                    min="{% if line_item.instructions.can_remove %}0{% else %}1{% endif %}"
-                    step="1"
+                    min="{% if line_item.instructions.can_remove %}0{% else %}{{ quantity_min }}{% endif %}"
+                    step="{{ quantity_increment }}"
+                    data-quantity-min="{{ quantity_min }}"
+                    {% if quantity_max != null %}max="{{ quantity_max }}"{% endif %}
                     inputmode="numeric"
                     aria-label="{{ 'cart.quantity.label' | t: item: line_item.title | escape }}"
                     data-quantity-input
@@ -190,19 +204,22 @@
                 </span>
               {% endif %}
 
-              <p class="cart-item-price">
-                {% if line_item.original_price > line_item.final_price %}
-                  <span class="visually-hidden">{{ 'products.price.sale_price' | t }}</span>
-                  <span class="cart-item-price-current cart-item-price-sale">
-                    {{- line_item.final_price | money -}}
-                  </span>
-                  <span class="visually-hidden">{{ 'products.price.regular_price' | t }}</span>
-                  <s class="cart-item-price-compare">{{ line_item.original_price | money }}</s>
-                {% else %}
-                  <span class="visually-hidden">{{ 'products.price.regular_price' | t }}</span>
-                  <span class="cart-item-price-current">{{ line_item.final_price | money }}</span>
-                {% endif %}
-              </p>
+              <div class="cart-item-prices">
+                <p class="cart-item-price">
+                  {% if line_item.original_price > line_item.final_price %}
+                    <span class="visually-hidden">{{ 'products.price.sale_price' | t }}</span>
+                    <span class="cart-item-price-current cart-item-price-sale">
+                      {{- line_item.final_price | money -}}
+                    </span>
+                    <span class="visually-hidden">{{ 'products.price.regular_price' | t }}</span>
+                    <s class="cart-item-price-compare">{{ line_item.original_price | money }}</s>
+                  {% else %}
+                    <span class="visually-hidden">{{ 'products.price.regular_price' | t }}</span>
+                    <span class="cart-item-price-current">{{ line_item.final_price | money }}</span>
+                  {% endif %}
+                </p>
+                {% render 'unit-price', price: line_item.unit_price, measurement: line_item.unit_price_measurement %}
+              </div>
             </div>
           </div>
         </li>

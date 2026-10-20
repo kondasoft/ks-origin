@@ -159,7 +159,11 @@
     "quantity": {
       "label": "Quantité",
       "decrease": "Diminuer la quantité",
-      "increase": "Augmenter la quantité"
+      "increase": "Augmenter la quantité",
+      "minimum": "Minimum de {{ minimum }}",
+      "increments": "Par multiples de {{ increment }}",
+      "maximum": "Maximum de {{ maximum }}",
+      "in_cart": "{{ quantity }} dans le panier"
     },
     "rating": {
       "value": "Noté {{ rating }} sur {{ scale_max }}",
@@ -173,6 +177,7 @@
       }
     },
     "price": {
+      "unit_price": "Prix unitaire",
       "regular_price": "Prix normal",
       "sale_price": "Prix promotionnel",
       "save": "Économisez {{ savings }}",
@@ -188,6 +193,7 @@
       "buy_it_now": "Acheter maintenant",
       "select_options": "Choisir les options",
       "sold_out": "Épuisé",
+      "quantity_unavailable": "La quantité disponible ne permet pas de respecter les règles de quantité de cette variante.",
       "all_inventory_in_cart": "Tous les articles disponibles pour cette variante sont déjà dans votre panier.",
       "error": "Une erreur s'est produite. Veuillez réessayer."
     },

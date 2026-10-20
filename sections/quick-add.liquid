@@ -4,6 +4,31 @@
   assign quick_add_form_id = 'quick-add-form-' | append: quick_add_product.id
   assign current_price = quick_add_variant.price
   assign compare_price = quick_add_variant.compare_at_price
+  assign unit_price_variants = quick_add_product.variants | where: 'unit_price_measurement'
+  assign quantity_min = quick_add_variant.quantity_rule.min | default: 1
+  assign quantity_increment = quick_add_variant.quantity_rule.increment | default: 1
+  assign cart_quantity = cart | item_count_for_variant: quick_add_variant.id
+  assign quantity_max = blank
+  assign quantity_unavailable = false
+
+  if quick_add_variant.quantity_rule.max != null
+    assign quantity_max = quick_add_variant.quantity_rule.max | minus: cart_quantity | at_least: 0
+  endif
+  if quick_add_variant.inventory_management != blank and quick_add_variant.inventory_policy == 'deny'
+    assign inventory_remaining = quick_add_variant.inventory_quantity | minus: cart_quantity | at_least: 0
+    if quantity_max == blank
+      assign quantity_max = inventory_remaining
+    else
+      assign quantity_max = quantity_max | at_most: inventory_remaining
+    endif
+  endif
+  if quantity_max != blank
+    assign quantity_max = quantity_max | divided_by: quantity_increment | times: quantity_increment
+    if quantity_max < quantity_min
+      assign quantity_unavailable = true
+    endif
+  endif
+
   assign on_sale = false
 
   if compare_price > current_price
@@ -66,7 +91,13 @@
           </s>
         </p>
 
-        {% unless quick_add_product.has_only_default_variant %}
+        {% if unit_price_variants.size > 0 %}
+          {% render 'unit-price', price: quick_add_variant.unit_price, measurement: quick_add_variant.unit_price_measurement, show_placeholder: true %}
+        {% endif %}
+
+        {% if quick_add_product.has_only_default_variant %}
+          {% render 'product-variant-picker', product: quick_add_product, id: quick_add_product.id, data_only: true %}
+        {% else %}
           <div class="quick-add-variant-picker">
             {% render 'product-variant-picker',
               product: quick_add_product,
@@ -75,7 +106,7 @@
               swatch_size: settings.quick_add_swatch_size
             %}
           </div>
-        {% endunless %}
+        {% endif %}
 
         <div
           class="quick-add-actions"
@@ -86,12 +117,13 @@
           <theme-product-form data-source="quick-add">
             {% form 'product', quick_add_product, id: quick_add_form_id, class: 'quick-add-form' %}
               <input type="hidden" name="id" value="{{ quick_add_variant.id }}" data-product-variant-input>
+              <input type="hidden" name="quantity" value="{{ quantity_min }}" min="{{ quantity_min }}" step="{{ quantity_increment }}" {% if quantity_max != blank %}max="{{ quantity_max }}"{% endif %} data-quantity-input>
               <button
                 type="submit"
                 name="add"
                 class="btn {{ settings.quick_add_button_size }} {{ settings.quick_add_button_style }}"
                 data-add-to-cart-button
-                {% unless quick_add_variant.available %}disabled{% endunless %}
+                {% if quick_add_variant.available == false or quantity_unavailable %}disabled{% endif %}
               >
                 <span data-add-to-cart-text>
                   {% if quick_add_variant.available %}

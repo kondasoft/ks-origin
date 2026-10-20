@@ -749,7 +749,9 @@ class CartItems extends HTMLElement {
       if (!input) return;
 
       input.value = String(quantity);
-      input.closest("quantity-input")?.sync();
+      // Fresh server limits can invalidate a quantity queued before this render.
+      input.closest("quantity-input")?.onInputChange();
+      this.quantityQueue.set(id, Number(input.value));
     });
 
     if (focusId) {

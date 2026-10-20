@@ -3,8 +3,9 @@ Renders product options, swatches, and variant data for the shared variant picke
 
 @param {product} product - Product whose variants should be rendered.
 @param {string} id - Unique identifier used by option controls.
-@param {string} option_style - Whether standard options use select fields or radio buttons.
-@param {number} swatch_size - Swatch diameter in pixels.
+@param {string} [option_style] - Whether standard options use select fields or radio buttons; defaults to radio.
+@param {number} [swatch_size] - Swatch diameter in pixels; defaults to 32.
+@param {boolean} [data_only] - Keep a single-variant form synchronized without rendering option controls.
 {% enddoc %}
 
 {% liquid
@@ -15,7 +16,7 @@ Renders product options, swatches, and variant data for the shared variant picke
   assign product_colors = product.metafields.shopify['color-pattern'].value
 %}
 
-{% unless product == blank or product.has_only_default_variant %}
+{% unless product == blank %}
   <product-variant-picker
     class="product-main-variant-picker"
     data-product-id="{{ picker_product_gid }}"
@@ -23,98 +24,101 @@ Renders product options, swatches, and variant data for the shared variant picke
     data-product-handle="{{ product.handle | escape }}"
     data-currency-code="{{ cart.currency.iso_code }}"
     style="--swatch-size: {{ picker_swatch_size }}px;"
+    {% if data_only or product.has_only_default_variant %}hidden{% endif %}
   >
-    <div class="product-main-variant-picker-options">
-      {% for product_option in product.options_with_values %}
-        {% liquid
-          assign option_has_swatches = false
-          assign selected_option_value = product_option.selected_value | default: product_option.values.first
+    {% unless data_only or product.has_only_default_variant %}
+      <div class="product-main-variant-picker-options">
+        {% for product_option in product.options_with_values %}
+          {% liquid
+            assign option_has_swatches = false
+            assign selected_option_value = product_option.selected_value | default: product_option.values.first
 
-          for option_value in product_option.values
-            capture swatch_source
-              render 'product-option-swatch', option_value: option_value, product_colors: product_colors, output: 'source'
-            endcapture
-            assign swatch_source = swatch_source | strip
+            for option_value in product_option.values
+              capture swatch_source
+                render 'product-option-swatch', option_value: option_value, product_colors: product_colors, output: 'source'
+              endcapture
+              assign swatch_source = swatch_source | strip
 
-            if swatch_source != blank
-              assign option_has_swatches = true
-              break
-            endif
-          endfor
-        %}
-        {% if picker_option_style == 'select' and option_has_swatches == false %}
-          <div
-            class="product-main-variant-picker-option"
-            data-variant-option-group
-            data-option-name="{{ product_option.name | escape }}"
-          >
-            <label for="ProductOption-{{ picker_id }}-{{ product_option.position }}">
-              {{ product_option.name | escape }}
-            </label>
-            <div class="input-wrapper">
-              <select
-                id="ProductOption-{{ picker_id }}-{{ product_option.position }}"
-                class="input"
-                name="options[{{ product_option.name | escape }}]"
-                data-variant-option
+              if swatch_source != blank
+                assign option_has_swatches = true
+                break
+              endif
+            endfor
+          %}
+          {% if picker_option_style == 'select' and option_has_swatches == false %}
+            <div
+              class="product-main-variant-picker-option"
+              data-variant-option-group
+              data-option-name="{{ product_option.name | escape }}"
+            >
+              <label for="ProductOption-{{ picker_id }}-{{ product_option.position }}">
+                {{ product_option.name | escape }}
+              </label>
+              <div class="input-wrapper">
+                <select
+                  id="ProductOption-{{ picker_id }}-{{ product_option.position }}"
+                  class="input"
+                  name="options[{{ product_option.name | escape }}]"
+                  data-variant-option
+                >
+                  {% for option_value in product_option.values %}
+                    <option value="{{ option_value | escape }}" {% if option_value.selected %}selected{% endif %}>
+                      {{ option_value | escape }}
+                    </option>
+                  {% endfor %}
+                </select>
+                {% render 'svg-icons', icon: 'chevron-down', icon_size: 18 %}
+              </div>
+            </div>
+          {% else %}
+            {% comment %}These radios sit outside a form; scope their browser group to this picker instance.{% endcomment %}
+            <fieldset
+              class="product-main-variant-picker-option"
+              data-variant-option-group
+              data-option-name="{{ product_option.name | escape }}"
+            >
+              <legend>
+                {{ product_option.name | escape }}{% if option_has_swatches %}: <span class="product-main-variant-picker-selected-value" data-selected-option-value>{{ selected_option_value | escape }}</span>{% endif %}
+              </legend>
+              <div
+                class="product-main-variant-picker-radio-list"
+                {% unless option_has_swatches %}data-variant-button-group{% endunless %}
               >
                 {% for option_value in product_option.values %}
-                  <option value="{{ option_value | escape }}" {% if option_value.selected %}selected{% endif %}>
-                    {{ option_value | escape }}
-                  </option>
-                {% endfor %}
-              </select>
-              {% render 'svg-icons', icon: 'chevron-down', icon_size: 18 %}
-            </div>
-          </div>
-        {% else %}
-          {% comment %}These radios sit outside a form; scope their browser group to this picker instance.{% endcomment %}
-          <fieldset
-            class="product-main-variant-picker-option"
-            data-variant-option-group
-            data-option-name="{{ product_option.name | escape }}"
-          >
-            <legend>
-              {{ product_option.name | escape }}{% if option_has_swatches %}: <span class="product-main-variant-picker-selected-value" data-selected-option-value>{{ selected_option_value | escape }}</span>{% endif %}
-            </legend>
-            <div
-              class="product-main-variant-picker-radio-list"
-              {% unless option_has_swatches %}data-variant-button-group{% endunless %}
-            >
-              {% for option_value in product_option.values %}
-                {% liquid
-                  assign option_id = 'ProductOption-' | append: picker_id | append: '-' | append: product_option.position | append: '-' | append: forloop.index
-                  capture swatch_markup
-                    render 'product-option-swatch', option_value: option_value, product_colors: product_colors, size: picker_swatch_size, swatch_class: 'product-main-variant-picker-swatch'
-                  endcapture
-                  assign swatch_markup = swatch_markup | strip
-                %}
-                <label
-                  class="product-main-variant-picker-radio{% if swatch_markup != blank %} product-main-variant-picker-radio-swatch{% endif %}"
-                  for="{{ option_id }}"
-                  {% if swatch_markup != blank %}title="{{ option_value | escape }}"{% endif %}
-                >
-                  <input
-                    id="{{ option_id }}"
-                    class="visually-hidden{% unless option_value.available %} disabled{% endunless %}"
-                    type="radio"
-                    name="{{ product_option.name | escape }}-{{ picker_id }}-{{ product_option.position }}"
-                    value="{{ option_value | escape }}"
-                    data-variant-option
-                    {% unless option_value.available %}aria-disabled="true"{% endunless %}
-                    {% if option_value.selected %}checked{% endif %}
+                  {% liquid
+                    assign option_id = 'ProductOption-' | append: picker_id | append: '-' | append: product_option.position | append: '-' | append: forloop.index
+                    capture swatch_markup
+                      render 'product-option-swatch', option_value: option_value, product_colors: product_colors, size: picker_swatch_size, swatch_class: 'product-main-variant-picker-swatch'
+                    endcapture
+                    assign swatch_markup = swatch_markup | strip
+                  %}
+                  <label
+                    class="product-main-variant-picker-radio{% if swatch_markup != blank %} product-main-variant-picker-radio-swatch{% endif %}"
+                    for="{{ option_id }}"
+                    {% if swatch_markup != blank %}title="{{ option_value | escape }}"{% endif %}
                   >
-                  {{ swatch_markup }}
-                  <span {% if swatch_markup != blank %}class="visually-hidden"{% endif %}>
-                    {{ option_value | escape }}
-                  </span>
-                </label>
-              {% endfor %}
-            </div>
-          </fieldset>
-        {% endif %}
-      {% endfor %}
-    </div>
+                    <input
+                      id="{{ option_id }}"
+                      class="visually-hidden{% unless option_value.available %} disabled{% endunless %}"
+                      type="radio"
+                      name="{{ product_option.name | escape }}-{{ picker_id }}-{{ product_option.position }}"
+                      value="{{ option_value | escape }}"
+                      data-variant-option
+                      {% unless option_value.available %}aria-disabled="true"{% endunless %}
+                      {% if option_value.selected %}checked{% endif %}
+                    >
+                    {{ swatch_markup }}
+                    <span {% if swatch_markup != blank %}class="visually-hidden"{% endif %}>
+                      {{ option_value | escape }}
+                    </span>
+                  </label>
+                {% endfor %}
+              </div>
+            </fieldset>
+          {% endif %}
+        {% endfor %}
+      </div>
+    {% endunless %}
 
     <script type="application/json" data-product-variants>
       [
@@ -122,6 +126,10 @@ Renders product options, swatches, and variant data for the shared variant picke
           {% liquid
             assign variant_gid = 'gid://shopify/ProductVariant/' | append: variant.id
             assign variant_cart_quantity = cart | item_count_for_variant: variant.id
+            assign variant_unit_price_text = ''
+            if variant.unit_price_measurement
+              assign variant_unit_price_text = variant.unit_price | unit_price_with_measurement: variant.unit_price_measurement
+            endif
             assign variant_sale_badge_percentage = ''
             assign variant_sale_badge_value = ''
 
@@ -140,6 +148,7 @@ Renders product options, swatches, and variant data for the shared variant picke
             "price": {{ variant.price | json }},
             "priceAmount": {{ variant.price | money_amount | json }},
             "priceMoney": {{ variant.price | money | json }},
+            "unitPriceText": {{ variant_unit_price_text | json }},
             "compareAtPrice": {{ variant.compare_at_price | json }},
             "compareAtPriceMoney": {{ variant.compare_at_price | money | json }},
             "saleBadgePercentage": {{ variant_sale_badge_percentage | json }},
@@ -150,7 +159,12 @@ Renders product options, swatches, and variant data for the shared variant picke
             "inventoryManagement": {{ variant.inventory_management | json }},
             "inventoryPolicy": {{ variant.inventory_policy | json }},
             "inventoryQuantity": {{ variant.inventory_quantity | json }},
-            "cartQuantity": {{ variant_cart_quantity | json }}
+            "cartQuantity": {{ variant_cart_quantity | json }},
+            "quantityRule": {
+              "min": {{ variant.quantity_rule.min | default: 1 | json }},
+              "increment": {{ variant.quantity_rule.increment | default: 1 | json }},
+              "max": {{ variant.quantity_rule.max | json }}
+            }
           }{% unless forloop.last %},{% endunless %}
         {% endfor %}
       ]

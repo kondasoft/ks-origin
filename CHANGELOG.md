@@ -13,6 +13,8 @@ Work planned for 1.1.0 is tracked in the
 
 ### Added
 
+- B2B quantity rules (minimum, increment, maximum) on the product page, quick add, product cards and cart lines (#32).
+- Unit prices on the product page, product cards, quick add and cart (#31).
 - Theme settings → Product cards: global appearance and image defaults, with per-block overrides (#82).
 - Product pages and Featured product output product structured data for search engines (#91).
 - The password page shows the visitor message from Online Store preferences, with a block to control its placement (#101).

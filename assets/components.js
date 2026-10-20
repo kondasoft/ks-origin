@@ -894,15 +894,42 @@ class QuantityInput extends HTMLElement {
     this.isInitialized = false;
   }
 
+  static getConstraints(input) {
+    const minimum = Number.parseFloat(input.dataset.quantityMin || input.min) || 1;
+    const increment = Number.parseFloat(input.step) || 1;
+    const maximum = Number.parseFloat(input.max);
+
+    return {
+      minimum,
+      increment,
+      maximum: Number.isFinite(maximum) ? Math.floor(maximum / increment) * increment : Infinity,
+      removable: input.min === "0",
+    };
+  }
+
+  static normalizeValue(input, value) {
+    const { minimum, increment, maximum, removable } = this.getConstraints(input);
+
+    if (!Number.isFinite(value)) value = removable ? 0 : minimum;
+    if (removable && value <= 0) return 0;
+
+    // Shopify's minimum is a multiple of the increment; zero is a separate cart-removal action.
+    return Math.max(minimum, Math.min(maximum, Math.floor(value / increment) * increment));
+  }
+
   changeQuantity(direction) {
     const previousValue = this.input.value;
+    const { minimum, increment, removable } = QuantityInput.getConstraints(this.input);
+    const value = Number(this.input.value);
+    let nextValue;
 
     if (direction === "decrease") {
-      this.input.stepDown();
+      nextValue = removable && value <= minimum ? 0 : value - increment;
     } else {
-      this.input.stepUp();
+      nextValue = value === 0 ? minimum : value + increment;
     }
 
+    this.input.value = String(QuantityInput.normalizeValue(this.input, nextValue));
     this.sync();
 
     if (this.input.value === previousValue) return;
@@ -912,18 +939,7 @@ class QuantityInput extends HTMLElement {
   }
 
   onInputChange() {
-    const minimum = Number.parseFloat(this.input.min);
-    const maximum = Number.parseFloat(this.input.max);
-    let value = this.input.valueAsNumber;
-
-    if (!Number.isFinite(value)) {
-      value = Number.isFinite(minimum) ? minimum : 1;
-    }
-
-    if (Number.isFinite(minimum)) value = Math.max(value, minimum);
-    if (Number.isFinite(maximum)) value = Math.min(value, maximum);
-
-    this.input.value = String(value);
+    this.input.value = String(QuantityInput.normalizeValue(this.input, this.input.valueAsNumber));
     this.sync();
   }
 
@@ -931,14 +947,11 @@ class QuantityInput extends HTMLElement {
     if (!this.input || !this.decreaseButton || !this.increaseButton) return;
 
     const value = this.input.valueAsNumber;
-    const minimum = Number.parseFloat(this.input.min);
-    const maximum = Number.parseFloat(this.input.max);
+    const { minimum, increment, maximum, removable } = QuantityInput.getConstraints(this.input);
     const inputDisabled = this.input.disabled;
 
-    this.decreaseButton.disabled =
-      inputDisabled || (Number.isFinite(value) && Number.isFinite(minimum) && value <= minimum);
-    this.increaseButton.disabled =
-      inputDisabled || (Number.isFinite(value) && Number.isFinite(maximum) && value >= maximum);
+    this.decreaseButton.disabled = inputDisabled || value <= (removable ? 0 : minimum);
+    this.increaseButton.disabled = inputDisabled || Math.max(minimum, value + increment) > maximum;
   }
 }
 

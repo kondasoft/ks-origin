@@ -62,7 +62,7 @@ class ProductVariantPicker extends HTMLElement {
     this.optionGroups = Array.from(this.querySelectorAll("[data-variant-option-group]"));
     this.variants = this.parseVariants();
 
-    if (!this.productElement || !this.optionGroups.length || !this.variants.length) return;
+    if (!this.productElement || !this.variants.length) return;
 
     this.listenerController = new AbortController();
     this.addEventListener("change", this.onOptionChange.bind(this), {
@@ -176,6 +176,8 @@ class ProductVariantPicker extends HTMLElement {
   }
 
   findVariant(selectedOptions) {
+    if (!this.optionGroups.length) return this.variants[0] || null;
+
     const optionValues = selectedOptions.map((option) => option.value);
 
     return (
@@ -277,6 +279,14 @@ class ProductVariantPicker extends HTMLElement {
   }
 
   updatePrice(variant) {
+    const unitPrice = this.productElement.querySelector("[data-product-unit-price]");
+
+    if (unitPrice) {
+      unitPrice.hidden = !variant?.unitPriceText;
+      // Shopify's formatter can include merchant currency markup, matching the initial Liquid render.
+      unitPrice.querySelector("[data-unit-price-text]").innerHTML = variant?.unitPriceText || "";
+    }
+
     if (!variant) return;
 
     const price = this.productElement.querySelector("[data-product-price]");
@@ -326,41 +336,81 @@ class ProductVariantPicker extends HTMLElement {
     const addToCartText = buyButtons.querySelector("[data-add-to-cart-text]");
     const buyItNow = buyButtons.querySelector("theme-buy-it-now");
     const quantity = buyButtons.querySelector("[data-quantity-input]");
+    const quantityRules = buyButtons.querySelector("[data-quantity-rules]");
+    const rule = variant?.quantityRule || { min: 1, increment: 1, max: null };
     const inventoryMessage = buyButtons.querySelector("[data-cart-inventory-message]");
     const maximum = this.getQuantityMaximum(variant);
+    const quantityUnavailable = maximum !== null && maximum < rule.min;
     const allInventoryInCart =
       variant?.inventoryManagement !== null &&
       variant?.inventoryPolicy === "deny" &&
       variant?.inventoryQuantity > 0 &&
       variant?.cartQuantity >= variant?.inventoryQuantity;
 
-    if (addToCart) addToCart.disabled = !available || maximum === 0;
+    if (addToCart) addToCart.disabled = !available || quantityUnavailable;
     if (addToCartText) {
       addToCartText.textContent = available ? buyButtons.dataset.addToCartText : buyButtons.dataset.soldOutText;
     }
-    if (inventoryMessage) inventoryMessage.hidden = !allInventoryInCart;
+    if (inventoryMessage) {
+      inventoryMessage.hidden = !available || !quantityUnavailable;
+      inventoryMessage.textContent = allInventoryInCart
+        ? buyButtons.dataset.allInventoryInCartText
+        : buyButtons.dataset.quantityUnavailableText;
+    }
+
+    if (quantityRules) {
+      const parts = [];
+
+      if (rule.min > 1) parts.push(quantityRules.dataset.minimumText.replace("[minimum]", rule.min));
+      if (rule.increment > 1) parts.push(quantityRules.dataset.incrementsText.replace("[increment]", rule.increment));
+      if (rule.max !== null) parts.push(quantityRules.dataset.maximumText.replace("[maximum]", rule.max));
+      quantityRules.hidden = parts.length === 0;
+      if (variant?.cartQuantity > 0) {
+        parts.push(quantityRules.dataset.inCartText.replace("[quantity]", variant.cartQuantity));
+      }
+      quantityRules.textContent = parts.join(" · ");
+    }
 
     if (quantity) {
-      quantity.disabled = !available || maximum === 0;
+      quantity.disabled = !available || quantityUnavailable;
 
-      if (maximum === null || maximum < 1) {
+      quantity.min = String(rule.min);
+      quantity.step = String(rule.increment);
+
+      if (maximum === null) {
         quantity.removeAttribute("max");
       } else {
         quantity.max = String(maximum);
-        quantity.value = String(Math.min(Number(quantity.value) || 1, maximum));
       }
+
+      const QuantityInput = customElements.get("quantity-input");
+      const value = quantity.type === "hidden" ? rule.min : Number(quantity.value);
+
+      quantity.value = String(QuantityInput.normalizeValue(quantity, value));
 
       quantity.closest("quantity-input")?.sync();
     }
+
+    const dynamicCheckout = buyButtons.querySelector(".shopify-payment-button");
+
+    if (dynamicCheckout) dynamicCheckout.hidden = !available || quantityUnavailable;
 
     // Availability changes must preserve the permalink's customisation restrictions.
     buyItNow?.updateLink?.();
   }
 
   getQuantityMaximum(variant) {
-    if (!variant || variant.inventoryManagement === null || variant.inventoryPolicy !== "deny") return null;
+    if (!variant) return null;
 
-    return Math.max(0, variant.inventoryQuantity - variant.cartQuantity);
+    const rule = variant.quantityRule || { min: 1, increment: 1, max: null };
+    let maximum = rule.max ?? Infinity;
+
+    if (variant.inventoryManagement && variant.inventoryPolicy === "deny") {
+      maximum = Math.min(maximum, variant.inventoryQuantity);
+    }
+    if (!Number.isFinite(maximum)) return null;
+
+    return Math.max(0, Math.floor((maximum - variant.cartQuantity) / rule.increment) * rule.increment);
   }
 
   updateGallery(variant) {

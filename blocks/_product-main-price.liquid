@@ -1,6 +1,7 @@
 {% liquid
   assign product = closest.product
   assign selected_variant = product.selected_or_first_available_variant
+  assign unit_price_variants = product.variants | where: 'unit_price_measurement'
 
   if product == blank
     assign current_price_value = 1999
@@ -79,6 +80,10 @@
       </span>
     {% endif %}
   </p>
+
+  {% if unit_price_variants.size > 0 %}
+    {% render 'unit-price', price: selected_variant.unit_price, measurement: selected_variant.unit_price_measurement, show_placeholder: true %}
+  {% endif %}
 
   {% if product.selling_plan_groups.size > 0 %}
     <p class="product-main-price-subscription-information fs-sm">

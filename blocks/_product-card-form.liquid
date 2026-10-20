@@ -1,11 +1,35 @@
 {% liquid
   assign product = closest.product
   assign selected_variant = product.selected_or_first_available_variant
+  assign quantity_min = selected_variant.quantity_rule.min | default: 1
+  assign quantity_increment = selected_variant.quantity_rule.increment | default: 1
+  assign cart_quantity = cart | item_count_for_variant: selected_variant.id
+  assign quantity_max = blank
+  assign quantity_unavailable = false
+
+  if selected_variant.quantity_rule.max != null
+    assign quantity_max = selected_variant.quantity_rule.max | minus: cart_quantity | at_least: 0
+  endif
+  if selected_variant.inventory_management != blank and selected_variant.inventory_policy == 'deny'
+    assign inventory_remaining = selected_variant.inventory_quantity | minus: cart_quantity | at_least: 0
+    if quantity_max == blank
+      assign quantity_max = inventory_remaining
+    else
+      assign quantity_max = quantity_max | at_most: inventory_remaining
+    endif
+  endif
+  if quantity_max != blank
+    assign quantity_max = quantity_max | divided_by: quantity_increment | times: quantity_increment
+    if quantity_max < quantity_min
+      assign quantity_unavailable = true
+    endif
+  endif
   assign product_form_id = 'product-card-form-' | append: block.id | append: '-' | append: product.id
 %}
 
 <div
   class="product-card-form-block block-spacing"
+  data-product-root
   style="
     --pt: {{ block.settings.pt | divided_by: 16.0 | append: 'em' }};
     --pb: {{ block.settings.pb | divided_by: 16.0 | append: 'em' }};
@@ -37,15 +61,19 @@
       {{ 'products.form.select_options' | t }}
     </a>
   {% elsif product.variants.size == 1 %}
-    <theme-product-form data-source="product-card">
+    {% render 'product-variant-picker', product: product, id: block.id, data_only: true %}
+    <theme-product-form data-source="product-card" data-product-buy-buttons>
       {% form 'product', product,
         id: product_form_id,
         class: 'product-card-form'
       %}
         <input type="hidden" name="id" value="{{ selected_variant.id }}">
+        <input type="hidden" name="quantity" value="{{ quantity_min }}" min="{{ quantity_min }}" step="{{ quantity_increment }}" {% if quantity_max != blank %}max="{{ quantity_max }}"{% endif %} data-quantity-input>
         <button
           type="submit"
           name="add"
+          data-add-to-cart-button
+          {% if quantity_unavailable %}disabled{% endif %}
           class="btn {{ block.settings.button_size }} {{ block.settings.button_style }}"
         >
           {{ 'products.form.add_to_cart' | t }}

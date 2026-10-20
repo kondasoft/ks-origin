@@ -235,6 +235,11 @@
   gap: 0.75rem;
 }
 
+.product-main-quantity-rules {
+  margin: 0;
+  color: rgb(var(--color-text) / 0.7);
+}
+
 .product-main-buy-buttons-primary {
   display: flex;
   align-items: stretch;

@@ -1,0 +1,14 @@
+{% doc %}
+  Renders a measured unit price, with an optional empty target for variant updates.
+
+  @param {number} price - Unit price in the shop's currency subunit.
+  @param {object} measurement - Shopify unit price measurement.
+  @param {boolean} [show_placeholder] - Reserve a hidden target when another variant has a unit price.
+{% enddoc %}
+
+{% if measurement or show_placeholder %}
+  <div class="fs-sm" data-product-unit-price{% unless measurement %} hidden{% endunless %}>
+    <span class="visually-hidden">{{ 'products.price.unit_price' | t }}</span>
+    <span data-unit-price-text>{% if measurement %}{{ price | unit_price_with_measurement: measurement }}{% endif %}</span>
+  </div>
+{% endif %}

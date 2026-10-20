@@ -159,7 +159,11 @@
     "quantity": {
       "label": "Quantity",
       "decrease": "Decrease quantity",
-      "increase": "Increase quantity"
+      "increase": "Increase quantity",
+      "minimum": "Minimum of {{ minimum }}",
+      "increments": "Increments of {{ increment }}",
+      "maximum": "Maximum of {{ maximum }}",
+      "in_cart": "{{ quantity }} in cart"
     },
     "rating": {
       "value": "Rated {{ rating }} out of {{ scale_max }}",
@@ -173,6 +177,7 @@
       }
     },
     "price": {
+      "unit_price": "Unit price",
       "regular_price": "Regular price",
       "sale_price": "Sale price",
       "save": "Save {{ savings }}",
@@ -188,6 +193,7 @@
       "buy_it_now": "Buy it now",
       "select_options": "Select options",
       "sold_out": "Sold out",
+      "quantity_unavailable": "The available quantity cannot meet this variant’s quantity rules.",
       "all_inventory_in_cart": "All available items for this variant are already in your cart.",
       "error": "Something went wrong. Please try again."
     },

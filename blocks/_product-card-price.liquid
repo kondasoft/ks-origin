@@ -5,6 +5,7 @@
     assign current_price = 1999 | money
   else
     assign current_price = product.price | money
+    assign price_variant = product.variants | sort: 'price' | first
 
     if product.price_varies
       assign current_price = 'products.price.from_price' | t: price: current_price
@@ -34,6 +35,7 @@
       <span class="product-card-price-current">{{ current_price }}</span>
     {% endif %}
   </p>
+  {% render 'unit-price', price: price_variant.unit_price, measurement: price_variant.unit_price_measurement %}
 </div>
 
 {% schema %}
