@@ -46,7 +46,7 @@
           "settings": {
             "mobile_columns": 1,
             "desktop_columns": 3,
-            "articles_per_page": 9,
+            "articles_per_page": 24,
             "pt": 0,
             "pb": 60
           },
