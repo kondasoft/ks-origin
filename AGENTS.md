@@ -30,6 +30,16 @@ These instructions apply to any developer or AI coding agent working on KS Origi
 - Do not record internal-only changes such as refactors with no visible effect, formatting, or agent instructions.
 - When releasing, rename `[Unreleased]` to the new version and date, and keep `theme_version` in `config/settings_schema.json` in sync.
 
+## Releases
+
+- Build the theme package with `shopify theme package` from a clean export of the release commit (for example `git archive <commit> | tar -x -C <folder>`), not from a working tree that a dev server syncs with a store.
+- `shopify theme package` keeps JSON template and section group settings exactly as they are. Before packaging, remove store-specific values that the theme editor adds on a demo store:
+  - uploaded files, such as `"video": "shopify://files/videos/…"`
+  - resource pickers that point at demo resources, such as a Featured product's `"product": "…"`
+  - dynamic sources that start with `{{` and reference metafields or metaobjects
+- Images (`shopify://shop_images/…`), links to collections and pages, and `{{ settings.… }}` colour defaults package and install correctly; keep them.
+- Make these removals in the export only, so the demo store keeps its content, then check the zip (for example `unzip -p <zip> templates/index.json | grep -c 'files/videos'` returns `0`) and run `shopify theme check` on the export.
+
 ## Shopify tooling
 
 - Before running `shopify theme pull`, identify the target theme ID and inspect the working tree. Do not pull code from a theme that has not been explicitly confirmed as synchronized with the repository when local changes could be overwritten.
