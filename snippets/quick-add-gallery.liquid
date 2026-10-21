@@ -1,37 +1,30 @@
 {% doc %}
-Renders the image-only gallery used by the Quick add modal.
+Renders the product media gallery used by the Quick add modal.
 {% enddoc %}
 
 {% liquid
   assign image_ratio = settings.quick_add_image_ratio | default: 'adapt'
-  assign gallery_images = product.media | where: 'media_type', 'image'
-  assign gallery_count = gallery_images.size
+  assign gallery_media = product.media
+  assign gallery_models = gallery_media | where: 'media_type', 'model'
+  assign gallery_count = gallery_media.size
   assign selected_variant = product.selected_or_first_available_variant
-  assign initial_media = selected_variant.featured_media
-
-  unless initial_media.media_type == 'image'
-    assign initial_media = product.featured_media
-  endunless
-
-  unless initial_media.media_type == 'image'
-    assign initial_media = gallery_images.first
-  endunless
-
+  assign initial_media = selected_variant.featured_media | default: product.featured_media
+  assign initial_preview_image = initial_media.preview_image
   assign initial_media_id = initial_media.id
   assign initial_index = 0
   assign gallery_aspect_ratio = '1 / 1'
   assign gallery_stage_class = 'quick-add-gallery-stage'
 
-  for image in gallery_images
-    if image.id == initial_media_id
+  for media in gallery_media
+    if media.id == initial_media_id
       assign initial_index = forloop.index0
       break
     endif
   endfor
 
   if image_ratio == 'adapt'
-    if initial_media != blank
-      assign gallery_aspect_ratio = initial_media.width | append: ' / ' | append: initial_media.height
+    if initial_preview_image != blank
+      assign gallery_aspect_ratio = initial_preview_image.width | append: ' / ' | append: initial_preview_image.height
     endif
   else
     assign gallery_stage_class = gallery_stage_class | append: ' aspect-ratio-' | append: image_ratio
@@ -56,9 +49,9 @@ Renders the image-only gallery used by the Quick add modal.
       data-quick-add-gallery-track
       style="transform: translateX(-{{ initial_index | times: 100 }}%);"
     >
-      {% for image in gallery_images %}
+      {% for media in gallery_media %}
         {% liquid
-          assign image_alt = image.alt | default: product.title
+          assign image_alt = media.alt | default: product.title
           assign image_loading = 'lazy'
           assign image_fetchpriority = 'auto'
 
@@ -70,21 +63,34 @@ Renders the image-only gallery used by the Quick add modal.
         <li
           class="quick-add-gallery-slide{% if forloop.index0 == initial_index %} is-active{% endif %}"
           data-quick-add-gallery-slide
-          data-media-id="{{ image.id }}"
+          data-media-id="{{ media.id }}"
+          data-media-type="{{ media.media_type }}"
           aria-hidden="{% if forloop.index0 == initial_index %}false{% else %}true{% endif %}"
           {% unless forloop.index0 == initial_index %}inert{% endunless %}
         >
-          {{
-            image
-            | image_url: width: 1200
-            | image_tag:
-              alt: image_alt,
-              class: 'quick-add-gallery-image',
-              widths: '320, 480, 640, 800, 1000, 1200',
+          {% if media.media_type == 'image' %}
+            {{
+              media
+              | image_url: width: 1200
+              | image_tag:
+                alt: image_alt,
+                class: 'quick-add-gallery-image',
+                widths: '320, 480, 640, 800, 1000, 1200',
+                sizes: '(min-width: 1200px) 600px, (min-width: 700px) 50vw, 100vw',
+                loading: image_loading,
+                fetchpriority: image_fetchpriority
+            }}
+          {% else %}
+            {% render 'product-media',
+              media: media,
+              product: product,
+              autoplay: false,
+              show_controls: true,
+              media_width: 600,
               sizes: '(min-width: 1200px) 600px, (min-width: 700px) 50vw, 100vw',
-              loading: image_loading,
-              fetchpriority: image_fetchpriority
-          }}
+              loading: image_loading
+            %}
+          {% endif %}
         </li>
       {% else %}
         <li class="quick-add-gallery-slide is-active" data-quick-add-gallery-slide aria-hidden="false">
@@ -125,4 +131,7 @@ Renders the image-only gallery used by the Quick add modal.
     data-quick-add-gallery-status
     data-template="{{ 'accessibility.media_status' | t: index: '[index]', count: '[count]' | escape }}"
   ></span>
+  {% if gallery_models.size > 0 %}
+    <script type="application/json" data-product-models>{{ gallery_models | json }}</script>
+  {% endif %}
 </quick-add-gallery>

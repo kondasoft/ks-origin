@@ -1,9 +1,9 @@
 {% doc %}
 Renders uploaded or external video media with posters, deferred loading and shared playback controls.
 
-@param {string} source - The video source type: uploaded or url.
+@param {string} source - The video source type: uploaded, url or product (external product media).
 @param {video} [uploaded_video] - The Shopify-hosted video.
-@param {object} [external_video] - The YouTube or Vimeo URL object.
+@param {object} [external_video] - The YouTube or Vimeo URL object or external product media.
 @param {image} [cover_image] - The poster image for an external video.
 @param {string} [external_video_alt] - The accessible external video description.
 @param {boolean} [autoplay] - Whether the video should autoplay.
@@ -65,6 +65,11 @@ Renders uploaded or external video media with posters, deferred loading and shar
   elsif source == 'url' and external_video != blank
     assign has_video = true
     assign video_preview_image = cover_image
+  elsif source == 'product' and external_video != blank
+    assign has_video = true
+    assign video_preview_image = external_video.preview_image
+    assign video_intrinsic_width = video_preview_image.width
+    assign video_intrinsic_height = video_preview_image.height
   endif
 
   assign video_display_aspect_ratio = video_intrinsic_width | append: ' / ' | append: video_intrinsic_height
@@ -104,6 +109,10 @@ Renders uploaded or external video media with posters, deferred loading and shar
   assign video_tag_autoplay = autoplay
   assign external_autoplay_value = autoplay_value
   assign external_video_title = 'accessibility.play_video' | t
+
+  if source == 'product'
+    assign external_video_title = external_video.alt | default: external_video_title
+  endif
 
   if defer_video
     assign video_tag_autoplay = true
@@ -151,6 +160,18 @@ Renders uploaded or external video media with posters, deferred loading and shar
         playsinline: true,
         loading: loading
     }}
+  {% elsif source == 'product' and external_video != blank %}
+    {% if external_video.host == 'youtube' %}
+      {{ external_video
+        | external_video_url: autoplay: external_autoplay_value, loop: loop_value, playlist: external_video.external_id, mute: autoplay_value, controls: controls_value, enablejsapi: 1, playsinline: 1
+        | external_video_tag: class: 'video-media-video', width: video_intrinsic_width, height: video_intrinsic_height, title: external_video_title, data-product-external-video: 'youtube'
+      }}
+    {% elsif external_video.host == 'vimeo' %}
+      {{ external_video
+        | external_video_url: autoplay: external_autoplay_value, loop: loop_value, muted: autoplay_value, controls: controls_value, api: 1, playsinline: 1
+        | external_video_tag: class: 'video-media-video', width: video_intrinsic_width, height: video_intrinsic_height, title: external_video_title, data-product-external-video: 'vimeo'
+      }}
+    {% endif %}
   {% elsif source == 'url' and external_video != blank %}
     <iframe
       class="video-media-video aspect-ratio aspect-ratio-widescreen"

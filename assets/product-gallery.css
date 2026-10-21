@@ -1,7 +1,7 @@
 /*
   Product gallery stylesheet
 
-  This file owns the product media gallery, its transitions, controls, thumbnails, and embedded video presentation.
+  This file owns the product media gallery, its transitions, controls, thumbnails, and embedded media presentation.
 */
 
 
@@ -291,4 +291,54 @@
   .product-gallery-controls [class*="svg-icon-chevron-"] {
     transition: none;
   }
+}
+
+
+/*
+  3D models and augmented reality
+*/
+.product-gallery .product-media-model {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+}
+
+.product-gallery .product-media-model model-viewer {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.product-gallery .product-media-model .shopify-model-viewer-ui {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.product-gallery .product-media-model[data-media-loaded="true"] > .video-media-poster {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.product-gallery[data-media-ratio="adapt"] .product-media-model .video-media-poster-image {
+  object-fit: contain;
+}
+
+.product-gallery .product-media-xr {
+  position: absolute;
+  bottom: 3.5em;
+  left: 50%;
+  z-index: 2;
+  gap: 0.5em;
+  max-width: calc(100% - 2em);
+  transform: translateX(-50%);
+}
+
+.product-gallery .product-media-xr[data-shopify-xr-hidden] {
+  display: none;
 }

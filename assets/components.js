@@ -156,6 +156,7 @@ class DeferredVideo extends HTMLElement {
   disconnectedCallback() {
     this.listenerController?.abort();
     this.mediaController?.abort();
+    this.pause();
 
     if (this.dataset.mediaLoading === "true") {
       this.activeMedia?.remove();
@@ -183,14 +184,22 @@ class DeferredVideo extends HTMLElement {
     // Keep automatic callers (including the product gallery) behind the same preference and pause guard.
     if (!userInitiated && (this.reduceMotionQuery.matches || this.hasAttribute("data-user-paused"))) return;
 
-    if (this.dataset.mediaLoading === "true" || this.dataset.mediaLoaded === "true") {
-      return;
-    }
+    if (this.dataset.mediaLoading === "true") return;
+    if (this.dataset.mediaLoaded === "true") return this.play();
 
     const content = this.videoTemplate.content.cloneNode(true);
     const media = content.querySelector("video, iframe");
 
     if (!media) return;
+
+    if (media.matches("iframe[data-product-external-video]")) {
+      const url = new URL(media.src);
+      const muteParameter = media.dataset.productExternalVideo === "youtube" ? "mute" : "muted";
+
+      // A poster click is explicit playback, even when reduced motion prevented configured autoplay.
+      url.searchParams.set(muteParameter, userInitiated ? "0" : "1");
+      media.src = url.href;
+    }
 
     this.dataset.mediaLoading = "true";
     this.posterButton.setAttribute("aria-busy", "true");
@@ -226,31 +235,58 @@ class DeferredVideo extends HTMLElement {
   }
 
   onToggleClick() {
-    const media = this.querySelector("video, iframe");
-
-    if (!media) return;
-
     const shouldPlay = this.dataset.paused === "true";
 
     this.toggleAttribute("data-user-paused", !shouldPlay);
 
-    if (media instanceof HTMLVideoElement) {
-      if (shouldPlay) {
-        media.play().catch(() => this.updatePlaybackState(true));
-      } else {
-        media.pause();
-      }
+    if (shouldPlay) {
+      this.play();
     } else {
-      const origin = new URL(media.src).origin;
-      // Provider APIs control cross-origin players without reloading the iframe or losing its position.
-      const command =
-        origin === "https://www.youtube.com"
-          ? { event: "command", func: shouldPlay ? "playVideo" : "pauseVideo", args: [] }
-          : { method: shouldPlay ? "play" : "pause" };
-
-      media.contentWindow?.postMessage(JSON.stringify(command), origin);
-      this.updatePlaybackState(!shouldPlay);
+      this.pause();
     }
+  }
+
+  play() {
+    const media = this.querySelector("video, iframe");
+
+    if (!media) return;
+
+    if (media instanceof HTMLVideoElement) {
+      media.play().catch(() => this.updatePlaybackState(true));
+    } else {
+      this.sendPlayerCommand(media, true);
+      this.updatePlaybackState(false);
+    }
+  }
+
+  pause() {
+    const media = this.querySelector("video, iframe");
+
+    if (!media) return;
+
+    // Cancel pending autoplay so a player cannot start after its slide or dialog was hidden.
+    if (this.dataset.mediaLoading === "true") {
+      this.onMediaError(media);
+      return;
+    }
+
+    if (media instanceof HTMLVideoElement) {
+      media.pause();
+    } else {
+      this.sendPlayerCommand(media, false);
+      this.updatePlaybackState(true);
+    }
+  }
+
+  sendPlayerCommand(media, shouldPlay) {
+    const origin = new URL(media.src).origin;
+    // Provider APIs preserve the cross-origin player's position when gallery navigation pauses it.
+    const command =
+      origin === "https://www.youtube.com"
+        ? { event: "command", func: shouldPlay ? "playVideo" : "pauseVideo", args: [] }
+        : { method: shouldPlay ? "play" : "pause" };
+
+    media.contentWindow?.postMessage(JSON.stringify(command), origin);
   }
 
   updatePlaybackState(paused) {
@@ -316,6 +352,158 @@ class DeferredVideo extends HTMLElement {
 if (!customElements.get("deferred-video")) {
   customElements.define("deferred-video", DeferredVideo);
 }
+
+
+/*
+  Deferred product models and Shopify XR
+*/
+class DeferredModel extends HTMLElement {
+  static modelUIReady;
+  static xrReady;
+  static registeredModelIds = new Set();
+
+  static loadFeature(name) {
+    return new Promise((resolve, reject) => {
+      window.Shopify.loadFeatures([
+        { name, version: "1.0", onLoad: (errors) => (errors ? reject(errors) : resolve()) },
+      ]);
+    });
+  }
+
+  static loadModelUI() {
+    if (!this.modelUIReady) {
+      const stylesheet = document.createElement("link");
+
+      stylesheet.rel = "stylesheet";
+      stylesheet.href = "https://cdn.shopify.com/shopifycloud/model-viewer-ui/assets/v1.0/model-viewer-ui.css";
+      document.head.appendChild(stylesheet);
+      this.modelUIReady = this.loadFeature("model-viewer-ui").then(async () => {
+        // Safari can run the feature callback before publishing its ModelViewerUI constructor.
+        for (let attempt = 0; attempt < 10 && !window.Shopify.ModelViewerUI; attempt += 1) {
+          await new Promise((resolve) => window.setTimeout(resolve, 50));
+        }
+
+        if (!window.Shopify.ModelViewerUI) throw new Error("ModelViewerUI unavailable");
+      });
+    }
+
+    return this.modelUIReady;
+  }
+
+  static loadXR() {
+    if (!this.xrReady) {
+      this.xrReady = new Promise((resolve, reject) => {
+        const onInitialized = () => {
+          if (!window.ShopifyXR) return;
+
+          document.removeEventListener("shopify_xr_initialized", onInitialized);
+          resolve(window.ShopifyXR);
+        };
+
+        document.addEventListener("shopify_xr_initialized", onInitialized);
+        this.loadFeature("shopify-xr").then(onInitialized).catch((error) => {
+          document.removeEventListener("shopify_xr_initialized", onInitialized);
+          reject(error);
+        });
+      });
+    }
+
+    return this.xrReady;
+  }
+
+  static async registerModels(gallery) {
+    const modelJSON = gallery?.querySelector("[data-product-models]");
+
+    if (!modelJSON) return;
+
+    const xr = await this.loadXR();
+    const models = JSON.parse(modelJSON.textContent);
+    const newModels = models.filter((model) => !this.registeredModelIds.has(String(model.id)));
+
+    if (newModels.length) {
+      xr.addModels(newModels);
+      newModels.forEach((model) => this.registeredModelIds.add(String(model.id)));
+    }
+
+    // Repeated products share model registration, but each new gallery still needs its own XR buttons set up.
+    xr.setupXRElements();
+  }
+
+  connectedCallback() {
+    if (this.isInitialized) return;
+
+    this.posterButton = this.querySelector("[data-deferred-model-button]");
+    this.modelTemplate = this.querySelector("template");
+
+    if (!this.posterButton || !this.modelTemplate) return;
+
+    this.listenerController = new AbortController();
+    this.posterButton.addEventListener("click", () => this.show(), { signal: this.listenerController.signal });
+    this.isInitialized = true;
+
+    // Section-rendered quick add inserts inert JSON scripts; read them after all gallery siblings exist.
+    queueMicrotask(() => {
+      if (!this.isConnected) return;
+
+      DeferredModel.loadModelUI().catch(() => {});
+      DeferredModel.registerModels(this.closest("product-gallery, quick-add-gallery")).catch(() => {});
+    });
+  }
+
+  disconnectedCallback() {
+    this.pause();
+    this.listenerController?.abort();
+    this.isInitialized = false;
+  }
+
+  async show() {
+    if (this.isLoading) return;
+
+    this.wantsPlayback = true;
+    this.isLoading = true;
+    this.posterButton.setAttribute("aria-busy", "true");
+
+    try {
+      await DeferredModel.loadModelUI();
+
+      if (!this.isConnected || !this.wantsPlayback || this.closest("[inert]")) return;
+      if (this.closest("dialog") && !this.closest("dialog").open) return;
+
+      if (!this.modelViewerUI) {
+        const viewer = this.modelTemplate.content.querySelector("model-viewer").cloneNode(true);
+
+        this.modelTemplate.before(viewer);
+        this.modelViewerUI = new window.Shopify.ModelViewerUI(viewer);
+      }
+
+      this.modelViewerUI.play();
+      this.dataset.mediaLoaded = "true";
+
+      const shouldMoveFocus = document.activeElement === this.posterButton;
+
+      this.posterButton.disabled = true;
+      this.posterButton.setAttribute("aria-hidden", "true");
+
+      if (shouldMoveFocus) this.querySelector("model-viewer").focus({ preventScroll: true });
+    } catch {
+      // Leave the poster usable if Shopify's optional feature could not initialize.
+      if (!this.modelViewerUI) this.querySelector("model-viewer")?.remove();
+    } finally {
+      this.isLoading = false;
+      this.posterButton.removeAttribute("aria-busy");
+    }
+  }
+
+  pause() {
+    this.wantsPlayback = false;
+    this.modelViewerUI?.pause();
+  }
+}
+
+if (!customElements.get("deferred-model")) {
+  customElements.define("deferred-model", DeferredModel);
+}
+
 
 /*
   Dialogs

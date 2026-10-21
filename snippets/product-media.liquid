@@ -1,0 +1,74 @@
+{% doc %}
+Renders deferred non-image product media shared by the product and Quick add galleries.
+
+@param {object} media - The product video, external video or model.
+@param {product} product - The product used for the XR title.
+@param {boolean} [autoplay] - Whether gallery videos should autoplay.
+@param {boolean} [show_controls] - Whether video controls should be shown.
+@param {number} media_width - The target media width.
+@param {string} sizes - The responsive poster image sizes.
+@param {string} loading - The poster image loading behavior.
+
+@example
+{% render 'product-media', media: media, product: product, media_width: 1200, sizes: '100vw', loading: 'lazy' %}
+{% enddoc %}
+
+{% case media.media_type %}
+  {% when 'video', 'external_video' %}
+    {% liquid
+      assign video_source = 'uploaded'
+      if media.media_type == 'external_video'
+        assign video_source = 'product'
+      endif
+    %}
+    {% render 'video-media',
+      source: video_source,
+      uploaded_video: media,
+      external_video: media,
+      autoplay: autoplay,
+      muted: false,
+      loop: true,
+      show_controls: show_controls,
+      defer_loading: true,
+      media_width: media_width,
+      sizes: sizes,
+      loading: loading
+    %}
+  {% when 'model' %}
+    {% liquid
+      assign preview_width = media_width | times: 2
+      assign preview_size = preview_width | append: 'x'
+      assign model_alt = media.alt | default: product.title
+    %}
+    <deferred-model class="product-media-model">
+      <button class="video-media-poster" type="button" data-deferred-model-button>
+        {{ media.preview_image
+          | image_url: width: preview_width
+          | image_tag:
+            alt: '',
+            class: 'video-media-poster-image',
+            widths: '320, 640, 960, 1280, 1920, 2560, 3200, 3840',
+            sizes: sizes,
+            loading: loading
+        }}
+        <span class="video-play-button" aria-hidden="true">
+          {% render 'svg-icons', icon: 'cube', icon_size: 28 %}
+        </span>
+        <span class="visually-hidden">{{ 'accessibility.play_model' | t }}</span>
+      </button>
+      <template>
+        {{ media | model_viewer_tag: image_size: preview_size, reveal: 'interaction', toggleable: true, data-model-id: media.id, alt: model_alt }}
+      </template>
+      <button
+        class="btn btn-text-solid product-media-xr"
+        type="button"
+        data-shopify-xr
+        data-shopify-model3d-id="{{ media.id }}"
+        data-shopify-title="{{ product.title | escape }}"
+        data-shopify-xr-hidden
+      >
+        {% render 'svg-icons', icon: 'cube', icon_size: 20 %}
+        {{ 'accessibility.view_in_space' | t }}
+      </button>
+    </deferred-model>
+{% endcase %}

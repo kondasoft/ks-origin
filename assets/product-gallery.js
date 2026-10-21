@@ -89,7 +89,10 @@ class ProductGallery extends HTMLElement {
 
   onPointerDown(event) {
     if (!event.isPrimary || event.pointerType === "mouse") return;
-    if (event.target.closest("button, a, input, select, textarea, video[controls]")) return;
+    const interactiveMedia =
+      "button, a, input, select, textarea, video[controls], model-viewer, .shopify-model-viewer-ui";
+
+    if (event.target.closest(interactiveMedia)) return;
 
     this.swipePointerId = event.pointerId;
     this.swipeStartX = event.clientX;
@@ -146,7 +149,8 @@ class ProductGallery extends HTMLElement {
       slide.inert = !isActive;
 
       if (!isActive) {
-        slide.querySelector("video")?.pause();
+        slide.querySelector("deferred-video")?.pause();
+        slide.querySelector("deferred-model")?.pause();
       } else if (
         this.videoAutoplay &&
         !window.matchMedia("(prefers-reduced-motion: reduce)").matches &&

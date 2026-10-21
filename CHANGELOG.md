@@ -13,6 +13,8 @@ Work planned for 1.1.0 is tracked in the
 
 ### Added
 
+- Product galleries show YouTube and Vimeo videos on the product page, Featured product and quick add; quick add also supports Shopify-hosted videos (#19).
+- Product galleries show 3D models with View in your space on supported devices, on the product page, Featured product and quick add (#20).
 - Inventory status block for the product page: in stock, low stock and sold out, with an optional quantity (#40).
 - Pickup availability block for the product page, with a store locations dialog, updated per variant (#110).
 - B2B quantity rules (minimum, increment, maximum) on the product page, quick add, product cards and cart lines (#32).

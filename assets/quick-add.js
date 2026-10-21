@@ -1,7 +1,7 @@
 /*
   Quick add script
 
-  This file owns product loading, modal presentation, and image navigation for Quick add.
+  This file owns product loading, modal presentation, and media navigation for Quick add.
 */
 
 class QuickAdd extends HTMLElement {
@@ -164,13 +164,21 @@ class QuickAddGallery extends HTMLElement {
     this.stage.addEventListener("pointercancel", this.onPointerEnd.bind(this), {
       signal: this.listenerController.signal,
     });
+    this.closest("dialog")?.addEventListener("close", () => this.pauseMedia(), {
+      signal: this.listenerController.signal,
+    });
     this.isInitialized = true;
     this.showImage(this.currentIndex, false);
   }
 
   disconnectedCallback() {
+    this.pauseMedia();
     this.listenerController?.abort();
     this.isInitialized = false;
+  }
+
+  pauseMedia() {
+    this.querySelectorAll("deferred-video, deferred-model").forEach((media) => media.pause());
   }
 
   onClick(event) {
@@ -194,7 +202,10 @@ class QuickAddGallery extends HTMLElement {
 
   onPointerDown(event) {
     if (!event.isPrimary || event.pointerType === "mouse") return;
-    if (event.target.closest("button, a, input, select, textarea")) return;
+    const interactiveMedia =
+      "button, a, input, select, textarea, video[controls], model-viewer, .shopify-model-viewer-ui";
+
+    if (event.target.closest(interactiveMedia)) return;
 
     this.swipePointerId = event.pointerId;
     this.swipeStartX = event.clientX;
@@ -237,6 +248,11 @@ class QuickAddGallery extends HTMLElement {
       slide.classList.toggle("is-active", isActive);
       slide.setAttribute("aria-hidden", String(!isActive));
       slide.inert = !isActive;
+
+      if (!isActive) {
+        slide.querySelector("deferred-video")?.pause();
+        slide.querySelector("deferred-model")?.pause();
+      }
     });
 
     if (this.counter) this.counter.textContent = `${nextIndex + 1} / ${this.slides.length}`;
