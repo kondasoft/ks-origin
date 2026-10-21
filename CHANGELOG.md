@@ -33,6 +33,7 @@ Work planned for 1.1.0 is tracked in the
 
 ### Changed
 
+- Collection card images load eagerly only in the first section and request the right size, which makes pages with a collection list lighter (#66).
 - Quick add swatches default to 28px, like the product page (#81).
 - The header account icon uses Shopify's account component and is hidden when customer accounts are turned off (#114).
 - Announcement bar text uses a tighter line height, so wrapped announcements take less space on mobile (#72).
@@ -44,6 +45,9 @@ Work planned for 1.1.0 is tracked in the
 
 ### Fixed
 
+- Collection, search and collections list pages have a heading between the page title and the cards (#66).
+- Desktop menu toggle buttons have a larger click area, and the header country button's accessible name includes the visible country code (#66).
+- Footer newsletter blocks no longer jump to the top after the page loads on mobile (#126).
 - The Shop Pay Installments message reserves space while loading to reduce product page layout shifts (#68).
 - Colour-only swatches on product cards show their colour, and cards, quick add and the product page share one swatch rendering (#80).
 - Card images download sizes that match the grid in all browsers (#116).

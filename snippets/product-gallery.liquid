@@ -181,12 +181,12 @@ Renders the product media gallery and its optional full-screen viewer for produc
             {% if gallery_index == gallery_initial_index %}aria-current="true"{% endif %}
           >
             {{ media.preview_image
-              | image_url: width: 240
+              | image_url: width: 280
               | image_tag:
                 alt: '',
                 class: 'product-gallery-thumbnail-image',
-                widths: '80, 120, 160, 200, 240',
-                sizes: '120px',
+                widths: '80, 120, 160, 200, 240, 280',
+                sizes: '(min-width: 600px) 140px, 56px',
                 loading: 'lazy'
             }}
             {% if media.media_type != 'image' %}

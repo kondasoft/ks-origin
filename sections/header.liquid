@@ -137,7 +137,7 @@
           data-toggle="countries-dialog"
           aria-controls="countries-dialog"
           aria-haspopup="dialog"
-          aria-label="{{ 'general.localization.country' | t }}: {{ localization.country.name | escape }}"
+          aria-label="{{ localization.country.iso_code | escape }}, {{ 'general.localization.country' | t }}: {{ localization.country.name | escape }}"
         >
           <span class="localization-country-code" aria-hidden="true">
             {{ localization.country.iso_code }}

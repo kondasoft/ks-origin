@@ -311,12 +311,15 @@
     padding-right: 0.2em;
   }
 
+  /* A 24px box meets the WCAG 2.2 target size, which audits measure on the element itself, not on pseudo-elements.
+     Negative margins keep the 1em footprint so the chevron stays in place within the link and trigger padding. */
   .header-nav-toggle {
     display: inline-grid;
     flex-shrink: 0;
-    width: 1em;
-    height: 1em;
-    margin-bottom: -0.15em;
+    width: 24px;
+    height: 24px;
+    margin: calc((1em - 24px) / 2);
+    margin-bottom: calc((1em - 24px) / 2 - 0.15em);
     padding: 0;
     color: inherit;
     place-items: center;
@@ -361,6 +364,7 @@
   .header-nav-toggle {
     width: 2.5em;
     height: 2.5em;
+    margin: 0 0 -0.15em;
   }
 }
 

@@ -54,10 +54,13 @@ Calculates responsive card image sizes from the containing grid and optionally a
   endcapture
 
   if content != nil
-    # Dynamic child blocks cannot receive custom parameters; replace only the card image sizes contract.
+    # Dynamic child blocks cannot receive custom parameters. Match complete fallback attributes so
+    # lazy cards retain auto sizes and eager collection cards receive only the computed size list.
     assign fallback_attribute = 'sizes="auto, (min-width: 1200px) 33vw, 50vw"'
     assign sizes_attribute = image_sizes | prepend: 'sizes="' | append: '"'
-    echo content | replace: fallback_attribute, sizes_attribute
+    assign eager_fallback_attribute = 'sizes="(min-width: 1200px) 33vw, 50vw"'
+    assign eager_sizes_attribute = image_sizes | remove_first: 'auto, ' | prepend: 'sizes="' | append: '"'
+    echo content | replace: fallback_attribute, sizes_attribute | replace: eager_fallback_attribute, eager_sizes_attribute
   else
     echo image_sizes
   endif

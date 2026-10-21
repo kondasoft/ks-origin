@@ -42,11 +42,10 @@
     --pb: {{ section.settings.pb | divided_by: 16.0 | append: 'em' }};
   "
   data-section-css="{{ 'footer.css' | asset_url }}"
-  data-section-js="{{ 'footer.js' | asset_url }}"
 >
   <div class="container">
     {% if section.blocks.size > 0 %}
-      <footer-blocks class="footer-blocks">
+      <div class="footer-blocks">
         {% for block in section.blocks %}
           <div
             class="footer-block footer-block-{{ block.type }}"
@@ -197,7 +196,7 @@
             </theme-collapse>
           </div>
         {% endfor %}
-      </footer-blocks>
+      </div>
     {% endif %}
 
     <div class="footer-bottom">

@@ -36,6 +36,7 @@
 
     {% paginate collections by collections_per_page %}
       {% if collections.size > 0 %}
+        <h2 class="visually-hidden">{{ 'accessibility.collections_carousel' | t }}</h2>
         <ul
           class="main-list-collections-grid"
           role="list"

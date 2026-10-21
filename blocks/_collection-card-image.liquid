@@ -4,11 +4,12 @@
   assign collection_image_alt = collection_image.alt | default: collection.title
   assign collection_image_class = 'collection-card-image'
   assign image_loading = 'lazy'
-  assign image_fetchpriority = 'auto'
+  assign image_sizes = '(min-width: 1200px) 33vw, 50vw'
 
-  if section.index <= 3
+  if section.index == 1
     assign image_loading = 'eager'
-    assign image_fetchpriority = 'high'
+  else
+    assign image_sizes = image_sizes | prepend: 'auto, '
   endif
 
   unless block.settings.image_ratio == 'adapt'
@@ -38,9 +39,8 @@
         alt: collection_image_alt,
         class: collection_image_class,
         widths: '320, 640, 960, 1280, 1600, 2000, 2400',
-        sizes: 'auto, (min-width: 1200px) 33vw, 50vw',
-        loading: image_loading,
-        fetchpriority: image_fetchpriority
+        sizes: image_sizes,
+        loading: image_loading
     }}
   {% elsif collection != blank %}
     {{ 'image' | placeholder_svg_tag: collection_image_placeholder_class }}

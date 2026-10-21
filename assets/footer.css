@@ -21,10 +21,12 @@
   Footer blocks
 */
 .footer-blocks {
-  display: block;
+  display: flex;
+  flex-direction: column;
 }
 
-.footer-block + .footer-block .footer-block-collapse {
+/* Newsletters display first, so only an earlier non-newsletter can share an accordion border. */
+.footer-block:not(.footer-block-newsletter) ~ .footer-block:not(.footer-block-newsletter) .footer-block-collapse {
   border-top: 0;
 }
 
@@ -87,6 +89,7 @@
   Newsletter block
 */
 .footer-block-newsletter {
+  order: -1;
   padding-bottom: 2em;
 }
 
@@ -107,7 +110,8 @@
   padding-bottom: 0;
 }
 
-.footer-block-newsletter + .footer-block .footer-block-collapse {
+/* Preserve the separator between multiple newsletters regardless of their merchant-defined positions. */
+.footer-block-newsletter ~ .footer-block-newsletter .footer-block-collapse {
   border-top: 1px dotted rgb(var(--color-text) / var(--border-opacity));
 }
 
@@ -328,19 +332,16 @@
   }
 
   .footer-block-newsletter {
+    order: 0;
     padding-bottom: 0;
   }
 
-  .footer-block-newsletter + .footer-block .footer-block-collapse {
+  .footer-block-newsletter ~ .footer-block-newsletter .footer-block-collapse {
     border-top: 0;
   }
 
   .footer-block-collapse {
     border: 0;
-  }
-
-  .footer-block:first-child .footer-block-collapse {
-    border-top: 0;
   }
 
   .footer-block-details {

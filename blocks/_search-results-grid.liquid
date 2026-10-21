@@ -21,6 +21,7 @@ Renders paginated search results using the reusable product and article cards.
     {% if search.performed %}
       {% paginate search.results by results_per_page %}
         {% if search.results_count > 0 %}
+          <h2 class="visually-hidden">{{ 'search.results_title' | t }}</h2>
           <ul
             class="product-grid"
             role="list"
