@@ -1572,7 +1572,8 @@ class MobileMenuDialog extends HTMLElement {
 
   onDocumentClick(event) {
     if (!this.isOpen) return;
-    if (event.target.closest("dialog[open]")) return;
+    // Modal dialogs close synchronously, so a click on their close button arrives here after [open] was removed.
+    if (event.target.closest("dialog")) return;
     if (this.panel.contains(event.target) || this.trigger.contains(event.target)) return;
 
     this.closeMenu(false);

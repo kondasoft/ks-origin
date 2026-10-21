@@ -18,7 +18,7 @@
             "subheading": "Error 404",
             "subheading_size": "fs-sm",
             "pt": 0,
-            "pb": 0
+            "pb": 12
           },
           "blocks": {}
         },
@@ -38,7 +38,7 @@
           "settings": {
             "text": "<p>The page you were looking for does not exist or may have been moved.</p>",
             "text_size": "fs-md",
-            "pt": 0,
+            "pt": 12,
             "pb": 0
           },
           "blocks": {}
@@ -50,7 +50,7 @@
             "mobile_gap": 10,
             "desktop_content_direction": "row",
             "desktop_gap": 10,
-            "pt": 20,
+            "pt": 28,
             "pb": 0
           },
           "blocks": {

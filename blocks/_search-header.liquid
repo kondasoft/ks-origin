@@ -61,6 +61,8 @@ Renders the search page heading and search form.
         class="main-search-title {{ block.settings.heading_size }}"
         data-search-heading
         data-results-title="{{ 'search.results_title' | t | escape }}"
+        {% # Mirrors the theme-head title so AJAX searches can update the browser tab. %}
+        data-page-title="{{ page_title | escape }}{% unless page_title contains shop.name %} – {{ shop.name | escape }}{% endunless %}"
       >
         {% if search.performed %}
           {{ 'search.results_title' | t }}

@@ -45,6 +45,7 @@ Work planned for 1.1.0 is tracked in the
 
 ### Fixed
 
+- The 404 page has the same spacing between its subheading, heading, text and button as other pages (#75).
 - Collection, search and collections list pages have a heading between the page title and the cards (#66).
 - Desktop menu toggle buttons have a larger click area, and the header country button's accessible name includes the visible country code (#66).
 - Footer newsletter blocks no longer jump to the top after the page loads on mobile (#126).
@@ -60,7 +61,7 @@ Work planned for 1.1.0 is tracked in the
 - Liquid / HTML, Blog posts, Collection list, Featured collection and Product recommendations render added blocks and preserve card settings across layouts (#121).
 - Changing language or country keeps the visitor on the current page (#115).
 - Collection filters and sorting respect per-page settings on every store, ignore hash-only navigation, normalize prices, and preserve typing during updates; sorting, variant selection and predictive search work when Shopify analytics is blocked (#92).
-- The search page keeps its search box and heading in sync with results, including Back and Forward (#112).
+- The search page keeps its search box, heading and browser tab title in sync with results, including Back and Forward (#112).
 - Article cards fill their grid or carousel cell, with Read more aligned at the bottom (#104).
 - Sort options inherit the body font weight (#87).
 - Filters introduced by an AJAX search retain their drawer, including when returning from a search without filters.

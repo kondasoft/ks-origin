@@ -261,6 +261,7 @@ class FacetedResults extends HTMLElement {
 
     if (input) input.value = this.dataset.searchQuery;
     if (heading && nextHeading) heading.textContent = nextHeading.textContent;
+    if (nextHeading?.dataset.pageTitle) document.title = nextHeading.dataset.pageTitle;
   }
 
   captureFilterState() {
