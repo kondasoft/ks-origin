@@ -28,6 +28,9 @@ The easiest way to install KS Origin is to download the free, Shopify-ready pack
 Developers who want the source code can clone this repository instead. Continue to
 [Local development](#local-development) for setup instructions.
 
+See the [changelog](CHANGELOG.md) and [releases](https://github.com/kondasoft/ks-origin/releases) for
+what changed in each version.
+
 ## Highlights
 
 - Mobile-first, modular architecture
@@ -54,9 +57,11 @@ Each area is merchant-configurable and built around native Shopify behavior.
 
 ### Product experience
 
-- Configurable image and video gallery
+- Media gallery with images, uploaded and YouTube or Vimeo videos, and 3D models with View in your
+  space, plus a full-screen gallery with zoom
 - Live variant selection, availability, pricing, and color swatches
-- Quantity selector, dynamic checkout, and gift-card recipient form
+- Inventory status and pickup availability
+- Quantity selector, B2B quantity rules, unit prices, dynamic checkout, and gift-card recipient form
 - Ratings, sale badges, installment information, and trust badges
 - Collapsible product information and built-in sharing
 - Related and complementary product recommendations
@@ -77,6 +82,7 @@ Each area is merchant-configurable and built around native Shopify behavior.
 - AJAX add, remove, and quantity updates
 - Shopify storefront actions and events for cart updates
 - Live cart badges, cart notes, and discount-code management
+- Quantity rules and unit prices on cart lines
 - Shopify warning and error feedback
 - Accessible focus restoration and section-based rendering
 
