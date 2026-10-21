@@ -13,6 +13,7 @@ Work planned for 1.1.0 is tracked in the
 
 ### Added
 
+- Full-screen product gallery on the product page and Featured product: opened from a gallery image or the expand button, with swipe, arrows, click or tap to zoom, optional thumbnails, and every media type (#67).
 - Product galleries show YouTube and Vimeo videos on the product page, Featured product and quick add; quick add also supports Shopify-hosted videos (#19).
 - Product galleries show 3D models with View in your space on supported devices, on the product page, Featured product and quick add (#20).
 - Inventory status block for the product page: in stock, low stock and sold out, with an optional quantity (#40).

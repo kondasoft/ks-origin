@@ -1,7 +1,7 @@
 /*
   Product gallery stylesheet
 
-  This file owns the product media gallery, its transitions, controls, thumbnails, and embedded media presentation.
+  This file owns product gallery presentation and the optional full-screen viewer, including media, controls and zoom.
 */
 
 
@@ -341,4 +341,410 @@
 
 .product-gallery .product-media-xr[data-shopify-xr-hidden] {
   display: none;
+}
+
+
+/*
+  Full-screen viewer triggers
+*/
+.product-gallery-expand {
+  position: absolute;
+  z-index: 2;
+  top: 1rem;
+  right: 1rem;
+  color: rgb(var(--color-text));
+  background-color: rgb(var(--color-surface) / 0.85);
+  backdrop-filter: blur(4px);
+  transition: opacity 180ms ease-out;
+}
+
+.product-gallery-expand .svg-icon {
+  transition: transform 180ms ease-out;
+}
+
+.product-gallery-stage:has(.product-gallery-expand) .product-gallery-slide[data-media-type="image"] {
+  cursor: zoom-in;
+}
+
+@media (hover: hover) {
+  .product-gallery-expand {
+    opacity: 0;
+  }
+
+  .product-gallery-stage:hover .product-gallery-expand {
+    opacity: 1;
+  }
+
+  .product-gallery-expand:focus-visible {
+    opacity: 1;
+  }
+
+  .product-gallery-expand.is-loading {
+    opacity: 1;
+  }
+
+  .product-gallery-expand:hover .svg-icon {
+    transform: scale(1.12);
+  }
+}
+
+.product-gallery-expand.is-loading .svg-icon {
+  visibility: hidden;
+}
+
+.product-gallery-expand.is-loading::after {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  box-sizing: border-box;
+  width: 18px;
+  height: 18px;
+  margin: -9px 0 0 -9px;
+  content: "";
+  border: 2px solid rgb(var(--color-text) / 0.25);
+  border-top-color: rgb(var(--color-text));
+  border-radius: 50%;
+  animation: product-gallery-spin 700ms linear infinite;
+}
+
+@keyframes product-gallery-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+/*
+  Full-screen viewer
+*/
+/* Outrank the shared dialog rules even when lazy-styles.css loads after this stylesheet. */
+.dialog.product-gallery-viewer {
+  inset: 0;
+  width: 100vw;
+  max-width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  max-height: none;
+  margin: 0;
+  --dialog-transition-duration: 240ms;
+  overflow: hidden;
+  color: rgb(var(--color-text));
+  background: transparent;
+  border-radius: 0;
+  box-shadow: none;
+  opacity: 1;
+  /* Fade the whole viewer as one layer, so the image never shows over the page before its background. */
+  transition: opacity var(--dialog-transition-duration) ease-out;
+}
+
+.dialog.product-gallery-viewer.is-closing {
+  opacity: 0;
+}
+
+@starting-style {
+  .dialog.product-gallery-viewer[open] {
+    opacity: 0;
+  }
+}
+
+.dialog.product-gallery-viewer::backdrop {
+  background: transparent;
+  cursor: auto;
+}
+
+.product-gallery-viewer-backdrop {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  background-color: rgb(var(--color-surface));
+}
+
+.product-gallery-viewer-inner {
+  position: relative;
+  z-index: 1;
+  flex: 1 1 auto;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  width: 100%;
+  min-height: 0;
+  transform: scale(1);
+  transition: transform var(--dialog-transition-duration) ease-out;
+}
+
+.product-gallery-viewer.is-closing .product-gallery-viewer-inner {
+  transform: scale(0.985);
+}
+
+@starting-style {
+  .product-gallery-viewer[open] .product-gallery-viewer-inner {
+    transform: scale(0.985);
+  }
+}
+
+.product-gallery-viewer-toolbar {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  right: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1em;
+  padding: 1em;
+  pointer-events: none;
+  transition: opacity 180ms ease-out;
+}
+
+.product-gallery-viewer-counter {
+  padding: 0.375em 0.75em;
+  color: rgb(var(--color-text));
+  background-color: rgb(var(--color-surface) / 0.85);
+  backdrop-filter: blur(4px);
+  border-radius: var(--border-radius);
+  font-size: var(--fs-sm);
+  line-height: 1;
+}
+
+.product-gallery-viewer-button {
+  color: rgb(var(--color-text));
+  background-color: rgb(var(--color-surface) / 0.85);
+  backdrop-filter: blur(4px);
+  pointer-events: auto;
+}
+
+.product-gallery-viewer-close {
+  margin-left: auto;
+}
+
+.product-gallery-viewer[data-opened-by="pointer"] .product-gallery-viewer-close:focus-visible {
+  outline-color: transparent;
+}
+
+.product-gallery-viewer-stage {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+}
+
+.product-gallery-viewer-track {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  list-style: none;
+  overscroll-behavior: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.product-gallery-viewer-track::-webkit-scrollbar {
+  display: none;
+}
+
+.product-gallery-viewer-track.is-locked {
+  overflow-x: hidden;
+}
+
+.product-gallery-viewer-track.is-animating {
+  scroll-snap-type: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .product-gallery-viewer-slide.is-entering {
+    animation: product-gallery-viewer-fade 160ms ease-out both;
+  }
+}
+
+@keyframes product-gallery-viewer-fade {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.product-gallery-viewer-slide {
+  flex: 0 0 100%;
+  min-width: 0;
+  height: 100%;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+.product-gallery-viewer-frame {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+}
+
+.product-gallery-viewer-frame::-webkit-scrollbar {
+  display: none;
+}
+
+.product-gallery-viewer-frame.is-zoomed {
+  overflow: auto;
+  cursor: zoom-out;
+}
+
+.product-gallery-viewer-zoom {
+  flex: 0 0 auto;
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: auto;
+  color: inherit;
+  cursor: zoom-in;
+  background: transparent;
+  border: 0;
+  outline: 2px solid transparent;
+  outline-offset: -4px;
+}
+
+.product-gallery-viewer-zoom[aria-pressed="true"] {
+  cursor: zoom-out;
+}
+
+.product-gallery-viewer-zoom:focus-visible {
+  outline-color: currentcolor;
+}
+
+.product-gallery-viewer-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.product-gallery-viewer-frame .video-media {
+  width: 100%;
+  height: 100%;
+}
+
+.product-gallery-viewer-frame .video-media-deferred {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: auto;
+}
+
+.product-gallery-viewer-frame .video-media-video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.product-gallery-viewer-frame .video-media-poster-image {
+  object-fit: contain;
+}
+
+.product-gallery-viewer-controls {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  right: 1rem;
+  left: 1rem;
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+  transform: translateY(-50%);
+  transition: opacity 180ms ease-out;
+}
+
+
+/*
+  Full-screen viewer thumbnails
+*/
+.product-gallery-viewer-thumbnails {
+  display: flex;
+  gap: 0.5em;
+  justify-content: safe center;
+  padding: 0.75em 1em;
+  margin: 0;
+  overflow-x: auto;
+  list-style: none;
+  scrollbar-width: none;
+  transition: opacity 180ms ease-out;
+}
+
+.product-gallery-viewer-thumbnails::-webkit-scrollbar {
+  display: none;
+}
+
+.product-gallery-viewer-thumbnails > li {
+  flex: 0 0 56px;
+}
+
+.product-gallery-viewer-thumbnail {
+  position: relative;
+  display: block;
+  width: 56px;
+  height: 56px;
+  padding: 0;
+  overflow: hidden;
+  color: inherit;
+  cursor: pointer;
+  background: transparent;
+  border: 1px solid rgb(var(--color-text) / var(--border-opacity));
+  border-radius: var(--border-radius);
+  outline: 2px solid transparent;
+  outline-offset: -2px;
+}
+
+.product-gallery-viewer-thumbnail[aria-current="true"] {
+  border-color: rgb(var(--color-text));
+}
+
+.product-gallery-viewer-thumbnail:focus-visible {
+  outline-color: currentcolor;
+}
+
+.product-gallery-viewer-thumbnail-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
+/*
+  Reduced viewer motion
+*/
+@media (prefers-reduced-motion: reduce) {
+  .dialog.product-gallery-viewer {
+    transition: none;
+  }
+
+  .product-gallery-viewer-inner {
+    transition: none;
+  }
+
+  .product-gallery-viewer-toolbar {
+    transition: none;
+  }
+
+  .product-gallery-viewer-controls {
+    transition: none;
+  }
+
+  .product-gallery-viewer-thumbnails {
+    transition: none;
+    scroll-behavior: auto;
+  }
+
+  .product-gallery-expand {
+    transition: none;
+  }
+
+  .product-gallery-expand .svg-icon {
+    transition: none;
+  }
 }

@@ -1,5 +1,5 @@
 {% doc %}
-Renders the main product media gallery with images, videos, 3D models, controls, a counter, and thumbnails.
+Renders the product media gallery and its optional full-screen viewer for product and Featured product sections.
 
 @param {section} [section] - A section override, otherwise the current section context is used.
 @param {product} [product] - A product override, otherwise the current or section-selected product is used.
@@ -21,6 +21,7 @@ Renders the main product media gallery with images, videos, 3D models, controls,
   assign gallery_initial_index = 0
   assign gallery_aspect_ratio = '1 / 1'
   assign gallery_stage_class = 'product-gallery-stage'
+  assign gallery_viewer_id = 'ProductGalleryViewer-' | append: section.id
 
   for media in gallery_media
     if media.id == gallery_initial_media_id
@@ -115,6 +116,19 @@ Renders the main product media gallery with images, videos, 3D models, controls,
         </li>
       {% endif %}
     </ul>
+
+    {% if section.settings.gallery_full_screen and gallery_count > 0 %}
+      <button
+        class="icon-button product-gallery-expand"
+        type="button"
+        data-viewer-open="{{ gallery_viewer_id }}"
+        aria-controls="{{ gallery_viewer_id }}"
+        aria-haspopup="dialog"
+        aria-label="{{ 'accessibility.view_full_screen' | t }}"
+      >
+        {% render 'svg-icons', icon: 'expand', icon_size: 18 %}
+      </button>
+    {% endif %}
 
     {% if gallery_count > 1 and section.settings.gallery_show_navigation %}
       <div class="product-gallery-controls">
@@ -222,5 +236,13 @@ Renders the main product media gallery with images, videos, 3D models, controls,
   {% endif %}
   {% if gallery_models.size > 0 %}
     <script type="application/json" data-product-models>{{ gallery_models | json }}</script>
+  {% endif %}
+  {% if section.settings.gallery_full_screen and gallery_count > 0 %}
+    {% render 'product-gallery-viewer',
+      viewer_id: gallery_viewer_id,
+      product: gallery_product,
+      transition: section.settings.gallery_transition,
+      show_thumbnails: section.settings.gallery_full_screen_show_thumbnails
+    %}
   {% endif %}
 </product-gallery>

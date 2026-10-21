@@ -1,0 +1,173 @@
+{% doc %}
+Renders the full-screen product media viewer with zoomable images, videos and 3D models.
+Keep it inside product-gallery so deferred models can share its XR data.
+The expand button opens it through `data-viewer-open` with the same viewer ID; image clicks call the viewer's open().
+
+@param {string} viewer_id - The dialog ID shared with the gallery triggers.
+@param {string} [transition] - One of 'slide' or 'fade'.
+@param {boolean} [show_thumbnails] - Shows a thumbnail strip along the bottom of the viewer.
+@param {section} [section] - A section override, otherwise the current section context is used.
+@param {product} [product] - A product override, otherwise the current or section-selected product is used.
+
+@example
+{% render 'product-gallery-viewer', viewer_id: viewer_id %}
+{% enddoc %}
+
+{% liquid
+  assign viewer_product = product | default: section.settings.product
+  assign viewer_count = viewer_product.media.size
+  assign zoom_label = 'accessibility.toggle_zoom' | t
+%}
+
+{% if viewer_count > 0 %}
+  <theme-dialog>
+    <dialog
+      id="{{ viewer_id }}"
+      class="dialog product-gallery-viewer"
+      aria-label="{{ 'accessibility.product_gallery' | t }}"
+      data-animated-close
+    >
+      <div class="product-gallery-viewer-backdrop" aria-hidden="true"></div>
+
+      <product-gallery-viewer
+        class="product-gallery-viewer-inner"
+        data-transition="{{ transition | default: 'fade' }}"
+      >
+        <div class="product-gallery-viewer-toolbar">
+          {% if viewer_count > 1 %}
+            <span class="product-gallery-viewer-counter" aria-hidden="true" data-viewer-counter>
+              1 / {{ viewer_count }}
+            </span>
+          {% endif %}
+
+          <button
+            class="icon-button product-gallery-viewer-button product-gallery-viewer-close"
+            type="button"
+            data-dialog-close
+            aria-label="{{ 'accessibility.close' | t }}"
+          >
+            {% render 'svg-icons', icon: 'close' %}
+          </button>
+        </div>
+
+        <div class="product-gallery-viewer-stage">
+          <ul class="product-gallery-viewer-track" role="list" data-viewer-track>
+            {% for media in viewer_product.media %}
+              {% assign media_alt = media.alt | default: viewer_product.title %}
+              <li
+                class="product-gallery-viewer-slide"
+                data-viewer-slide
+                data-media-id="{{ media.id }}"
+                data-media-type="{{ media.media_type }}"
+                {% unless forloop.first %}inert{% endunless %}
+              >
+                {% if media.media_type == 'image' %}
+                  <div class="product-gallery-viewer-frame" data-viewer-frame>
+                    <button
+                      class="product-gallery-viewer-zoom"
+                      type="button"
+                      aria-pressed="false"
+                      aria-label="{{ zoom_label | escape }}: {{ media_alt | escape }}"
+                      data-viewer-zoom
+                      data-media-width="{{ media.preview_image.width }}"
+                      data-media-ratio="{{ media.preview_image.aspect_ratio | default: 1 }}"
+                    >
+                      {{ media
+                        | image_url: width: 3200
+                        | image_tag:
+                          alt: '',
+                          class: 'product-gallery-viewer-image',
+                          widths: '640, 960, 1280, 1600, 2000, 2400, 3200',
+                          sizes: '100vw',
+                          loading: 'lazy'
+                      }}
+                    </button>
+                  </div>
+                {% else %}
+                  <div class="product-gallery-viewer-frame">
+                    {% render 'product-media',
+                      media: media,
+                      product: viewer_product,
+                      autoplay: false,
+                      show_controls: true,
+                      media_width: 1600,
+                      sizes: '100vw',
+                      loading: 'lazy'
+                    %}
+                  </div>
+                {% endif %}
+              </li>
+            {% endfor %}
+          </ul>
+
+          {% if viewer_count > 1 %}
+            <div class="product-gallery-viewer-controls">
+              <button
+                class="icon-button product-gallery-viewer-button"
+                type="button"
+                aria-label="{{ 'accessibility.previous_media' | t }}"
+                data-viewer-previous
+              >
+                {% render 'svg-icons', icon: 'chevron-left', icon_size: 20 %}
+              </button>
+              <button
+                class="icon-button product-gallery-viewer-button"
+                type="button"
+                aria-label="{{ 'accessibility.next_media' | t }}"
+                data-viewer-next
+              >
+                {% render 'svg-icons', icon: 'chevron-right', icon_size: 20 %}
+              </button>
+            </div>
+          {% endif %}
+        </div>
+
+        {% if show_thumbnails and viewer_count > 1 %}
+          <ul class="product-gallery-viewer-thumbnails" role="list" data-viewer-thumbnails>
+            {% assign thumbnail_index = 0 %}
+            {% for media in viewer_product.media %}
+              {% assign thumbnail_position = thumbnail_index | plus: 1 %}
+              <li>
+                <button
+                  class="product-gallery-viewer-thumbnail"
+                  type="button"
+                  data-viewer-thumbnail
+                  data-index="{{ thumbnail_index }}"
+                  aria-label="{% if media.media_type == 'model' %}{{ 'accessibility.view_model' | t: index: thumbnail_position }}{% elsif media.media_type != 'image' %}{{ 'accessibility.view_video' | t: index: thumbnail_position }}{% else %}{{ 'accessibility.view_image' | t: index: thumbnail_position }}{% endif %}"
+                  {% if thumbnail_index == 0 %}aria-current="true"{% endif %}
+                >
+                  {{ media.preview_image
+                    | image_url: width: 160
+                    | image_tag:
+                      alt: '',
+                      class: 'product-gallery-viewer-thumbnail-image',
+                      widths: '80, 120, 160',
+                      sizes: '56px',
+                      loading: 'lazy'
+                  }}
+                  {% if media.media_type != 'image' %}
+                    <span class="video-play-button product-gallery-thumbnail-play" aria-hidden="true">
+                      {% if media.media_type == 'model' %}
+                        {% render 'svg-icons', icon: 'cube', icon_size: 14 %}
+                      {% else %}
+                        {% render 'svg-icons', icon: 'play', icon_size: 14 %}
+                      {% endif %}
+                    </span>
+                  {% endif %}
+                </button>
+              </li>
+              {% assign thumbnail_index = thumbnail_index | plus: 1 %}
+            {% endfor %}
+          </ul>
+        {% endif %}
+
+        <span
+          class="visually-hidden"
+          aria-live="polite"
+          data-viewer-status
+          data-template="{{ 'accessibility.media_status' | t: index: '[index]', count: '[count]' | escape }}"
+        ></span>
+      </product-gallery-viewer>
+    </dialog>
+  </theme-dialog>
+{% endif %}

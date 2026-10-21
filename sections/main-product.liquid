@@ -135,6 +135,24 @@
     },
     {
       "type": "header",
+      "content": "Full-screen gallery",
+      "info": "Shoppers open it from a gallery image or the expand button, then click or tap an image to zoom."
+    },
+    {
+      "type": "checkbox",
+      "id": "gallery_full_screen",
+      "label": "Enable full-screen gallery",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "gallery_full_screen_show_thumbnails",
+      "label": "Show thumbnails",
+      "default": true,
+      "visible_if": "{{ section.settings.gallery_full_screen }}"
+    },
+    {
+      "type": "header",
       "content": "Spacing"
     },
     {
@@ -220,6 +238,8 @@
         "gallery_show_thumbnails": true,
         "gallery_video_autoplay": true,
         "gallery_video_show_controls": false,
+        "gallery_full_screen": true,
+        "gallery_full_screen_show_thumbnails": true,
         "pt": 44,
         "pb": 60
       },
