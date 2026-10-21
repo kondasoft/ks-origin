@@ -69,6 +69,8 @@
 .product-gallery-slide .video-media {
   width: 100%;
   height: 100%;
+  /* Videos whose format differs from the slide are letterboxed; the surface frames the bars. */
+  background-color: rgb(var(--color-surface));
 }
 
 .product-gallery-slide .video-media-deferred {
@@ -356,6 +358,12 @@
   background-color: rgb(var(--color-surface) / 0.85);
   backdrop-filter: blur(4px);
   transition: opacity 180ms ease-out;
+}
+
+/* Videos without controls keep their pause toggle top-right, so the expand button moves aside on those slides. */
+.product-gallery-stage:has(.product-gallery-slide.is-active .video-media-toggle) .product-gallery-expand {
+  right: auto;
+  left: 1rem;
 }
 
 .product-gallery-expand .svg-icon {

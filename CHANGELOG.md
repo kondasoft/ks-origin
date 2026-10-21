@@ -14,7 +14,7 @@ Work planned for 1.1.0 is tracked in the
 ### Added
 
 - Full-screen product gallery on the product page and Featured product: opened from a gallery image or the expand button, with swipe, arrows, click or tap to zoom, optional thumbnails, and every media type (#67).
-- Product galleries show YouTube and Vimeo videos on the product page, Featured product and quick add; quick add also supports Shopify-hosted videos (#19).
+- Product galleries show YouTube and Vimeo videos on the product page, Featured product and quick add; they play when clicked, while only Shopify-hosted videos autoplay. Quick add also supports Shopify-hosted videos (#19).
 - Product galleries show 3D models with View in your space on supported devices, on the product page, Featured product and quick add (#20).
 - Inventory status block for the product page: in stock, low stock and sold out, with an optional quantity (#40).
 - Pickup availability block for the product page, with a store locations dialog, updated per variant (#110).
@@ -45,6 +45,8 @@ Work planned for 1.1.0 is tracked in the
 
 ### Fixed
 
+- Drawers cover the full screen in Chrome on iPhone after scrolling, and dialogs keep the page where it was instead of jumping back to it on close (#90).
+- The reveal header always shows at the top of the page, including when iOS bounces past the top (#127).
 - The 404 page has the same spacing between its subheading, heading, text and button as other pages (#75).
 - Collection, search and collections list pages have a heading between the page title and the cards (#66).
 - Desktop menu toggle buttons have a larger click area, and the header country button's accessible name includes the visible country code (#66).

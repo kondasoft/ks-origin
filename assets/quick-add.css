@@ -95,6 +95,8 @@
 .quick-add-gallery-slide .video-media {
   width: 100%;
   height: 100%;
+  /* Videos whose format differs from the slide are letterboxed; the surface frames the bars. */
+  background-color: rgb(var(--color-surface));
 }
 
 .quick-add-gallery-slide .video-media-deferred {

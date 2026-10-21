@@ -396,6 +396,15 @@ video {
   aspect-ratio: var(--video-aspect-ratio);
 }
 
+/* YouTube and Vimeo product media keep their own format, centred, in media slots of any shape. */
+.video-media-deferred > iframe[data-product-external-video] {
+  inset: 50% 0 auto;
+  height: auto;
+  max-height: 100%;
+  aspect-ratio: var(--video-aspect-ratio);
+  transform: translateY(-50%);
+}
+
 .video-media-deferred > .video-media-video {
   position: absolute;
   inset: 0;

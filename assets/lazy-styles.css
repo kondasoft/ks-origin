@@ -120,13 +120,16 @@
   opacity: 0;
 }
 
+/* Pinned with insets rather than the default dialog placement, as Chrome on iOS keeps them on screen (#90). */
 .drawer-right {
-  margin: 0 0 0 auto;
+  inset: 0 0 auto auto;
+  margin: 0;
   transform: translateX(100%);
 }
 
 .drawer-left {
-  margin: 0 auto 0 0;
+  inset: 0 auto auto 0;
+  margin: 0;
   transform: translateX(-100%);
 }
 

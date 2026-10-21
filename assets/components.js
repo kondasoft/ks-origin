@@ -765,30 +765,17 @@ class ThemeDialog extends HTMLElement {
     if (document.body.dataset.scrollLocked === "true") return;
     if (document.body.dataset.mobileMenuScrollLocked === "true") return;
 
-    const scrollY = window.scrollY;
-
+    // Locking with overflow keeps the scroll position; fixing the body moved it, which made Chrome on iOS
+    // re-expand its toolbars under the open drawer and leave a gap (#90).
     document.body.dataset.scrollLocked = "true";
-    document.body.dataset.scrollLockTop = String(scrollY);
-    document.body.style.position = "fixed";
-    document.body.style.top = `-${scrollY}px`;
-    document.body.style.left = "0";
-    document.body.style.right = "0";
-    document.body.style.width = "100%";
+    document.documentElement.style.overflow = "hidden";
   }
 
   unlockPageScroll() {
     if (document.body.dataset.scrollLocked !== "true") return;
 
-    const scrollY = Number(document.body.dataset.scrollLockTop || 0);
-
     delete document.body.dataset.scrollLocked;
-    delete document.body.dataset.scrollLockTop;
-    document.body.style.position = "";
-    document.body.style.top = "";
-    document.body.style.left = "";
-    document.body.style.right = "";
-    document.body.style.width = "";
-    window.scrollTo(0, scrollY);
+    document.documentElement.style.overflow = "";
   }
 }
 

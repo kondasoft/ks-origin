@@ -157,10 +157,19 @@ let headerScrollFrame;
 
 function updateRevealHeaders() {
   const currentScrollY = window.scrollY;
-  const lockedScrollY = Number(document.body.dataset.scrollLockTop || currentScrollY);
 
   if (document.body.dataset.scrollLocked === "true") {
-    previousScrollY = lockedScrollY;
+    previousScrollY = currentScrollY;
+    headerScrollFrame = null;
+    return;
+  }
+
+  // iOS reports negative positions while bouncing past the top; the header always shows at the top.
+  if (currentScrollY <= 0) {
+    document.querySelectorAll('#header-group[data-header-behavior="reveal"]').forEach((header) => {
+      header.classList.remove("header-hidden");
+    });
+    previousScrollY = 0;
     headerScrollFrame = null;
     return;
   }
@@ -172,9 +181,14 @@ function updateRevealHeaders() {
 
   const isScrollingDown = currentScrollY > previousScrollY;
 
+  // Keyboard focus keeps the header visible; focus restored to a header button after a tap (e.g. closing the
+  // cart drawer) must not, or the header could never hide again on touch devices.
+  const activeElement = document.activeElement;
+  const hasKeyboardFocus = activeElement?.dataset.focusedBy !== "pointer";
+
   document.querySelectorAll('#header-group[data-header-behavior="reveal"]').forEach((header) => {
-    const shouldHide =
-      isScrollingDown && currentScrollY > header.offsetHeight && !header.contains(document.activeElement);
+    const keepsFocus = header.contains(activeElement) && hasKeyboardFocus;
+    const shouldHide = isScrollingDown && currentScrollY > header.offsetHeight && !keepsFocus;
 
     header.classList.toggle("header-hidden", shouldHide);
   });

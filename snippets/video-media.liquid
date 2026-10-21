@@ -70,6 +70,12 @@ Renders uploaded or external video media with posters, deferred loading and shar
     assign video_preview_image = external_video.preview_image
     assign video_intrinsic_width = video_preview_image.width
     assign video_intrinsic_height = video_preview_image.height
+
+    # Provider thumbnails can be 4:3 for a 16:9 video, so prefer the media's own aspect ratio.
+    if external_video.aspect_ratio
+      assign video_intrinsic_width = 1600
+      assign video_intrinsic_height = 1600 | divided_by: external_video.aspect_ratio | round
+    endif
   endif
 
   assign video_display_aspect_ratio = video_intrinsic_width | append: ' / ' | append: video_intrinsic_height
@@ -104,6 +110,11 @@ Renders uploaded or external video media with posters, deferred loading and shar
   if defer_loading and has_video
     assign defer_video = true
     assign observe_video = false
+  endif
+
+  # YouTube and Vimeo product media have no theme pause toggle, so their own controls always show once playing.
+  if source == 'product'
+    assign controls_value = '1'
   endif
 
   assign video_tag_autoplay = autoplay

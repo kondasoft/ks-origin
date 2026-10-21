@@ -174,6 +174,7 @@ class ProductGallery extends HTMLElement {
         slide.querySelector("deferred-model")?.pause();
       } else if (
         this.videoAutoplay &&
+        slide.dataset.mediaType === "video" &&
         !window.matchMedia("(prefers-reduced-motion: reduce)").matches &&
         !slide.querySelector("deferred-video[data-user-paused]")
       ) {

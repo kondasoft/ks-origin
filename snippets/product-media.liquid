@@ -3,7 +3,7 @@ Renders deferred non-image product media shared by the product and Quick add gal
 
 @param {object} media - The product video, external video or model.
 @param {product} product - The product used for the XR title.
-@param {boolean} [autoplay] - Whether gallery videos should autoplay.
+@param {boolean} [autoplay] - Whether uploaded gallery videos should autoplay; YouTube and Vimeo never do.
 @param {boolean} [show_controls] - Whether video controls should be shown.
 @param {number} media_width - The target media width.
 @param {string} sizes - The responsive poster image sizes.
@@ -17,17 +17,24 @@ Renders deferred non-image product media shared by the product and Quick add gal
   {% when 'video', 'external_video' %}
     {% liquid
       assign video_source = 'uploaded'
+      assign video_autoplay = autoplay
+      assign video_loop = true
+
+      # YouTube and Vimeo play only when tapped, with their own controls: iOS blocks scripted playback in their
+      # players, so autoplay and the theme's pause toggle (shown for looping videos) only apply to uploaded videos.
       if media.media_type == 'external_video'
         assign video_source = 'product'
+        assign video_autoplay = false
+        assign video_loop = false
       endif
     %}
     {% render 'video-media',
       source: video_source,
       uploaded_video: media,
       external_video: media,
-      autoplay: autoplay,
+      autoplay: video_autoplay,
       muted: false,
-      loop: true,
+      loop: video_loop,
       show_controls: show_controls,
       defer_loading: true,
       media_width: media_width,

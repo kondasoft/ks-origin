@@ -380,7 +380,7 @@ class FacetedResults extends HTMLElement {
     const headerGroup = document.querySelector("#header-group");
     const headerBehavior = headerGroup?.dataset.headerBehavior;
     const isPageScrollLocked = document.body.dataset.scrollLocked === "true";
-    const currentScrollY = isPageScrollLocked ? Number(document.body.dataset.scrollLockTop || 0) : window.scrollY;
+    const currentScrollY = window.scrollY;
     const resultsGridTop = resultsGrid.getBoundingClientRect().top + currentScrollY;
     const scrollMarginTop = Number.parseFloat(window.getComputedStyle(resultsGrid).scrollMarginTop);
     const isScrollingUp = resultsGridTop - (scrollMarginTop || 0) < currentScrollY;
@@ -388,15 +388,10 @@ class FacetedResults extends HTMLElement {
     const headerOffset = shouldOffsetHeader ? headerGroup.offsetHeight : 0;
     const targetScrollY = Math.max(resultsGridTop - headerOffset - (scrollMarginTop || 0), 0);
 
-    if (isPageScrollLocked) {
-      document.body.dataset.scrollLockTop = String(targetScrollY);
-      document.body.style.top = `-${targetScrollY}px`;
-    } else {
-      window.scrollTo({
-        top: targetScrollY,
-        behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
-      });
-    }
+    // Behind an open filter drawer the page can't be seen, so it jumps instead of animating.
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    window.scrollTo({ top: targetScrollY, behavior: isPageScrollLocked || reduceMotion ? "auto" : "smooth" });
 
     if (focus) resultsGrid.focus({ preventScroll: true });
   }
