@@ -8,7 +8,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
-Work planned for 1.1.0 is tracked in the
+## [1.1.0] - 2026-10-21
+
+The issues in this release are listed in the
 [v1.1.0 milestone](https://github.com/kondasoft/ks-origin/milestone/1).
 
 ### Added
